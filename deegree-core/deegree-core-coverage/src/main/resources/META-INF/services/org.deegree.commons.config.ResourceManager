@@ -1,1 +1,2 @@
 org.deegree.coverage.persistence.CoverageBuilderManager
+org.deegree.coverage.raster.cache.RasterCacheManager

@@ -50,6 +50,9 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 
+import org.deegree.commons.config.DeegreeWorkspace;
+import org.deegree.commons.config.Resource;
+import org.deegree.commons.config.ResourceInitException;
 import org.deegree.commons.utils.StringUtils;
 import org.deegree.coverage.raster.SimpleRaster;
 import org.deegree.coverage.raster.data.RasterDataFactory;
@@ -72,7 +75,7 @@ import org.slf4j.Logger;
  * @version $Revision$, $Date$
  * 
  */
-public class RasterCache {
+public class RasterCache implements Resource {
 
     private static final Logger LOG = getLogger( RasterCache.class );
 
@@ -182,6 +185,8 @@ public class RasterCache {
      * @return a raster cache for the given directory.
      */
     public static RasterCache getInstance( File directory, boolean create ) {
+        LOG.info( "RasterCache maxCacheMem is: " + maxCacheMem );
+        LOG.info( "RasterCache maxCacheDisk is: " + maxCacheDisk );
         File cacheDir = DEFAULT_CACHE_DIR;
         if ( directory != null ) {
             if ( !directory.exists() ) {
@@ -589,9 +594,37 @@ public class RasterCache {
         return cacheDir;
     }
 
-    public static void disableAllCaches() {
-        maxCacheMem = 0;
-        maxCacheDisk = 0;
+//<<<<<<< HEAD
+//    public static void disableAllCaches() {
+//        maxCacheMem = 0;
+//        maxCacheDisk = 0;
+//=======
+    /**
+     * @param maxMemSize
+     *            if less or equal than 0 the default valus for maxCacheMem is taken.
+     * @param maxDiskSize
+     *            if less or equal than 0 the default valus for maxCacheDisk is taken.
+     */
+    protected static void setMaxMemAndDiskSize( long maxMemSize, long maxDiskSize ) {
+        LOG.info( "Set maxMemSize: " + maxMemSize + " and maxDiskSize: " + maxDiskSize );
+        if ( maxMemSize > 0 ) {
+            maxCacheMem = maxMemSize;
+        }
+        if ( maxDiskSize > 0 ) {
+            maxCacheDisk = maxDiskSize;
+        }
+    }
+
+    @Override
+    public void init( DeegreeWorkspace workspace )
+                            throws ResourceInitException {
+
+    }
+
+    @Override
+    public void destroy() {
+        // TODO Auto-generated method stub
+//>>>>>>> 5e3154d... Lyns patch
     }
 
 }

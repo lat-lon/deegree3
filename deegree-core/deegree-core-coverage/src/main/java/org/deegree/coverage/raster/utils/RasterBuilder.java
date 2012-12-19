@@ -62,6 +62,7 @@ import org.deegree.coverage.raster.AbstractRaster;
 import org.deegree.coverage.raster.MultiResolutionRaster;
 import org.deegree.coverage.raster.SimpleRaster;
 import org.deegree.coverage.raster.TiledRaster;
+import org.deegree.coverage.raster.cache.RasterCacheProvider;
 import org.deegree.coverage.raster.container.DiskBasedTileContainer;
 import org.deegree.coverage.raster.container.GriddedBlobTileContainer;
 import org.deegree.coverage.raster.container.IndexedMemoryTileContainer;
@@ -590,6 +591,6 @@ public class RasterBuilder implements CoverageBuilder {
     @SuppressWarnings("unchecked")
     @Override
     public Class<? extends ResourceManager>[] getDependencies() {
-        return new Class[] {};
+        return new Class[] {RasterCacheProvider.class};
     }
 }
