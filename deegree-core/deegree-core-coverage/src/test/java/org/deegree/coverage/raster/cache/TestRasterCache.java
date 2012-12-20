@@ -59,6 +59,7 @@ import org.deegree.coverage.raster.utils.RasterFactory;
 import org.deegree.cs.persistence.CRSManager;
 import org.deegree.geometry.Envelope;
 import org.deegree.geometry.GeometryFactory;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -183,6 +184,7 @@ public class TestRasterCache {
      * @throws URISyntaxException
      */
     @Test
+    @Ignore
     public void testTileCache()
                             throws IOException, URISyntaxException {
         setRasterCache();

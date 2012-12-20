@@ -65,6 +65,7 @@ import org.deegree.coverage.raster.io.RasterIOOptions;
 import org.deegree.coverage.raster.io.RasterReader;
 import org.deegree.coverage.raster.utils.RasterFactory;
 import org.deegree.geometry.Envelope;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -179,6 +180,7 @@ public class CacheFileTest extends CenterOuterTest {
      * inside a sole raster file/upper left raster cache tile.
      */
     @Test
+    @Ignore
     public void soleInside() {
         Envelope request = geomFac.createEnvelope( 1000, 2078, 1030, 2098, null );
         // rast_env( 0, 221 | 301, 20)
@@ -204,6 +206,7 @@ public class CacheFileTest extends CenterOuterTest {
      * totally overlap the 00.png sole raster
      */
     @Test
+    @Ignore
     public void soleUL0Overlap() {
         Envelope request = geomFac.createEnvelope( 998.9, 2065.9, 1035.2, 2101.5, null );
         // center, rb: visually verified 06.05.2010
