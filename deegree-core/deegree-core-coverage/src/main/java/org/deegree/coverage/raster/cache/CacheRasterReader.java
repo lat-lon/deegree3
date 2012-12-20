@@ -385,6 +385,7 @@ public class CacheRasterReader extends GridFileReader {
             if ( f != null ) {
                 if ( f.exists() && f.isFile() ) {
                     result = f.delete();
+                    LOG.debug( "File "  + f.getAbsolutePath() + " deleted.");
                     File metaInfo = GridMetaInfoFile.fileNameFromOptions( f.getParent(), FileUtils.getFilename( f ),
                                                                           null );
                     if ( metaInfo.exists() ) {
