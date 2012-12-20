@@ -125,7 +125,7 @@ public class RasterCache implements Resource {
         synchronized ( MEM_LOCK ) {
             String cacheSize = System.getProperty( DEF_RASTER_CACHE_MEM_SIZE );
             long mm = StringUtils.parseByteSize( cacheSize );
-            if ( mm == 0 ) {
+            if ( cacheSize == null ) {
                 if ( StringUtils.isSet( cacheSize ) ) {
                     LOG.warn( "Ignoring supplied property: {} because it could not be parsed. Using 0.5 of the total memory for raster caching.",
                               DEF_RASTER_CACHE_MEM_SIZE );
@@ -136,19 +136,21 @@ public class RasterCache implements Resource {
                 } else {
                     mm *= 0.5;
                 }
+                LOG.info( "Using {} of memory for raster caching.", mm );
             } else {
                 LOG.info( "Using {} of memory for raster caching (because it was set with the {} property).",
                           ( mm / ( 1024 * 1024 ) ) + "Mb", DEF_RASTER_CACHE_MEM_SIZE );
             }
             maxCacheMem = mm;
-            String t = System.getProperty( DEF_RASTER_CACHE_DISK_SIZE );
-            mm = StringUtils.parseByteSize( t );
-            if ( mm == 0 ) {
-                if ( StringUtils.isSet( t ) ) {
+            String diskCacheSize = System.getProperty( DEF_RASTER_CACHE_DISK_SIZE );
+            mm = StringUtils.parseByteSize( diskCacheSize );
+            if ( diskCacheSize == null ) {
+                if ( StringUtils.isSet( diskCacheSize ) ) {
                     LOG.warn( "Ignoring supplied property: {} because it could not be parsed. Using 20G of disk space for raster caching.",
                               DEF_RASTER_CACHE_MEM_SIZE );
                 }
                 mm = 20 * ( 1024l * 1024 * 1024 );
+                LOG.info( "Using {} of disk space for raster caching.", mm );
             } else {
                 LOG.info( "Using {} of disk space for raster caching (because it was set with the {} property).",
                           ( mm / ( 1024 * 1024 ) ) + "Mb", DEF_RASTER_CACHE_DISK_SIZE );
@@ -601,16 +603,16 @@ public class RasterCache implements Resource {
 //=======
     /**
      * @param maxMemSize
-     *            if less or equal than 0 the default valus for maxCacheMem is taken.
+     *            if less than 0 the default value for maxCacheMem is taken.
      * @param maxDiskSize
-     *            if less or equal than 0 the default valus for maxCacheDisk is taken.
+     *            if less than 0 the default value for maxCacheDisk is taken.
      */
     protected static void setMaxMemAndDiskSize( long maxMemSize, long maxDiskSize ) {
         LOG.info( "Set maxMemSize: " + maxMemSize + " and maxDiskSize: " + maxDiskSize );
-        if ( maxMemSize > 0 ) {
+        if ( maxMemSize >= 0 ) {
             maxCacheMem = maxMemSize;
         }
-        if ( maxDiskSize > 0 ) {
+        if ( maxDiskSize >= 0 ) {
             maxCacheDisk = maxDiskSize;
         }
     }
