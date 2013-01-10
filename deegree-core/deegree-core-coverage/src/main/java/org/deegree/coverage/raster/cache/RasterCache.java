@@ -485,11 +485,11 @@ public class RasterCache implements Resource {
             if ( reader instanceof CacheRasterReader ) {
                 result = (CacheRasterReader) reader;
             } else {
-                boolean createCache = reader.shouldCreateCacheFile();
+                //boolean createCache = reader.shouldCreateCacheFile();
                 File cacheFile = null;
-                if ( createCache ) {
-                    cacheFile = createCacheFile( reader.getDataLocationId() );
-                }
+//                if ( createCache ) {
+//                    cacheFile = createCacheFile( reader.getDataLocationId() );
+//                }
                 result = new CacheRasterReader( reader, cacheFile, this );
             }
             addReader( result );
@@ -514,21 +514,17 @@ public class RasterCache implements Resource {
     public final File createCacheFile( String id ) {
         String fileName = id;
         // rb: currently always use old file, don't try to create a new one.
-        boolean createNew = false;
         if ( fileName == null ) {
             fileName = UUID.randomUUID().toString();
         }
         File f = new File( this.cacheDir, fileName + FILE_EXTENSION );
-        int index = 0;
-        while ( createNew && f.exists() ) {
-            f = new File( this.cacheDir, id + "_" + ( index++ ) + FILE_EXTENSION );
-        }
 
         if ( id == null ) {
             // if the id was null, delete the file on exit.
             f.deleteOnExit();
         }
         return f;
+        //return null;
     }
 
     /**
