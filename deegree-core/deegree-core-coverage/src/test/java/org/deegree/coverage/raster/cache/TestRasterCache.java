@@ -300,6 +300,7 @@ public class TestRasterCache {
         clearCache();
     }
 
+    @Ignore
     @Test
     public void testMultiThreaded()
                             throws IOException, URISyntaxException {
