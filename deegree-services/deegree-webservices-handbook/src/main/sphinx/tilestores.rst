@@ -1,10 +1,10 @@
 .. _anchor-configuration-tilestore:
 
-========================
-Tile store configuration
-========================
+===========
+Tile stores
+===========
 
-Tile stores are data stores that provide access to pre-rendered map tiles. The common use case for tile stores is to provide data for tile layers.
+Tile stores are resources that provide access to pre-rendered map tiles. The common use case for tile stores is to provide data for tile layers.
 
 The remainder of this chapter describes some relevant terms and the tile store configuration files in detail. You can access this configuration level by clicking on the **tile stores** link in the administration console. The configuration files are located in the **datasources/tile/** directory of the deegree workspace.
 
@@ -166,6 +166,8 @@ Let's explain the configuration using an example:
 * The identifier is optional, default is the layer directory base name
 * The tile matrix set id references the tile matrix set
 * Currently only the tile cache disk layout is supported. Just point to the layer directory and specify the file type of the images (png is recommended, but most image formats are supported)
+
+Please note that if you use external tools to seed the tile store, you need to make sure the resulting structure is compatible. The ``00`` directory corresponds to the *first* tile matrix of the referenced tile matrix set, ``01`` to the second tile matrix and so on.
 
 ---------------------
 Remote WMS tile store

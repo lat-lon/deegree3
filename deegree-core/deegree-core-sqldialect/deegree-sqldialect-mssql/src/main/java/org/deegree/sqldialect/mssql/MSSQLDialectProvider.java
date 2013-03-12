@@ -1,7 +1,7 @@
-//$HeadURL$
+//$HeadURL: svn+ssh://goerke@criador:2222/srv/svn/deegree-intern/trunk/latlon-sqldialect-mssql/src/main/java/de/latlon/deegree/sqldialect/mssql/MSSQLDialectProvider.java $
 /*----------------------------------------------------------------------------
  This file is part of deegree, http://deegree.org/
- Copyright (C) 2001-2010 by:
+ Copyright (C) 2001-2013 by:
  - Department of Geography, University of Bonn -
  and
  - lat/lon GmbH -
@@ -33,16 +33,33 @@
 
  e-mail: info@deegree.org
  ----------------------------------------------------------------------------*/
-package org.deegree.coverage.persistence.remotewms;
+package org.deegree.sqldialect.mssql;
+
+import static org.deegree.commons.jdbc.ConnectionManager.Type.MSSQL;
+
+import org.deegree.commons.config.DeegreeWorkspace;
+import org.deegree.commons.config.ResourceInitException;
+import org.deegree.commons.jdbc.ConnectionManager.Type;
+import org.deegree.sqldialect.SQLDialect;
+import org.deegree.sqldialect.SQLDialectProvider;
 
 /**
- * TODO add class documentation here
+ * {@link SQLDialectProvider} for Microsoft SQL databases.
  * 
- * @author <a href="mailto:bezema@lat-lon.de">Rutger Bezema</a>
- * @author last edited by: $Author$
+ * @author <a href="mailto:schmitz@lat-lon.de">Andreas Schmitz</a>
+ * @author last edited by: $Author: schneider $
  * 
- * @version $Revision$, $Date$
+ * @version $Revision: 295 $, $Date: 2011-06-09 16:48:47 +0200 (Do, 09 Jun 2011) $
  */
-public class GetFeatureInfo {
-    // some information, currently not known.
+public class MSSQLDialectProvider implements SQLDialectProvider {
+
+    public Type getSupportedType() {
+        return MSSQL;
+    }
+
+    @Override
+    public SQLDialect create( String connId, DeegreeWorkspace ws )
+                            throws ResourceInitException {
+        return new MSSQLDialect();
+    }
 }
