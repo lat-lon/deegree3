@@ -1,0 +1,35 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+  <bean id="getCapabilitiesFilter" class="org.deegree.console.security.services.FilterRuleImpl">
+    <constructor-arg type="java.lang.String" value="getcapabilities" />
+    <constructor-arg type="java.lang.String" value="ROLE_ANONYMOUS" />
+  </bean>
+
+  <bean id="getRecordsFilter" class="org.deegree.console.security.services.FilterRuleImpl">
+    <constructor-arg type="java.lang.String" value="getrecords" />
+    <constructor-arg type="java.lang.String" value="ROLE_GETRECORDS" />
+  </bean>
+
+  <bean id="getRecordByIdFilter" class="org.deegree.console.security.services.FilterRuleImpl">
+    <constructor-arg type="java.lang.String" value="getrecordbyid" />
+    <constructor-arg type="java.lang.String" value="ROLE_GETRECORDBYID" />
+  </bean>
+
+  <bean id="ogcServiceFilter" class="org.deegree.console.security.services.OGCServiceFilter">
+  
+    <constructor-arg index="0">
+      <list>
+        <ref bean="getCapabilitiesFilter" />
+        <ref bean="getRecordsFilter" />
+        <ref bean="getRecordByIdFilter" />
+      </list>
+    </constructor-arg>
+    
+    <!-- Decides if the request should be permitted in case no filter applies -->
+    <constructor-arg index="1" type="boolean" value="false" />
+  </bean>
+
+</beans>

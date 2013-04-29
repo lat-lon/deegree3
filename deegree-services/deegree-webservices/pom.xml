@@ -144,7 +144,7 @@
             <artifactId>maven-dependency-plugin</artifactId>
             <executions>
               <execution>
-                <id>jsf-console-security</id>
+                <id>jsf-console</id>
                 <phase>generate-resources</phase>
                 <goals>
                   <goal>unpack-dependencies</goal>
@@ -153,8 +153,22 @@
                   <classifier>webapp-template</classifier>
                   <type>zip</type>
                   <includeGroupIds>org.deegree</includeGroupIds>
-                  <includeArtifactIds>deegree-jsf-console-security</includeArtifactIds>
+                  <includeArtifactIds>deegree-jsf-console</includeArtifactIds>
                   <outputDirectory>src/main/webapp</outputDirectory>
+                </configuration>
+              </execution>
+              <execution>
+                <id>security</id>
+                <phase>generate-resources</phase>
+                <goals>
+                  <goal>unpack-dependencies</goal>
+                </goals>
+                <configuration>
+                  <classifier>security-web-inf</classifier>
+                  <type>zip</type>
+                  <includeGroupIds>org.deegree</includeGroupIds>
+                  <includeArtifactIds>deegree-webapp-security</includeArtifactIds>
+                  <outputDirectory>src/main/webapp/WEB-INF</outputDirectory>
                 </configuration>
               </execution>
               <execution>
@@ -250,7 +264,7 @@
       <dependencies>
         <dependency>
           <groupId>org.deegree</groupId>
-          <artifactId>deegree-jsf-console-security</artifactId>
+          <artifactId>deegree-webapp-security</artifactId>
           <version>${project.version}</version>
         </dependency>
       </dependencies>

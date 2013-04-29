@@ -27,7 +27,7 @@
 
   <modules>
     <module>deegree-jsf-console</module>
-    <module>deegree-jsf-console-security</module>
+    <module>deegree-webapp-security</module>
     <module>deegree-jsf-core</module>
     <module>deegree-sos-webclient</module>
     <module>deegree-wps-webclient</module>
