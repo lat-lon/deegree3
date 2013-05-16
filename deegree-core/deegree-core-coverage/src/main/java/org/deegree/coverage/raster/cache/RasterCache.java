@@ -50,6 +50,9 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 
+import org.deegree.commons.config.DeegreeWorkspace;
+import org.deegree.commons.config.Resource;
+import org.deegree.commons.config.ResourceInitException;
 import org.deegree.commons.utils.StringUtils;
 import org.deegree.coverage.raster.SimpleRaster;
 import org.deegree.coverage.raster.data.RasterDataFactory;
@@ -72,7 +75,7 @@ import org.slf4j.Logger;
  * @version $Revision$, $Date$
  * 
  */
-public class RasterCache {
+public class RasterCache implements Resource {
 
     private static final Logger LOG = getLogger( RasterCache.class );
 
@@ -122,7 +125,7 @@ public class RasterCache {
         synchronized ( MEM_LOCK ) {
             String cacheSize = System.getProperty( DEF_RASTER_CACHE_MEM_SIZE );
             long mm = StringUtils.parseByteSize( cacheSize );
-            if ( mm == 0 ) {
+            if ( cacheSize == null ) {
                 if ( StringUtils.isSet( cacheSize ) ) {
                     LOG.warn( "Ignoring supplied property: {} because it could not be parsed. Using 0.5 of the total memory for raster caching.",
                               DEF_RASTER_CACHE_MEM_SIZE );
@@ -133,19 +136,21 @@ public class RasterCache {
                 } else {
                     mm *= 0.5;
                 }
+                LOG.info( "Using {} of memory for raster caching.", mm );
             } else {
                 LOG.info( "Using {} of memory for raster caching (because it was set with the {} property).",
                           ( mm / ( 1024 * 1024 ) ) + "Mb", DEF_RASTER_CACHE_MEM_SIZE );
             }
             maxCacheMem = mm;
-            String t = System.getProperty( DEF_RASTER_CACHE_DISK_SIZE );
-            mm = StringUtils.parseByteSize( t );
-            if ( mm == 0 ) {
-                if ( StringUtils.isSet( t ) ) {
+            String diskCacheSize = System.getProperty( DEF_RASTER_CACHE_DISK_SIZE );
+            mm = StringUtils.parseByteSize( diskCacheSize );
+            if ( diskCacheSize == null ) {
+                if ( StringUtils.isSet( diskCacheSize ) ) {
                     LOG.warn( "Ignoring supplied property: {} because it could not be parsed. Using 20G of disk space for raster caching.",
                               DEF_RASTER_CACHE_MEM_SIZE );
                 }
                 mm = 20 * ( 1024l * 1024 * 1024 );
+                LOG.info( "Using {} of disk space for raster caching.", mm );
             } else {
                 LOG.info( "Using {} of disk space for raster caching (because it was set with the {} property).",
                           ( mm / ( 1024 * 1024 ) ) + "Mb", DEF_RASTER_CACHE_DISK_SIZE );
@@ -182,6 +187,8 @@ public class RasterCache {
      * @return a raster cache for the given directory.
      */
     public static RasterCache getInstance( File directory, boolean create ) {
+        LOG.info( "RasterCache maxCacheMem is: " + maxCacheMem );
+        LOG.info( "RasterCache maxCacheDisk is: " + maxCacheDisk );
         File cacheDir = DEFAULT_CACHE_DIR;
         if ( directory != null ) {
             if ( !directory.exists() ) {
@@ -478,11 +485,11 @@ public class RasterCache {
             if ( reader instanceof CacheRasterReader ) {
                 result = (CacheRasterReader) reader;
             } else {
-                boolean createCache = reader.shouldCreateCacheFile();
+                //boolean createCache = reader.shouldCreateCacheFile();
                 File cacheFile = null;
-                if ( createCache ) {
-                    cacheFile = createCacheFile( reader.getDataLocationId() );
-                }
+//                if ( createCache ) {
+//                    cacheFile = createCacheFile( reader.getDataLocationId() );
+//                }
                 result = new CacheRasterReader( reader, cacheFile, this );
             }
             addReader( result );
@@ -507,21 +514,17 @@ public class RasterCache {
     public final File createCacheFile( String id ) {
         String fileName = id;
         // rb: currently always use old file, don't try to create a new one.
-        boolean createNew = false;
         if ( fileName == null ) {
             fileName = UUID.randomUUID().toString();
         }
         File f = new File( this.cacheDir, fileName + FILE_EXTENSION );
-        int index = 0;
-        while ( createNew && f.exists() ) {
-            f = new File( this.cacheDir, id + "_" + ( index++ ) + FILE_EXTENSION );
-        }
 
         if ( id == null ) {
             // if the id was null, delete the file on exit.
             f.deleteOnExit();
         }
         return f;
+        //return null;
     }
 
     /**
@@ -589,9 +592,37 @@ public class RasterCache {
         return cacheDir;
     }
 
-    public static void disableAllCaches() {
-        maxCacheMem = 0;
-        maxCacheDisk = 0;
+//<<<<<<< HEAD
+//    public static void disableAllCaches() {
+//        maxCacheMem = 0;
+//        maxCacheDisk = 0;
+//=======
+    /**
+     * @param maxMemSize
+     *            if less than 0 the default value for maxCacheMem is taken.
+     * @param maxDiskSize
+     *            if less than 0 the default value for maxCacheDisk is taken.
+     */
+    protected static void setMaxMemAndDiskSize( long maxMemSize, long maxDiskSize ) {
+        LOG.info( "Set maxMemSize: " + maxMemSize + " and maxDiskSize: " + maxDiskSize );
+        if ( maxMemSize >= 0 ) {
+            maxCacheMem = maxMemSize;
+        }
+        if ( maxDiskSize >= 0 ) {
+            maxCacheDisk = maxDiskSize;
+        }
+    }
+
+    @Override
+    public void init( DeegreeWorkspace workspace )
+                            throws ResourceInitException {
+
+    }
+
+    @Override
+    public void destroy() {
+        // TODO Auto-generated method stub
+//>>>>>>> 5e3154d... Lyns patch
     }
 
 }

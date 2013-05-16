@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:raster="http://www.deegree.org/datasource/coverage/raster/cache" xmlns="http://www.w3.org/2001/XMLSchema"
+  targetNamespace="http://www.deegree.org/datasource/coverage/raster/cache" elementFormDefault="qualified"
+  xmlns:jaxb="http://java.sun.com/xml/ns/jaxb" jaxb:version="2.1">
+  <annotation>
+    <appinfo>
+      <jaxb:schemaBindings>
+        <jaxb:package name="org.deegree.coverage.persistence.raster.cache.jaxb" />
+      </jaxb:schemaBindings>
+    </appinfo>
+  </annotation>
+
+  <element name="RasterCache">
+    <complexType>
+      <sequence>
+        <element name="maxMemSize" type="long" minOccurs="0" />
+        <element name="maxDiskSize" type="long" minOccurs="0" />
+      </sequence>
+      <attribute name="configVersion" use="required" fixed="3.1.0" />
+    </complexType>
+  </element>
+
+</schema>

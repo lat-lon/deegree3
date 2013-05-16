@@ -167,27 +167,27 @@ public class CacheRasterReader extends GridFileReader {
             this.cacheManager = RasterCache.getInstance();
         }
 
-        if ( shouldUseCachefile ) {
-            if ( cacheFile == null ) {
-                cacheFile = this.cacheManager.createCacheFile( createId(
-                                                                         readValues.getRasterWidth(),
-                                                                         readValues.getRasterHeight(),
-                                                                         readValues.getDataInfo(),
-                                                                         readValues.getGeoReference().createRelocatedReference(
-                                                                                                                                OriginLocation.OUTER ) ) );
-            }
-        }
+//        if ( shouldUseCachefile ) {
+//            if ( cacheFile == null ) {
+//                cacheFile = this.cacheManager.createCacheFile( createId(
+//                                                                         readValues.getRasterWidth(),
+//                                                                         readValues.getRasterHeight(),
+//                                                                         readValues.getDataInfo(),
+//                                                                         readValues.getGeoReference().createRelocatedReference(
+//                                                                                                                                OriginLocation.OUTER ) ) );
+//            }
+//        }
         super.instantiate( readValues, cacheFile );
-        if ( shouldUseCachefile ) {
-            try {
-                LOG.debug( "Writing to file: " + cacheFile.getAbsolutePath() );
-                this.gridWriter = new GridWriter( getTileColumns(), getTileRows(), getEnvelope(), getGeoReference(),
-                                                  cacheFile, getRasterDataInfo() );
-            } catch ( IOException e ) {
-                LOG.warn( "Could not create a cache file writer because: {}. Only in memory caching is enabled.",
-                          e.getLocalizedMessage() );
-            }
-        }
+//        if ( shouldUseCachefile ) {
+//            try {
+//                LOG.debug( "Writing to file: " + cacheFile.getAbsolutePath() );
+//                this.gridWriter = new GridWriter( getTileColumns(), getTileRows(), getEnvelope(), getGeoReference(),
+//                                                  cacheFile, getRasterDataInfo() );
+//            } catch ( IOException e ) {
+//                LOG.warn( "Could not create a cache file writer because: {}. Only in memory caching is enabled.",
+//                          e.getLocalizedMessage() );
+//            }
+//        }
         tiles = instantiateTiles();
     }
 
@@ -385,6 +385,7 @@ public class CacheRasterReader extends GridFileReader {
             if ( f != null ) {
                 if ( f.exists() && f.isFile() ) {
                     result = f.delete();
+                    LOG.debug( "File "  + f.getAbsolutePath() + " deleted.");
                     File metaInfo = GridMetaInfoFile.fileNameFromOptions( f.getParent(), FileUtils.getFilename( f ),
                                                                           null );
                     if ( metaInfo.exists() ) {

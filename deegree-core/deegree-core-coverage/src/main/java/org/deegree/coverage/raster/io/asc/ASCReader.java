@@ -346,7 +346,7 @@ public class ASCReader implements RasterReader {
             result = readASCIIGrid( reader, options );
             reader.close();
         } else {
-            LOG.info( "Cache seems coherent using cachefile: {}.", cache.createCacheFile( dataLocationId ) );
+            //LOG.info( "Cache seems coherent using cachefile: {}.", cache.createCacheFile( dataLocationId ) );
         }
         return result;
     }

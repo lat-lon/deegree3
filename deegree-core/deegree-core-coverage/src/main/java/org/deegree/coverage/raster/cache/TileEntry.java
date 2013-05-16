@@ -91,7 +91,8 @@ class TileEntry {
             }
         }
         this.memoryTile = buffer;
-        readFromOriginal = this.memoryTile == null ? 0 : System.currentTimeMillis();
+        // TODO: Deactivated so cache is never used because it f***ing doesn't work!
+        // readFromOriginal = this.memoryTile == null ? 0 : System.currentTimeMillis();
         return result;
     }
 
@@ -136,7 +137,8 @@ class TileEntry {
      * @param isOnFile
      */
     public void setTileOnFile( boolean isOnFile ) {
-        writtenToCache = isOnFile ? System.currentTimeMillis() : 0;
+        // TODO: Deactivated so cache is never used because it f***ing doesn't work!
+        // writtenToCache = isOnFile ? System.currentTimeMillis() : 0;
     }
 
     /**
@@ -151,7 +153,8 @@ class TileEntry {
         long result = memoryTile == null ? 0 : memoryTile.capacity();
         memoryTile = null;
         readFromOriginal = 0;
-        writtenToCache = clearFileTime ? 0 : writtenToCache;
+        // TODO: Deactivated so cache is never used because it f***ing doesn't work!
+        // writtenToCache = clearFileTime ? 0 : writtenToCache;
         return result;
     }
 

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RasterCache xmlns="http://www.deegree.org/datasource/coverage/raster/cache" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.deegree.org/datasource/coverage/raster/cache rasterCache.xsd" configVersion="3.1.0">
+  <maxMemSize>1024</maxMemSize>
+  <maxDiskSize>1024</maxDiskSize>
+</RasterCache>
