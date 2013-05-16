@@ -159,9 +159,12 @@ public class ConfigManager implements Serializable {
     public List<ResourceManagerMetadata2> getConnectionManagers() {
         return getResourceManagers( "connection" );
     }
-    
+
     public List<ResourceManagerMetadata2> getResourceManagers( String category ) {
         List<ResourceManagerMetadata2> rmMetadata = new ArrayList<ResourceManagerMetadata2>();
+        if ( getServiceWorkspace() == null ) {
+            return rmMetadata;
+        }
         for ( ResourceManager mgr : getServiceWorkspace().getResourceManagers() ) {
             ResourceManagerMetadata2 md = ResourceManagerMetadata2.getMetadata( mgr );
             if ( md != null && category.equals( md.getCategory() ) ) {
@@ -204,6 +207,7 @@ public class ConfigManager implements Serializable {
             configs.add( new Config( state, this, currentResourceManager.getManager(),
                                      currentResourceManager.getStartView(), true ) );
         }
+        Collections.sort( configs );
         return configs;
     }
 

@@ -24,8 +24,12 @@ ExplicitTemplateEnd: '</?>';
 fragment Letter: { Character.isLetter( input.LA(1) ) }? .;
 fragment Digit: { Character.isDigit( input.LA(1) ) }? .;
 fragment WS: { Character.isWhitespace( input.LA(1) ) }? .;
+fragment Point: '.';
+fragment Slash: '/';
 
-Url: (Letter+ '://' (ID | '/' | '.')+);
+//fragment UrlText: ':' ~(Colon | TagClose | '\n')+;
+//UrlWithPort: Url Colon Digit+ ~(Colon | TagClose | '\n')+ UrlText?;
+Url: (ID Colon Slash Slash ~(TagClose)+);
 
 Equals: '=';
 Star: '*';
@@ -38,7 +42,7 @@ Not: 'not';
 BracketLeft: '(';
 BracketRight: ')';
 
-Kvp: '\n'* (~('=' | '<' | '>' | '?' | '/' | '\n'))+ '=' (~('\n'))+ '\n'*;
-ID: (Letter | Digit | '_')+;
+Kvp: '\n'* (~('=' | '<' | '>' | '?' | '/' | '\n'))+ '=' (~('\n' | '=' | '<' | '>' | '?' | '/'))+ '\n'*;
+ID: (Letter | Digit | '_' | '-')+;
 
 Rest: ~('<')+;

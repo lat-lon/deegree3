@@ -1,10 +1,10 @@
 .. _anchor-configuration-layers:
 
-====================================
-Layer configuration
-====================================
+==========
+Map layers
+==========
 
-A layer is the description on how to combine a data store and a style resource into a map. Each layer configuration can be used to define one or more layers. The layers can be used in theme definitions, and depend on various data source and style resources. This chapter assumes you've already configured a data source and a style for your layer (although a style is not strictly needed; some layer types can do without, and others can render in a default style when none is given).
+A (map) layer defines how to combine a data store and a style resource into a map. Each layer resource can be used to define one or more layers. The layers can be used in theme definitions, and depend on various data source and style resources. This chapter assumes you've already configured a data source and a style for your layer (although a style is not strictly needed; some layer types can do without, and others can render in a default style when none is given).
 
 .. figure:: images/workspace-overview-layer.png
    :figwidth: 80%
@@ -169,7 +169,7 @@ If a ``Style`` element is specified, you must first specify what style you want 
 
 The ``StyleName`` specifies the name under which the style will be known in the WMS. The ``LayerNameRef`` and ``StyleNameRef`` are used to extract the style from the style store.
 
-The next part to configure within the ``Style`` element is the legend generation, if you don't want to use the default legend generated from the rendering style. You can either specify a different style from the style store to use for legend generation, or you can specify an external graphic (which is unfortunately not supported yet). Referencing a different legend style is straightforward:
+The next part to configure within the ``Style`` element is the legend generation, if you don't want to use the default legend generated from the rendering style. You can either specify a different style from the style store to use for legend generation, or you can specify an external graphic. Referencing a different legend style is straightforward:
 
 .. code-block:: xml
 
@@ -179,6 +179,24 @@ The next part to configure within the ``Style`` element is the legend generation
       <l:LayerNameRef>highways</l:LayerNameRef>
       <l:StyleNameRef>highways_legend</l:StyleNameRef>
     </l:LegendStyle>
+  </l:Style>
+
+With specifying the external graphic, you have the option of referencing a local file, or referencing a remote URL. Specifying a file is straightforward, and will result in the contents of that file being used as legend:
+
+.. code-block:: xml
+
+  <l:Style>
+  ...
+    <l:LegendGraphic>legendimages/mylegend.png</l:LegendGraphic>
+  </l:Style>
+
+If you specify an HTTP URL instead of a relative path the behaviour is the same by default, the remote images' content is used as legend. If you set the optional attribute ``outputGetLegendGraphicUrl`` to ``false`` (it's true by default), the specified URL is written as ``LegendURL`` in the WMS capabilities (the behaviour for ``GetLegendGraphic`` requests is the same anyway):
+
+.. code-block:: xml
+
+  <l:Style>
+  ...
+    <l:LegendGraphic outputGetLegendGraphicUrl="false">http://legends.acme.com/menu.png</l:LegendGraphic>
   </l:Style>
 
 ^^^^^^^^^^^^^^^^^
@@ -211,6 +229,7 @@ Here is an example snippet:
     <l:AntiAliasing>TEXT</l:AntiAliasing>
   </l:LayerOptions>
 
+.. _anchor-configuration-feature-layers:
 
 --------------
 Feature layers
@@ -268,12 +287,12 @@ The basic structure of a manual configuration looks like this:
 
 As you can see, the first thing to do is to bind the configuration to a feature store. After that, you can define one or more feature layers.
 
-A feature layer configuration has two optional elements besides the common elements. The ``FeatureTypeName`` can be used to restrict a layer to a specific feature type (use a qualified name). The ``Filter`` element can be used to specify a filter that applies to the layer globally (use standard OGC filter encoding 1.1.0 ``ogc:Filter`` element within):
+A feature layer configuration has three optional elements besides the common elements. The ``FeatureType`` can be used to restrict a layer to a specific feature type (use a qualified name). The ``Filter`` element can be used to specify a filter that applies to the layer globally (use standard OGC filter encoding 1.1.0 ``ogc:Filter`` element within):
 
 .. code-block:: xml
 
   <FeatureLayer>
-    <FeatureTypeName xmlns:app='http://www.deegree.org/app'>app:Roads</FeatureTypeName>
+    <FeatureType xmlns:app='http://www.deegree.org/app'>app:Roads</FeatureType>
     <Filter>
       <Filter xmlns='http://www.opengis.net/ogc'>
         <PropertyIsEqualTo>
@@ -284,6 +303,24 @@ A feature layer configuration has two optional elements besides the common eleme
     </Filter>
     ...
   </FeatureLayer>
+
+The third extra option is the ``SortBy`` element, which can be used to influence the order in which features are drawn:
+
+.. code-block:: xml
+
+  <FeatureLayer>
+    ...
+    <SortBy reverseFeatureInfo="false">
+      <SortBy xmlns="http://www.opengis.net/ogc">
+        <SortProperty>
+          <PropertyName xmlns:app="http://www.deegree.org/app">app:level</PropertyName>
+        </SortProperty>
+      </SortBy>
+    </SortBy>
+    ...
+  </FeatureLayer>
+
+The attribute ``reverseFeatureInfo`` is false by default. If set to true, the feature that is drawn first will appear **last** in a ``GetFeatureInfo`` feature collection.
 
 After that the standard options follow, as outlined in the common_ section.
 
@@ -379,6 +416,8 @@ The remote WMS layer configuration is always based on a single ``RemoteWMS`` res
   </RemoteWMSLayers>
 
 In many cases that's already sufficient, but if you wish to control the way the requests are being sent, you can specify the ``RequestOptions``. If you want to limit/restrict the layers, you can specify any amount of ``Layer`` elements.
+
+.. _anchor-configuration-layer-request-options:
 
 ~~~~~~~~~~~~~~~
 Request options

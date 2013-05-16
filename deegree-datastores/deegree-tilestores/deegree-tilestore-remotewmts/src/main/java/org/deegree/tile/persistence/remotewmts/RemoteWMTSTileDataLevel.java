@@ -37,6 +37,10 @@ package org.deegree.tile.persistence.remotewmts;
 
 import static org.deegree.tile.Tiles.calcTileEnvelope;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.deegree.commons.utils.RequestUtils;
 import org.deegree.geometry.Envelope;
 import org.deegree.protocol.wmts.client.WMTSClient;
 import org.deegree.protocol.wmts.ops.GetTile;
@@ -70,6 +74,8 @@ class RemoteWMTSTileDataLevel implements TileDataLevel {
 
     private final String outputFormat;
 
+    private Map<String, String> defaultGetMap, hardGetMap, defaultGetFeatureInfo, hardGetFeatureInfo;
+
     /**
      * Creates a new {@link RemoteWMTSTileDataLevel} instance.
      * 
@@ -90,9 +96,13 @@ class RemoteWMTSTileDataLevel implements TileDataLevel {
      * @param outputFormat
      *            if not <code>null</code>, images will be recoded into specified output format (use ImageIO like
      *            formats, eg. 'png')
+     * @param hardGetMap
+     * @param defaultGetMap
      */
-    RemoteWMTSTileDataLevel( TileMatrix matrix, String remoteTileMatrixSetId, String remoteTileMatrixId, String requestFormat,
-                             String layer, String style, WMTSClient client, String outputFormat ) {
+    RemoteWMTSTileDataLevel( TileMatrix matrix, String remoteTileMatrixSetId, String remoteTileMatrixId,
+                             String requestFormat, String layer, String style, WMTSClient client, String outputFormat,
+                             Map<String, String> defaultGetMap, Map<String, String> hardGetMap,
+                             Map<String, String> defaultGetFeatureInfo, Map<String, String> hardGetFeatureInfo ) {
         this.matrix = matrix;
         this.remoteTileMatrixSetId = remoteTileMatrixSetId;
         this.remoteTileMatrixId = remoteTileMatrixId;
@@ -101,6 +111,10 @@ class RemoteWMTSTileDataLevel implements TileDataLevel {
         this.style = style;
         this.outputFormat = outputFormat;
         this.client = client;
+        this.defaultGetMap = defaultGetMap;
+        this.hardGetMap = hardGetMap;
+        this.defaultGetFeatureInfo = defaultGetFeatureInfo;
+        this.hardGetFeatureInfo = hardGetFeatureInfo;
     }
 
     @Override
@@ -114,7 +128,12 @@ class RemoteWMTSTileDataLevel implements TileDataLevel {
             return null;
         }
         Envelope tileEnvelope = calcTileEnvelope( matrix, x, y );
-        GetTile request = new GetTile( layer, style, requestFormat, remoteTileMatrixSetId, remoteTileMatrixId, x, y );
-        return new RemoteWMTSTile( client, request, outputFormat, tileEnvelope );
+        Map<String, String> overriddenParameters = new HashMap<String, String>();
+        RequestUtils.replaceParameters( overriddenParameters, RequestUtils.getCurrentThreadRequestParameters().get(),
+                                        defaultGetMap, hardGetMap );
+        GetTile request = new GetTile( layer, style, requestFormat, remoteTileMatrixSetId, remoteTileMatrixId, x, y,
+                                       overriddenParameters );
+        return new RemoteWMTSTile( client, request, outputFormat, tileEnvelope, defaultGetFeatureInfo,
+                                   hardGetFeatureInfo );
     }
 }
