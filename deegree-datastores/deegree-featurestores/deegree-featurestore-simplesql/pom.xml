@@ -6,7 +6,7 @@
   <description>Feature store implementation for retrieving features from SQL databases, configuration based on SELECT statements</description>
 
   <parent>
-    <groupId>org.deegree</groupId>
+    <groupId>de.latlon</groupId>
     <artifactId>deegree-featurestores</artifactId>
     <version>3.6.0-SNAPSHOT</version>
   </parent>
@@ -22,17 +22,17 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.deegree</groupId>
+      <groupId>de.latlon</groupId>
       <artifactId>deegree-featurestore-commons</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.deegree</groupId>
+      <groupId>de.latlon</groupId>
       <artifactId>deegree-sqldialect-postgis</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.deegree</groupId>
+      <groupId>de.latlon</groupId>
       <artifactId>deegree-core-db</artifactId>
       <version>${project.version}</version>
     </dependency>
