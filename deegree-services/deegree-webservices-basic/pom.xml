@@ -5,20 +5,20 @@
     <name>deegree-webservices-basic</name>
     <description>Webapp that includes deegree WMS, WFS, CSW, WPS, common datastore modules</description>
     <parent>
-        <groupId>org.deegree</groupId>
+        <groupId>de.latlon</groupId>
         <artifactId>deegree-services</artifactId>
         <version>3.6.2-SNAPSHOT</version>
     </parent>
 
     <dependencies>
         <dependency>
-            <groupId>org.deegree</groupId>
+            <groupId>de.latlon</groupId>
             <artifactId>deegree-webservices-commons</artifactId>
             <version>${project.version}</version>
             <type>pom</type>
         </dependency>
         <dependency>
-            <groupId>org.deegree</groupId>
+            <groupId>de.latlon</groupId>
             <artifactId>deegree-services-config</artifactId>
             <version>${project.version}</version>
         </dependency>

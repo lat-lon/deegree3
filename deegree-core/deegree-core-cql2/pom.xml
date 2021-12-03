@@ -6,7 +6,7 @@
   <description>CQL2 implementation for filtering</description>
 
   <parent>
-    <groupId>org.deegree</groupId>
+    <groupId>de.latlon</groupId>
     <artifactId>deegree-core</artifactId>
     <version>3.6.2-SNAPSHOT</version>
   </parent>
@@ -32,17 +32,17 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.deegree</groupId>
+      <groupId>de.latlon</groupId>
       <artifactId>deegree-core-base</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.deegree</groupId>
+      <groupId>de.latlon</groupId>
       <artifactId>deegree-core-commons</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.deegree</groupId>
+      <groupId>de.latlon</groupId>
       <artifactId>deegree-core-cs</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -51,7 +51,7 @@
       <artifactId>antlr4-runtime</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.deegree</groupId>
+      <groupId>de.latlon</groupId>
       <artifactId>deegree-core-test-logging</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
