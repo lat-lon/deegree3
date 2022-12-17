@@ -75,14 +75,22 @@ public class GmlLoaderConfiguration {
     @Autowired
     private StepBuilderFactory stepBuilderFactory;
 
+    @JobScope
     @Bean
-    public Summary summary() {
-        return new Summary();
+    public Summary summary( @Value("#{jobParameters[reportWriteStatistics] ?: false}") boolean reportWriteStatistics ) {
+        Summary summary = new Summary();
+
+        if ( reportWriteStatistics ) {
+            summary.setStatistics( new FeatureStatistics() );
+        }
+
+        return summary;
     }
 
     @Bean
-    public ReportWriter reportWriter( Summary summary ) {
-        Path outputFile = Paths.get( "GmlLoader.log" );
+    public ReportWriter reportWriter( Summary summary,
+                                      @Value("#{jobParameters['reportFile'] ?: 'GmlLoader.log'}") String fileName ) {
+        Path outputFile = Paths.get( fileName );
         return new ReportWriter( summary, outputFile );
     }
 
