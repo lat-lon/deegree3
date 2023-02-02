@@ -64,6 +64,8 @@ public class AppSchemaMapperTest {
 
     private File schemaWithTimeProperties;
 
+    private File schemaWithRef;
+
     @Before
     public void copySchemas()
                     throws IOException {
@@ -76,6 +78,7 @@ public class AppSchemaMapperTest {
         this.schemaForSampleValues = copyToTmpFolder( "schemaForSampleValues.xsd" );
         this.schemaWithNilValues = copyToTmpFolder( "schemaWithNilValues.xsd" );
         this.schemaWithTimeProperties = copyToTmpFolder( "schemaWithTimeProperties.xsd" );
+        this.schemaWithRef = copyToTmpFolder( "schemaWithRef.xsd" );
     }
 
     @Test
@@ -854,6 +857,39 @@ public class AppSchemaMapperTest {
         assertThat( getPrimitive( timePeriodOfTimeObject.getParticles(), "beginPosition" ), is( notNullValue() ) );
         assertThat( getPrimitive( timePeriodOfTimeObject.getParticles(), "endPosition" ), is( notNullValue() ) );
         assertThat( getPrimitive( timePeriodOfTimeObject.getParticles(), "@gml:id" ), is( notNullValue() ) );
+    }
+
+    @Test public void testWithRef()
+                            throws Exception {
+        GMLAppSchemaReader xsdDecoder = new GMLAppSchemaReader( null, null, schemaWithRef );
+        AppSchema appSchema = xsdDecoder.extractAppSchema();
+
+        CRSRef storageCrs = CRSManager.getCRSRef( "EPSG:4326" );
+        GeometryStorageParams geometryParams = new GeometryStorageParams( storageCrs, "0", DIM_2 );
+        ReferenceData referenceData = new GmlReferenceData(
+                                AppSchemaMapperTest.class.getResource( "./data/sampleValues_ref.xml" ) );
+        AppSchemaMapper mapper = new AppSchemaMapper( appSchema, false, true, geometryParams, 63, true, true, 0,
+                                                      referenceData, false );
+
+        MappedAppSchema mappedSchema = mapper.getMappedSchema();
+
+        Map<QName, FeatureTypeMapping> ftMappings = mappedSchema.getFtMappings();
+        assertThat( ftMappings.size(), is( 1 ) );
+
+        FeatureTypeMapping featureA = mappedSchema.getFtMapping( FEATURE_A );
+        List<Mapping> mappings = featureA.getMappings();
+        assertThat( mappings.size(), is( 5 ) );
+
+        CompoundMapping complexA4 = getCompound( mappings, "complex_A4" );
+        assertThat( complexA4.getParticles().size(), is( 1 ) );
+        assertThat( complexA4.getJoinedTable(), is( notNullValue() ) );
+
+        CompoundMapping complexType2 = getCompound( complexA4.getParticles(), "ComplexType2" );
+        assertThat( complexType2.getParticles().size(), is( 1 ) );
+        assertThat( complexType2.getJoinedTable(), is( notNullValue() ) );
+        PrimitiveMapping simpleProperty = getPrimitive( complexType2.getParticles(), "SimpleProperty" );
+        assertThat( simpleProperty, is( notNullValue() ) );
+        assertThat( simpleProperty.getJoinedTable(), is( notNullValue() ) );
     }
 
     private CompoundMapping getFeatureC( List<Mapping> mappings ) {
