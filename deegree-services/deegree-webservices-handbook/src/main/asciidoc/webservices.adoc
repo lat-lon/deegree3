@@ -178,7 +178,7 @@ GetCapabilities response
 |Strict |0..1 |Boolean | Indicates if the server should behave strictly as specified. default: false
 |===
 
-The remainining sections describe these options and their sub-options in
+The remaining sections describe these options and their sub-options in
 detail.
 
 ==== General options
@@ -207,7 +207,7 @@ it will be transferred. If an exception happens at any time the buffer
 will be discarded, and an exception report will be sent to the client.
 Buffering is performed in memory, but switches to a temp file in case
 the buffer grows bigger than 1 MiB.
-* _DisabledResources_: By default all xlink:href attribute references
+* _DisabledResources_: By default all `xlink:href` attribute references
 are tried to resolved as feature references during insert. This can be
 avoided by configuring one or multiple base url patterns within the
 child element _Pattern_. _Pattern_ can occur multiple times, one for
@@ -565,7 +565,7 @@ override this, two options are available:
 
 * _DecimalCoordinatesFormatter_: Empty element, attribute _places_
 specifies the number of decimal places.
-* _CustomCoordinateFormatter_: By specifiying this element, an
+* _CustomCoordinateFormatter_: By specifying this element, an
 implementation of Java interface
 _org.deegree.geometry.io.CoordinateFormatter_ can be instantiated.
 Child element _JavaClass_ contains the qualified name of the Java

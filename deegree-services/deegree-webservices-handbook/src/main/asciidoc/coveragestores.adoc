@@ -190,7 +190,7 @@ store.
 ----
 
 If your GeoRaster coverage only consist in a greyscale coverage or you
-only want to server a single band you could specifiy the following:
+only want to server a single band you could specify the following:
 
 [source,xml]
 ----

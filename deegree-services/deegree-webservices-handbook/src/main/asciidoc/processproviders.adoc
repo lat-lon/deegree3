@@ -194,7 +194,7 @@ public class AdditionProcesslet implements Processlet {
 The configuration format for the Java process provider is defined by
 schema file http://schemas.deegree.org/3.5/processes/java/java.xsd.
 The following table lists all available configuration options. When
-specifiying them, their order must be respected.
+specifying them, their order must be respected.
 
 [width="100%",cols="17%,11%,8%,64%",options="header",]
 |===

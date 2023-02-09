@@ -273,7 +273,7 @@ documented for each resource configuration format.
 The configuration format for the deegree proxy configuration is defined
 by schema file http://schemas.deegree.org/3.5/proxy/proxy.xsd. The
 following table lists all available configuration options. When
-specifiying them, their order must be respected.
+specifying them, their order must be respected.
 
 [width="100%",cols="24%,10%,7%,59%",options="header",]
 |===
