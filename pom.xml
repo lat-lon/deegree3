@@ -1211,7 +1211,7 @@
     <spring-batch.version>4.3.5</spring-batch.version>
     <spring-framework.version>5.3.18</spring-framework.version>
     <batik.version>1.14</batik.version>
-    <axoim.version>1.2.22</axoim.version>
+    <axoim.version>1.4.0</axoim.version>
     <jsonpath.version>2.7.0</jsonpath.version>
   </properties>
 
