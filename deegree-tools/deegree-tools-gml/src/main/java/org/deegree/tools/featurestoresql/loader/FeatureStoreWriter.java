@@ -76,6 +76,7 @@ public class FeatureStoreWriter implements ItemWriter<Feature> {
         SQLFeatureStoreTransaction transaction = (SQLFeatureStoreTransaction) sqlFeatureStore.getTransaction();
         transaction.performInsert( featureCollection, USE_EXISTING.withSkipResolveReferences( true ) );
         LOG.info( "Insert performed." );
+        LOG.info("Number of features processed: {}", summary.getNumberOfFeatures());
         summary.increaseNumberOfFeatures( featureCollection.size() );
     }
 
