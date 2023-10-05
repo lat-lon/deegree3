@@ -35,16 +35,9 @@
 
 package org.deegree.geometry.linearization;
 
-import static org.slf4j.LoggerFactory.getLogger;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.deegree.cs.persistence.CRSManager;
 import org.deegree.geometry.Geometry;
 import org.deegree.geometry.io.WKTReader;
-import org.deegree.geometry.io.WKTWriter;
 import org.deegree.geometry.points.Points;
 import org.deegree.geometry.primitive.Curve;
 import org.deegree.geometry.primitive.Point;
@@ -57,19 +50,22 @@ import org.deegree.geometry.standard.curvesegments.DefaultCubicSpline;
 import org.deegree.geometry.standard.points.PointsList;
 import org.deegree.geometry.standard.primitive.DefaultCurve;
 import org.deegree.geometry.standard.primitive.DefaultPoint;
-import org.hamcrest.CoreMatchers;
-import org.hamcrest.MatcherAssert;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.slf4j.Logger;
-
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 import org.locationtech.jts.io.ParseException;
+import org.slf4j.Logger;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * Tests for {@link CurveLinearizer}.
@@ -263,6 +259,26 @@ public class CurveLinearizerTest {
 			}
 		}
 
+	}
+
+	/**
+	 * Tests if
+	 * {@link CurveLinearizer#linearizeCubicSpline(CubicSpline, LinearizationCriterion)}
+	 * with vertical control points produces positions that coincide with the real values.
+	 */
+	@Test
+	public void testLinearizeCubicSpline_verticalIdenticalControlPoints() {
+		List<Point> pList = new ArrayList<Point>();
+		pList.add(geomFac.createPoint(null, new double[] { -2, 0 }, null));
+		pList.add(geomFac.createPoint(null, new double[] { -2, 1 }, null));
+		pList.add(geomFac.createPoint(null, new double[] { -2, 2 }, null));
+		CubicSpline spline = new DefaultCubicSpline(new PointsList(pList),
+				geomFac.createPoint(null, new double[] { 0, -1 }, null),
+				geomFac.createPoint(null, new double[] { -1, 1 }, null));
+
+		int numOfPoints = 10000;
+
+		linearizer.linearize(spline, new NumPointsCriterion(numOfPoints)).getControlPoints();
 	}
 
 	/**
