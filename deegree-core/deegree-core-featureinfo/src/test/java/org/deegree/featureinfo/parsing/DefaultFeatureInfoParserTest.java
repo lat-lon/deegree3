@@ -40,13 +40,13 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.featureinfo.parsing;
 
-import java.io.InputStream;
+import org.deegree.feature.FeatureCollection;
+import org.junit.jupiter.api.Test;
 
 import javax.xml.stream.XMLStreamException;
+import java.io.InputStream;
 
-import org.deegree.feature.FeatureCollection;
-import org.junit.Assert;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Test feature info parsing workarounds.
@@ -61,21 +61,21 @@ public class DefaultFeatureInfoParserTest {
 	public void testEsriCollection() throws XMLStreamException {
 		InputStream in = DefaultFeatureInfoParserTest.class.getResourceAsStream("esri1.xml");
 		FeatureCollection fc = featureInfoParser.parseAsFeatureCollection(in, "test");
-		Assert.assertEquals(1, fc.size());
+		assertEquals(1, fc.size());
 	}
 
 	@Test
 	public void testEmptyEsriCollection() throws XMLStreamException {
 		InputStream in = DefaultFeatureInfoParserTest.class.getResourceAsStream("esri2.xml");
 		FeatureCollection fc = featureInfoParser.parseAsFeatureCollection(in, "test");
-		Assert.assertEquals(0, fc.size());
+		assertEquals(0, fc.size());
 	}
 
 	@Test
 	public void testNamespacedEsriCollection() throws XMLStreamException {
 		InputStream in = DefaultFeatureInfoParserTest.class.getResourceAsStream("esriwithnamespace.xml");
 		FeatureCollection fc = featureInfoParser.parseAsFeatureCollection(in, "test");
-		Assert.assertEquals(8, fc.size());
+		assertEquals(8, fc.size());
 	}
 
 }

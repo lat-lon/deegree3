@@ -34,16 +34,6 @@
 ----------------------------------------------------------------------------*/
 package org.deegree.feature.persistence.sql;
 
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.namespace.QName;
-
 import org.deegree.commons.jdbc.TableName;
 import org.deegree.commons.xml.CommonNamespaces;
 import org.deegree.commons.xml.NamespaceBindings;
@@ -55,29 +45,45 @@ import org.deegree.sqldialect.filter.DBField;
 import org.deegree.sqldialect.filter.MappingExpression;
 import org.deegree.sqldialect.filter.PropertyNameMapping;
 import org.deegree.sqldialect.filter.TableAliasManager;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import javax.xml.namespace.QName;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * @author <a href="mailto:goltz@lat-lon.de">Lyn Goltz</a>
  */
 public class SQLPropertyNameMapperTest {
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testConstructorFtMapping_Null() throws Exception {
+	@Test
+	public void testConstructorFtMapping_Null() {
 		FeatureTypeMapping ftMapping = null;
-		new SQLPropertyNameMapper(mockFeatureStore(), ftMapping, false);
+		assertThrows(IllegalArgumentException.class, () -> {
+			new SQLPropertyNameMapper(mockFeatureStore(), ftMapping, false);
+		});
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testConstructorFtMappingList_Null() throws Exception {
+	@Test
+	public void testConstructorFtMappingList_Null() {
 		List<FeatureTypeMapping> ftMapping = null;
-		new SQLPropertyNameMapper(mockFeatureStore(), ftMapping, false);
+		assertThrows(IllegalArgumentException.class, () -> {
+			new SQLPropertyNameMapper(mockFeatureStore(), ftMapping, false);
+		});
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testConstructorFtMappingList_Empty() throws Exception {
+	@Test
+	public void testConstructorFtMappingList_Empty() {
 		List<FeatureTypeMapping> ftMapping = new ArrayList<FeatureTypeMapping>();
-		new SQLPropertyNameMapper(mockFeatureStore(), ftMapping, false);
+		assertThrows(IllegalArgumentException.class, () -> {
+			new SQLPropertyNameMapper(mockFeatureStore(), ftMapping, false);
+		});
 	}
 
 	@Test

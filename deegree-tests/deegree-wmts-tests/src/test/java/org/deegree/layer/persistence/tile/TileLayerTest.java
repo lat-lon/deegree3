@@ -34,19 +34,20 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.layer.persistence.tile;
 
+import org.deegree.layer.Layer;
+import org.deegree.layer.persistence.LayerStoreProvider;
+import org.deegree.workspace.Workspace;
+import org.deegree.workspace.standard.DefaultWorkspace;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import org.deegree.layer.Layer;
-import org.deegree.layer.persistence.LayerStoreProvider;
-import org.deegree.workspace.Workspace;
-import org.deegree.workspace.standard.DefaultWorkspace;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author <a href="mailto:schmitz@lat-lon.de">Andreas Schmitz</a>
@@ -55,7 +56,7 @@ public class TileLayerTest {
 
 	private Workspace workspace;
 
-	@Before
+	@BeforeEach
 	public void setup() throws URISyntaxException, IOException {
 		URL u = TileLayerTest.class.getResource("TileLayerTest.class");
 		File dir = new File(new File(u.toURI()).getParentFile(),
@@ -68,10 +69,10 @@ public class TileLayerTest {
 	@Test
 	public void testMetadataId() {
 		Layer l = workspace.getResource(LayerStoreProvider.class, "tilelayers").get("pyramid");
-		Assert.assertEquals("mdsetid", l.getMetadata().getMetadataId());
+		assertEquals("mdsetid", l.getMetadata().getMetadataId());
 	}
 
-	@After
+	@AfterEach
 	public void shutdown() {
 		workspace.destroy();
 	}

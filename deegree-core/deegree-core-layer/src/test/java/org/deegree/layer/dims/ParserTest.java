@@ -35,19 +35,19 @@
 
 package org.deegree.layer.dims;
 
-import junit.framework.TestCase;
-
 import org.antlr.runtime.ANTLRStringStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * <code>ParserTest</code>
  *
  * @author <a href="mailto:schmitz@lat-lon.de">Andreas Schmitz</a>
  */
-public class ParserTest extends TestCase {
+public class ParserTest {
 
 	/**
 	 * @throws Exception

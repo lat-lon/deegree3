@@ -37,8 +37,14 @@
 
 package org.deegree.coverage.raster.integration;
 
-import static junit.framework.Assert.assertNotNull;
-import static org.slf4j.LoggerFactory.getLogger;
+import org.deegree.commons.utils.PixelCounter;
+import org.deegree.coverage.raster.SimpleRaster;
+import org.deegree.coverage.raster.data.RasterData;
+import org.deegree.coverage.raster.utils.RasterFactory;
+import org.deegree.geometry.Envelope;
+import org.deegree.geometry.GeometryFactory;
+import org.junit.jupiter.api.BeforeEach;
+import org.slf4j.Logger;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -47,16 +53,10 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.net.URISyntaxException;
 
-import junit.framework.Assert;
-
-import org.deegree.commons.utils.PixelCounter;
-import org.deegree.coverage.raster.SimpleRaster;
-import org.deegree.coverage.raster.data.RasterData;
-import org.deegree.coverage.raster.utils.RasterFactory;
-import org.deegree.geometry.Envelope;
-import org.deegree.geometry.GeometryFactory;
-import org.junit.Before;
-import org.slf4j.Logger;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * The <code>CenterOuterTest</code> defines raster API integration tests on a tiled raster
@@ -91,13 +91,13 @@ public abstract class CenterOuterTest implements CompareValues {
 	/**
 	 * Init the two rasters
 	 */
-	@Before
+	@BeforeEach
 	public void init() {
 		try {
 			buildRasters();
 		}
 		catch (Exception e) {
-			Assert.fail(e.getLocalizedMessage());
+			fail(e.getLocalizedMessage());
 		}
 	}
 
@@ -203,9 +203,9 @@ public abstract class CenterOuterTest implements CompareValues {
 			actualVal[0] = result[0] & 0xFF;
 			actualVal[1] = result[1] & 0xFF;
 			actualVal[2] = result[2] & 0xFF;
-			Assert.assertEquals("Wrong color for pixel (" + (x - 1) + "," + y + ") band 0: ", refVal[0], actualVal[0]);
-			Assert.assertEquals("Wrong color for pixel (" + (x - 1) + "," + y + ") band 1: ", refVal[1], actualVal[1]);
-			Assert.assertEquals("Wrong color for pixel (" + (x - 1) + "," + y + ") band 2: ", refVal[2], actualVal[2]);
+			assertEquals(refVal[0], actualVal[0], "Wrong color for pixel (" + (x - 1) + "," + y + ") band 0: ");
+			assertEquals(refVal[1], actualVal[1], "Wrong color for pixel (" + (x - 1) + "," + y + ") band 1: ");
+			assertEquals(refVal[2], actualVal[2], "Wrong color for pixel (" + (x - 1) + "," + y + ") band 2: ");
 			if ((i + 1) % width == 0) {
 				y++;
 				x = 0;
@@ -220,7 +220,7 @@ public abstract class CenterOuterTest implements CompareValues {
 	public void testValues(BigInteger[] footprint, SimpleRaster raster) {
 		BufferedImage image = RasterFactory.imageFromRaster(raster);
 		double similarty = PixelCounter.similarityLevel(image, footprint);
-		Assert.assertEquals(1.0, similarty, 0.0001);
+		assertEquals(1.0, similarty, 0.0001);
 
 	}
 

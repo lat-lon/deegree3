@@ -34,17 +34,64 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.commons.utils.net;
 
+import org.junit.jupiter.api.Test;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URLConnection;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author <a href="mailto:schmitz@lat-lon.de">Andreas Schmitz</a>
  */
-public class DataHandlerTest extends TestCase {
+public class DataHandlerTest {
+
+	@Test
+	public void testAll() throws IOException {
+		assertEquals(retrieveAll(new DURL("data:text/plain;charset=utf-8;base64,QnVpbGRpbmdGZWF0dXJl")),
+				"BuildingFeature");
+	}
+
+	@Test
+	public void testOnlyCharset() throws IOException {
+		assertEquals(retrieveAll(new DURL("data:;charset=utf-8;base64,QnVpbGRpbmdGZWF0dXJl")), "BuildingFeature");
+	}
+
+	/**
+	 * @throws IOException
+	 */
+	// public void testNoEncoding()
+	// throws IOException {
+	// assertEquals( retrieveAll( new DURL(
+	// "data:text/plain;charset=utf-8,mytest%c3%a1accent" ) ), "mytestáaccent" );
+	// }
+
+	@Test
+	public void testOnlyEncoding() throws IOException {
+		assertEquals(retrieveAll(new DURL("data:;base64,QnVpbGRpbmdGZWF0dXJl")), "BuildingFeature");
+	}
+
+	@Test
+	public void testOnlyData() throws IOException {
+		assertEquals(retrieveAll(new DURL("data:,mytestnoaccent")), "mytestnoaccent");
+	}
+
+	@Test
+	public void testInvalidEncoding() {
+		try {
+			retrieveAll(new DURL("data:nix,mytest%c3%a1accent"));
+		}
+		catch (IOException e) {
+			String msg = "The 'nix' encoding is not supported by the data URL. Only base64 and the default"
+					+ " of url-encoded is allowed.";
+			assertEquals(e.getMessage(), msg);
+			return;
+		}
+		fail("Expected an exception.");
+	}
 
 	private static String retrieveAll(DURL url) throws IOException {
 		InputStreamReader is = null;
@@ -75,60 +122,6 @@ public class DataHandlerTest extends TestCase {
 				}
 			}
 		}
-	}
-
-	/**
-	 * @throws IOException
-	 */
-	public void testAll() throws IOException {
-		assertEquals(retrieveAll(new DURL("data:text/plain;charset=utf-8;base64,QnVpbGRpbmdGZWF0dXJl")),
-				"BuildingFeature");
-	}
-
-	/**
-	 * @throws IOException
-	 */
-	public void testOnlyCharset() throws IOException {
-		assertEquals(retrieveAll(new DURL("data:;charset=utf-8;base64,QnVpbGRpbmdGZWF0dXJl")), "BuildingFeature");
-	}
-
-	/**
-	 * @throws IOException
-	 */
-	// public void testNoEncoding()
-	// throws IOException {
-	// assertEquals( retrieveAll( new DURL(
-	// "data:text/plain;charset=utf-8,mytest%c3%a1accent" ) ), "mytestáaccent" );
-	// }
-
-	/**
-	 * @throws IOException
-	 */
-	public void testOnlyEncoding() throws IOException {
-		assertEquals(retrieveAll(new DURL("data:;base64,QnVpbGRpbmdGZWF0dXJl")), "BuildingFeature");
-	}
-
-	/**
-	 * @throws IOException
-	 */
-	public void testOnlyData() throws IOException {
-		assertEquals(retrieveAll(new DURL("data:,mytestnoaccent")), "mytestnoaccent");
-	}
-
-	/**
-	 *
-	 */
-	public void testInvalidEncoding() {
-		try {
-			retrieveAll(new DURL("data:nix,mytest%c3%a1accent"));
-		}
-		catch (IOException e) {
-			String msg = "The 'nix' encoding is not supported by the data URL. Only base64 and the default"
-					+ " of url-encoded is allowed.";
-			assertEquals(e.getMessage(), msg);
-			return;
-		}
-		fail("Expected an exception.");
 	}
 
 }

@@ -34,30 +34,30 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.protocol.ows.http;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static junit.framework.Assert.assertEquals;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.xmlunit.matchers.CompareMatcher.isSimilarTo;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.StatusLine;
 import org.apache.http.conn.ClientConnectionManager;
 import org.deegree.protocol.ows.exception.OWSExceptionReport;
 import org.h2.util.IOUtils;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.xmlunit.matchers.CompareMatcher.isSimilarTo;
 
 /**
  * Tests for {@link OwsHttpResponse}.
@@ -91,7 +91,7 @@ public class OwsHttpResponseTest {
 
 	private ClientConnectionManager connManager;
 
-	@Before
+	@BeforeEach
 	public void setup() throws Exception {
 		connManager = mock(ClientConnectionManager.class);
 		scenario1 = createScenario1();
@@ -177,27 +177,33 @@ public class OwsHttpResponseTest {
 	 * Test method for
 	 * {@link org.deegree.protocol.ows.http.OwsHttpResponse#getAsXMLStream()}.
 	 */
-	@Test(expected = OWSExceptionReport.class)
-	public void testGetAsXMLStreamScenario2() throws OWSExceptionReport, XMLStreamException {
-		scenario2.getAsXMLStream();
+	@Test
+	public void testGetAsXMLStreamScenario2() {
+		assertThrows(OWSExceptionReport.class, () -> {
+			scenario2.getAsXMLStream();
+		});
 	}
 
 	/**
 	 * Test method for
 	 * {@link org.deegree.protocol.ows.http.OwsHttpResponse#getAsXMLStream()}.
 	 */
-	@Test(expected = XMLStreamException.class)
-	public void testGetAsXMLStreamScenario3() throws OWSExceptionReport, XMLStreamException {
-		scenario3.getAsXMLStream();
+	@Test
+	public void testGetAsXMLStreamScenario3() {
+		assertThrows(XMLStreamException.class, () -> {
+			scenario3.getAsXMLStream();
+		});
 	}
 
 	/**
 	 * Test method for
 	 * {@link org.deegree.protocol.ows.http.OwsHttpResponse#getAsXMLStream()}.
 	 */
-	@Test(expected = XMLStreamException.class)
-	public void testGetAsXMLStreamScenario4() throws OWSExceptionReport, XMLStreamException {
-		scenario4.getAsXMLStream();
+	@Test
+	public void testGetAsXMLStreamScenario4() {
+		assertThrows(XMLStreamException.class, () -> {
+			scenario4.getAsXMLStream();
+		});
 	}
 
 	/**
@@ -231,16 +237,18 @@ public class OwsHttpResponseTest {
 	 * Test method for
 	 * {@link org.deegree.protocol.ows.http.OwsHttpResponse#assertHttpStatus200()}.
 	 */
-	@Test(expected = OWSExceptionReport.class)
-	public void testAssertHttpStatus200Scenario4() throws OWSExceptionReport {
-		scenario4.assertHttpStatus200();
+	@Test
+	public void testAssertHttpStatus200Scenario4() {
+		assertThrows(OWSExceptionReport.class, () -> {
+			scenario4.assertHttpStatus200();
+		});
 	}
 
 	/**
 	 * Test method for {@link org.deegree.protocol.ows.http.OwsHttpResponse#close()}.
 	 */
 	@Test
-	public void testClose() throws IOException {
+	public void testClose() {
 		Mockito.verify(connManager, times(0)).shutdown();
 		scenario1.close();
 		Mockito.verify(connManager, times(1)).shutdown();

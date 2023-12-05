@@ -39,16 +39,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.sqldialect.oracle.sdo;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.deegree.geometry.Geometry;
 import org.deegree.geometry.GeometryFactory;
 import org.deegree.geometry.multi.MultiPolygon;
@@ -60,10 +50,18 @@ import org.deegree.geometry.primitive.Ring;
 import org.deegree.geometry.primitive.segments.ArcString;
 import org.deegree.geometry.primitive.segments.CurveSegment;
 import org.deegree.geometry.primitive.segments.LineStringSegment;
-
 import org.deegree.sqldialect.oracle.sdo.SDOGeometryConverter.Triplet;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Unit tests for {@link SDOGeometryConverter}
@@ -640,14 +638,14 @@ public class SDOGeometryConverterTest {
 	private void testMultiPolygon(int expectedPolygons, int[] expectedInteriorRings, int gtype, int srid,
 			int[] elemInfo, double[] ordinates) throws SQLException {
 		Geometry geometry = converter.toGeometry(new SDOGeometry(gtype, srid, null, elemInfo, ordinates), null);
-		assertNotNull("null geometry", geometry);
-		assertTrue("not a multi polygon", geometry instanceof MultiPolygon);
+		assertNotNull(geometry, "null geometry");
+		assertTrue(geometry instanceof MultiPolygon, "not a multi polygon");
 
 		int i = 0, ordinatesIdx = 0;
 		MultiPolygon multiPolygon = (MultiPolygon) geometry;
-		assertEquals("wrong number of polygons", expectedPolygons, multiPolygon.size());
+		assertEquals(expectedPolygons, multiPolygon.size(), "wrong number of polygons");
 		for (Polygon polygon : multiPolygon) {
-			assertNotNull("null polygon", polygon);
+			assertNotNull(polygon, "null polygon");
 
 			ordinatesIdx = assertPolygon(expectedInteriorRings[i++], ordinates, polygon, ordinatesIdx);
 		}
@@ -656,8 +654,8 @@ public class SDOGeometryConverterTest {
 	private void testPolygon(int expectedInteriorRings, int gtype, int srid, int[] elemInfo, double[] ordinates)
 			throws SQLException {
 		Geometry geometry = converter.toGeometry(new SDOGeometry(gtype, srid, null, elemInfo, ordinates), null);
-		assertNotNull("null geometry", geometry);
-		assertTrue("not a polygon", geometry instanceof Polygon);
+		assertNotNull(geometry, "null geometry");
+		assertTrue(geometry instanceof Polygon, "not a polygon");
 		Polygon polygon = (Polygon) geometry;
 
 		assertPolygon(expectedInteriorRings, ordinates, polygon, 0);
@@ -666,9 +664,9 @@ public class SDOGeometryConverterTest {
 	private int assertPolygon(int expectedInteriorRings, double[] ordinates, Polygon polygon, int ordinatesIdx) {
 		Ring exteriorRing = polygon.getExteriorRing();
 		List<Ring> interiorRings = polygon.getInteriorRings();
-		assertNotNull("exteriorRing null", exteriorRing);
-		assertNotNull("interiorRings null", interiorRings);
-		assertEquals("wrong number of interiorRings", expectedInteriorRings, interiorRings.size());
+		assertNotNull(exteriorRing, "exteriorRing null");
+		assertNotNull(interiorRings, "interiorRings null");
+		assertEquals(expectedInteriorRings, interiorRings.size(), "wrong number of interiorRings");
 
 		ordinatesIdx = assertRing(ordinates, exteriorRing, ordinatesIdx);
 		for (Ring interiorRing : interiorRings) {
@@ -680,19 +678,19 @@ public class SDOGeometryConverterTest {
 
 	private int assertRing(double[] ordinates, Ring ring, int ordinatesIdx) {
 		List<CurveSegment> curveSegments = ring.getCurveSegments();
-		assertNotNull("curveSegments null", curveSegments);
+		assertNotNull(curveSegments, "curveSegments null");
 		for (CurveSegment curveSegment : curveSegments) {
-			assertNotNull("curveSegment null", curveSegment);
+			assertNotNull(curveSegment, "curveSegment null");
 			if (curveSegment instanceof ArcString) {
 				ArcString arcString = (ArcString) curveSegment;
 
 				Points points = arcString.getControlPoints();
-				assertNotNull("points null", points);
+				assertNotNull(points, "points null");
 
 				for (Point p : points) {
-					assertNotNull("point null", p);
-					assertEquals("wrong coordinate", ordinates[ordinatesIdx++], p.get0(), 0.05);
-					assertEquals("wrong coordinate", ordinates[ordinatesIdx++], p.get1(), 0.05);
+					assertNotNull(p, "point null");
+					assertEquals(ordinates[ordinatesIdx++], p.get0(), 0.05, "wrong coordinate");
+					assertEquals(ordinates[ordinatesIdx++], p.get1(), 0.05, "wrong coordinate");
 				}
 
 				ordinatesIdx -= 2;
@@ -701,12 +699,12 @@ public class SDOGeometryConverterTest {
 				LineStringSegment lineStringSegment = (LineStringSegment) curveSegment;
 
 				Points points = lineStringSegment.getControlPoints();
-				assertNotNull("points null", points);
+				assertNotNull(points, "points null");
 
 				for (Point p : points) {
-					assertNotNull("point null", p);
-					assertEquals("wrong coordinate", ordinates[ordinatesIdx++], p.get0(), 0.05);
-					assertEquals("wrong coordinate", ordinates[ordinatesIdx++], p.get1(), 0.05);
+					assertNotNull(p, "point null");
+					assertEquals(ordinates[ordinatesIdx++], p.get0(), 0.05, "wrong coordinate");
+					assertEquals(ordinates[ordinatesIdx++], p.get1(), 0.05, "wrong coordinate");
 				}
 
 				ordinatesIdx -= 2;
@@ -751,8 +749,8 @@ public class SDOGeometryConverterTest {
 		int i = 0;
 		for (; i < exteriorRing.length / 2; i++) {
 			final Point point = pnts.get(i);
-			assertEquals("exterior[" + i + "].x invalid", exteriorRing[i * 2], point.get0(), 0.05);
-			assertEquals("exterior[" + i + "].y invalid", exteriorRing[i * 2 + 1], point.get1(), 0.05);
+			assertEquals(exteriorRing[i * 2], point.get0(), 0.05, "exterior[" + i + "].x invalid");
+			assertEquals(exteriorRing[i * 2 + 1], point.get1(), 0.05, "exterior[" + i + "].y invalid");
 		}
 
 		for (int j = 0; j < interiorRings.length; j++) {
@@ -762,8 +760,8 @@ public class SDOGeometryConverterTest {
 			final int next = i + interiorRing.length / 2;
 			for (; i < next; i++) {
 				final Point point = pnts.get(i);
-				assertEquals("interior[" + 0 + "][" + i + "].x invalid", interiorRing[ringI++], point.get0(), 0.05);
-				assertEquals("interior[" + 0 + "][" + i + "].y invalid", interiorRing[ringI++], point.get1(), 0.05);
+				assertEquals(interiorRing[ringI++], point.get0(), 0.05, "interior[" + 0 + "][" + i + "].x invalid");
+				assertEquals(interiorRing[ringI++], point.get1(), 0.05, "interior[" + 0 + "][" + i + "].y invalid");
 			}
 		}
 

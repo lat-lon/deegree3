@@ -37,18 +37,16 @@
 
 package org.deegree.coverage.raster;
 
-import static java.lang.System.currentTimeMillis;
-import static java.lang.System.gc;
-import static org.slf4j.LoggerFactory.getLogger;
-
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
-import java.awt.image.WritableRaster;
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.ByteBuffer;
-import java.util.Iterator;
+import org.deegree.commons.utils.FileUtils;
+import org.deegree.coverage.raster.data.info.BandType;
+import org.deegree.coverage.raster.data.info.DataType;
+import org.deegree.coverage.raster.data.info.InterleaveType;
+import org.deegree.coverage.raster.data.info.RasterDataInfo;
+import org.deegree.coverage.raster.data.nio.PixelInterleavedRasterData;
+import org.deegree.coverage.raster.geom.RasterRect;
+import org.deegree.coverage.raster.utils.Rasters;
+import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
@@ -58,19 +56,19 @@ import javax.media.jai.ImageLayout;
 import javax.media.jai.JAI;
 import javax.media.jai.ParameterBlockJAI;
 import javax.media.jai.RenderedOp;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.WritableRaster;
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.ByteBuffer;
+import java.util.Iterator;
 
-import junit.framework.Assert;
-
-import org.deegree.commons.utils.FileUtils;
-import org.deegree.coverage.raster.data.info.BandType;
-import org.deegree.coverage.raster.data.info.DataType;
-import org.deegree.coverage.raster.data.info.InterleaveType;
-import org.deegree.coverage.raster.data.info.RasterDataInfo;
-import org.deegree.coverage.raster.data.nio.PixelInterleavedRasterData;
-import org.deegree.coverage.raster.geom.RasterRect;
-import org.deegree.coverage.raster.utils.Rasters;
-import org.junit.Test;
-import org.slf4j.Logger;
+import static java.lang.System.currentTimeMillis;
+import static java.lang.System.gc;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * The <code>RasterFactory</code> class TODO add class documentation here.
@@ -106,8 +104,8 @@ public class RasterFactoryTest {
 		}
 
 		BufferedImage img = org.deegree.coverage.raster.utils.RasterFactory.rasterDataToImage(pird);
-		Assert.assertEquals(width, img.getWidth());
-		Assert.assertEquals(height, img.getHeight());
+		assertEquals(width, img.getWidth());
+		assertEquals(height, img.getHeight());
 
 		byte[] result = new byte[DataType.FLOAT.getSize()];
 		ByteBuffer converter = ByteBuffer.wrap(result);
@@ -117,7 +115,7 @@ public class RasterFactoryTest {
 				converter.putInt(0, val);
 				float realVal = converter.getFloat(0);
 				float compareVal = pird.getFloatSample(bx, by, 0);
-				Assert.assertEquals(compareVal, realVal);
+				assertEquals(compareVal, realVal);
 			}
 		}
 	}

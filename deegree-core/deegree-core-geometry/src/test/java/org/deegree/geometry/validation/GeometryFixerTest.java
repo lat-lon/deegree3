@@ -34,18 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.geometry.validation;
 
-import static org.deegree.geometry.primitive.segments.CurveSegment.CurveSegmentType.ARC;
-import static org.deegree.geometry.primitive.segments.CurveSegment.CurveSegmentType.LINE_STRING_SEGMENT;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.deegree.cs.coordinatesystems.ICRS;
 import org.deegree.cs.persistence.CRSManager;
 import org.deegree.geometry.GeometryFactory;
@@ -62,7 +50,19 @@ import org.deegree.geometry.standard.points.PointsArray;
 import org.deegree.geometry.standard.primitive.DefaultCurve;
 import org.deegree.geometry.standard.primitive.DefaultRing;
 import org.deegree.geometry.validation.event.GeometryValidationEvent;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.deegree.geometry.primitive.segments.CurveSegment.CurveSegmentType.ARC;
+import static org.deegree.geometry.primitive.segments.CurveSegment.CurveSegmentType.LINE_STRING_SEGMENT;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author <a href="mailto:goltz@lat-lon.de">Lyn Goltz</a>
@@ -153,10 +153,10 @@ public class GeometryFixerTest {
 		CompositeCurve ocomp = createCompositeCurve(curve1, curve2, curve3);
 
 		assertThat(ocomp.size(), is(3));
-		assertFalse("Compound is open", ocomp.isClosed());
+		assertFalse(ocomp.isClosed(), "Compound is open");
 
-		assertTrue("Source is valid", validator.validateGeometry(ocomp));
-		assertEquals("No validation errors", 0, valevent.getEvents().size());
+		assertTrue(validator.validateGeometry(ocomp), "Source is valid");
+		assertEquals(0, valevent.getEvents().size(), "No validation errors");
 
 		Curve icurve = GeometryFixer.invertOrientation(ocomp);
 
@@ -164,10 +164,10 @@ public class GeometryFixerTest {
 		CompositeCurve icomp = (CompositeCurve) icurve;
 
 		assertThat(icomp.size(), is(3));
-		assertFalse("Compound is open", icomp.isClosed());
+		assertFalse(icomp.isClosed(), "Compound is open");
 
-		assertTrue("Inverted is valid", validator.validateGeometry(icomp));
-		assertEquals("No validation errors", 0, valevent.getEvents().size());
+		assertTrue(validator.validateGeometry(icomp), "Inverted is valid");
+		assertEquals(0, valevent.getEvents().size(), "No validation errors");
 
 		// Check that the composite curve was inverted (compare inverted start with
 		// original end)
@@ -190,16 +190,16 @@ public class GeometryFixerTest {
 
 		assertThat(oring.getMembers().size(), is(3));
 
-		assertTrue("Source is valid", validator.validateGeometry(oring));
-		assertEquals("No validation errors", 0, valevent.getEvents().size());
+		assertTrue(validator.validateGeometry(oring), "Source is valid");
+		assertEquals(0, valevent.getEvents().size(), "No validation errors");
 
 		Curve cinv = GeometryFixer.invertOrientation(oring);
 
 		assertThat("Result is  Ring", cinv.getCurveType(), is(CurveType.Ring));
 		Ring iring = (Ring) cinv;
 
-		assertTrue("Inverted is valid", validator.validateGeometry(cinv));
-		assertEquals("Inverted has no validation errors", 0, valevent.getEvents().size());
+		assertTrue(validator.validateGeometry(cinv), "Inverted is valid");
+		assertEquals(0, valevent.getEvents().size(), "Inverted has no validation errors");
 
 		assertThat(iring.getMembers().size(), is(3));
 

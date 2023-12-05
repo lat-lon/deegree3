@@ -34,14 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.feature.persistence.sql.id;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import javax.xml.namespace.QName;
-
 import org.deegree.commons.jdbc.SQLIdentifier;
 import org.deegree.commons.jdbc.TableName;
 import org.deegree.commons.tom.gml.property.PropertyType;
@@ -52,7 +44,15 @@ import org.deegree.feature.persistence.sql.MappedAppSchema;
 import org.deegree.feature.persistence.sql.rules.Mapping;
 import org.deegree.feature.types.FeatureType;
 import org.deegree.feature.types.GenericFeatureType;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import javax.xml.namespace.QName;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * {@link IdAnalyzer} tests for checking the correct deriving of a feature type from a
@@ -78,10 +78,12 @@ public class IdAnalyzerTest {
 		assertEquals("APP_FEATURE3_", analyzeFeatureType("APP_FEATURE3_1_APP_GEOM"));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void analyzeNoMatch() {
 		idAnalyzer = setupAnalyzerScenario("APP_FEATURE_");
-		analyzeFeatureType("BPP_FEATURE_1");
+		assertThrows(IllegalArgumentException.class, () -> {
+			analyzeFeatureType("BPP_FEATURE_1");
+		});
 	}
 
 	@Test

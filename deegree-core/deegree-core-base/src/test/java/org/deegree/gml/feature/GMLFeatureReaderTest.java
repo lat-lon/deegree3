@@ -34,26 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.gml.feature;
 
-import static org.deegree.gml.GMLInputFactory.createGMLStreamReader;
-import static org.deegree.gml.GMLVersion.GML_2;
-import static org.deegree.gml.GMLVersion.GML_31;
-import static org.deegree.gml.GMLVersion.GML_32;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.slf4j.LoggerFactory.getLogger;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.Iterator;
-import java.util.List;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
 import org.apache.xerces.xs.XSElementDeclaration;
 import org.deegree.commons.tom.ElementNode;
 import org.deegree.commons.tom.ReferenceResolvingException;
@@ -72,9 +52,27 @@ import org.deegree.gml.GMLStreamReader;
 import org.deegree.gml.GMLVersion;
 import org.deegree.gml.schema.GMLAppSchemaReader;
 import org.deegree.time.primitive.TimePeriod;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Iterator;
+import java.util.List;
+
+import static org.deegree.gml.GMLInputFactory.createGMLStreamReader;
+import static org.deegree.gml.GMLVersion.GML_2;
+import static org.deegree.gml.GMLVersion.GML_31;
+import static org.deegree.gml.GMLVersion.GML_32;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * Tests that check the correct reading of {@link Feature} / {@link FeatureCollection}
@@ -100,7 +98,7 @@ public class GMLFeatureReaderTest {
 		GMLStreamReader gmlReader = createGMLStreamReader(GML_31, docURL);
 		FeatureCollection fc = (FeatureCollection) gmlReader.readFeature();
 		gmlReader.getIdContext().resolveLocalRefs();
-		Assert.assertEquals(7, fc.size());
+		assertEquals(7, fc.size());
 	}
 
 	@Test
@@ -115,7 +113,7 @@ public class GMLFeatureReaderTest {
 		while (fc.read() != null) {
 			i++;
 		}
-		Assert.assertEquals(7, i);
+		assertEquals(7, i);
 	}
 
 	@Test
@@ -131,7 +129,7 @@ public class GMLFeatureReaderTest {
 		GMLStreamReader gmlReader = GMLInputFactory.createGMLStreamReader(GML_31, docURL);
 		FeatureCollection fc = (FeatureCollection) gmlReader.readFeature();
 		gmlReader.getIdContext().resolveLocalRefs();
-		Assert.assertEquals(7, fc.size());
+		assertEquals(7, fc.size());
 		for (FeatureType ft : gmlReader.getAppSchema().getFeatureTypes()) {
 			System.out.println(ft.getName());
 		}
@@ -170,7 +168,7 @@ public class GMLFeatureReaderTest {
 		while (fc.read() != null) {
 			i++;
 		}
-		Assert.assertEquals(16, i);
+		assertEquals(16, i);
 	}
 
 	/**
@@ -188,7 +186,7 @@ public class GMLFeatureReaderTest {
 		URL docURL = GMLFeatureReaderTest.class.getResource("../cite/feature/dataset-sf1.xml");
 		GMLStreamReader gmlReader = GMLInputFactory.createGMLStreamReader(GMLVersion.GML_31, docURL);
 		FeatureCollection fc = (FeatureCollection) gmlReader.readFeature();
-		Assert.assertEquals(3, fc.size());
+		assertEquals(3, fc.size());
 	}
 
 	@Test
@@ -202,7 +200,7 @@ public class GMLFeatureReaderTest {
 		while (fc.read() != null) {
 			i++;
 		}
-		Assert.assertEquals(3, i);
+		assertEquals(3, i);
 	}
 
 	@Test
@@ -213,7 +211,7 @@ public class GMLFeatureReaderTest {
 		GMLStreamReader gmlReader = GMLInputFactory.createGMLStreamReader(GMLVersion.GML_31, docURL);
 		FeatureCollection fc = (FeatureCollection) gmlReader.readFeature();
 		gmlReader.getIdContext().resolveLocalRefs();
-		Assert.assertEquals(29, fc.size());
+		assertEquals(29, fc.size());
 	}
 
 	@Test
@@ -227,7 +225,7 @@ public class GMLFeatureReaderTest {
 		while (fc.read() != null) {
 			i++;
 		}
-		Assert.assertEquals(29, i);
+		assertEquals(29, i);
 	}
 
 	@Test
@@ -237,7 +235,7 @@ public class GMLFeatureReaderTest {
 		GMLStreamReader gmlReader = GMLInputFactory.createGMLStreamReader(GMLVersion.GML_2, docURL);
 		FeatureCollection fc = (FeatureCollection) gmlReader.readFeature();
 		gmlReader.getIdContext().resolveLocalRefs();
-		Assert.assertEquals(106, fc.size());
+		assertEquals(106, fc.size());
 	}
 
 	@Test
@@ -250,7 +248,7 @@ public class GMLFeatureReaderTest {
 		while (fc.read() != null) {
 			i++;
 		}
-		Assert.assertEquals(106, i);
+		assertEquals(106, i);
 	}
 
 	// @Test
@@ -326,13 +324,13 @@ public class GMLFeatureReaderTest {
 		assertTrue(custom1Prop != null);
 		assertNotNull(custom1Prop.getXSType());
 		assertTrue(custom1Prop.getXSType() instanceof XSElementDeclaration);
-		Assert.assertEquals(2, custom1Prop.getAttributes().size());
+		assertEquals(2, custom1Prop.getAttributes().size());
 		PrimitiveValue mimeTypeAttr = custom1Prop.getAttributes().get(new QName("mimeType"));
-		Assert.assertEquals("img/gif", mimeTypeAttr.getAsText());
-		Assert.assertEquals("string", mimeTypeAttr.getType().getXSType().getName());
+		assertEquals("img/gif", mimeTypeAttr.getAsText());
+		assertEquals("string", mimeTypeAttr.getType().getXSType().getName());
 		PrimitiveValue lengthAttr = custom1Prop.getAttributes().get(new QName("length"));
-		Assert.assertEquals("5657", lengthAttr.getAsText());
-		Assert.assertEquals("positiveInteger", lengthAttr.getType().getXSType().getName());
+		assertEquals("5657", lengthAttr.getAsText());
+		assertEquals("positiveInteger", lengthAttr.getType().getXSType().getName());
 		// assertNull (custom1PropValue.getChildren());
 
 		// System.out.println( "type: " + custom1Prop.getType() );
@@ -362,7 +360,7 @@ public class GMLFeatureReaderTest {
 		FeatureCollection fc = (FeatureCollection) gmlReader.readFeature();
 		gmlReader.getIdContext().resolveLocalRefs();
 
-		Assert.assertEquals(4, fc.size());
+		assertEquals(4, fc.size());
 	}
 
 	@Test
@@ -382,7 +380,7 @@ public class GMLFeatureReaderTest {
 		while (fc.read() != null) {
 			i++;
 		}
-		Assert.assertEquals(4, i);
+		assertEquals(4, i);
 	}
 
 	@Test
@@ -400,7 +398,7 @@ public class GMLFeatureReaderTest {
 		FeatureCollection fc = (FeatureCollection) gmlReader.readFeature();
 		gmlReader.getIdContext().resolveLocalRefs();
 
-		Assert.assertEquals(4, fc.size());
+		assertEquals(4, fc.size());
 	}
 
 	@Test
@@ -420,7 +418,7 @@ public class GMLFeatureReaderTest {
 		while (fc.read() != null) {
 			i++;
 		}
-		Assert.assertEquals(4, i);
+		assertEquals(4, i);
 	}
 
 	@Test
@@ -431,7 +429,7 @@ public class GMLFeatureReaderTest {
 		GMLStreamReader gmlReader = GMLInputFactory.createGMLStreamReader(GMLVersion.GML_2, docURL);
 		FeatureCollection fc = (FeatureCollection) gmlReader.readFeature();
 		gmlReader.getIdContext().resolveLocalRefs();
-		Assert.assertEquals(4, fc.size());
+		assertEquals(4, fc.size());
 	}
 
 	@Test
@@ -445,7 +443,7 @@ public class GMLFeatureReaderTest {
 		while (fc.read() != null) {
 			i++;
 		}
-		Assert.assertEquals(4, i);
+		assertEquals(4, i);
 	}
 
 	@Test
@@ -456,7 +454,7 @@ public class GMLFeatureReaderTest {
 		GMLStreamReader gmlReader = GMLInputFactory.createGMLStreamReader(GML_31, docURL);
 		FeatureCollection fc = (FeatureCollection) gmlReader.readFeature();
 		gmlReader.getIdContext().resolveLocalRefs();
-		Assert.assertEquals(4, fc.size());
+		assertEquals(4, fc.size());
 	}
 
 	@Test
@@ -470,7 +468,7 @@ public class GMLFeatureReaderTest {
 		while (fc.read() != null) {
 			i++;
 		}
-		Assert.assertEquals(4, i);
+		assertEquals(4, i);
 	}
 
 	@Test
@@ -481,9 +479,9 @@ public class GMLFeatureReaderTest {
 		GMLStreamReader gmlReader = GMLInputFactory.createGMLStreamReader(GML_2, docURL);
 		FeatureCollection fc = (FeatureCollection) gmlReader.readFeature();
 		gmlReader.getIdContext().resolveLocalRefs();
-		Assert.assertEquals(4, fc.size());
-		Assert.assertEquals(1, gmlReader.getAppSchema().getFeatureTypes().length);
-		Assert.assertEquals(23, gmlReader.getAppSchema().getFeatureTypes()[0].getPropertyDeclarations().size());
+		assertEquals(4, fc.size());
+		assertEquals(1, gmlReader.getAppSchema().getFeatureTypes().length);
+		assertEquals(23, gmlReader.getAppSchema().getFeatureTypes()[0].getPropertyDeclarations().size());
 	}
 
 	@Test
@@ -497,9 +495,9 @@ public class GMLFeatureReaderTest {
 		while (fc.read() != null) {
 			i++;
 		}
-		Assert.assertEquals(4, i);
-		Assert.assertEquals(1, gmlReader.getAppSchema().getFeatureTypes().length);
-		Assert.assertEquals(23, gmlReader.getAppSchema().getFeatureTypes()[0].getPropertyDeclarations().size());
+		assertEquals(4, i);
+		assertEquals(1, gmlReader.getAppSchema().getFeatureTypes().length);
+		assertEquals(23, gmlReader.getAppSchema().getFeatureTypes()[0].getPropertyDeclarations().size());
 	}
 
 	@Test
@@ -510,9 +508,9 @@ public class GMLFeatureReaderTest {
 		GMLStreamReader gmlReader = GMLInputFactory.createGMLStreamReader(GML_31, docURL);
 		FeatureCollection fc = (FeatureCollection) gmlReader.readFeature();
 		gmlReader.getIdContext().resolveLocalRefs();
-		Assert.assertEquals(4, fc.size());
-		Assert.assertEquals(1, gmlReader.getAppSchema().getFeatureTypes().length);
-		Assert.assertEquals(23, gmlReader.getAppSchema().getFeatureTypes()[0].getPropertyDeclarations().size());
+		assertEquals(4, fc.size());
+		assertEquals(1, gmlReader.getAppSchema().getFeatureTypes().length);
+		assertEquals(23, gmlReader.getAppSchema().getFeatureTypes()[0].getPropertyDeclarations().size());
 	}
 
 	@Test
@@ -527,9 +525,9 @@ public class GMLFeatureReaderTest {
 			i++;
 		}
 		gmlReader.getIdContext().resolveLocalRefs();
-		Assert.assertEquals(4, i);
-		Assert.assertEquals(1, gmlReader.getAppSchema().getFeatureTypes().length);
-		Assert.assertEquals(23, gmlReader.getAppSchema().getFeatureTypes()[0].getPropertyDeclarations().size());
+		assertEquals(4, i);
+		assertEquals(1, gmlReader.getAppSchema().getFeatureTypes().length);
+		assertEquals(23, gmlReader.getAppSchema().getFeatureTypes()[0].getPropertyDeclarations().size());
 	}
 
 	@Test
@@ -539,8 +537,8 @@ public class GMLFeatureReaderTest {
 		URL docURL = GMLFeatureReaderTest.class.getResource("../misc/feature/deegree2_getfeatureinfo.xml");
 		GMLStreamReader gmlReader = createGMLStreamReader(GML_2, docURL);
 		FeatureCollection fc = (FeatureCollection) gmlReader.readFeature();
-		Assert.assertEquals(1, fc.size());
-		Assert.assertEquals(1, gmlReader.getAppSchema().getFeatureTypes().length);
+		assertEquals(1, fc.size());
+		assertEquals(1, gmlReader.getAppSchema().getFeatureTypes().length);
 	}
 
 	@Test

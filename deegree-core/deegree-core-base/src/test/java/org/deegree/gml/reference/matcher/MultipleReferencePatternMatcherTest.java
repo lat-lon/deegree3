@@ -1,10 +1,9 @@
 package org.deegree.gml.reference.matcher;
 
-import org.junit.Test;
-import org.mockito.Mockito;
+import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -15,37 +14,37 @@ import static org.mockito.Mockito.when;
 public class MultipleReferencePatternMatcherTest {
 
 	@Test
-	public void testIsMatching_oneTrue() throws Exception {
+	public void testIsMatching_oneTrue() {
 		MultipleReferencePatternMatcher matcher = new MultipleReferencePatternMatcher();
 		matcher.addMatcherToApply(mockMatcher(true));
 		matcher.addMatcherToApply(mockMatcher(false));
 
-		assertThat(matcher.isMatching("test"), is(true));
+		assertTrue(matcher.isMatching("test"));
 	}
 
 	@Test
-	public void testIsMatching_allTrue() throws Exception {
+	public void testIsMatching_allTrue() {
 		MultipleReferencePatternMatcher matcher = new MultipleReferencePatternMatcher();
 		matcher.addMatcherToApply(mockMatcher(true));
 		matcher.addMatcherToApply(mockMatcher(true));
 
-		assertThat(matcher.isMatching("test"), is(true));
+		assertTrue(matcher.isMatching("test"));
 	}
 
 	@Test
-	public void testIsMatching_allFalse() throws Exception {
+	public void testIsMatching_allFalse() {
 		MultipleReferencePatternMatcher matcher = new MultipleReferencePatternMatcher();
 		matcher.addMatcherToApply(mockMatcher(false));
 		matcher.addMatcherToApply(mockMatcher(false));
 
-		assertThat(matcher.isMatching("test"), is(false));
+		assertFalse(matcher.isMatching("test"));
 	}
 
 	@Test
-	public void testIsMatching_noMatchers() throws Exception {
+	public void testIsMatching_noMatchers() {
 		MultipleReferencePatternMatcher matcher = new MultipleReferencePatternMatcher();
 
-		assertThat(matcher.isMatching("test"), is(false));
+		assertFalse(matcher.isMatching("test"));
 	}
 
 	private ReferencePatternMatcher mockMatcher(boolean isMatching) {

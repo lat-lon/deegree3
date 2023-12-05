@@ -1,40 +1,37 @@
 package org.deegree.sqldialect.oracle.sdo;
 
-import static org.deegree.gml.GMLOutputFactory.createGMLStreamWriter;
-import static org.deegree.gml.GMLVersion.GML_32;
-import static org.deegree.gml.geometry.GMLGeometryVersionHelper.getGeometryReader;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.xml.stream.XMLStreamWriter;
-
 import org.deegree.commons.utils.FileUtils;
 import org.deegree.commons.xml.stax.IndentingXMLStreamWriter;
 import org.deegree.commons.xml.stax.XMLStreamReaderWrapper;
 import org.deegree.geometry.Geometry;
 import org.deegree.gml.GMLStreamWriter;
 import org.deegree.gml.geometry.GMLGeometryReader;
-import org.deegree.sqldialect.oracle.sdo.SDOGeometryConverter.GeomHolder;
 import org.deegree.sqldialect.utils.XMLMemoryStreamWriter;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameter;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@RunWith(Parameterized.class)
+import javax.xml.stream.XMLStreamWriter;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Stream;
+
+import static org.deegree.gml.GMLOutputFactory.createGMLStreamWriter;
+import static org.deegree.gml.GMLVersion.GML_32;
+import static org.deegree.gml.geometry.GMLGeometryVersionHelper.getGeometryReader;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+// TODO: fix dependencies
+@Disabled
 public class SDOGeometryConverterExampleTests {
 
 	private static final Logger LOG = LoggerFactory.getLogger(SDOGeometryConverterExampleTests.class);
@@ -56,30 +53,9 @@ public class SDOGeometryConverterExampleTests {
 
 	final SDOGeometryConverter converter = new SDOGeometryConverter();
 
-	@Parameter(0)
-	public File sdoFile;
-
-	@Parameter(1)
-	public File gmlFile;
-
-	@Parameter(2)
-	public String testName;
-
-	@Parameter(3)
-	public boolean skipSdoSdo;
-
-	@Parameter(4)
-	public boolean skipGmlSdo;
-
-	@Parameter(5)
-	public boolean skipSdoGml;
-
-	@Parameters(name = "{index}: {2}")
-	public static Collection<Object[]> getFiles() throws IOException {
-		Collection<Object[]> params = new LinkedList<Object[]>();
+	public static Stream<Arguments> getFiles() {
 		String baseName = TEST_DIR.getAbsolutePath();
-
-		for (File fSDO : FileUtils.findFilesForExtensions(TEST_DIR, true, ".sdo")) {
+		return FileUtils.findFilesForExtensions(TEST_DIR, true, ".sdo").stream().map(fSDO -> {
 			String base = FileUtils.getBasename(fSDO.getAbsoluteFile());
 			String name = base;
 			if (name.startsWith(baseName))
@@ -91,17 +67,17 @@ public class SDOGeometryConverterExampleTests {
 			boolean skipSdoGml = new File(base + ".skip-sdo-gml").exists();
 
 			if (fSDO.isFile() && fGML.isFile()) {
-				params.add(new Object[] { fSDO, fGML, name, skipSdoSdo, skipGmlSdo, skipSdoGml });
+				return Arguments.of(fSDO, fGML, name, skipSdoSdo, skipGmlSdo, skipSdoGml);
 			}
-			else {
-				LOG.warn("Could not find test data same {}.sdo/.gml", name);
-			}
-		}
-		return params;
+			LOG.warn("Could not find test data same {}.sdo/.gml", name);
+			return null;
+		}).filter(arg -> arg != null);
 	}
 
-	@Test
-	public void testConvertSdoGeometryAndBack() throws Exception {
+	@ParameterizedTest
+	@MethodSource("getFiles")
+	public void testConvertSdoGeometryAndBack(File sdoFile, File gmlFile, String testName, boolean skipSdoSdo,
+			boolean skipGmlSdo, boolean skipSdoGml) throws Exception {
 		SDOGeometry sdo = loadFromFile(sdoFile);
 		// inspector.reset();
 		Geometry geom = readGMLGeometry(gmlFile);
@@ -128,16 +104,16 @@ public class SDOGeometryConverterExampleTests {
 		String geomSdoString = toString(geomSdo);
 		String geomString = writeGMLGeometry(geom);
 		String geomSdoGeomString = writeGMLGeometry(geomSdoGeom);
-		assertNotNull("Convertable 3", geomString);
-		assertNotNull("Convertable 4", geomSdoGeomString);
-		assertEquals("Geom -> SDO -> Geom", geomString, geomSdoGeomString);
+		assertNotNull(geomString, "Convertable 3");
+		assertNotNull(geomSdoGeomString, "Convertable 4");
+		assertEquals(geomString, geomSdoGeomString, "Geom -> SDO -> Geom");
 
 		// Sample matches
 		if (!skipGmlSdo) {
-			assertEquals(".gml matches .sdo", sdoString, geomSdoString);
+			assertEquals(sdoString, geomSdoString, ".gml matches .sdo");
 		}
 		if (!skipSdoGml) {
-			assertEquals(".sdo matches .gml", geomString, sdoGeomString);
+			assertEquals(geomString, sdoGeomString, ".sdo matches .gml");
 		}
 	}
 

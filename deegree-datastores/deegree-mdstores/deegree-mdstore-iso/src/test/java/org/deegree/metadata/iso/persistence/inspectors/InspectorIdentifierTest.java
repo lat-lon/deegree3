@@ -34,20 +34,22 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.metadata.iso.persistence.inspectors;
 
-import java.sql.SQLException;
-import java.util.List;
-
 import org.deegree.commons.config.ResourceInitException;
 import org.deegree.metadata.iso.persistence.AbstractISOTest;
 import org.deegree.metadata.iso.persistence.TstConstants;
 import org.deegree.metadata.iso.persistence.TstUtils;
 import org.deegree.metadata.persistence.MetadataInspectorException;
 import org.deegree.protocol.csw.MetadataStoreException;
-import org.junit.Assert;
-import org.junit.Assume;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * TODO add class documentation here
@@ -72,16 +74,15 @@ public class InspectorIdentifierTest extends AbstractISOTest {
 	 * @throws ResourceInitException
 	 * @throws SQLException
 	 */
-	@Test(expected = MetadataInspectorException.class)
-	public void testIdentifierRejectTrue2()
-			throws MetadataStoreException, MetadataInspectorException, ResourceInitException {
+	@Test
+	public void testIdentifierRejectTrue2() {
 		LOG.info("START Test: test if the configuration rejects the insert of the missing identifier. (Reject TRUE)");
 
 		initStore(TstConstants.configURL_REJECT_FI_TRUE);
-		Assume.assumeNotNull(store);
-
-		TstUtils.insertMetadata(store, TstConstants.tst_1, TstConstants.tst_3);
-
+		assumeTrue(store != null);
+		assertThrows(MetadataInspectorException.class, () -> {
+			TstUtils.insertMetadata(store, TstConstants.tst_1, TstConstants.tst_3);
+		});
 	}
 
 	/**
@@ -100,7 +101,7 @@ public class InspectorIdentifierTest extends AbstractISOTest {
 		LOG.info("START Test: test if the configuration generates the identifier automaticaly. (Reject FALSE)");
 
 		initStore(TstConstants.configURL_REJECT_FI_FALSE);
-		Assume.assumeNotNull(store);
+		assumeTrue(store != null);
 
 		List<String> ids = TstUtils.insertMetadata(store, TstConstants.tst_1, TstConstants.tst_2);
 
@@ -110,7 +111,7 @@ public class InspectorIdentifierTest extends AbstractISOTest {
 			size++;
 		}
 
-		Assert.assertEquals(2, size);
+		assertEquals(2, size);
 
 	}
 
@@ -131,7 +132,7 @@ public class InspectorIdentifierTest extends AbstractISOTest {
 		LOG.info("START Test: test if the configuration rejects the insert of the missing identifier. (Reject TRUE)");
 
 		initStore(TstConstants.configURL_REJECT_FI_TRUE);
-		Assume.assumeNotNull(store);
+		assumeTrue(store != null);
 
 		List<String> ids = TstUtils.insertMetadata(store, TstConstants.tst_1, TstConstants.tst_2);
 
@@ -141,7 +142,7 @@ public class InspectorIdentifierTest extends AbstractISOTest {
 			size++;
 		}
 
-		Assert.assertEquals(2, size);
+		assertEquals(2, size);
 
 	}
 

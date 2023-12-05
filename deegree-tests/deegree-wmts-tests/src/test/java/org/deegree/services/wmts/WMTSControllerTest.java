@@ -38,15 +38,16 @@ import org.deegree.services.OWSProvider;
 import org.deegree.services.wmts.controller.WMTSController;
 import org.deegree.workspace.Workspace;
 import org.deegree.workspace.standard.DefaultWorkspace;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author <a href="mailto:schmitz@lat-lon.de">Andreas Schmitz</a>
@@ -55,7 +56,7 @@ public class WMTSControllerTest {
 
 	private Workspace workspace;
 
-	@Before
+	@BeforeEach
 	public void setup() throws URISyntaxException, IOException {
 		URL u = WMTSControllerTest.class.getResource("WMTSControllerTest.class");
 		File dir = new File(new File(u.toURI()).getParentFile(), "../../../../../../src/main/webapp/WEB-INF/workspace");
@@ -67,12 +68,12 @@ public class WMTSControllerTest {
 	@Test
 	public void testMetadataId() {
 		WMTSController wmts = (WMTSController) workspace.getResource(OWSProvider.class, "wmts");
-		Assert.assertEquals(
+		assertEquals(
 				"http://someLink/services?service=CSW&request=GetRecordById&version=2.0.2&outputSchema=http%3A//www.isotc211.org/2005/gmd&elementSetName=full&id=${metadataSetId}",
 				wmts.getMetadataUrlTemplate());
 	}
 
-	@After
+	@AfterEach
 	public void shutdown() {
 		workspace.destroy();
 	}

@@ -35,16 +35,6 @@
 
 package org.deegree.cs.configuration;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import javax.vecmath.Point3d;
-
 import org.deegree.cs.CRSCodeType;
 import org.deegree.cs.CRSIdentifiable;
 import org.deegree.cs.CoordinateTransformer;
@@ -64,9 +54,18 @@ import org.deegree.cs.persistence.CRSStore;
 import org.deegree.cs.transformations.TransformationFactory;
 import org.deegree.cs.transformations.TransformationFactory.DSTransform;
 import org.deegree.cs.transformations.helmert.Helmert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.vecmath.Point3d;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * <code>TransformationTest</code> a junit test class for testing the accuracy of various

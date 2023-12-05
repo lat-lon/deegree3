@@ -1,9 +1,10 @@
 package org.deegree.gml.reference.matcher;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author <a href="mailto:goltz@lat-lon.de">Lyn Goltz </a>
@@ -13,26 +14,31 @@ public class BaseUrlReferencePatternMatcherTest {
 	private BaseUrlReferencePatternMatcher matcher = new BaseUrlReferencePatternMatcher(
 			"http://deegree.org/documentation");
 
-	@Test(expected = IllegalArgumentException.class)
-	public void test_constructor_null() throws Exception {
-		new BaseUrlReferencePatternMatcher(null);
+	@Test
+	public void test_constructor_null() {
+		assertThrows(IllegalArgumentException.class, () -> {
+			new BaseUrlReferencePatternMatcher(null);
+		});
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void test_constructor_empty() throws Exception {
-		new BaseUrlReferencePatternMatcher("");
+	@Test
+	public void test_constructor_empty() {
+		assertThrows(IllegalArgumentException.class, () -> {
+
+			new BaseUrlReferencePatternMatcher("");
+		});
 	}
 
 	@Test
 	public void testIsMatching() throws Exception {
-		assertThat(matcher.isMatching("http://deegree.org/documentation"), is(true));
-		assertThat(matcher.isMatching("http://deegree.org/documentation/webservices"), is(true));
+		assertTrue(matcher.isMatching("http://deegree.org/documentation"));
+		assertTrue(matcher.isMatching("http://deegree.org/documentation/webservices"));
 
-		assertThat(matcher.isMatching("https://deegree.org/documentation"), is(false));
-		assertThat(matcher.isMatching("http://www.deegree.org/documentation"), is(false));
-		assertThat(matcher.isMatching("http://deegree2.org/documentation"), is(false));
+		assertFalse(matcher.isMatching("https://deegree.org/documentation"));
+		assertFalse(matcher.isMatching("http://www.deegree.org/documentation"));
+		assertFalse(matcher.isMatching("http://deegree2.org/documentation"));
 
-		assertThat(matcher.isMatching(null), is(false));
+		assertFalse(matcher.isMatching(null));
 	}
 
 }

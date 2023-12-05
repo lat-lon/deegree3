@@ -1,13 +1,13 @@
 package org.deegree.time.gml.writer;
 
 import static org.deegree.time.position.IndeterminateValue.BEFORE;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import javax.xml.stream.XMLStreamException;
 
 import org.deegree.time.position.IndeterminateValue;
 import org.deegree.time.position.TimePosition;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class GmlTimePositionTypeWriterTest {
 

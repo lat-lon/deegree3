@@ -37,10 +37,10 @@
 
 package org.deegree.gml;
 
-import static junit.framework.Assert.assertEquals;
-import static org.deegree.gml.GMLVersion.fromMimeType;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import static org.deegree.gml.GMLVersion.fromMimeType;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * The <code>VersionFromMime</code> tests the mappig of gml mime types to gml versions

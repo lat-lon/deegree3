@@ -34,19 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.geometry.gml.validation;
 
-import static junit.framework.Assert.assertEquals;
-import static org.deegree.gml.GMLVersion.GML_31;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLStreamException;
-
-import junit.framework.Assert;
-
 import org.deegree.cs.exceptions.UnknownCRSException;
 import org.deegree.geometry.validation.event.CurveDiscontinuity;
 import org.deegree.geometry.validation.event.ExteriorRingOrientation;
@@ -59,7 +46,19 @@ import org.deegree.gml.geometry.validation.GmlElementIdentifier;
 import org.deegree.gml.geometry.validation.GmlGeometryValidationEvent;
 import org.deegree.gml.geometry.validation.GmlGeometryValidationEventHandler;
 import org.deegree.gml.geometry.validation.GmlStreamGeometryValidator;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLStreamException;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.deegree.gml.GMLVersion.GML_31;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests that check the expected generation of validation events by the
@@ -84,7 +83,7 @@ public class GmlGeometryValidatorTest {
 		TestEventHandler eventHandler = validate("invalid/Curve_discontinuity.gml");
 		assertEquals(1, eventHandler.getEvents().size());
 		GmlGeometryValidationEvent event = eventHandler.getEvents().get(0);
-		Assert.assertEquals(CurveDiscontinuity.class, event.getEvent().getClass());
+		assertEquals(CurveDiscontinuity.class, event.getEvent().getClass());
 	}
 
 	@Test
@@ -93,7 +92,7 @@ public class GmlGeometryValidatorTest {
 		TestEventHandler eventHandler = validate("invalid/Ring_not_closed.gml");
 		assertEquals(1, eventHandler.getEvents().size());
 		GmlGeometryValidationEvent event = eventHandler.getEvents().get(0);
-		Assert.assertEquals(RingNotClosed.class, event.getEvent().getClass());
+		assertEquals(RingNotClosed.class, event.getEvent().getClass());
 	}
 
 	@Test
@@ -101,9 +100,9 @@ public class GmlGeometryValidatorTest {
 			throws XMLStreamException, FactoryConfigurationError, IOException, UnknownCRSException {
 		TestEventHandler eventHandler = validate("invalid/Polygon_exterior_clockwise.gml");
 		assertEquals(3, eventHandler.getEvents().size());
-		Assert.assertTrue(((ExteriorRingOrientation) (eventHandler.getEvents().get(0).getEvent())).isClockwise());
-		Assert.assertTrue(((InteriorRingOrientation) (eventHandler.getEvents().get(1).getEvent())).isClockwise());
-		Assert.assertTrue(((InteriorRingOrientation) (eventHandler.getEvents().get(2).getEvent())).isClockwise());
+		assertTrue(((ExteriorRingOrientation) (eventHandler.getEvents().get(0).getEvent())).isClockwise());
+		assertTrue(((InteriorRingOrientation) (eventHandler.getEvents().get(1).getEvent())).isClockwise());
+		assertTrue(((InteriorRingOrientation) (eventHandler.getEvents().get(2).getEvent())).isClockwise());
 	}
 
 	@Test
@@ -111,45 +110,45 @@ public class GmlGeometryValidatorTest {
 			throws XMLStreamException, UnknownCRSException, FactoryConfigurationError, IOException {
 		TestEventHandler eventHandler = validate("invalid/LeftHanded_exterior_clockwise_interior_clockwise.gml");
 		assertEquals(2, eventHandler.getEvents().size());
-		Assert.assertTrue(((ExteriorRingOrientation) (eventHandler.getEvents().get(0).getEvent())).isExterior());
-		Assert.assertFalse(((InteriorRingOrientation) (eventHandler.getEvents().get(1).getEvent())).isInterior());
+		assertTrue(((ExteriorRingOrientation) (eventHandler.getEvents().get(0).getEvent())).isExterior());
+		assertFalse(((InteriorRingOrientation) (eventHandler.getEvents().get(1).getEvent())).isInterior());
 
 		TestEventHandler eventHandler2 = validate("invalid/LeftHanded_exterior_clockwise_interior_anticlockwise.gml");
 		assertEquals(2, eventHandler2.getEvents().size());
-		Assert.assertTrue(((ExteriorRingOrientation) (eventHandler2.getEvents().get(0).getEvent())).isExterior());
-		Assert.assertTrue(((InteriorRingOrientation) (eventHandler2.getEvents().get(1).getEvent())).isInterior());
+		assertTrue(((ExteriorRingOrientation) (eventHandler2.getEvents().get(0).getEvent())).isExterior());
+		assertTrue(((InteriorRingOrientation) (eventHandler2.getEvents().get(1).getEvent())).isInterior());
 
 		TestEventHandler eventHandler3 = validate("invalid/LeftHanded_exterior_anticlockwise_interior_clockwise.gml");
 		assertEquals(2, eventHandler3.getEvents().size());
-		Assert.assertFalse(((ExteriorRingOrientation) (eventHandler3.getEvents().get(0).getEvent())).isExterior());
-		Assert.assertFalse(((InteriorRingOrientation) (eventHandler3.getEvents().get(1).getEvent())).isInterior());
+		assertFalse(((ExteriorRingOrientation) (eventHandler3.getEvents().get(0).getEvent())).isExterior());
+		assertFalse(((InteriorRingOrientation) (eventHandler3.getEvents().get(1).getEvent())).isInterior());
 
 		TestEventHandler eventHandler4 = validate(
 				"invalid/LeftHanded_exterior_anticlockwise_interior_anticlockwise.gml");
 		assertEquals(2, eventHandler4.getEvents().size());
-		Assert.assertFalse(((ExteriorRingOrientation) (eventHandler4.getEvents().get(0).getEvent())).isExterior());
-		Assert.assertTrue(((InteriorRingOrientation) (eventHandler4.getEvents().get(1).getEvent())).isInterior());
+		assertFalse(((ExteriorRingOrientation) (eventHandler4.getEvents().get(0).getEvent())).isExterior());
+		assertTrue(((InteriorRingOrientation) (eventHandler4.getEvents().get(1).getEvent())).isInterior());
 
 		TestEventHandler eventHandler5 = validate("invalid/RightHanded_exterior_clockwise_interior_clockwise.gml");
 		assertEquals(2, eventHandler5.getEvents().size());
-		Assert.assertFalse(((ExteriorRingOrientation) (eventHandler5.getEvents().get(0).getEvent())).isExterior());
-		Assert.assertTrue(((InteriorRingOrientation) (eventHandler5.getEvents().get(1).getEvent())).isInterior());
+		assertFalse(((ExteriorRingOrientation) (eventHandler5.getEvents().get(0).getEvent())).isExterior());
+		assertTrue(((InteriorRingOrientation) (eventHandler5.getEvents().get(1).getEvent())).isInterior());
 
 		TestEventHandler eventHandler6 = validate("invalid/RightHanded_exterior_clockwise_interior_anticlockwise.gml");
 		assertEquals(2, eventHandler6.getEvents().size());
-		Assert.assertFalse(((ExteriorRingOrientation) (eventHandler6.getEvents().get(0).getEvent())).isExterior());
-		Assert.assertFalse(((InteriorRingOrientation) (eventHandler6.getEvents().get(1).getEvent())).isInterior());
+		assertFalse(((ExteriorRingOrientation) (eventHandler6.getEvents().get(0).getEvent())).isExterior());
+		assertFalse(((InteriorRingOrientation) (eventHandler6.getEvents().get(1).getEvent())).isInterior());
 
 		TestEventHandler eventHandler7 = validate("invalid/RightHanded_exterior_anticlockwise_interior_clockwise.gml");
 		assertEquals(2, eventHandler7.getEvents().size());
-		Assert.assertTrue(((ExteriorRingOrientation) (eventHandler7.getEvents().get(0).getEvent())).isExterior());
-		Assert.assertTrue(((InteriorRingOrientation) (eventHandler7.getEvents().get(1).getEvent())).isInterior());
+		assertTrue(((ExteriorRingOrientation) (eventHandler7.getEvents().get(0).getEvent())).isExterior());
+		assertTrue(((InteriorRingOrientation) (eventHandler7.getEvents().get(1).getEvent())).isInterior());
 
 		TestEventHandler eventHandler8 = validate(
 				"invalid/RightHanded_exterior_anticlockwise_interior_anticlockwise.gml");
 		assertEquals(2, eventHandler8.getEvents().size());
-		Assert.assertTrue(((ExteriorRingOrientation) (eventHandler8.getEvents().get(0).getEvent())).isExterior());
-		Assert.assertFalse(((InteriorRingOrientation) (eventHandler8.getEvents().get(1).getEvent())).isInterior());
+		assertTrue(((ExteriorRingOrientation) (eventHandler8.getEvents().get(0).getEvent())).isExterior());
+		assertFalse(((InteriorRingOrientation) (eventHandler8.getEvents().get(1).getEvent())).isInterior());
 
 	}
 

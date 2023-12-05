@@ -40,16 +40,15 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.rendering.r2d;
 
-import static org.junit.Assert.assertTrue;
-
 import org.deegree.geometry.Envelope;
 import org.deegree.geometry.Geometry;
 import org.deegree.geometry.GeometryFactory;
 import org.deegree.geometry.io.WKTReader;
-import org.junit.Before;
-import org.junit.Test;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.locationtech.jts.io.ParseException;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test cases for {@link GeometryClipper}.
@@ -61,7 +60,7 @@ public class GeometryClipperTest {
 
 	private GeometryClipper clipper;
 
-	@Before
+	@BeforeEach
 	public void setup() {
 		final Envelope viewPort = new GeometryFactory().createEnvelope(0, 0, 1, 1, null);
 		final int width = 1024;

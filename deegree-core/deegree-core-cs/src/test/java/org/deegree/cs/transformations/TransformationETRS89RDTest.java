@@ -34,20 +34,19 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.cs.transformations;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.vecmath.Point3d;
-
 import org.deegree.commons.utils.Pair;
 import org.deegree.cs.coordinatesystems.ICRS;
 import org.deegree.cs.exceptions.TransformationException;
 import org.deegree.cs.exceptions.UnknownCRSException;
 import org.deegree.cs.persistence.CRSManager;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.vecmath.Point3d;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * test the accurancy of transformation from ETRS89 (epsg:4258) to the dutch RD CRS
@@ -65,7 +64,7 @@ public class TransformationETRS89RDTest extends TransformationAccuracy {
 	/** the epsilon for meter based crs */
 	public final static Point3d EPSILON_M = new Point3d(0.22, 0.22, 0.4);
 
-	@BeforeClass
+	@BeforeAll
 	public static void init() {
 		// reference points from http://www.06-gps.nl (from 2011-03-01)
 		refPoints = new HashMap<String, Pair<Point3d, Point3d>>();

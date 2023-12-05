@@ -65,7 +65,7 @@ import org.deegree.metadata.persistence.MetadataInspectorException;
 import org.deegree.metadata.persistence.transaction.DeleteOperation;
 import org.deegree.metadata.persistence.transaction.InsertOperation;
 import org.deegree.protocol.csw.MetadataStoreException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 
 /**

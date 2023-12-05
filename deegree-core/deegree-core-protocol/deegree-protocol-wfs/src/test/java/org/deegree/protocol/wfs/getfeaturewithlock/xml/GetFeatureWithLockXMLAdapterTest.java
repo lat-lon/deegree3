@@ -37,16 +37,16 @@
 
 package org.deegree.protocol.wfs.getfeaturewithlock.xml;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNull;
-import static org.deegree.protocol.wfs.WFSConstants.VERSION_200;
-import static org.junit.Assert.assertFalse;
+import org.deegree.protocol.wfs.getfeaturewithlock.GetFeatureWithLock;
+import org.deegree.protocol.wfs.lockfeature.xml.LockFeatureXMLAdapter;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigInteger;
 
-import org.deegree.protocol.wfs.getfeaturewithlock.GetFeatureWithLock;
-import org.deegree.protocol.wfs.lockfeature.xml.LockFeatureXMLAdapter;
-import org.junit.Test;
+import static org.deegree.protocol.wfs.WFSConstants.VERSION_200;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Tests for {@link LockFeatureXMLAdapter}.

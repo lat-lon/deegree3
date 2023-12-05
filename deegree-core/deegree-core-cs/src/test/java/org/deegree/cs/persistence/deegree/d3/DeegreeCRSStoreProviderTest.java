@@ -35,9 +35,9 @@
 
 package org.deegree.cs.persistence.deegree.d3;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collection;
 
@@ -64,7 +64,7 @@ import org.deegree.cs.refs.components.DatumRef;
 import org.deegree.cs.refs.projections.ProjectionRef;
 import org.deegree.cs.transformations.Transformation;
 import org.deegree.cs.transformations.helmert.Helmert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * {@link DeegreeCRSStoreProviderTest} test the loading of the default configuration as

@@ -34,16 +34,18 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.commons.utils;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.deegree.commons.utils.ArrayUtils.*;
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static org.deegree.commons.utils.ArrayUtils.join;
+import static org.deegree.commons.utils.ArrayUtils.removeAll;
+import static org.deegree.commons.utils.ArrayUtils.sortByLengthDescending;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author <a href="mailto:tonnhofer@lat-lon.de">Oliver Tonnhofer</a>
@@ -107,7 +109,7 @@ public class ArrayUtilsTest {
 
 	// compare all list elements with the given arguments
 	private <T> void arrayCompare(T[] actual, T... expected) {
-		assertEquals("length differ", expected.length, actual.length);
+		assertEquals(expected.length, actual.length, "length differ");
 		for (int i = 0; i < expected.length; i++) {
 			assertEquals(expected[i], actual[i]);
 		}

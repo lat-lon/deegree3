@@ -50,9 +50,10 @@ import org.deegree.sqldialect.filter.PropertyNameMapping;
 import org.deegree.sqldialect.filter.TableAliasManager;
 import org.deegree.sqldialect.filter.UnmappableException;
 import org.deegree.sqldialect.filter.expression.SQLOperation;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests for {@link MSSQLWhereBuilder}.
@@ -64,7 +65,7 @@ public class MSSQLWhereBuilderTest {
 
 	private MSSQLWhereBuilder whereBuilder;
 
-	@Before
+	@BeforeEach
 	public void setup() throws FilterEvaluationException, UnmappableException {
 		SQLDialect sqldialect = null;
 		PropertyNameMapper mapper = new PropertyNameMapper() {
@@ -103,7 +104,7 @@ public class MSSQLWhereBuilderTest {
 		SQLOperation protoSQL = whereBuilder.toProtoSQL(op);
 
 		StringBuilder sql = protoSQL.getSQL();
-		Assert.assertEquals("table.shortdesc LIKE 'HOWELLCITY' ESCAPE '\\'", sql.toString());
+		assertEquals("table.shortdesc LIKE 'HOWELLCITY' ESCAPE '\\'", sql.toString());
 	}
 
 	@Test
@@ -121,7 +122,7 @@ public class MSSQLWhereBuilderTest {
 		SQLOperation protoSQL = whereBuilder.toProtoSQL(op);
 
 		StringBuilder sql = protoSQL.getSQL();
-		Assert.assertEquals("table.shortdesc LIKE 'HOWELL \\[CITY\\]' ESCAPE '\\'", sql.toString());
+		assertEquals("table.shortdesc LIKE 'HOWELL \\[CITY\\]' ESCAPE '\\'", sql.toString());
 	}
 
 }

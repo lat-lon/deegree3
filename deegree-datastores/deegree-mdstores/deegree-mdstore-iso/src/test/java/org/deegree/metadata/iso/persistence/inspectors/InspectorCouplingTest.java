@@ -34,19 +34,20 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.metadata.iso.persistence.inspectors;
 
-import java.util.List;
-
 import org.deegree.commons.config.ResourceInitException;
 import org.deegree.metadata.iso.persistence.AbstractISOTest;
 import org.deegree.metadata.iso.persistence.TstConstants;
 import org.deegree.metadata.iso.persistence.TstUtils;
 import org.deegree.metadata.persistence.MetadataInspectorException;
 import org.deegree.protocol.csw.MetadataStoreException;
-import org.junit.Assert;
-import org.junit.Assume;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * TODO add class documentation here
@@ -64,7 +65,7 @@ public class InspectorCouplingTest extends AbstractISOTest {
 				"START Test: test if the the coupling of data and service metadata is correct and no exception will be thrown. ");
 
 		initStore(TstConstants.configURL_COUPLING_ACCEPT);
-		Assume.assumeNotNull(store);
+		assumeTrue(store != null);
 
 		List<String> ids = TstUtils.insertMetadata(store, TstConstants.tst_12, TstConstants.tst_12_2,
 				TstConstants.tst_13);
@@ -75,7 +76,7 @@ public class InspectorCouplingTest extends AbstractISOTest {
 			size++;
 		}
 
-		Assert.assertEquals(3, size);
+		assertEquals(3, size);
 
 	}
 
@@ -86,7 +87,7 @@ public class InspectorCouplingTest extends AbstractISOTest {
 				"START Test: test if the the coupled service metadata will be inserted without any coupling but no exception will be thrown. ");
 
 		initStore(TstConstants.configURL_COUPLING_ACCEPT);
-		Assume.assumeNotNull(store);
+		assumeTrue(store != null);
 
 		List<String> ids = TstUtils.insertMetadata(store, TstConstants.tst_11, TstConstants.tst_13);
 
@@ -96,7 +97,7 @@ public class InspectorCouplingTest extends AbstractISOTest {
 			size++;
 		}
 
-		Assert.assertEquals(2, size);
+		assertEquals(2, size);
 
 	}
 
@@ -107,7 +108,7 @@ public class InspectorCouplingTest extends AbstractISOTest {
 				"START Test: test if the the coupling of data and service metadata is correct and no exception will be thrown. ");
 
 		initStore(TstConstants.configURL_COUPLING_Ex_AWARE);
-		Assume.assumeNotNull(store);
+		assumeTrue(store != null);
 
 		List<String> ids = TstUtils.insertMetadata(store, TstConstants.tst_12, TstConstants.tst_12_2,
 				TstConstants.tst_13);
@@ -118,7 +119,7 @@ public class InspectorCouplingTest extends AbstractISOTest {
 			size++;
 		}
 
-		Assert.assertEquals(3, size);
+		assertEquals(3, size);
 
 	}
 
@@ -128,7 +129,7 @@ public class InspectorCouplingTest extends AbstractISOTest {
 			throws MetadataStoreException, MetadataInspectorException, ResourceInitException {
 		LOG.info("START Test: test if an exception will be thrown if there is an insert of the service metadata. ");
 		initStore(TstConstants.configURL_COUPLING_Ex_AWARE);
-		Assume.assumeNotNull(store);
+		assumeTrue(store != null);
 		TstUtils.insertMetadata(store, TstConstants.tst_11, TstConstants.tst_13);
 
 	}

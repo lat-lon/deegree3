@@ -1,6 +1,6 @@
 package org.deegree.tools.featurestoresql.loader;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author <a href="mailto:goltz@lat-lon.de">Lyn Goltz </a>

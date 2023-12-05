@@ -34,12 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.geometry;
 
-import static junit.framework.Assert.assertEquals;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.deegree.cs.CRSUtils;
 import org.deegree.geometry.linearization.NumPointsCriterion;
 import org.deegree.geometry.multi.MultiCurve;
@@ -56,8 +50,14 @@ import org.deegree.geometry.primitive.patches.SurfacePatch;
 import org.deegree.geometry.primitive.segments.Arc;
 import org.deegree.geometry.primitive.segments.LineStringSegment;
 import org.deegree.geometry.standard.points.PointsArray;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SFSProfilerTest {
 
@@ -67,7 +67,7 @@ public class SFSProfilerTest {
 
 	private final static int POINTS_PER_ARC = 10;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		simplifier = new SFSProfiler(new NumPointsCriterion(POINTS_PER_ARC));
 	}

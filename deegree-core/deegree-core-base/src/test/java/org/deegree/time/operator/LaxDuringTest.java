@@ -1,10 +1,5 @@
 package org.deegree.time.operator;
 
-import static java.util.Collections.emptyList;
-import static org.deegree.time.position.IndeterminateValue.UNKNOWN;
-
-import java.util.List;
-
 import org.deegree.commons.tom.gml.property.Property;
 import org.deegree.time.position.TimePosition;
 import org.deegree.time.primitive.GenericTimeInstant;
@@ -13,8 +8,14 @@ import org.deegree.time.primitive.RelatedTime;
 import org.deegree.time.primitive.TimeGeometricPrimitive;
 import org.deegree.time.primitive.TimeInstant;
 import org.deegree.time.primitive.TimePeriod;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
+import static java.util.Collections.emptyList;
+import static org.deegree.time.position.IndeterminateValue.UNKNOWN;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class LaxDuringTest {
 
@@ -144,11 +145,11 @@ public class LaxDuringTest {
 	}
 
 	private void assertLaxDuring(TimeGeometricPrimitive a, TimeGeometricPrimitive b) {
-		Assert.assertTrue(laxDuring(a, b));
+		assertTrue(laxDuring(a, b));
 	}
 
 	private void assertNotLaxDuring(TimeGeometricPrimitive a, TimeGeometricPrimitive b) {
-		Assert.assertFalse(laxDuring(a, b));
+		assertFalse(laxDuring(a, b));
 	}
 
 	private boolean laxDuring(TimeGeometricPrimitive a, TimeGeometricPrimitive b) {

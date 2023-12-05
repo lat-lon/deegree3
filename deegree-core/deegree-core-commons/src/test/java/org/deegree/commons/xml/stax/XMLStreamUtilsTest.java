@@ -40,18 +40,17 @@
 
 package org.deegree.commons.xml.stax;
 
-import static junit.framework.Assert.assertEquals;
-
-import java.io.IOException;
-import java.net.URL;
+import org.junit.jupiter.api.Test;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import java.io.IOException;
+import java.net.URL;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * <code>XMLStreamUtilsTest</code>
@@ -67,8 +66,8 @@ public class XMLStreamUtilsTest {
 		XMLStreamReader reader = XMLInputFactory.newInstance().createXMLStreamReader(url.openStream());
 		XMLStreamUtils.skipToRequiredElement(reader, new QName("http://www.opengis.net/sld", "FeatureTypeName"));
 		QName name = XMLStreamUtils.getElementTextAsRelaxedQName(reader);
-		assertEquals("Namespace not detected properly", "http://www.deegree.org/app", name.getNamespaceURI());
-		assertEquals("Local name not detected properly", "SGID500_ZipCodes", name.getLocalPart());
+		assertEquals("http://www.deegree.org/app", name.getNamespaceURI(), "Namespace not detected properly");
+		assertEquals("SGID500_ZipCodes", name.getLocalPart(), "Local name not detected properly");
 	}
 
 }

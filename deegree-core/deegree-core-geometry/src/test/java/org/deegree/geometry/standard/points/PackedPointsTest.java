@@ -1,13 +1,11 @@
 package org.deegree.geometry.standard.points;
 
-import static org.junit.Assert.assertThat;
-
 import org.deegree.cs.coordinatesystems.ICRS;
 import org.deegree.cs.persistence.CRSManager;
-import org.hamcrest.CoreMatchers;
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 import org.locationtech.jts.geom.Envelope;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author <a href="mailto:goltz@lat-lon.de">Lyn Goltz </a>
@@ -23,7 +21,7 @@ public class PackedPointsTest {
 		Envelope envelope = new Envelope(0, 10, 0, 10);
 		Envelope expandedEnvelope = points.expandEnvelope(envelope);
 
-		assertThat(expandedEnvelope, CoreMatchers.<Envelope>is(envelope));
+		assertEquals(expandedEnvelope, envelope);
 	}
 
 	@Test
@@ -35,7 +33,7 @@ public class PackedPointsTest {
 		Envelope envelope = new Envelope(0, 10, 0, 10);
 		Envelope expandedEnvelope = points.expandEnvelope(envelope);
 
-		assertThat(expandedEnvelope, CoreMatchers.<Envelope>is(envelope));
+		assertEquals(expandedEnvelope, envelope);
 	}
 
 }

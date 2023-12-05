@@ -39,10 +39,13 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.services.wms;
 
-import static org.deegree.commons.utils.io.Utils.DEV_NULL;
-import static org.deegree.commons.utils.net.HttpUtils.STREAM;
-import static org.deegree.commons.utils.net.HttpUtils.retrieve;
+import org.apache.commons.io.IOUtils;
+import org.deegree.geometry.Envelope;
+import org.deegree.protocol.ows.exception.OWSExceptionReport;
+import org.deegree.protocol.wms.client.WMSClient;
+import org.junit.jupiter.api.Test;
 
+import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -52,15 +55,11 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import javax.xml.stream.XMLStreamException;
-
-import org.apache.commons.io.IOUtils;
-import org.deegree.geometry.Envelope;
-import org.deegree.protocol.ows.exception.OWSExceptionReport;
-import org.deegree.protocol.wms.client.WMSClient;
-import org.junit.Assert;
-import org.junit.Assume;
-import org.junit.Test;
+import static org.deegree.commons.utils.io.Utils.DEV_NULL;
+import static org.deegree.commons.utils.net.HttpUtils.STREAM;
+import static org.deegree.commons.utils.net.HttpUtils.retrieve;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * <code>TileLayerPT</code>
@@ -77,7 +76,7 @@ public class TileLayerPerformanceTest {
 
 		// skip test if layer is not available, then we probably don't have the huge file
 		// available
-		Assume.assumeTrue(client.hasLayer("performance"));
+		assumeTrue(client.hasLayer("performance"));
 
 		String crs = client.getCoordinateSystems("performance").getFirst();
 
@@ -108,7 +107,7 @@ public class TileLayerPerformanceTest {
 		System.out.println("Requested 100 images, 10 in parallel, took " + (t1 / 1000) + " seconds.");
 		double avg = (t1 / 100d) / 1000d;
 		System.out.println("Average secs/request: " + avg);
-		Assert.assertTrue("Average response time was too high.", avg < 5);
+		assertTrue(avg < 5, "Average response time was too high.");
 	}
 
 	static class Fetcher implements Callable<Object> {

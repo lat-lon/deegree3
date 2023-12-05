@@ -34,23 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.protocol.wps.client;
 
-import static org.locationtech.jts.io.gml2.GMLConstants.GML_NAMESPACE;
-import static org.locationtech.jts.io.gml2.GMLConstants.GML_PREFIX;
-import static org.junit.Assert.assertEquals;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.Arrays;
-
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
 import org.deegree.commons.ows.metadata.OperationsMetadata;
 import org.deegree.commons.ows.metadata.ServiceIdentification;
 import org.deegree.commons.ows.metadata.ServiceProvider;
@@ -79,9 +62,29 @@ import org.deegree.protocol.wps.client.process.Process;
 import org.deegree.protocol.wps.client.process.ProcessExecution;
 import org.deegree.protocol.wps.client.process.RawProcessExecution;
 import org.deegree.protocol.wps.client.process.execute.ExecutionOutputs;
-import org.junit.Assert;
-import org.junit.Assume;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
+import static org.locationtech.jts.io.gml2.GMLConstants.GML_NAMESPACE;
+import static org.locationtech.jts.io.gml2.GMLConstants.GML_PREFIX;
 
 /**
  * JUnit class tests the functionality of the client.
@@ -105,170 +108,168 @@ public class WPSClientTest {
 	public void testMetadata() throws OWSExceptionReport, IOException {
 
 		String demoWPSURL = TestProperties.getProperty("demo_wps_url");
-		Assume.assumeNotNull(demoWPSURL);
+		assumeTrue(demoWPSURL != null);
 		URL serviceUrl = new URL(demoWPSURL);
 
 		WPSClient client = new WPSClient(serviceUrl);
-		Assert.assertNotNull(client);
+		assertNotNull(client);
 		ServiceIdentification serviceId = client.getMetadata().getServiceIdentification();
-		Assert.assertNotNull(serviceId);
-		Assert.assertEquals(1, serviceId.getTitles().size());
-		Assert.assertNotNull(serviceId.getTitles().get(0).getString());
-		Assert.assertEquals(1, serviceId.getAbstracts().size());
-		Assert.assertNotNull(serviceId.getAbstracts().get(0).getString());
+		assertNotNull(serviceId);
+		assertEquals(1, serviceId.getTitles().size());
+		assertNotNull(serviceId.getTitles().get(0).getString());
+		assertEquals(1, serviceId.getAbstracts().size());
+		assertNotNull(serviceId.getAbstracts().get(0).getString());
 
-		Assert.assertEquals("WPS", serviceId.getServiceType().getCode());
-		Assert.assertEquals("1.0.0", serviceId.getServiceTypeVersion().get(0).toString());
+		assertEquals("WPS", serviceId.getServiceType().getCode());
+		assertEquals("1.0.0", serviceId.getServiceTypeVersion().get(0).toString());
 
 		ServiceProvider serviceProvider = client.getMetadata().getServiceProvider();
-		Assert.assertEquals("lat/lon GmbH", serviceProvider.getProviderName());
-		Assert.assertEquals("http://www.lat-lon.de", serviceProvider.getProviderSite());
+		assertEquals("lat/lon GmbH", serviceProvider.getProviderName());
+		assertEquals("http://www.lat-lon.de", serviceProvider.getProviderSite());
 
 		ResponsibleParty serviceContact = serviceProvider.getServiceContact();
-		Assert.assertNotNull(serviceContact.getIndividualName());
-		Assert.assertNotNull(serviceContact.getPositionName());
+		assertNotNull(serviceContact.getIndividualName());
+		assertNotNull(serviceContact.getPositionName());
 
 		ContactInfo contactInfo = serviceContact.getContactInfo();
-		Assert.assertEquals("0228/18496-0", contactInfo.getPhone().getVoice().get(0));
-		Assert.assertEquals("0228/18496-29", contactInfo.getPhone().getFacsimile().get(0));
-		Assert.assertEquals("Aennchenstr. 19", contactInfo.getAddress().getDeliveryPoint().get(0));
-		Assert.assertEquals("Bonn", contactInfo.getAddress().getCity());
-		Assert.assertEquals("NRW", contactInfo.getAddress().getAdministrativeArea());
-		Assert.assertEquals("53177", contactInfo.getAddress().getPostalCode());
-		Assert.assertEquals("Germany", contactInfo.getAddress().getCountry());
-		Assert.assertNotNull(contactInfo.getAddress().getElectronicMailAddress().get(0));
-		Assert.assertEquals("http://www.deegree.org", contactInfo.getOnlineResource().toExternalForm());
-		Assert.assertEquals("24x7", contactInfo.getHoursOfService());
-		Assert.assertEquals("Do not hesitate to call", contactInfo.getContactInstruction());
+		assertEquals("0228/18496-0", contactInfo.getPhone().getVoice().get(0));
+		assertEquals("0228/18496-29", contactInfo.getPhone().getFacsimile().get(0));
+		assertEquals("Aennchenstr. 19", contactInfo.getAddress().getDeliveryPoint().get(0));
+		assertEquals("Bonn", contactInfo.getAddress().getCity());
+		assertEquals("NRW", contactInfo.getAddress().getAdministrativeArea());
+		assertEquals("53177", contactInfo.getAddress().getPostalCode());
+		assertEquals("Germany", contactInfo.getAddress().getCountry());
+		assertNotNull(contactInfo.getAddress().getElectronicMailAddress().get(0));
+		assertEquals("http://www.deegree.org", contactInfo.getOnlineResource().toExternalForm());
+		assertEquals("24x7", contactInfo.getHoursOfService());
+		assertEquals("Do not hesitate to call", contactInfo.getContactInstruction());
 
-		Assert.assertEquals("PointOfContact", serviceContact.getRole().getCode());
+		assertEquals("PointOfContact", serviceContact.getRole().getCode());
 
 		OperationsMetadata opMetadata = client.getMetadata().getOperationsMetadata();
 		Operation op;
 
 		op = opMetadata.getOperation("GetCapabilities");
-		Assert.assertNotNull(op.getGetUrls().get(0).toExternalForm());
-		Assert.assertNotNull(op.getPostUrls().get(0).toExternalForm());
+		assertNotNull(op.getGetUrls().get(0).toExternalForm());
+		assertNotNull(op.getPostUrls().get(0).toExternalForm());
 
 		op = opMetadata.getOperation("DescribeProcess");
-		Assert.assertNotNull(op.getGetUrls().get(0).toExternalForm());
-		Assert.assertNotNull(op.getPostUrls().get(0).toExternalForm());
+		assertNotNull(op.getGetUrls().get(0).toExternalForm());
+		assertNotNull(op.getPostUrls().get(0).toExternalForm());
 
 		op = opMetadata.getOperation("Execute");
-		Assert.assertNotNull(op.getGetUrls().get(0).toExternalForm());
-		Assert.assertNotNull(op.getPostUrls().get(0).toExternalForm());
+		assertNotNull(op.getGetUrls().get(0).toExternalForm());
+		assertNotNull(op.getPostUrls().get(0).toExternalForm());
 	}
 
 	@Test
 	public void testProcessDescription_1() throws OWSExceptionReport, IOException {
 		String demoWPSURL = TestProperties.getProperty("demo_wps_url");
-		Assume.assumeNotNull(demoWPSURL);
+		assumeTrue(demoWPSURL != null);
 		WPSClient wpsClient = new WPSClient(new URL(demoWPSURL));
 		org.deegree.protocol.wps.client.process.Process p1 = wpsClient.getProcess("Buffer");
 		LiteralInputType literalInput = (LiteralInputType) p1.getInputTypes()[1];
-		Assert.assertEquals("1", literalInput.getMinOccurs());
-		Assert.assertEquals("1", literalInput.getMaxOccurs());
-		Assert.assertEquals("double", literalInput.getDataType().getValue());
-		Assert.assertEquals("http://www.w3.org/TR/xmlschema-2/#double", literalInput.getDataType().getRef().toString());
-		Assert.assertEquals("unity", literalInput.getDefaultUom().getValue());
-		Assert.assertEquals("unity", literalInput.getSupportedUoms()[0].getValue());
-		Assert.assertEquals(true, literalInput.isAnyValue());
+		assertEquals("1", literalInput.getMinOccurs());
+		assertEquals("1", literalInput.getMaxOccurs());
+		assertEquals("double", literalInput.getDataType().getValue());
+		assertEquals("http://www.w3.org/TR/xmlschema-2/#double", literalInput.getDataType().getRef().toString());
+		assertEquals("unity", literalInput.getDefaultUom().getValue());
+		assertEquals("unity", literalInput.getSupportedUoms()[0].getValue());
+		assertEquals(true, literalInput.isAnyValue());
 
 		OutputType output = p1.getOutputTypes()[0];
 		ComplexOutputType complexData = (ComplexOutputType) output;
-		Assert.assertEquals("UTF-8", complexData.getDefaultFormat().getEncoding());
-		Assert.assertEquals("text/xml", complexData.getDefaultFormat().getMimeType());
-		Assert.assertTrue(
-				complexData.getDefaultFormat().getSchema().startsWith("http://schemas.opengis.net/gml/3.1.1/base/"));
-		Assert.assertEquals("UTF-8", complexData.getSupportedFormats()[0].getEncoding());
-		Assert.assertEquals("text/xml", complexData.getSupportedFormats()[0].getMimeType());
-		Assert.assertTrue(complexData.getSupportedFormats()[0].getSchema()
+		assertEquals("UTF-8", complexData.getDefaultFormat().getEncoding());
+		assertEquals("text/xml", complexData.getDefaultFormat().getMimeType());
+		assertTrue(complexData.getDefaultFormat().getSchema().startsWith("http://schemas.opengis.net/gml/3.1.1/base/"));
+		assertEquals("UTF-8", complexData.getSupportedFormats()[0].getEncoding());
+		assertEquals("text/xml", complexData.getSupportedFormats()[0].getMimeType());
+		assertTrue(complexData.getSupportedFormats()[0].getSchema()
 			.startsWith("http://schemas.opengis.net/gml/3.1.1/base/"));
 	}
 
 	@Test
 	public void testProcessDescription_2() throws OWSExceptionReport, IOException {
 		String demoWPSURL = TestProperties.getProperty("demo_wps_url");
-		Assume.assumeNotNull(demoWPSURL);
+		assumeTrue(demoWPSURL != null);
 		WPSClient wpsClient = new WPSClient(new URL(demoWPSURL));
 		org.deegree.protocol.wps.client.process.Process p2 = wpsClient.getProcess("Crosses", null);
 		InputType secondInput = p2.getInputTypes()[1];
-		Assert.assertEquals("1", secondInput.getMinOccurs());
-		Assert.assertEquals("1", secondInput.getMaxOccurs());
+		assertEquals("1", secondInput.getMinOccurs());
+		assertEquals("1", secondInput.getMaxOccurs());
 		ComplexInputType complexData = (ComplexInputType) secondInput;
-		Assert.assertEquals("text/xml", complexData.getDefaultFormat().getMimeType());
-		Assert.assertEquals("UTF-8", complexData.getDefaultFormat().getEncoding());
-		Assert.assertEquals("http://schemas.opengis.net/gml/3.1.1/base/gml.xsd",
-				complexData.getDefaultFormat().getSchema());
-		Assert.assertEquals("text/xml", complexData.getSupportedFormats()[0].getMimeType());
-		Assert.assertEquals("UTF-8", complexData.getSupportedFormats()[0].getEncoding());
-		Assert.assertEquals("http://schemas.opengis.net/gml/3.1.1/base/gml.xsd",
+		assertEquals("text/xml", complexData.getDefaultFormat().getMimeType());
+		assertEquals("UTF-8", complexData.getDefaultFormat().getEncoding());
+		assertEquals("http://schemas.opengis.net/gml/3.1.1/base/gml.xsd", complexData.getDefaultFormat().getSchema());
+		assertEquals("text/xml", complexData.getSupportedFormats()[0].getMimeType());
+		assertEquals("UTF-8", complexData.getSupportedFormats()[0].getEncoding());
+		assertEquals("http://schemas.opengis.net/gml/3.1.1/base/gml.xsd",
 				complexData.getSupportedFormats()[0].getSchema());
 
 		OutputType output = p2.getOutputTypes()[0];
 		LiteralOutputType literalOut = (LiteralOutputType) output;
-		Assert.assertEquals("boolean", literalOut.getDataType().getValue());
-		Assert.assertEquals("http://www.w3.org/TR/xmlschema-2/#boolean", literalOut.getDataType().getRef().toString());
+		assertEquals("boolean", literalOut.getDataType().getValue());
+		assertEquals("http://www.w3.org/TR/xmlschema-2/#boolean", literalOut.getDataType().getRef().toString());
 	}
 
 	@Test
 	public void testProcessDescription_3() throws OWSExceptionReport, IOException {
 		String demoWPSURL = TestProperties.getProperty("demo_wps_url");
-		Assume.assumeNotNull(demoWPSURL);
+		assumeTrue(demoWPSURL != null);
+		assumeTrue(demoWPSURL != null);
 		WPSClient wpsClient = new WPSClient(new URL(demoWPSURL));
 		org.deegree.protocol.wps.client.process.Process p2 = wpsClient.getProcess("ParameterDemoProcess", null);
 
 		InputType firstInput = p2.getInputTypes()[0];
 		LiteralInputType literalInput = (LiteralInputType) firstInput;
-		Assert.assertEquals("integer", literalInput.getDataType().getValue());
-		Assert.assertEquals("http://www.w3.org/TR/xmlschema-2/#integer",
-				literalInput.getDataType().getRef().toString());
-		Assert.assertEquals("seconds", literalInput.getDefaultUom().getValue());
-		Assert.assertEquals("seconds", literalInput.getSupportedUoms()[0].getValue());
-		Assert.assertEquals("minutes", literalInput.getSupportedUoms()[1].getValue());
+		assertEquals("integer", literalInput.getDataType().getValue());
+		assertEquals("http://www.w3.org/TR/xmlschema-2/#integer", literalInput.getDataType().getRef().toString());
+		assertEquals("seconds", literalInput.getDefaultUom().getValue());
+		assertEquals("seconds", literalInput.getSupportedUoms()[0].getValue());
+		assertEquals("minutes", literalInput.getSupportedUoms()[1].getValue());
 
 		InputType secondInput = p2.getInputTypes()[1];
-		Assert.assertEquals("1", secondInput.getMinOccurs());
-		Assert.assertEquals("1", secondInput.getMaxOccurs());
+		assertEquals("1", secondInput.getMinOccurs());
+		assertEquals("1", secondInput.getMaxOccurs());
 		BBoxInputType bboxData = (BBoxInputType) secondInput;
-		Assert.assertEquals("EPSG:4326", bboxData.getDefaultCRS());
-		Assert.assertEquals("EPSG:4326", bboxData.getSupportedCrs()[0]);
+		assertEquals("EPSG:4326", bboxData.getDefaultCRS());
+		assertEquals("EPSG:4326", bboxData.getSupportedCrs()[0]);
 
 		InputType thirdInput = p2.getInputTypes()[2];
 		ComplexInputType xmlData = (ComplexInputType) thirdInput;
-		Assert.assertEquals("text/xml", xmlData.getDefaultFormat().getMimeType());
-		Assert.assertEquals("text/xml", xmlData.getSupportedFormats()[0].getMimeType());
+		assertEquals("text/xml", xmlData.getDefaultFormat().getMimeType());
+		assertEquals("text/xml", xmlData.getSupportedFormats()[0].getMimeType());
 
 		InputType fourthInput = p2.getInputTypes()[3];
 		ComplexInputType binaryData = (ComplexInputType) fourthInput;
-		Assert.assertEquals("image/png", binaryData.getDefaultFormat().getMimeType());
-		Assert.assertEquals("base64", binaryData.getDefaultFormat().getEncoding());
-		Assert.assertEquals("image/png", binaryData.getSupportedFormats()[0].getMimeType());
-		Assert.assertEquals("base64", binaryData.getSupportedFormats()[0].getEncoding());
+		assertEquals("image/png", binaryData.getDefaultFormat().getMimeType());
+		assertEquals("base64", binaryData.getDefaultFormat().getEncoding());
+		assertEquals("image/png", binaryData.getSupportedFormats()[0].getMimeType());
+		assertEquals("base64", binaryData.getSupportedFormats()[0].getEncoding());
 
 		OutputType firstOutput = p2.getOutputTypes()[0];
-		Assert.assertEquals("A literal output parameter", firstOutput.getTitle().getString());
+		assertEquals("A literal output parameter", firstOutput.getTitle().getString());
 		LiteralOutputType literalData = (LiteralOutputType) firstOutput;
-		Assert.assertEquals("integer", literalData.getDataType().getValue());
-		Assert.assertEquals("http://www.w3.org/TR/xmlschema-2/#integer", literalData.getDataType().getRef().toString());
-		Assert.assertEquals("seconds", literalData.getDefaultUom().getValue());
-		Assert.assertEquals("seconds", literalData.getSupportedUoms()[0].getValue());
+		assertEquals("integer", literalData.getDataType().getValue());
+		assertEquals("http://www.w3.org/TR/xmlschema-2/#integer", literalData.getDataType().getRef().toString());
+		assertEquals("seconds", literalData.getDefaultUom().getValue());
+		assertEquals("seconds", literalData.getSupportedUoms()[0].getValue());
 
 		OutputType secondOutput = p2.getOutputTypes()[1];
 		BBoxOutputType bboxOutput = (BBoxOutputType) secondOutput;
-		Assert.assertEquals("EPSG:4326", bboxOutput.getDefaultCrs());
-		Assert.assertEquals("EPSG:4326", bboxOutput.getSupportedCrs()[0]);
+		assertEquals("EPSG:4326", bboxOutput.getDefaultCrs());
+		assertEquals("EPSG:4326", bboxOutput.getSupportedCrs()[0]);
 
 		OutputType thirdOutput = p2.getOutputTypes()[2];
 		ComplexOutputType xmlOutput = (ComplexOutputType) thirdOutput;
-		Assert.assertEquals("text/xml", xmlOutput.getDefaultFormat().getMimeType());
-		Assert.assertEquals("text/xml", xmlOutput.getSupportedFormats()[0].getMimeType());
+		assertEquals("text/xml", xmlOutput.getDefaultFormat().getMimeType());
+		assertEquals("text/xml", xmlOutput.getSupportedFormats()[0].getMimeType());
 
 		OutputType fourthOutput = p2.getOutputTypes()[3];
 		ComplexOutputType binaryOutput = (ComplexOutputType) fourthOutput;
 		System.out.println(binaryOutput.getDefaultFormat());
-		Assert.assertEquals("text/xml", xmlOutput.getDefaultFormat().getMimeType());
-		Assert.assertEquals("text/xml", xmlOutput.getSupportedFormats()[0].getMimeType());
+		assertEquals("text/xml", xmlOutput.getDefaultFormat().getMimeType());
+		assertEquals("text/xml", xmlOutput.getSupportedFormats()[0].getMimeType());
 	}
 
 	// @Test
@@ -279,40 +280,40 @@ public class WPSClientTest {
 	// Process proc = wpsClient.getProcess( "buffer", null );
 	// InputDescription inputLayer = proc.getInputType( "LAYER", null );
 	// ComplexDataDescription layerData = (ComplexDataDescription) inputLayer.getData();
-	// Assert.assertEquals(
+	// assertEquals(
 	// "http://geoserver.itc.nl:8080/wps/schemas/gml/2.1.2/gmlpacket.xsd",
 	// layerData.getSupportedFormats()[1].getSchema() );
 	//
 	// InputDescription inputField = proc.getInputType( "FIELD", null );
 	// LiteralDataDescription fieldData = (LiteralDataDescription) inputField.getData();
-	// Assert.assertEquals( "xs:int", fieldData.getDataType().getRef().toString() );
-	// Assert.assertEquals( "0", fieldData.getRanges()[0].getMinimumValue() );
-	// Assert.assertEquals( "+Infinity", fieldData.getRanges()[0].getMaximumValue() );
+	// assertEquals( "xs:int", fieldData.getDataType().getRef().toString() );
+	// assertEquals( "0", fieldData.getRanges()[0].getMinimumValue() );
+	// assertEquals( "+Infinity", fieldData.getRanges()[0].getMaximumValue() );
 	//
 	// InputDescription inputMethod = proc.getInputType( "METHOD", null );
-	// Assert.assertEquals( "Distance", inputMethod.getAbstract().getString() );
+	// assertEquals( "Distance", inputMethod.getAbstract().getString() );
 	// LiteralDataDescription methodData = (LiteralDataDescription) inputMethod.getData();
-	// Assert.assertEquals( "Fixed distance", methodData.getAllowedValues()[0] );
-	// Assert.assertEquals( "Distance from table field", methodData.getAllowedValues()[1]
+	// assertEquals( "Fixed distance", methodData.getAllowedValues()[0] );
+	// assertEquals( "Distance from table field", methodData.getAllowedValues()[1]
 	// );
 	// }
 
 	@Test
 	public void testGetProcess() throws OWSExceptionReport, IOException {
 		String demoWPSURL = TestProperties.getProperty("demo_wps_url");
-		Assume.assumeNotNull(demoWPSURL);
+		assumeTrue(demoWPSURL != null);
 		WPSClient wpsClient = new WPSClient(new URL(demoWPSURL));
 		org.deegree.protocol.wps.client.process.Process p1 = wpsClient.getProcess("Buffer", null);
-		Assert.assertNotNull(p1);
+		assertNotNull(p1);
 		org.deegree.protocol.wps.client.process.Process p2 = wpsClient.getProcess("ParameterDemoProcess", null);
-		Assert.assertNotNull(p2);
+		assertNotNull(p2);
 	}
 
 	@Test
 	public void testExecute_1() throws Exception {
 
 		String demoWPSURL = TestProperties.getProperty("demo_wps_url");
-		Assume.assumeNotNull(demoWPSURL);
+		assumeTrue(demoWPSURL != null);
 		WPSClient wpsClient = new WPSClient(new URL(demoWPSURL));
 		org.deegree.protocol.wps.client.process.Process proc = wpsClient.getProcess("Centroid", null);
 		ProcessExecution execution = proc.prepareExecution();
@@ -331,15 +332,15 @@ public class WPSClientTest {
 		String pos = searchableXML.getRequiredNodeAsString(searchableXML.getRootElement(), xpath);
 
 		String[] pair = pos.split("\\s");
-		Assert.assertNotNull(Double.parseDouble(pair[0]));
-		Assert.assertNotNull(Double.parseDouble(pair[1]));
+		assertNotNull(Double.parseDouble(pair[0]));
+		assertNotNull(Double.parseDouble(pair[1]));
 	}
 
 	@Test
 	public void testExecute_2() throws Exception {
 
 		String demoWPSURL = TestProperties.getProperty("demo_wps_url");
-		Assume.assumeNotNull(demoWPSURL);
+		assumeTrue(demoWPSURL != null);
 		WPSClient wpsClient = new WPSClient(new URL(demoWPSURL));
 		org.deegree.protocol.wps.client.process.Process proc = wpsClient.getProcess("Buffer", null);
 
@@ -356,13 +357,13 @@ public class WPSClientTest {
 		nsContext.addNamespace(GML_PREFIX, GML_NAMESPACE);
 		XPath xpath = new XPath(xpathStr, nsContext);
 		String pointList = searchableXML.getRequiredNodeAsString(searchableXML.getRootElement(), xpath);
-		Assert.assertEquals(460, pointList.split("\\s").length);
+		assertEquals(460, pointList.split("\\s").length);
 	}
 
 	@Test
 	public void testExecute_3() throws OWSExceptionReport, IOException, XMLStreamException {
 		String demoWPSURL = TestProperties.getProperty("demo_wps_url");
-		Assume.assumeNotNull(demoWPSURL);
+		assumeTrue(demoWPSURL != null);
 		WPSClient wpsClient = new WPSClient(new URL(demoWPSURL));
 		org.deegree.protocol.wps.client.process.Process proc = wpsClient.getProcess("ParameterDemoProcess");
 
@@ -374,21 +375,21 @@ public class WPSClientTest {
 		ExecutionOutputs outputs = execution.execute();
 
 		LiteralOutput out1 = (LiteralOutput) outputs.get(0);
-		Assert.assertEquals("0", out1.getValue());
-		Assert.assertEquals("integer", out1.getDataType());
-		Assert.assertEquals("seconds", out1.getUom());
+		assertEquals("0", out1.getValue());
+		assertEquals("integer", out1.getDataType());
+		assertEquals("seconds", out1.getUom());
 
 		BBoxOutput out2 = (BBoxOutput) outputs.get(1);
-		Assert.assertTrue(Arrays.equals(new double[] { 0.0, 0.0 }, out2.getLower()));
-		Assert.assertTrue(Arrays.equals(new double[] { 90.0, 180.0 }, out2.getUpper()));
-		Assert.assertEquals("EPSG:4326", out2.getCrs());
-		Assert.assertEquals(2, out2.getDimension());
+		assertTrue(Arrays.equals(new double[] { 0.0, 0.0 }, out2.getLower()));
+		assertTrue(Arrays.equals(new double[] { 90.0, 180.0 }, out2.getUpper()));
+		assertEquals("EPSG:4326", out2.getCrs());
+		assertEquals(2, out2.getDimension());
 	}
 
 	@Test
 	public void testExecute_4() throws OWSExceptionReport, IOException, XMLStreamException {
 		String demoWPSURL = TestProperties.getProperty("demo_wps_url");
-		Assume.assumeNotNull(demoWPSURL);
+		assumeTrue(demoWPSURL != null);
 		WPSClient wpsClient = new WPSClient(new URL(demoWPSURL));
 		org.deegree.protocol.wps.client.process.Process proc = wpsClient.getProcess("ParameterDemoProcess", null);
 
@@ -401,20 +402,20 @@ public class WPSClientTest {
 		ExecutionOutputs outputs = execution.execute();
 
 		BBoxOutput bboxOut = outputs.getBoundingBox("BBOXOutput", null);
-		Assert.assertTrue(Arrays.equals(new double[] { 0.0, 0.0 }, bboxOut.getLower()));
-		Assert.assertTrue(Arrays.equals(new double[] { 90.0, 180.0 }, bboxOut.getUpper()));
-		Assert.assertEquals("EPSG:4326", bboxOut.getCrs());
-		Assert.assertEquals(2, bboxOut.getDimension());
+		assertTrue(Arrays.equals(new double[] { 0.0, 0.0 }, bboxOut.getLower()));
+		assertTrue(Arrays.equals(new double[] { 90.0, 180.0 }, bboxOut.getUpper()));
+		assertEquals("EPSG:4326", bboxOut.getCrs());
+		assertEquals(2, bboxOut.getDimension());
 
-		Assert.assertNull(outputs.getComplex("XMLOutput", null));
-		Assert.assertNull(outputs.getComplex("BinaryOutput", null));
-		Assert.assertNull(outputs.getLiteral("LiteralOutput", null));
+		assertNull(outputs.getComplex("XMLOutput", null));
+		assertNull(outputs.getComplex("BinaryOutput", null));
+		assertNull(outputs.getLiteral("LiteralOutput", null));
 	}
 
 	@Test
 	public void testExecuteRawOutput() throws OWSExceptionReport, IOException, XMLStreamException {
 		String demoWPSURL = TestProperties.getProperty("demo_wps_url");
-		Assume.assumeNotNull(demoWPSURL);
+		assumeTrue(demoWPSURL != null);
 		WPSClient wpsClient = new WPSClient(new URL(demoWPSURL));
 		org.deegree.protocol.wps.client.process.Process proc = wpsClient.getProcess("ParameterDemoProcess", null);
 
@@ -440,7 +441,7 @@ public class WPSClientTest {
 	public void testExecuteInputsByRef()
 			throws OWSExceptionReport, IOException, XMLStreamException, URISyntaxException {
 		String demoWPSURL = TestProperties.getProperty("demo_wps_url");
-		Assume.assumeNotNull(demoWPSURL);
+		assumeTrue(demoWPSURL != null);
 		WPSClient wpsClient = new WPSClient(new URL(demoWPSURL));
 		org.deegree.protocol.wps.client.process.Process proc = wpsClient.getProcess("ParameterDemoProcess", null);
 
@@ -454,15 +455,15 @@ public class WPSClientTest {
 		ExecutionOutputs outputs = execution.execute();
 
 		LiteralOutput out1 = (LiteralOutput) outputs.get(0);
-		Assert.assertEquals("0", out1.getValue());
-		Assert.assertEquals("integer", out1.getDataType());
-		Assert.assertEquals("seconds", out1.getUom());
+		assertEquals("0", out1.getValue());
+		assertEquals("integer", out1.getDataType());
+		assertEquals("seconds", out1.getUom());
 
 		BBoxOutput out2 = (BBoxOutput) outputs.get(1);
-		Assert.assertTrue(Arrays.equals(new double[] { 0.0, 0.0 }, out2.getLower()));
-		Assert.assertTrue(Arrays.equals(new double[] { 90.0, 180.0 }, out2.getUpper()));
-		Assert.assertEquals("EPSG:4326", out2.getCrs());
-		Assert.assertEquals(2, out2.getDimension());
+		assertTrue(Arrays.equals(new double[] { 0.0, 0.0 }, out2.getLower()));
+		assertTrue(Arrays.equals(new double[] { 90.0, 180.0 }, out2.getUpper()));
+		assertEquals("EPSG:4326", out2.getCrs());
+		assertEquals(2, out2.getDimension());
 
 		ComplexOutput output = (ComplexOutput) outputs.get(2);
 		XMLStreamReader reader = output.getAsXMLStream();
@@ -472,13 +473,13 @@ public class WPSClientTest {
 		nsContext.addNamespace("ows", OWS_NS);
 		XPath xpath = new XPath("/wps:Capabilities/ows:ServiceIdentification/ows:ServiceType", nsContext);
 		String pos = searchableXML.getRequiredNodeAsString(searchableXML.getRootElement(), xpath);
-		Assert.assertEquals(pos, "WPS");
+		assertEquals(pos, "WPS");
 
 		InputStream binaryStream = outputs.getComplex("BinaryOutput", null).getAsBinaryStream();
-		Assert.assertNotNull(binaryStream);
+		assertNotNull(binaryStream);
 		binaryStream.close();
 
-		// Assert.assertTrue( compareStreams( new URL( REMOTE_BINARY_INPUT ).openStream(),
+		// assertTrue( compareStreams( new URL( REMOTE_BINARY_INPUT ).openStream(),
 		// outputs.getComplex( "BinaryOutput", null ).getAsBinaryStream() ) );
 	}
 
@@ -517,7 +518,7 @@ public class WPSClientTest {
 	@Test
 	public void testExecuteAsync() throws OWSExceptionReport, IOException, XMLStreamException, InterruptedException {
 		String demoWPSURL = TestProperties.getProperty("demo_wps_url");
-		Assume.assumeNotNull(demoWPSURL);
+		assumeTrue(demoWPSURL != null);
 		WPSClient wpsClient = new WPSClient(new URL(demoWPSURL));
 		org.deegree.protocol.wps.client.process.Process proc = wpsClient.getProcess("ParameterDemoProcess", null);
 
@@ -528,8 +529,8 @@ public class WPSClientTest {
 		execution.addBinaryInput("BinaryInput", null, BINARY_INPUT.toURI(), false, "image/png", null);
 
 		execution.executeAsync();
-		Assert.assertNotSame(ExecutionState.SUCCEEDED, execution.getState());
-		Assert.assertNotSame(ExecutionState.FAILED, execution.getState());
+		assertNotSame(ExecutionState.SUCCEEDED, execution.getState());
+		assertNotSame(ExecutionState.FAILED, execution.getState());
 
 		while ((execution.getState()) != ExecutionState.SUCCEEDED) {
 			System.out.println(execution.getPercentCompleted());
@@ -538,15 +539,15 @@ public class WPSClientTest {
 
 		ExecutionOutputs outputs = execution.getOutputs();
 		LiteralOutput out1 = (LiteralOutput) outputs.get("LiteralOutput", null);
-		Assert.assertEquals("5", out1.getValue());
-		Assert.assertEquals("integer", out1.getDataType());
-		// Assert.assertEquals( "seconds", out1.getUom() );
+		assertEquals("5", out1.getValue());
+		assertEquals("integer", out1.getDataType());
+		// assertEquals( "seconds", out1.getUom() );
 
 		BBoxOutput out2 = (BBoxOutput) outputs.get("BBOXOutput", null);
-		Assert.assertTrue(Arrays.equals(new double[] { 0.0, 0.0 }, out2.getLower()));
-		Assert.assertTrue(Arrays.equals(new double[] { 90.0, 180.0 }, out2.getUpper()));
-		Assert.assertEquals("EPSG:4326", out2.getCrs());
-		Assert.assertEquals(2, out2.getDimension());
+		assertTrue(Arrays.equals(new double[] { 0.0, 0.0 }, out2.getLower()));
+		assertTrue(Arrays.equals(new double[] { 90.0, 180.0 }, out2.getUpper()));
+		assertEquals("EPSG:4326", out2.getCrs());
+		assertEquals(2, out2.getDimension());
 	}
 
 	// @Test
@@ -592,38 +593,40 @@ public class WPSClientTest {
 	// response.getOutputs()[0].getDataType();
 	// }
 
-	@Test(expected = OWSExceptionReport.class)
-	public void testFailedExecute() throws Exception {
+	@Test
+	public void testFailedExecute() {
 		String demoWPSURL = TestProperties.getProperty("demo_wps_url");
-		Assume.assumeNotNull(demoWPSURL);
-
-		WPSClient wpsClient = new WPSClient(new URL(demoWPSURL));
-		Process proc = wpsClient.getProcess("Centroid", null);
-		ProcessExecution execution = proc.prepareExecution();
-		// omitting required input parameter
-		execution.addOutput("Centroid", null, null, true, null, null, null);
-		execution.execute();
-		Assert.assertTrue(execution.getState() != ExecutionState.SUCCEEDED); // we
-																				// shouldn't
-																				// arrive
-																				// here
+		assumeTrue(demoWPSURL != null);
+		assertThrows(OWSExceptionReport.class, () -> {
+			WPSClient wpsClient = new WPSClient(new URL(demoWPSURL));
+			Process proc = wpsClient.getProcess("Centroid", null);
+			ProcessExecution execution = proc.prepareExecution();
+			// omitting required input parameter
+			execution.addOutput("Centroid", null, null, true, null, null, null);
+			execution.execute();
+			assertTrue(execution.getState() != ExecutionState.SUCCEEDED); // we
+																			// shouldn't
+																			// arrive
+																			// here
+		});
 	}
 
-	@Test(expected = OWSExceptionReport.class)
-	public void testFailedExecute_2() throws Exception {
+	@Test
+	public void testFailedExecute_2() {
 		String demoWPSURL = TestProperties.getProperty("demo_wps_url");
-		Assume.assumeNotNull(demoWPSURL);
-
-		WPSClient wpsClient = new WPSClient(new URL(demoWPSURL));
-		Process proc = wpsClient.getProcess("Centroid");
-		ProcessExecution execution = proc.prepareExecution();
-		// adding invalid input parameter
-		execution.addLiteralInput("ThisDoesNotExist", null, "5", "sortOfInteger", "reallyBigUnit");
-		execution.executeAsync();
-		Assert.assertTrue(execution.getState() != ExecutionState.SUCCEEDED); // we
-																				// shouldn't
-																				// arrive
-																				// here
+		assumeTrue(demoWPSURL != null);
+		assertThrows(OWSExceptionReport.class, () -> {
+			WPSClient wpsClient = new WPSClient(new URL(demoWPSURL));
+			Process proc = wpsClient.getProcess("Centroid");
+			ProcessExecution execution = proc.prepareExecution();
+			// adding invalid input parameter
+			execution.addLiteralInput("ThisDoesNotExist", null, "5", "sortOfInteger", "reallyBigUnit");
+			execution.executeAsync();
+			assertTrue(execution.getState() != ExecutionState.SUCCEEDED); // we
+																			// shouldn't
+																			// arrive
+																			// here
+		});
 	}
 
 	@Test
@@ -634,9 +637,9 @@ public class WPSClientTest {
 		String demoWPSProcessName = TestProperties.getProperty("demo_wps_authentication_process_name");
 		String demoWPSInputParam = TestProperties.getProperty("demo_wps_input_uri");
 
-		Assume.assumeNotNull(demoWPSURL);
-		Assume.assumeNotNull(demoWPSProcessName);
-		Assume.assumeNotNull(demoWPSInputParam);
+		assumeTrue(demoWPSURL != null);
+		assumeTrue(demoWPSProcessName != null);
+		assumeTrue(demoWPSInputParam != null);
 
 		URL serviceUrl = new URL(demoWPSURL);
 		URI inputUri = new URI(demoWPSInputParam);
@@ -657,7 +660,7 @@ public class WPSClientTest {
 		}
 
 		ExecutionOutputs outputs = execution.getOutputs();
-		Assert.assertTrue(outputs.getAll().length > 0);
+		assertTrue(outputs.getAll().length > 0);
 	}
 
 }

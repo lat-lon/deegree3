@@ -34,19 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.services.wfs.query;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.namespace.QName;
-
 import org.deegree.commons.tom.gml.property.PropertyType;
 import org.deegree.cs.exceptions.UnknownCRSException;
 import org.deegree.cs.persistence.CRSManager;
@@ -60,7 +47,16 @@ import org.deegree.protocol.wfs.getfeature.TypeName;
 import org.deegree.protocol.wfs.query.FilterQuery;
 import org.deegree.services.wfs.WebFeatureService;
 import org.deegree.services.wfs.WfsFeatureStoreManager;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import javax.xml.namespace.QName;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * @author <a href="mailto:goltz@lat-lon.de">Lyn Goltz </a>
@@ -89,13 +85,13 @@ public class QueryAnalyzerTest {
 		QueryAnalyzer queryAnalyzer = new QueryAnalyzer(wfsQueries, controller, manager, false);
 
 		Map<FeatureStore, List<Query>> queries = queryAnalyzer.getQueries();
-		assertThat(queries.size(), is(1));
-		assertThat(queries.values().iterator().next().size(), is(2));
+		assertEquals(queries.size(), 1);
+		assertEquals(queries.values().iterator().next().size(), 2);
 
 		Map<QName, List<ProjectionClause>> projections = queryAnalyzer.getProjections();
-		assertThat(projections.size(), is(2));
-		assertThat(projections.get(FEATURETYPE_CP).size(), is(2));
-		assertThat(projections.get(FEATURETYPE_AU).size(), is(1));
+		assertEquals(projections.size(), 2);
+		assertEquals(projections.get(FEATURETYPE_CP).size(), 2);
+		assertEquals(projections.get(FEATURETYPE_AU).size(), 1);
 	}
 
 	private List<org.deegree.protocol.wfs.query.Query> createQueries() throws UnknownCRSException {

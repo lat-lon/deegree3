@@ -39,9 +39,9 @@ import static org.deegree.commons.xml.stax.XMLStreamUtils.require;
 import static org.deegree.commons.xml.stax.XMLStreamUtils.skipStartDocument;
 import static org.deegree.gml.GMLVersion.GML_32;
 import static org.deegree.time.position.IndeterminateValue.BEFORE;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.net.URL;
 
@@ -49,9 +49,8 @@ import javax.xml.stream.XMLStreamReader;
 
 import org.deegree.gml.GMLInputFactory;
 import org.deegree.gml.GMLStreamReader;
-import org.deegree.time.gml.reader.GmlTimePositionTypeReader;
 import org.deegree.time.position.TimePosition;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class GmlTimePositionTypeReaderTest {
 

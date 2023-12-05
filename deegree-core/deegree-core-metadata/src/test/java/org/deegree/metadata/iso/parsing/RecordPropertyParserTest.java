@@ -46,7 +46,7 @@ import org.apache.axiom.om.OMElement;
 import org.deegree.commons.xml.stax.XMLStreamUtils;
 import org.deegree.metadata.MetadataRecord;
 import org.deegree.metadata.MetadataRecordFactory;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Basic tests for usage of {@link RecordPropertyParser}.

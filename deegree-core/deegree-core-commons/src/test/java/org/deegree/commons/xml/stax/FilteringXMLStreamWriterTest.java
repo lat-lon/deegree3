@@ -38,7 +38,7 @@ import org.apache.commons.io.IOUtils;
 import org.deegree.commons.xml.NamespaceBindings;
 import org.deegree.commons.xml.XMLAdapter;
 import org.deegree.commons.xml.XPath;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.xmlunit.matchers.CompareMatcher;
 
 import javax.xml.stream.XMLOutputFactory;
@@ -51,6 +51,7 @@ import java.util.List;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @author <a href="mailto:schmitz@lat-lon.de">Andreas Schmitz</a>
@@ -150,13 +151,15 @@ public class FilteringXMLStreamWriterTest {
 		assertThat(actual, CompareMatcher.isSimilarTo(expected).ignoreWhitespace());
 	}
 
-	@Test(expected = XMLStreamException.class)
+	@Test
 	public void testFilteringOneXPathWithoutMatchingRootElement() throws Exception {
-		List<String> list = new ArrayList<>();
-		list.add("/ap:a/app:c");
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		XMLStreamWriter writer = getWriter(list, bos);
-		writeDocument(writer);
+		assertThrows(XMLStreamException.class, () -> {
+			List<String> list = new ArrayList<>();
+			list.add("/ap:a/app:c");
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			XMLStreamWriter writer = getWriter(list, bos);
+			writeDocument(writer);
+		});
 	}
 
 	@Test

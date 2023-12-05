@@ -34,15 +34,15 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.commons.index;
 
+import org.deegree.commons.index.RTree.NodeEntry;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.io.File;
-
-import org.deegree.commons.index.RTree.NodeEntry;
-import org.junit.Before;
-import org.junit.Test;
 
 /**
  * @author <a href="mailto:ionita@lat-lon.de">Andrei Ionita</a>
@@ -59,9 +59,8 @@ public class RTreeTest {
 	/**
 	 * With the sample tree from the wikipedia page
 	 * http://en.wikipedia.org/wiki/File:R-tree.svg
-	 * @param args
 	 */
-	@Before
+	@BeforeEach
 	public void loadWikipediaTree() {
 		float[] box = new float[] { 20, 70, 35, 85 };
 		tree.insert(box, new Long(8));

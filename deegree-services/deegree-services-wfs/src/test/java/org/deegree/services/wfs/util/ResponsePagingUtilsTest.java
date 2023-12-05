@@ -34,10 +34,9 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.services.wfs.util;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * TODO add class documentation here
@@ -49,55 +48,55 @@ public class ResponsePagingUtilsTest {
 	@Test
 	public void testCalculateNextStartIndex_NoFeaturesMatched() {
 		int nextStartIndex = ResponsePagingUtils.calculateNextStartIndex(0, 10, 0);
-		assertThat(nextStartIndex, is(-1));
+		assertEquals(nextStartIndex, -1);
 	}
 
 	@Test
 	public void testCalculateNextStartIndex_SecondPage() {
 		int nextStartIndex = ResponsePagingUtils.calculateNextStartIndex(0, 10, 97);
-		assertThat(nextStartIndex, is(10));
+		assertEquals(nextStartIndex, 10);
 	}
 
 	@Test
 	public void testCalculateNextStartIndex_LastPage() {
 		int nextStartIndex = ResponsePagingUtils.calculateNextStartIndex(80, 10, 97);
-		assertThat(nextStartIndex, is(90));
+		assertEquals(nextStartIndex, 90);
 	}
 
 	@Test
 	public void testCalculateNextStartIndex_NextWithOneResult() {
 		int nextStartIndex = ResponsePagingUtils.calculateNextStartIndex(91, 5, 97);
-		assertThat(nextStartIndex, is(96));
+		assertEquals(nextStartIndex, 96);
 	}
 
 	@Test
 	public void testCalculateNextStartIndex_NextNotAvailable() {
 		int nextStartIndex = ResponsePagingUtils.calculateNextStartIndex(92, 5, 97);
-		assertThat(nextStartIndex, is(-1));
+		assertEquals(nextStartIndex, -1);
 	}
 
 	@Test
 	public void testCalculatePreviosStartIndex_FirstPage() {
 		int nextStartIndex = ResponsePagingUtils.calculatePreviousStartIndex(10, 20);
-		assertThat(nextStartIndex, is(0));
+		assertEquals(nextStartIndex, 0);
 	}
 
 	@Test
 	public void testCalculatePreviosStartIndex_FirstPageStartIndexLessThanCount() {
 		int nextStartIndex = ResponsePagingUtils.calculatePreviousStartIndex(5, 10);
-		assertThat(nextStartIndex, is(0));
+		assertEquals(nextStartIndex, 0);
 	}
 
 	@Test
 	public void testCalculatePreviosStartIndex_StartIndexGreaterThanCount() {
 		int nextStartIndex = ResponsePagingUtils.calculatePreviousStartIndex(30, 10);
-		assertThat(nextStartIndex, is(20));
+		assertEquals(nextStartIndex, 20);
 	}
 
 	@Test
 	public void testCalculatePreviosStartIndex_StartIndexAtBegin() {
 		int nextStartIndex = ResponsePagingUtils.calculatePreviousStartIndex(0, 10);
-		assertThat(nextStartIndex, is(-1));
+		assertEquals(nextStartIndex, -1);
 	}
 
 }

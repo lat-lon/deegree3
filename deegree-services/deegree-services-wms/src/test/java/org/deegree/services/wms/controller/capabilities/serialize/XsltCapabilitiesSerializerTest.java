@@ -34,16 +34,15 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.services.wms.controller.capabilities.serialize;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
+import org.deegree.workspace.Workspace;
+import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.URL;
 
-import org.deegree.workspace.Workspace;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
 
 /**
  * @author <a href="mailto:goltz@lat-lon.de">Lyn Goltz</a>
@@ -61,8 +60,8 @@ public class XsltCapabilitiesSerializerTest {
 
 		String html = responseStream.toString();
 
-		assertThat(html, containsString("WMS"));
-		assertThat(html, containsString("deegree WMS capabilities"));
+		assertTrue(html.contains("WMS"));
+		assertTrue(html.contains("deegree WMS capabilities"));
 	}
 
 	private InputStream capabilitiesXmlStream() {

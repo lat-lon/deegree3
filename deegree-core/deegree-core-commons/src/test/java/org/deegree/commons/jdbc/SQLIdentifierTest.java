@@ -34,8 +34,10 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.commons.jdbc;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Test cases for creation of {@link SQLIdentifier}s
@@ -45,23 +47,25 @@ import org.junit.Test;
  */
 public class SQLIdentifierTest {
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testGetNameWithNullIdentifier() {
-		new SQLIdentifier(null);
+		assertThrows(IllegalArgumentException.class, () -> {
+			new SQLIdentifier(null);
+		});
 	}
 
 	@Test
 	public void testGetNameWithEscapedColumnName() {
 		String expected = "\"column\"";
 		SQLIdentifier actual = new SQLIdentifier(expected);
-		Assert.assertEquals(expected, actual.getName());
+		assertEquals(expected, actual.getName());
 	}
 
 	@Test
 	public void testGetNameWithoutEscapedColumnName() {
 		String expected = "column";
 		SQLIdentifier actual = new SQLIdentifier(expected);
-		Assert.assertEquals(expected, actual.getName());
+		assertEquals(expected, actual.getName());
 	}
 
 	@Test
@@ -69,7 +73,7 @@ public class SQLIdentifierTest {
 		String identifier = "\"table.column\"";
 		String expected = "\"column\"";
 		SQLIdentifier actual = new SQLIdentifier(identifier);
-		Assert.assertEquals(expected, actual.getName());
+		assertEquals(expected, actual.getName());
 	}
 
 	@Test
@@ -77,7 +81,7 @@ public class SQLIdentifierTest {
 		String identifier = "table.column";
 		String expected = "column";
 		SQLIdentifier actual = new SQLIdentifier(identifier);
-		Assert.assertEquals(expected, actual.getName());
+		assertEquals(expected, actual.getName());
 	}
 
 }

@@ -34,16 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.protocol.wms.client;
 
-import static org.deegree.cs.coordinatesystems.GeographicCRS.WGS84;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.io.InputStream;
-import java.util.LinkedList;
-
-import javax.xml.stream.XMLStreamException;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.impl.builder.StAXOMBuilder;
 import org.deegree.commons.tom.ows.Version;
@@ -51,7 +41,17 @@ import org.deegree.cs.exceptions.UnknownCRSException;
 import org.deegree.cs.persistence.CRSManager;
 import org.deegree.geometry.Envelope;
 import org.deegree.geometry.GeometryFactory;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import javax.xml.stream.XMLStreamException;
+import java.io.InputStream;
+import java.util.LinkedList;
+
+import static org.deegree.cs.coordinatesystems.GeographicCRS.WGS84;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test cases for {@link WMS130CapabilitiesAdapter}
@@ -62,9 +62,11 @@ public class WMS130CapabilitiesAdapterTest extends WMSCapabilitiesAdapterTest {
 
 	private static final String GETMAP_URL = "http://demo.deegree.org/deegree-wms-ri-130/services?";
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testNullWMS130Capabilities() {
-		new WMS130CapabilitiesAdapter(null);
+		assertThrows(IllegalArgumentException.class, () -> {
+			new WMS130CapabilitiesAdapter(null);
+		});
 	}
 
 	@Test

@@ -34,27 +34,25 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.services.wms.controller.exceptions;
 
-import static org.deegree.commons.ows.exception.OWSException.NO_APPLICABLE_CODE;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.net.URL;
-
-import javax.servlet.ServletOutputStream;
-import javax.servlet.WriteListener;
-
 import org.deegree.commons.ows.exception.OWSException;
 import org.deegree.services.controller.exception.serializer.XMLExceptionSerializer;
 import org.deegree.services.controller.utils.HttpResponseBuffer;
 import org.deegree.services.ows.PreOWSExceptionReportSerializer;
 import org.deegree.workspace.Workspace;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.WriteListener;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.net.URL;
+
+import static org.deegree.commons.ows.exception.OWSException.NO_APPLICABLE_CODE;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author <a href="mailto:goltz@lat-lon.de">Lyn Goltz</a>
@@ -76,8 +74,8 @@ public class XsltExceptionSerializerTest {
 
 		String htmlException = os.toString();
 
-		assertThat(htmlException, containsString(EXCEPTION));
-		assertThat(htmlException, containsString(NO_APPLICABLE_CODE));
+		assertTrue(htmlException.contains(EXCEPTION));
+		assertTrue(htmlException.contains(NO_APPLICABLE_CODE));
 	}
 
 	@Test

@@ -35,41 +35,6 @@
 
 package org.deegree.rendering.r2d;
 
-import static java.awt.Color.black;
-import static java.awt.Color.green;
-import static java.awt.Color.red;
-import static java.awt.Color.white;
-import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
-import static java.lang.System.currentTimeMillis;
-import static javax.imageio.ImageIO.read;
-import static org.deegree.commons.utils.test.IntegrationTestUtils.isImageSimilar;
-import static org.deegree.geometry.utils.GeometryUtils.move;
-import static org.deegree.style.styling.components.Font.Style.ITALIC;
-import static org.deegree.style.styling.components.Font.Style.NORMAL;
-import static org.deegree.style.styling.components.Font.Style.OBLIQUE;
-import static org.deegree.style.styling.components.Stroke.LineCap.BUTT;
-import static org.deegree.style.styling.components.Stroke.LineCap.ROUND;
-import static org.deegree.style.styling.components.Stroke.LineCap.SQUARE;
-import static org.deegree.style.styling.components.Stroke.LineJoin.BEVEL;
-import static org.deegree.style.styling.components.Stroke.LineJoin.MITRE;
-import static org.slf4j.LoggerFactory.getLogger;
-
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.GraphicsEnvironment;
-import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.imageio.ImageIO;
-
 import org.deegree.cs.coordinatesystems.ICRS;
 import org.deegree.cs.persistence.CRSManager;
 import org.deegree.geometry.Envelope;
@@ -92,10 +57,41 @@ import org.deegree.style.styling.components.Mark;
 import org.deegree.style.styling.components.Mark.SimpleMark;
 import org.deegree.style.styling.components.Stroke;
 import org.deegree.style.styling.components.Stroke.LineJoin;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.slf4j.Logger;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
+import static java.awt.Color.black;
+import static java.awt.Color.green;
+import static java.awt.Color.red;
+import static java.awt.Color.white;
+import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
+import static java.lang.System.currentTimeMillis;
+import static javax.imageio.ImageIO.read;
+import static org.deegree.commons.utils.test.IntegrationTestUtils.isImageSimilar;
+import static org.deegree.geometry.utils.GeometryUtils.move;
+import static org.deegree.style.styling.components.Font.Style.ITALIC;
+import static org.deegree.style.styling.components.Font.Style.NORMAL;
+import static org.deegree.style.styling.components.Font.Style.OBLIQUE;
+import static org.deegree.style.styling.components.Stroke.LineCap.BUTT;
+import static org.deegree.style.styling.components.Stroke.LineCap.ROUND;
+import static org.deegree.style.styling.components.Stroke.LineCap.SQUARE;
+import static org.deegree.style.styling.components.Stroke.LineJoin.BEVEL;
+import static org.deegree.style.styling.components.Stroke.LineJoin.MITRE;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * <code>Java2DRenderingTest</code>
@@ -143,8 +139,7 @@ public class Java2DRendererTest extends AbstractSimilarityTest {
 	private void validateImage(RenderedImage img, double time, String testName) throws Exception {
 		LOG.debug("Test {} ran in {} ms", testName, time);
 		RenderedImage expected = ImageIO.read(this.getClass().getResource("./renderertest/" + testName + ".png"));
-		Assert.assertTrue("Image for " + testName + "are not similar enough",
-				isImageSimilar(expected, img, 0.01, testName));
+		assertTrue(isImageSimilar(expected, img, 0.01, testName), "Image for " + testName + "are not similar enough");
 	}
 
 	/**
@@ -767,7 +762,8 @@ public class Java2DRendererTest extends AbstractSimilarityTest {
 		validateImage(img, time2 - time, "textstylinghalo");
 	}
 
-	@Test(timeout = 2500)
+	@Test
+	@Timeout(2500)
 	public void testPolygonStylingSmallClipping() throws Exception {
 		BufferedImage img = new BufferedImage(100, 100, TYPE_INT_ARGB);
 		long time = currentTimeMillis();
@@ -794,7 +790,8 @@ public class Java2DRendererTest extends AbstractSimilarityTest {
 		validateImage(img, time2 - time, "polygonstylingsmallclipping");
 	}
 
-	@Test(timeout = 2500)
+	@Test
+	@Timeout(2500)
 	public void testLineStylingSmallClipping() throws Exception {
 		BufferedImage img = new BufferedImage(100, 100, TYPE_INT_ARGB);
 		long time = currentTimeMillis();
@@ -821,7 +818,8 @@ public class Java2DRendererTest extends AbstractSimilarityTest {
 		validateImage(img, time2 - time, "linestylingsmallclipping");
 	}
 
-	@Test(timeout = 2500)
+	@Test
+	@Timeout(2500)
 	public void testPolygonStylingWithCirclesSmallClipping() throws Exception {
 		BufferedImage img = new BufferedImage(100, 100, TYPE_INT_ARGB);
 		long time = currentTimeMillis();
@@ -855,7 +853,8 @@ public class Java2DRendererTest extends AbstractSimilarityTest {
 		validateImage(img, time2 - time, "polygonstylingwithcircelssmallclipping");
 	}
 
-	@Test(timeout = 2500)
+	@Test
+	@Timeout(2500)
 	public void testPolygonStylingWithStrokeWithoutSize() throws Exception {
 		BufferedImage img = new BufferedImage(100, 100, TYPE_INT_ARGB);
 		long time = currentTimeMillis();
@@ -927,7 +926,8 @@ public class Java2DRendererTest extends AbstractSimilarityTest {
 	 * @author <a href="mailto:reichhelm@grit.de">Stephan Reichhelm</a>
 	 * @throws Exception
 	 */
-	@Test(timeout = 30000)
+	@Test
+	@Timeout(30000)
 	public void testClipperJvmCrash() throws Exception {
 		BufferedImage img = new BufferedImage(100, 100, TYPE_INT_ARGB);
 		Graphics2D g = img.createGraphics();

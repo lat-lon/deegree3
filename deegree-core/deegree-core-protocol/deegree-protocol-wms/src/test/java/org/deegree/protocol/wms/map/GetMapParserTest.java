@@ -34,26 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.protocol.wms.map;
 
-import static java.awt.Color.BLACK;
-import static java.awt.Color.WHITE;
-import static org.hamcrest.CoreMatchers.hasItems;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-
-import java.io.InputStream;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
-
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
 import org.deegree.commons.tom.datetime.DateTime;
 import org.deegree.cs.persistence.CRSManager;
 import org.deegree.geometry.Envelope;
@@ -64,7 +44,26 @@ import org.deegree.style.StyleRef;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import java.io.InputStream;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
+
+import static java.awt.Color.BLACK;
+import static java.awt.Color.WHITE;
+import static org.hamcrest.CoreMatchers.hasItems;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author <a href="mailto:goltz@lat-lon.de">Lyn Goltz</a>
@@ -79,42 +78,42 @@ public class GetMapParserTest {
 		GetMap getMap = getMapXMLAdapter.parse(xmlStreamReader);
 
 		LinkedList<LayerRef> layers = getMap.getLayers();
-		assertThat(layers.size(), is(3));
+		assertEquals(layers.size(), 3);
 		assertThat(layers, hasLayerRef("municipalities"));
 		assertThat(layers, hasLayerRef("counties"));
 		assertThat(layers, hasLayerRef("zipcodes"));
 
 		LinkedList<StyleRef> styles = getMap.getStyles();
-		assertThat(styles.size(), is(3));
+		assertEquals(styles.size(), 3);
 		assertThat(styles, hasStyleRef("Municipalities"));
 		assertThat(styles, hasStyleRef("CountyBoundary"));
 		assertThat(styles, hasStyleRef("default"));
 
-		assertThat(getMap.getWidth(), is(1024));
-		assertThat(getMap.getHeight(), is(512));
-		assertThat(getMap.getFormat(), is("image/png"));
-		assertThat(getMap.getTransparent(), is(true));
-		assertThat(getMap.getBgColor(), is(BLACK));
+		assertEquals(getMap.getWidth(), 1024);
+		assertEquals(getMap.getHeight(), 512);
+		assertEquals(getMap.getFormat(), "image/png");
+		assertEquals(getMap.getTransparent(), true);
+		assertEquals(getMap.getBgColor(), BLACK);
 
-		assertThat(getMap.getCoordinateSystem(), is(CRSManager.lookup("EPSG:4326")));
+		assertEquals(getMap.getCoordinateSystem(), CRSManager.lookup("EPSG:4326"));
 		Envelope boundingBox = getMap.getBoundingBox();
-		assertThat(boundingBox.getMin().get0(), is(-115.4));
-		assertThat(boundingBox.getMin().get1(), is(35.0));
-		assertThat(boundingBox.getMax().get0(), is(-108.0));
-		assertThat(boundingBox.getMax().get1(), is(44.0));
+		assertEquals(boundingBox.getMin().get0(), -115.4);
+		assertEquals(boundingBox.getMin().get1(), 35.0);
+		assertEquals(boundingBox.getMax().get0(), -108.0);
+		assertEquals(boundingBox.getMax().get1(), 44.0);
 
 		Map<String, String> parameterMap = getMap.getParameterMap();
-		assertThat(parameterMap.size(), is(1));
-		assertThat(parameterMap.get("EXCEPTIONS"), is("INIMAGE"));
+		assertEquals(parameterMap.size(), 1);
+		assertEquals(parameterMap.get("EXCEPTIONS"), "INIMAGE");
 
 		HashMap<String, List<?>> dimensions = getMap.getDimensions();
-		assertThat(dimensions.size(), is(2));
+		assertEquals(dimensions.size(), 2);
 
-		assertThat(((List<DateTime>) dimensions.get("time")).size(), is(1));
-		assertThat(((List<DateTime>) dimensions.get("time")).get(0).getDate(), is(expectedDateTime()));
+		assertEquals(((List<DateTime>) dimensions.get("time")).size(), 1);
+		assertEquals(((List<DateTime>) dimensions.get("time")).get(0).getDate(), expectedDateTime());
 
-		assertThat(((List<Double>) dimensions.get("elevation")).size(), is(1));
-		assertThat(((List<Double>) dimensions.get("elevation")).get(0), is(5d));
+		assertEquals(((List<Double>) dimensions.get("elevation")).size(), 1);
+		assertEquals(((List<Double>) dimensions.get("elevation")).get(0), 5d);
 	}
 
 	@Test
@@ -124,29 +123,29 @@ public class GetMapParserTest {
 		GetMap getMap = getMapXMLAdapter.parse(xmlStreamReader);
 
 		LinkedList<LayerRef> layers = getMap.getLayers();
-		assertThat(layers.size(), is(1));
+		assertEquals(layers.size(), 1);
 		assertThat(layers, hasLayerRef("municipalities"));
 
 		LinkedList<StyleRef> styles = getMap.getStyles();
-		assertThat(styles.size(), is(1));
+		assertEquals(styles.size(), 1);
 		assertThat(styles, hasStyleRef("Municipalities"));
 
-		assertThat(getMap.getWidth(), is(10));
-		assertThat(getMap.getHeight(), is(50));
-		assertThat(getMap.getFormat(), is("image/jpeg"));
-		assertThat(getMap.getTransparent(), is(false));
-		assertThat(getMap.getBgColor(), is(WHITE));
+		assertEquals(getMap.getWidth(), 10);
+		assertEquals(getMap.getHeight(), 50);
+		assertEquals(getMap.getFormat(), "image/jpeg");
+		assertEquals(getMap.getTransparent(), false);
+		assertEquals(getMap.getBgColor(), WHITE);
 
-		assertThat(getMap.getCoordinateSystem(), is(CRSManager.lookup("EPSG:4326")));
+		assertEquals(getMap.getCoordinateSystem(), CRSManager.lookup("EPSG:4326"));
 		Envelope boundingBox = getMap.getBoundingBox();
-		assertThat(boundingBox.getMin().get0(), is(-115.4));
-		assertThat(boundingBox.getMin().get1(), is(35.0));
-		assertThat(boundingBox.getMax().get0(), is(-108.0));
-		assertThat(boundingBox.getMax().get1(), is(44.0));
+		assertEquals(boundingBox.getMin().get0(), -115.4);
+		assertEquals(boundingBox.getMin().get1(), 35.0);
+		assertEquals(boundingBox.getMax().get0(), -108.0);
+		assertEquals(boundingBox.getMax().get1(), 44.0);
 
 		Map<String, String> parameterMap = getMap.getParameterMap();
-		assertThat(parameterMap.size(), is(1));
-		assertThat(parameterMap.get("EXCEPTIONS"), is("XML"));
+		assertEquals(parameterMap.size(), 1);
+		assertEquals(parameterMap.get("EXCEPTIONS"), "XML");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -157,10 +156,10 @@ public class GetMapParserTest {
 		GetMap getMap = getMapXMLAdapter.parse(xmlStreamReader);
 
 		HashMap<String, List<?>> dimensions = getMap.getDimensions();
-		assertThat(dimensions.size(), is(1));
+		assertEquals(dimensions.size(), 1);
 
 		List<Double> elevationValues = (List<Double>) dimensions.get("elevation");
-		assertThat(elevationValues.size(), is(5));
+		assertEquals(elevationValues.size(), 5);
 		assertThat(elevationValues, hasItems(-1.5, -0.5, 0d, 0.5, 1.5));
 	}
 
@@ -172,14 +171,14 @@ public class GetMapParserTest {
 		GetMap getMap = getMapXMLAdapter.parse(xmlStreamReader);
 
 		HashMap<String, List<?>> dimensions = getMap.getDimensions();
-		assertThat(dimensions.size(), is(1));
+		assertEquals(dimensions.size(), 1);
 
 		List<DimensionInterval<Double, Double, Double>> elevationValues = (List<DimensionInterval<Double, Double, Double>>) dimensions
 			.get("elevation");
-		assertThat(elevationValues.size(), is(1));
-		assertThat(elevationValues.get(0).min, is(-5d));
-		assertThat(elevationValues.get(0).max, is(5d));
-		assertThat(elevationValues.get(0).res, is(0d));
+		assertEquals(elevationValues.size(), 1);
+		assertEquals(elevationValues.get(0).min, -5d);
+		assertEquals(elevationValues.get(0).max, 5d);
+		assertEquals(elevationValues.get(0).res, 0d);
 	}
 
 	private XMLStreamReader createXmlStreamReader(String resource)

@@ -36,31 +36,28 @@
  ---------------------------------------------------------------------------*/
 package org.deegree.protocol.wfs.getpropertyvalue.kvp;
 
-import static org.deegree.commons.utils.kvp.KVPUtils.readFileIntoMap;
-import static org.deegree.protocol.wfs.WFSConstants.VERSION_200;
-
-import java.util.Map;
-
-import javax.xml.namespace.QName;
-
-import junit.framework.Assert;
-import junit.framework.TestCase;
-
 import org.deegree.commons.tom.ResolveMode;
 import org.deegree.filter.OperatorFilter;
 import org.deegree.filter.logical.And;
 import org.deegree.protocol.wfs.getpropertyvalue.GetPropertyValue;
-import org.deegree.protocol.wfs.getpropertyvalue.kvp.GetPropertyValueKVPAdapter;
 import org.deegree.protocol.wfs.query.FilterQuery;
 import org.deegree.protocol.wfs.query.StoredQuery;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import javax.xml.namespace.QName;
+import java.util.Map;
+
+import static org.deegree.commons.utils.kvp.KVPUtils.readFileIntoMap;
+import static org.deegree.protocol.wfs.WFSConstants.VERSION_200;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests for {@link GetPropertyValueKVPAdapter}.
  *
  * @author <a href="mailto:schneider@lat-lon.de">Markus Schneider</a>
  */
-public class GetPropertyValueKVPAdapterTest extends TestCase {
+public class GetPropertyValueKVPAdapterTest {
 
 	@Test
 	public void test200Example1() throws Exception {
@@ -87,7 +84,7 @@ public class GetPropertyValueKVPAdapterTest extends TestCase {
 		assertEquals(1, query.getTypeNames().length);
 		assertEquals(QName.valueOf("Person"), query.getTypeNames()[0].getFeatureTypeName());
 		OperatorFilter filter = (OperatorFilter) query.getFilter();
-		Assert.assertTrue(filter.getOperator() instanceof And);
+		assertTrue(filter.getOperator() instanceof And);
 	}
 
 	@Test
@@ -102,7 +99,7 @@ public class GetPropertyValueKVPAdapterTest extends TestCase {
 		assertEquals(1, query.getTypeNames().length);
 		assertEquals(QName.valueOf("Person"), query.getTypeNames()[0].getFeatureTypeName());
 		OperatorFilter filter = (OperatorFilter) query.getFilter();
-		Assert.assertTrue(filter.getOperator() instanceof And);
+		assertTrue(filter.getOperator() instanceof And);
 	}
 
 	@Test
@@ -117,7 +114,7 @@ public class GetPropertyValueKVPAdapterTest extends TestCase {
 		assertEquals(1, query.getTypeNames().length);
 		assertEquals(QName.valueOf("Person"), query.getTypeNames()[0].getFeatureTypeName());
 		OperatorFilter filter = (OperatorFilter) query.getFilter();
-		Assert.assertTrue(filter.getOperator() instanceof And);
+		assertTrue(filter.getOperator() instanceof And);
 	}
 
 	@Test
@@ -131,7 +128,7 @@ public class GetPropertyValueKVPAdapterTest extends TestCase {
 		assertEquals(1, query.getTypeNames().length);
 		assertEquals(QName.valueOf("Person"), query.getTypeNames()[0].getFeatureTypeName());
 		OperatorFilter filter = (OperatorFilter) query.getFilter();
-		Assert.assertTrue(filter.getOperator() instanceof And);
+		assertTrue(filter.getOperator() instanceof And);
 	}
 
 	@Test
@@ -145,7 +142,7 @@ public class GetPropertyValueKVPAdapterTest extends TestCase {
 		assertEquals(1, query.getTypeNames().length);
 		assertEquals(QName.valueOf("Person"), query.getTypeNames()[0].getFeatureTypeName());
 		OperatorFilter filter = (OperatorFilter) query.getFilter();
-		Assert.assertTrue(filter.getOperator() instanceof And);
+		assertTrue(filter.getOperator() instanceof And);
 	}
 
 	@Test
@@ -159,7 +156,7 @@ public class GetPropertyValueKVPAdapterTest extends TestCase {
 		assertEquals(1, query.getTypeNames().length);
 		assertEquals(QName.valueOf("Person"), query.getTypeNames()[0].getFeatureTypeName());
 		OperatorFilter filter = (OperatorFilter) query.getFilter();
-		Assert.assertTrue(filter.getOperator() instanceof And);
+		assertTrue(filter.getOperator() instanceof And);
 	}
 
 	@Test
@@ -173,7 +170,7 @@ public class GetPropertyValueKVPAdapterTest extends TestCase {
 		assertEquals(1, query.getTypeNames().length);
 		assertEquals(QName.valueOf("Person"), query.getTypeNames()[0].getFeatureTypeName());
 		OperatorFilter filter = (OperatorFilter) query.getFilter();
-		Assert.assertTrue(filter.getOperator() instanceof And);
+		assertTrue(filter.getOperator() instanceof And);
 	}
 
 }

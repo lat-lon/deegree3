@@ -11,16 +11,16 @@ import org.deegree.feature.persistence.sql.rules.Mapping;
 import org.deegree.feature.persistence.sql.rules.PrimitiveMapping;
 import org.deegree.feature.types.AppSchema;
 import org.deegree.gml.schema.GMLAppSchemaReader;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import javax.xml.namespace.QName;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -43,8 +43,8 @@ public class AppSchemaMapperTest {
 
 	private static final QName FEATURE_B = new QName("http://test.de/schema", "FeatureB");
 
-	@Rule
-	public TemporaryFolder folder = new TemporaryFolder();
+	@TempDir
+	public Path folder;
 
 	private File schemaWithSimpleCycle;
 
@@ -64,7 +64,7 @@ public class AppSchemaMapperTest {
 
 	private File schemaWithTimeProperties;
 
-	@Before
+	@BeforeEach
 	public void copySchemas() throws IOException {
 		this.schemaWithCycle1 = copyToTmpFolder("schemaWithCycle1.xsd");
 		this.schemaWithCycle2 = copyToTmpFolder("schemaWithCycle2.xsd");
@@ -857,7 +857,7 @@ public class AppSchemaMapperTest {
 
 	private File copyToTmpFolder(String resourceName) throws IOException {
 		InputStream resource = AppSchemaMapperTest.class.getResourceAsStream(resourceName);
-		File schema = folder.newFile(resourceName);
+		File schema = folder.resolve(resourceName).toFile();
 		IOUtils.copy(resource, new FileOutputStream(schema));
 		return schema;
 	}

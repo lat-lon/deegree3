@@ -34,6 +34,11 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.gml.schema;
 
+import org.deegree.feature.types.property.GeometryPropertyType.GeometryType;
+import org.junit.jupiter.api.Test;
+
+import java.util.HashSet;
+
 import static org.deegree.feature.types.property.GeometryPropertyType.GeometryType.COMPOSITE;
 import static org.deegree.feature.types.property.GeometryPropertyType.GeometryType.COMPOSITE_CURVE;
 import static org.deegree.feature.types.property.GeometryPropertyType.GeometryType.COMPOSITE_SOLID;
@@ -56,12 +61,8 @@ import static org.deegree.feature.types.property.GeometryPropertyType.GeometryTy
 import static org.deegree.feature.types.property.GeometryPropertyType.GeometryType.TRIANGULATED_SURFACE;
 import static org.deegree.feature.types.property.GeometryPropertyType.GeometryType.determineMinimalBaseGeometry;
 import static org.deegree.feature.types.property.GeometryPropertyType.GeometryType.fromGMLTypeName;
-
-import java.util.HashSet;
-
-import org.deegree.feature.types.property.GeometryPropertyType.GeometryType;
-import org.junit.Assert;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests some of the geometrytype mapping functions.
@@ -73,17 +74,21 @@ public class GeometryTypeTest {
 	/**
 	 * Grid is not known
 	 */
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testGrid() {
-		fromGMLTypeName("Grid");
+		assertThrows(IllegalArgumentException.class, () -> {
+			fromGMLTypeName("Grid");
+		});
 	}
 
 	/**
 	 * Rectifiedgrid is not known
 	 */
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testRectifiedGrid() {
-		fromGMLTypeName("RectifiedGrid");
+		assertThrows(IllegalArgumentException.class, () -> {
+			fromGMLTypeName("RectifiedGrid");
+		});
 	}
 
 	/**
@@ -91,20 +96,20 @@ public class GeometryTypeTest {
 	 */
 	@Test
 	public void mapFromString() {
-		Assert.assertEquals(GEOMETRY, fromGMLTypeName("_Geometry"));
-		Assert.assertEquals(MULTI_CURVE, fromGMLTypeName("MultiCurve"));
-		Assert.assertEquals(MULTI_POINT, fromGMLTypeName("MultiPoint"));
-		Assert.assertEquals(MULTI_SOLID, fromGMLTypeName("MultiSolid"));
-		Assert.assertEquals(MULTI_SURFACE, fromGMLTypeName("MultiSurface"));
-		Assert.assertEquals(POINT, fromGMLTypeName("Point"));
-		Assert.assertEquals(POLYGON, fromGMLTypeName("Polygon"));
-		Assert.assertEquals(SOLID, fromGMLTypeName("_Solid"));
-		Assert.assertEquals(SURFACE, fromGMLTypeName("_Surface"));
-		Assert.assertEquals(TRIANGULATED_SURFACE, fromGMLTypeName("TriangulatedSurface"));
+		assertEquals(GEOMETRY, fromGMLTypeName("_Geometry"));
+		assertEquals(MULTI_CURVE, fromGMLTypeName("MultiCurve"));
+		assertEquals(MULTI_POINT, fromGMLTypeName("MultiPoint"));
+		assertEquals(MULTI_SOLID, fromGMLTypeName("MultiSolid"));
+		assertEquals(MULTI_SURFACE, fromGMLTypeName("MultiSurface"));
+		assertEquals(POINT, fromGMLTypeName("Point"));
+		assertEquals(POLYGON, fromGMLTypeName("Polygon"));
+		assertEquals(SOLID, fromGMLTypeName("_Solid"));
+		assertEquals(SURFACE, fromGMLTypeName("_Surface"));
+		assertEquals(TRIANGULATED_SURFACE, fromGMLTypeName("TriangulatedSurface"));
 
-		Assert.assertEquals(GEOMETRY, fromGMLTypeName("AbstractGeometry"));
-		Assert.assertEquals(SOLID, fromGMLTypeName("AbstractSolid"));
-		Assert.assertEquals(SURFACE, fromGMLTypeName("AbstractSurface"));
+		assertEquals(GEOMETRY, fromGMLTypeName("AbstractGeometry"));
+		assertEquals(SOLID, fromGMLTypeName("AbstractSolid"));
+		assertEquals(SURFACE, fromGMLTypeName("AbstractSurface"));
 	}
 
 	/**
@@ -112,26 +117,26 @@ public class GeometryTypeTest {
 	 */
 	@Test
 	public void findParents() {
-		Assert.assertEquals(CURVE, LINEAR_RING.findCommonBaseType(COMPOSITE_CURVE));
-		Assert.assertEquals(CURVE, COMPOSITE_CURVE.findCommonBaseType(LINEAR_RING));
-		Assert.assertEquals(PRIMITIVE, POINT.findCommonBaseType(COMPOSITE_SOLID));
-		Assert.assertEquals(PRIMITIVE, COMPOSITE_SOLID.findCommonBaseType(POINT));
+		assertEquals(CURVE, LINEAR_RING.findCommonBaseType(COMPOSITE_CURVE));
+		assertEquals(CURVE, COMPOSITE_CURVE.findCommonBaseType(LINEAR_RING));
+		assertEquals(PRIMITIVE, POINT.findCommonBaseType(COMPOSITE_SOLID));
+		assertEquals(PRIMITIVE, COMPOSITE_SOLID.findCommonBaseType(POINT));
 
-		Assert.assertEquals(RING, RING.findCommonBaseType(LINEAR_RING));
-		Assert.assertEquals(RING, LINEAR_RING.findCommonBaseType(RING));
+		assertEquals(RING, RING.findCommonBaseType(LINEAR_RING));
+		assertEquals(RING, LINEAR_RING.findCommonBaseType(RING));
 
-		Assert.assertEquals(GEOMETRY, MULTI_CURVE.findCommonBaseType(COMPOSITE));
+		assertEquals(GEOMETRY, MULTI_CURVE.findCommonBaseType(COMPOSITE));
 
-		Assert.assertEquals(GEOMETRY, COMPOSITE.findCommonBaseType(MULTI_CURVE));
+		assertEquals(GEOMETRY, COMPOSITE.findCommonBaseType(MULTI_CURVE));
 
-		Assert.assertEquals(SURFACE, ORIENTABLE_SURFACE.findCommonBaseType(COMPOSITE_SURFACE));
+		assertEquals(SURFACE, ORIENTABLE_SURFACE.findCommonBaseType(COMPOSITE_SURFACE));
 
-		Assert.assertEquals(SURFACE, COMPOSITE_SURFACE.findCommonBaseType(ORIENTABLE_SURFACE));
+		assertEquals(SURFACE, COMPOSITE_SURFACE.findCommonBaseType(ORIENTABLE_SURFACE));
 
-		Assert.assertEquals(ORIENTABLE_SURFACE, ORIENTABLE_SURFACE.findCommonBaseType(ORIENTABLE_SURFACE));
+		assertEquals(ORIENTABLE_SURFACE, ORIENTABLE_SURFACE.findCommonBaseType(ORIENTABLE_SURFACE));
 
-		Assert.assertEquals(GEOMETRY, ORIENTABLE_SURFACE.findCommonBaseType(GEOMETRY));
-		Assert.assertEquals(GEOMETRY, GEOMETRY.findCommonBaseType(ORIENTABLE_SURFACE));
+		assertEquals(GEOMETRY, ORIENTABLE_SURFACE.findCommonBaseType(GEOMETRY));
+		assertEquals(GEOMETRY, GEOMETRY.findCommonBaseType(ORIENTABLE_SURFACE));
 
 	}
 
@@ -142,21 +147,21 @@ public class GeometryTypeTest {
 	public void findBaseGeometry() {
 		HashSet<GeometryType> set = new HashSet<GeometryType>();
 		set.add(LINEAR_RING);
-		Assert.assertEquals(LINEAR_RING, determineMinimalBaseGeometry(set));
+		assertEquals(LINEAR_RING, determineMinimalBaseGeometry(set));
 
 		set.add(RING);
-		Assert.assertEquals(RING, determineMinimalBaseGeometry(set));
+		assertEquals(RING, determineMinimalBaseGeometry(set));
 
 		set.add(COMPOSITE_CURVE);
 		set.add(LINE_STRING);
-		Assert.assertEquals(CURVE, determineMinimalBaseGeometry(set));
+		assertEquals(CURVE, determineMinimalBaseGeometry(set));
 
 		set.add(COMPOSITE_SOLID);
 		set.add(POINT);
-		Assert.assertEquals(PRIMITIVE, determineMinimalBaseGeometry(set));
+		assertEquals(PRIMITIVE, determineMinimalBaseGeometry(set));
 
 		set.add(MULTI_CURVE);
-		Assert.assertEquals(GEOMETRY, determineMinimalBaseGeometry(set));
+		assertEquals(GEOMETRY, determineMinimalBaseGeometry(set));
 	}
 
 }

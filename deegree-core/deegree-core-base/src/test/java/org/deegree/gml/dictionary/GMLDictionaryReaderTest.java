@@ -34,21 +34,20 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.gml.dictionary;
 
-import static junit.framework.Assert.assertEquals;
-import static org.deegree.gml.GMLVersion.GML_30;
-
-import java.io.IOException;
-import java.net.URL;
+import org.deegree.commons.xml.stax.IndentingXMLStreamWriter;
+import org.deegree.gml.reference.GmlDocumentIdContext;
+import org.deegree.junit.XMLMemoryStreamWriter;
+import org.junit.jupiter.api.Test;
 
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import java.io.IOException;
+import java.net.URL;
 
-import org.deegree.commons.xml.stax.IndentingXMLStreamWriter;
-import org.deegree.gml.reference.GmlDocumentIdContext;
-import org.deegree.junit.XMLMemoryStreamWriter;
-import org.junit.Test;
+import static org.deegree.gml.GMLVersion.GML_30;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests that check the correct reading of {@link Definition} and {@link Dictionary}

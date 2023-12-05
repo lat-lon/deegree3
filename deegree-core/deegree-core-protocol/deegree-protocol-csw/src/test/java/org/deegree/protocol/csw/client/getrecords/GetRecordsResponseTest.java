@@ -34,26 +34,24 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.protocol.csw.client.getrecords;
 
-import static junit.framework.Assert.assertEquals;
-import static org.deegree.metadata.iso.ISORecord.ISO_RECORD_NS;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.io.InputStream;
-import java.util.Iterator;
+import org.deegree.metadata.MetadataRecord;
+import org.deegree.metadata.iso.ISORecord;
+import org.deegree.protocol.ows.exception.OWSExceptionReport;
+import org.deegree.protocol.ows.http.OwsHttpResponseImpl;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import java.io.InputStream;
+import java.util.Iterator;
 
-import org.deegree.metadata.MetadataRecord;
-import org.deegree.metadata.iso.ISORecord;
-import org.deegree.protocol.ows.exception.OWSExceptionReport;
-import org.deegree.protocol.ows.http.OwsHttpResponseImpl;
-import org.deegree.protocol.ows.http.OwsHttpResponseImpl;
-import org.junit.Test;
-import org.mockito.Mockito;
+import static org.deegree.metadata.iso.ISORecord.ISO_RECORD_NS;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Basic tests for {@link GetRecordsResponse}.

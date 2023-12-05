@@ -17,8 +17,8 @@ import org.deegree.geometry.primitive.Point;
 import org.deegree.geometry.primitive.Polygon;
 import org.deegree.geometry.primitive.Ring;
 import org.deegree.geometry.primitive.segments.Arc;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -27,7 +27,8 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @author <a href="mailto:goltz@lat-lon.de">Lyn Goltz </a>
@@ -40,7 +41,7 @@ public class GeoJsonGeometryWriterTest {
 
 	private static ICRS CRS_25832;
 
-	@BeforeClass
+	@BeforeAll
 	public static void initCrs() throws UnknownCRSException {
 		CRS_4326 = CRSManager.lookup("crs:84");
 		CRS_25832 = CRSManager.lookup("EPSG:25832");
@@ -256,20 +257,22 @@ public class GeoJsonGeometryWriterTest {
 				JsonPathMatchers.hasJsonPath("$.coordinates[1].[0].[0].[1]", is(exteriorRing2.get(0).get1())));
 	}
 
-	@Test(expected = IOException.class)
+	@Test
 	public void testWriteGeometry_UnsupportedGeometry() throws Exception {
-		Point point1 = geometryFactory.createPoint("inPointId1", 7.2, 50.75, CRS_4326);
-		Point point2 = geometryFactory.createPoint("inPointId2", 7.25, 50.8, CRS_4326);
-		Point point3 = geometryFactory.createPoint("inPointId3", 7.25, 50.75, CRS_4326);
+		assertThrows(IOException.class, () -> {
+			Point point1 = geometryFactory.createPoint("inPointId1", 7.2, 50.75, CRS_4326);
+			Point point2 = geometryFactory.createPoint("inPointId2", 7.25, 50.8, CRS_4326);
+			Point point3 = geometryFactory.createPoint("inPointId3", 7.25, 50.75, CRS_4326);
 
-		Arc arc = geometryFactory.createArc(point1, point2, point3);
-		Curve curve = geometryFactory.createCurve("curveId", CRS_4326, arc);
+			Arc arc = geometryFactory.createArc(point1, point2, point3);
+			Curve curve = geometryFactory.createCurve("curveId", CRS_4326, arc);
 
-		StringWriter json = new StringWriter();
-		JsonWriter jsonWriter = instantiateJsonWriter(json);
-		GeoJsonGeometryWriter geoJsonGeometryWriter = new GeoJsonGeometryWriter(jsonWriter, CRS_4326);
+			StringWriter json = new StringWriter();
+			JsonWriter jsonWriter = instantiateJsonWriter(json);
+			GeoJsonGeometryWriter geoJsonGeometryWriter = new GeoJsonGeometryWriter(jsonWriter, CRS_4326);
 
-		geoJsonGeometryWriter.writeGeometry(curve);
+			geoJsonGeometryWriter.writeGeometry(curve);
+		});
 	}
 
 	@Test

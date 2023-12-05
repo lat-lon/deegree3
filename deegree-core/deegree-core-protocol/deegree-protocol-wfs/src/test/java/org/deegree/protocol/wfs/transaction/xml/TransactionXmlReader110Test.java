@@ -36,21 +36,6 @@
  ---------------------------------------------------------------------------*/
 package org.deegree.protocol.wfs.transaction.xml;
 
-import static org.deegree.commons.xml.stax.XMLStreamUtils.nextElement;
-import static org.deegree.commons.xml.stax.XMLStreamUtils.skipElement;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.Iterator;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
-import junit.framework.TestCase;
-
 import org.deegree.commons.xml.stax.XMLStreamUtils;
 import org.deegree.filter.Filter;
 import org.deegree.protocol.wfs.WFSConstants;
@@ -62,14 +47,29 @@ import org.deegree.protocol.wfs.transaction.action.IDGenMode;
 import org.deegree.protocol.wfs.transaction.action.Insert;
 import org.deegree.protocol.wfs.transaction.action.PropertyReplacement;
 import org.deegree.protocol.wfs.transaction.action.Update;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Iterator;
+
+import static org.deegree.commons.xml.stax.XMLStreamUtils.nextElement;
+import static org.deegree.commons.xml.stax.XMLStreamUtils.skipElement;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test cases for {@link TransactionXmlReader110}.
  *
  * @author <a href="mailto:schneider@lat-lon.de">Markus Schneider</a>
  */
-public class TransactionXmlReader110Test extends TestCase {
+public class TransactionXmlReader110Test {
 
 	private final String DELETE_110 = "wfs110/delete.xml";
 

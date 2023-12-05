@@ -34,21 +34,21 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.protocol.wmts.client;
 
-import static org.junit.Assert.assertNotNull;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.List;
-
-import javax.xml.stream.XMLStreamException;
-
 import org.deegree.protocol.ows.exception.OWSExceptionReport;
 import org.deegree.protocol.ows.http.OwsHttpClientMock;
 import org.deegree.protocol.wmts.ops.GetTile;
 import org.deegree.tile.TileMatrixSet;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import javax.xml.stream.XMLStreamException;
+import java.io.IOException;
+import java.net.URL;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Test cases for {@link WMTSClient}.
@@ -61,7 +61,7 @@ public class WMTSClientTest {
 
 	private WMTSClient client;
 
-	@Before
+	@BeforeEach
 	public void setup() throws OWSExceptionReport, XMLStreamException, IOException {
 		URL capaUrl = WMTSClientTest.class.getResource("wmts100_capabilities_example.xml");
 		httpClientMock = new OwsHttpClientMock();
@@ -70,8 +70,7 @@ public class WMTSClientTest {
 
 	/**
 	 * Test method for
-	 * {@link org.deegree.protocol.wmts.client.WMTSClient#getTile(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, int, int)}
-	 * .
+	 * {@link org.deegree.protocol.wmts.client.WMTSClient#getTile(GetTile request)} .
 	 */
 	@Test
 	public void testGetTileOK() throws IOException, OWSExceptionReport, XMLStreamException {
@@ -85,55 +84,57 @@ public class WMTSClientTest {
 
 	/**
 	 * Test method for
-	 * {@link org.deegree.protocol.wmts.client.WMTSClient#getTile(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, int, int)}
-	 * .
+	 * {@link org.deegree.protocol.wmts.client.WMTSClient#getTile(GetTile request)} .
 	 */
-	@Test(expected = OWSExceptionReport.class)
-	public void testGetTileHttpStatus500() throws IOException, OWSExceptionReport, XMLStreamException {
+	@Test
+	public void testGetTileHttpStatus500() {
 
 		URL responseUrl = WMTSClientTest.class.getResource("gettile_response1.png");
 		httpClientMock.setResponse(responseUrl, "image/png", 500);
 		GetTile request = buildExampleRequest();
-		client.getTile(request);
+		assertThrows(OWSExceptionReport.class, () -> {
+			client.getTile(request);
+		});
 	}
 
 	/**
 	 * Test method for
-	 * {@link org.deegree.protocol.wmts.client.WMTSClient#getTile(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.String, int, int)}
-	 * .
+	 * {@link org.deegree.protocol.wmts.client.GetTileResponse#getAsImage()} .
 	 */
-	@Test(expected = OWSExceptionReport.class)
-	public void testGetTileExceptionReport() throws IOException, OWSExceptionReport, XMLStreamException {
+	@Test
+	public void testGetTileExceptionReport() {
 
 		URL responseUrl = WMTSClientTest.class.getResource("wmts100_exception_report.xml");
 		httpClientMock.setResponse(responseUrl, "text/xml", 200);
 		GetTile request = buildExampleRequest();
-		GetTileResponse response = client.getTile(request);
-		response.getAsImage();
+		assertThrows(OWSExceptionReport.class, () -> {
+			GetTileResponse response = client.getTile(request);
+			response.getAsImage();
+		});
 	}
 
 	@Test
 	public void testGetLayers() throws XMLStreamException {
 		List<Layer> clientLayers = client.getLayers();
-		Assert.assertNotNull(clientLayers);
+		assertNotNull(clientLayers);
 	}
 
 	@Test
 	public void testGetTileMatrixSets() throws XMLStreamException {
 		List<TileMatrixSet> matrixSets = client.getTileMatrixSets();
-		Assert.assertNotNull(matrixSets);
+		assertNotNull(matrixSets);
 	}
 
 	@Test
 	public void testGetTileMatrixSet() throws XMLStreamException {
 		TileMatrixSet matrixSet = client.getTileMatrixSet("Satellite_Provo");
-		Assert.assertNotNull(matrixSet);
+		assertNotNull(matrixSet);
 	}
 
 	@Test
 	public void testGetTileMatrixSetNotExists() throws XMLStreamException {
 		TileMatrixSet matrixSet = client.getTileMatrixSet("Satellite_PROVO");
-		Assert.assertNull(matrixSet);
+		assertNull(matrixSet);
 	}
 
 	private GetTile buildExampleRequest() {

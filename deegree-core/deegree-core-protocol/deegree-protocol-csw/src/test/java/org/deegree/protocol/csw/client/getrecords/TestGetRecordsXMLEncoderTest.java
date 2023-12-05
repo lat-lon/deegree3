@@ -34,32 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.protocol.csw.client.getrecords;
 
-import static org.deegree.commons.xml.CommonNamespaces.APISO;
-import static org.deegree.commons.xml.CommonNamespaces.APISO_PREFIX;
-import static org.deegree.filter.MatchAction.ANY;
-import static org.deegree.protocol.csw.CSWConstants.ResultType.results;
-import static org.deegree.protocol.csw.CSWConstants.ReturnableElement.full;
-import static org.junit.Assert.assertTrue;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URL;
-import java.util.Collections;
-import java.util.List;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
-import javax.xml.transform.Source;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
-import javax.xml.validation.Validator;
-
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.deegree.commons.tom.ows.Version;
 import org.deegree.commons.tom.primitive.PrimitiveValue;
@@ -75,9 +49,32 @@ import org.deegree.filter.expression.Literal;
 import org.deegree.filter.expression.ValueReference;
 import org.deegree.protocol.csw.CSWConstants.ResultType;
 import org.deegree.protocol.csw.CSWConstants.ReturnableElement;
-import org.junit.Assume;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.xml.sax.SAXException;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
+import javax.xml.transform.Source;
+import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.Collections;
+import java.util.List;
+
+import static org.deegree.commons.xml.CommonNamespaces.APISO;
+import static org.deegree.commons.xml.CommonNamespaces.APISO_PREFIX;
+import static org.deegree.filter.MatchAction.ANY;
+import static org.deegree.protocol.csw.CSWConstants.ResultType.results;
+import static org.deegree.protocol.csw.CSWConstants.ReturnableElement.full;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Validates the GetRecords requests.
@@ -195,22 +192,14 @@ public class TestGetRecordsXMLEncoderTest {
 	private void validateGetRecordsXml(ByteArrayOutputStream os) throws SAXException, IOException {
 		InputStream getRecordsRequest = new ByteArrayInputStream(os.toByteArray());
 		SchemaFactory factory = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
-		Validator validator = null;
-		Source source = null;
-		try {
-			URL schemaLocation = new URL("http://schemas.opengis.net/csw/2.0.2/CSW-discovery.xsd");
-			Schema schema = factory.newSchema(schemaLocation);
-			validator = schema.newValidator();
-			source = new StreamSource(getRecordsRequest);
-		}
-		catch (Exception e) {
-			Assume.assumeNoException(e);
-			return;
-		}
+		URL schemaLocation = new URL("http://schemas.opengis.net/csw/2.0.2/CSW-discovery.xsd");
+		Schema schema = factory.newSchema(schemaLocation);
+		Validator validator = schema.newValidator();
+		Source source = new StreamSource(getRecordsRequest);
 		validator.validate(source);
 	}
 
-	private String asString(ByteArrayOutputStream getRecordsAsXml) throws UnsupportedEncodingException {
+	private String asString(ByteArrayOutputStream getRecordsAsXml) {
 		return getRecordsAsXml.toString();
 	}
 

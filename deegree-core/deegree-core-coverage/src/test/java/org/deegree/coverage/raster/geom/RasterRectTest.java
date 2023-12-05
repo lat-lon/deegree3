@@ -37,9 +37,10 @@
 
 package org.deegree.coverage.raster.geom;
 
-import junit.framework.Assert;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * The <code>RasterRect</code> class TODO add class documentation here.
@@ -54,10 +55,10 @@ public class RasterRectTest {
 		RasterRect first = new RasterRect(2, 2, 2, 2);
 		RasterRect second = new RasterRect(1, 3, 4, 5);
 		RasterRect result = RasterRect.intersection(first, second);
-		Assert.assertEquals(2, result.x);
-		Assert.assertEquals(3, result.y);
-		Assert.assertEquals(2, result.width);
-		Assert.assertEquals(1, result.height);
+		assertEquals(2, result.x);
+		assertEquals(3, result.y);
+		assertEquals(2, result.width);
+		assertEquals(1, result.height);
 	}
 
 	@Test
@@ -65,10 +66,10 @@ public class RasterRectTest {
 		RasterRect first = new RasterRect(2, 2, 4, 4);
 		RasterRect second = new RasterRect(3, 3, 2, 2);
 		RasterRect result = RasterRect.intersection(first, second);
-		Assert.assertEquals(3, result.x);
-		Assert.assertEquals(3, result.y);
-		Assert.assertEquals(2, result.width);
-		Assert.assertEquals(2, result.height);
+		assertEquals(3, result.x);
+		assertEquals(3, result.y);
+		assertEquals(2, result.width);
+		assertEquals(2, result.height);
 	}
 
 	@Test
@@ -76,10 +77,10 @@ public class RasterRectTest {
 		RasterRect first = new RasterRect(3, 3, 2, 2);
 		RasterRect second = new RasterRect(2, 2, 4, 4);
 		RasterRect result = RasterRect.intersection(first, second);
-		Assert.assertEquals(3, result.x);
-		Assert.assertEquals(3, result.y);
-		Assert.assertEquals(2, result.width);
-		Assert.assertEquals(2, result.height);
+		assertEquals(3, result.x);
+		assertEquals(3, result.y);
+		assertEquals(2, result.width);
+		assertEquals(2, result.height);
 	}
 
 	@Test
@@ -88,7 +89,7 @@ public class RasterRectTest {
 		RasterRect second = new RasterRect(0, 3, 1, 5);
 		RasterRect result = RasterRect.intersection(first, second);
 
-		Assert.assertNull(result);
+		assertNull(result);
 	}
 
 	@Test
@@ -96,7 +97,7 @@ public class RasterRectTest {
 		RasterRect first = new RasterRect(2, 2, 2, 2);
 		RasterRect second = new RasterRect(5, 3, 1, 5);
 		RasterRect result = RasterRect.intersection(first, second);
-		Assert.assertNull(result);
+		assertNull(result);
 	}
 
 	@Test
@@ -104,7 +105,7 @@ public class RasterRectTest {
 		RasterRect first = new RasterRect(2, 2, 2, 2);
 		RasterRect second = new RasterRect(2, 0, 5, 2);
 		RasterRect result = RasterRect.intersection(first, second);
-		Assert.assertNull(result);
+		assertNull(result);
 	}
 
 	@Test
@@ -112,7 +113,7 @@ public class RasterRectTest {
 		RasterRect first = new RasterRect(2, 2, 2, 2);
 		RasterRect second = new RasterRect(2, 5, 5, 2);
 		RasterRect result = RasterRect.intersection(first, second);
-		Assert.assertNull(result);
+		assertNull(result);
 	}
 
 }

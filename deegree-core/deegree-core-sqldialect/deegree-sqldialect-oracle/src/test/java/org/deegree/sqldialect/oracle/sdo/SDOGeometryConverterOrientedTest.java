@@ -1,14 +1,15 @@
 package org.deegree.sqldialect.oracle.sdo;
 
-import static org.deegree.sqldialect.oracle.sdo.SDOGeometryConverterExampleTests.loadFromFile;
-import static org.deegree.sqldialect.oracle.sdo.SDOGeometryConverterExampleTests.writeGMLGeometry;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import org.deegree.geometry.Geometry;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.util.Scanner;
-import org.deegree.geometry.Geometry;
-import org.junit.Test;
+
+import static org.deegree.sqldialect.oracle.sdo.SDOGeometryConverterExampleTests.loadFromFile;
+import static org.deegree.sqldialect.oracle.sdo.SDOGeometryConverterExampleTests.writeGMLGeometry;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class SDOGeometryConverterOrientedTest {
 
@@ -30,9 +31,9 @@ public class SDOGeometryConverterOrientedTest {
 
 		String sdoGeomString = writeGMLGeometry(sdoGeom).replace("\r", "").trim();
 
-		assertNotNull("Convertable 1", sdoGeomString);
-		assertNotNull("Convertable 2", geomString);
-		assertEquals("SDO -> Geom", geomString, sdoGeomString);
+		assertNotNull(sdoGeomString, "Convertable 1");
+		assertNotNull(geomString, "Convertable 2");
+		assertEquals(geomString, sdoGeomString, "SDO -> Geom");
 	}
 
 }

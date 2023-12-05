@@ -43,7 +43,7 @@ import org.deegree.test.services.OGCValidator;
 import org.deegree.test.services.util.HTTPResponseValidator;
 import org.deegree.test.services.util.XPathAsserter;
 import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * This class is an integration test for OGC WPS services. It is analogous to the

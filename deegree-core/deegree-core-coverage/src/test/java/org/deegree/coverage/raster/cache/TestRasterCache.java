@@ -34,19 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.coverage.raster.cache;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
-import junit.framework.Assert;
-
 import org.deegree.commons.utils.FileUtils;
 import org.deegree.commons.utils.TunableParameter;
 import org.deegree.coverage.raster.AbstractRaster;
@@ -59,7 +46,24 @@ import org.deegree.coverage.raster.utils.RasterFactory;
 import org.deegree.cs.persistence.CRSManager;
 import org.deegree.geometry.Envelope;
 import org.deegree.geometry.GeometryFactory;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Test the caching of rasters.
@@ -400,7 +404,7 @@ public class TestRasterCache {
 			c.join(1000);
 		}
 		catch (Exception e) {
-			Assert.fail("Waiting for a thread took to long, this might be a raster cache deadlock.");
+			fail("Waiting for a thread took to long, this might be a raster cache deadlock.");
 		}
 		clearCache();
 
@@ -409,21 +413,21 @@ public class TestRasterCache {
 	private void clearCache() {
 		// clear cache
 		RasterCache.clear(true);
-		Assert.assertEquals(0, RasterCache.size());
-		Assert.assertEquals(0, RasterCache.getCurrentlyUsedDisk());
-		Assert.assertEquals(0, RasterCache.getCurrentlyUsedMemory());
-		Assert.assertFalse(CACHE_DIR.exists());
+		assertEquals(0, RasterCache.size());
+		assertEquals(0, RasterCache.getCurrentlyUsedDisk());
+		assertEquals(0, RasterCache.getCurrentlyUsedMemory());
+		assertFalse(CACHE_DIR.exists());
 		resetCache();
 	}
 
 	private void checkFiles(FileInfo[] expected) {
 		File[] curFiles = CACHE_DIR.listFiles();
-		Assert.assertNotNull("The files of the raster cache could not be listed, this may not be.", curFiles);
+		assertNotNull(curFiles, "The files of the raster cache could not be listed, this may not be.");
 		if (expected == null) {
-			Assert.assertEquals(0, curFiles.length);
+			assertEquals(0, curFiles.length);
 		}
 		else {
-			Assert.assertEquals(expected.length * 2, curFiles.length);
+			assertEquals(expected.length * 2, curFiles.length);
 			Map<String, FileInfo> exp = new HashMap<String, FileInfo>();
 			for (FileInfo fi : expected) {
 				exp.put(fi.name, fi);
@@ -431,9 +435,9 @@ public class TestRasterCache {
 
 			for (File f : curFiles) {
 				String name = FileUtils.getFilename(f);
-				Assert.assertTrue(exp.containsKey(name));
+				assertTrue(exp.containsKey(name));
 				FileInfo fi = exp.get(name);
-				Assert.assertNotNull(fi);
+				assertNotNull(fi);
 				fi.testFile(f);
 
 			}
@@ -442,11 +446,11 @@ public class TestRasterCache {
 	}
 
 	private void checkDiskSize(long expected) {
-		Assert.assertEquals(expected, RasterCache.getCurrentlyUsedDisk());
+		assertEquals(expected, RasterCache.getCurrentlyUsedDisk());
 	}
 
 	private void checkMemSize(long expected) {
-		Assert.assertEquals(expected, RasterCache.getCurrentlyUsedMemory());
+		assertEquals(expected, RasterCache.getCurrentlyUsedMemory());
 	}
 
 	private static final class FileInfo {
@@ -468,13 +472,13 @@ public class TestRasterCache {
 		 */
 		void testFile(File f) {
 			if (isCacheFile(f)) {
-				Assert.assertEquals(expectedSize, f.length());
+				assertEquals(expectedSize, f.length());
 			}
 			else if (isCacheInfoFile(f)) {
 				testInfoFile(f);
 			}
 			else {
-				Assert.fail("The given file: " + f.getAbsolutePath()
+				fail("The given file: " + f.getAbsolutePath()
 						+ " is neither a raster cache file, nor a raster cache info file.");
 			}
 
@@ -496,14 +500,13 @@ public class TestRasterCache {
 					int lnr = 1;
 					for (String exp : infoFile) {
 						String line = b.readLine();
-						Assert.assertEquals(
-								"Mismatch in line number: " + (lnr++) + " of file: " + f.getAbsolutePath() + ".", exp,
-								line);
+						assertEquals(exp, line,
+								"Mismatch in line number: " + (lnr++) + " of file: " + f.getAbsolutePath() + ".");
 					}
 					b.close();
 				}
 				catch (IOException e) {
-					Assert.fail("An io exception occurred while inspecting the info file for cache file: " + name
+					fail("An io exception occurred while inspecting the info file for cache file: " + name
 							+ " message: " + e.getLocalizedMessage());
 				}
 				finally {

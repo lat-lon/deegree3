@@ -41,24 +41,18 @@
 package org.deegree.services.wms;
 
 import org.apache.commons.io.IOUtils;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.stream.Stream;
 
 import static org.deegree.commons.utils.net.HttpUtils.IMAGE;
 import static org.deegree.commons.utils.net.HttpUtils.retrieve;
 import static org.deegree.commons.utils.test.IntegrationTestUtils.isImageSimilar;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * <code>WMSSimilarityIntegrationTest</code>
@@ -66,101 +60,71 @@ import static org.junit.Assert.assertTrue;
  * @author <a href="mailto:schmitz@occamlabs.de">Andreas Schmitz</a>
  */
 
-@RunWith(Parameterized.class)
 public class WMSSimilarityIntegrationTest {
 
-	private static int numFailed = 0;
-
-	private final String resourceName;
-
-	private final String format;
-
-	private final String request;
-
-	private final double tolerance;
-
-	private final BufferedImage expected;
-
-	public WMSSimilarityIntegrationTest(String resourceName, String format, double tolerance) throws IOException {
-		this.resourceName = resourceName;
-		this.request = IOUtils
-			.toString(WMSSimilarityIntegrationTest.class.getResourceAsStream("/requests/" + resourceName + ".kvp"));
-		this.tolerance = tolerance;
-		this.expected = ImageIO
-			.read(WMSSimilarityIntegrationTest.class.getResourceAsStream("/requests/" + resourceName + "." + format));
-		this.format = format;
+	private Stream<Arguments> getParameters() {
+		return Stream.of(Arguments.of("lines/lines_capbutt", "png", 0.01),
+				Arguments.of("lines/lines_capround", "png", 0.01), Arguments.of("lines/lines_capsquare", "png", 0.01),
+				Arguments.of("lines/lines_centroid", "png", 0.01), Arguments.of("lines/lines_dasharray", "png", 0.01),
+				Arguments.of("lines/lines_dasharrayandoffset", "tif", 0.01),
+				Arguments.of("lines/lines_divmod", "png", 0.01),
+				Arguments.of("lines/lines_filtersamelayer", "png", 0.01),
+				Arguments.of("lines/lines_getcurrentscale", "tif", 0.24),
+				Arguments.of("lines/lines_graphicfill", "png", 0.01),
+				Arguments.of("lines/lines_graphicstroke", "tif", 0.01),
+				Arguments.of("lines/lines_joinbevel", "png", 0.01), Arguments.of("lines/lines_joinmitre", "png", 0.01),
+				Arguments.of("lines/lines_joinround", "png", 0.01), Arguments.of("lines/lines_offset", "png", 0.01),
+				Arguments.of("lines/lines_opacity", "png", 0.01), Arguments.of("lines/lines_pixelsize", "png", 0.01),
+				Arguments.of("lines/lines_width5", "png", 0.01), Arguments.of("points/points_anchor0", "png", 0.01),
+				Arguments.of("points/points_anchor1", "png", 0.01), Arguments.of("points/points_circle16", "png", 0.01),
+				Arguments.of("points/points_circle32", "png", 0.01), Arguments.of("points/points_cross32", "png", 0.01),
+				Arguments.of("points/points_defaultsquare", "png", 0.01),
+				Arguments.of("points/points_displacementandanchorpoint", "png", 0.01),
+				Arguments.of("points/points_displacementx", "png", 0.01),
+				Arguments.of("points/points_displacementxnegative", "png", 0.01),
+				Arguments.of("points/points_displacementy", "png", 0.01),
+				Arguments.of("points/points_displacementynegative", "png", 0.01),
+				Arguments.of("points/points_rotation", "png", 0.01), Arguments.of("points/points_star32", "png", 0.01),
+				Arguments.of("points/points_triangle32", "png", 0.01), Arguments.of("points/points_x32", "png", 0.01),
+				Arguments.of("polygons/polygons_edgedandsubstraction", "tif", 0.01),
+				Arguments.of("polygons/polygons_offset", "tif", 0.01),
+				Arguments.of("polygons/polygons_typepredicatetest", "tif", 0.01),
+				Arguments.of("resolution/contours_parameter_dpi", "png", 0.01),
+				Arguments.of("resolution/contours_parameter_format_options", "png", 0.01),
+				Arguments.of("resolution/contours_parameter_map_resolution", "png", 0.01),
+				Arguments.of("resolution/contours_parameter_pixelsize", "png", 0.01),
+				Arguments.of("resolution/contours_parameter_res", "png", 0.01),
+				Arguments.of("resolution/contours_parameter_x-dpi", "png", 0.01),
+				Arguments.of("resolution/contours_vector_dpi_96", "png", 0.01),
+				Arguments.of("resolution/contours_vector_dpi_100_empty", "png", 0.01),
+				Arguments.of("resolution/contours_vector_dpi_192", "png", 0.01),
+				Arguments.of("resolution/contours_vector_dpi_default_empty", "png", 0.01),
+				Arguments.of("resolution/satellite_provo_dpi_96", "png", 0.01),
+				Arguments.of("resolution/satellite_provo_dpi_100_empty", "png", 0.01),
+				Arguments.of("resolution/satellite_provo_dpi_192", "png", 0.01),
+				Arguments.of("resolution/satellite_provo_dpi_default_empty", "png", 0.01));
 	}
 
-	@Parameters(name = "{index}: {0}")
-	public static Collection<Object[]> getParameters() {
-		List<Object[]> requests = new ArrayList<>();
-		requests.add(new Object[] { "lines/lines_capbutt", "png", 0.01 });
-		requests.add(new Object[] { "lines/lines_capround", "png", 0.01 });
-		requests.add(new Object[] { "lines/lines_capsquare", "png", 0.01 });
-		requests.add(new Object[] { "lines/lines_centroid", "png", 0.01 });
-		requests.add(new Object[] { "lines/lines_dasharray", "png", 0.01 });
-		requests.add(new Object[] { "lines/lines_dasharrayandoffset", "tif", 0.01 });
-		requests.add(new Object[] { "lines/lines_divmod", "png", 0.01 });
-		requests.add(new Object[] { "lines/lines_filtersamelayer", "png", 0.01 });
-		requests.add(new Object[] { "lines/lines_getcurrentscale", "tif", 0.24 });
-		requests.add(new Object[] { "lines/lines_graphicfill", "png", 0.01 });
-		requests.add(new Object[] { "lines/lines_graphicstroke", "tif", 0.01 });
-		requests.add(new Object[] { "lines/lines_joinbevel", "png", 0.01 });
-		requests.add(new Object[] { "lines/lines_joinmitre", "png", 0.01 });
-		requests.add(new Object[] { "lines/lines_joinround", "png", 0.01 });
-		requests.add(new Object[] { "lines/lines_offset", "png", 0.01 });
-		requests.add(new Object[] { "lines/lines_opacity", "png", 0.01 });
-		requests.add(new Object[] { "lines/lines_pixelsize", "png", 0.01 });
-		requests.add(new Object[] { "lines/lines_width5", "png", 0.01 });
-		requests.add(new Object[] { "points/points_anchor0", "png", 0.01 });
-		requests.add(new Object[] { "points/points_anchor1", "png", 0.01 });
-		requests.add(new Object[] { "points/points_circle16", "png", 0.01 });
-		requests.add(new Object[] { "points/points_circle32", "png", 0.01 });
-		requests.add(new Object[] { "points/points_cross32", "png", 0.01 });
-		requests.add(new Object[] { "points/points_defaultsquare", "png", 0.01 });
-		requests.add(new Object[] { "points/points_displacementandanchorpoint", "png", 0.01 });
-		requests.add(new Object[] { "points/points_displacementx", "png", 0.01 });
-		requests.add(new Object[] { "points/points_displacementxnegative", "png", 0.01 });
-		requests.add(new Object[] { "points/points_displacementy", "png", 0.01 });
-		requests.add(new Object[] { "points/points_displacementynegative", "png", 0.01 });
-		requests.add(new Object[] { "points/points_rotation", "png", 0.01 });
-		requests.add(new Object[] { "points/points_star32", "png", 0.01 });
-		requests.add(new Object[] { "points/points_triangle32", "png", 0.01 });
-		requests.add(new Object[] { "points/points_x32", "png", 0.01 });
-		requests.add(new Object[] { "polygons/polygons_edgedandsubstraction", "tif", 0.01 });
-		requests.add(new Object[] { "polygons/polygons_offset", "tif", 0.01 });
-		requests.add(new Object[] { "polygons/polygons_typepredicatetest", "tif", 0.01 });
-		requests.add(new Object[] { "resolution/contours_parameter_dpi", "png", 0.01 });
-		requests.add(new Object[] { "resolution/contours_parameter_format_options", "png", 0.01 });
-		requests.add(new Object[] { "resolution/contours_parameter_map_resolution", "png", 0.01 });
-		requests.add(new Object[] { "resolution/contours_parameter_pixelsize", "png", 0.01 });
-		requests.add(new Object[] { "resolution/contours_parameter_res", "png", 0.01 });
-		requests.add(new Object[] { "resolution/contours_parameter_x-dpi", "png", 0.01 });
-		requests.add(new Object[] { "resolution/contours_vector_dpi_96", "png", 0.01 });
-		requests.add(new Object[] { "resolution/contours_vector_dpi_100_empty", "png", 0.01 });
-		requests.add(new Object[] { "resolution/contours_vector_dpi_192", "png", 0.01 });
-		requests.add(new Object[] { "resolution/contours_vector_dpi_default_empty", "png", 0.01 });
-		requests.add(new Object[] { "resolution/satellite_provo_dpi_96", "png", 0.01 });
-		requests.add(new Object[] { "resolution/satellite_provo_dpi_100_empty", "png", 0.01 });
-		requests.add(new Object[] { "resolution/satellite_provo_dpi_192", "png", 0.01 });
-		requests.add(new Object[] { "resolution/satellite_provo_dpi_default_empty", "png", 0.01 });
-		return requests;
-	}
-
-	private String testName() {
+	private String testName(String resourceName) {
 		return getClass().getName() + "_" + resourceName.replaceAll("/", "_");
 	}
 
-	@Test
-	public void testSimilarity() throws Exception {
-		String base = createRequest();
+	@ParameterizedTest
+	@MethodSource("getParameters")
+	public void testSimilarity(String resourceName, String format, double tolerance) throws Exception {
+		String request = IOUtils
+			.toString(WMSSimilarityIntegrationTest.class.getResourceAsStream("/requests/" + resourceName + ".kvp"));
+		BufferedImage expected = ImageIO
+			.read(WMSSimilarityIntegrationTest.class.getResourceAsStream("/requests/" + resourceName + "." + format));
+
+		String base = createRequest(request);
 		BufferedImage actual = retrieve(IMAGE, base);
 
-		assertTrue("Image for " + resourceName + "are not similar enough",
-				isImageSimilar(expected, actual, tolerance, testName()));
+		assertTrue(isImageSimilar(expected, actual, tolerance, testName(resourceName)),
+				"Image for " + resourceName + "are not similar enough");
 	}
 
-	private String createRequest() {
+	private String createRequest(String request) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("http://localhost:");
 		sb.append(System.getProperty("portnumber", "8080"));
@@ -171,14 +135,6 @@ public class WMSSimilarityIntegrationTest {
 			sb.append("?");
 		sb.append(request);
 		return sb.toString();
-	}
-
-	private byte[] parseAsBytes(RenderedImage actual) throws IOException {
-		ByteArrayOutputStream bosActual = new ByteArrayOutputStream();
-		ImageIO.write(actual, format, bosActual);
-		bosActual.flush();
-		bosActual.close();
-		return bosActual.toByteArray();
 	}
 
 }

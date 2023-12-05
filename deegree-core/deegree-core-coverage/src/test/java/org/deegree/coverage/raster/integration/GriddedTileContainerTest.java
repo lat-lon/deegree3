@@ -37,13 +37,6 @@
 
 package org.deegree.coverage.raster.integration;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-
-import junit.framework.Assert;
-
 import org.deegree.coverage.raster.AbstractRaster;
 import org.deegree.coverage.raster.SimpleRaster;
 import org.deegree.coverage.raster.TiledRaster;
@@ -54,7 +47,14 @@ import org.deegree.coverage.raster.io.RasterIOOptions;
 import org.deegree.coverage.raster.io.grid.GridMetaInfoFile;
 import org.deegree.coverage.raster.utils.RasterFactory;
 import org.deegree.geometry.Envelope;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * The <code>GriddedTileContainerTest</code> class TODO add class documentation here.
@@ -132,18 +132,18 @@ public class GriddedTileContainerTest extends CenterOuterTest {
 	public void testTranslation() {
 		double oldPos = 1000;
 		double newPos = getPositionX(oldPos);
-		Assert.assertEquals(1000, newPos, 0.0001);
+		assertEquals(1000, newPos, 0.0001);
 		oldPos = 998;
 		newPos = getPositionX(oldPos);
-		Assert.assertEquals(948.8, newPos, 0.0001);
+		assertEquals(948.8, newPos, 0.0001);
 
 		oldPos = 2030;
 		newPos = getPositionY(oldPos);
-		Assert.assertEquals(2030, newPos, 0.0001);
+		assertEquals(2030, newPos, 0.0001);
 
 		oldPos = 2028;
 		newPos = getPositionY(oldPos);
-		Assert.assertEquals(1978.8, newPos, 0.0001);
+		assertEquals(1978.8, newPos, 0.0001);
 
 	}
 
@@ -158,8 +158,8 @@ public class GriddedTileContainerTest extends CenterOuterTest {
 		String name = "ul0_center_";
 		TiledRaster subRaster = rasterCenter.getSubRaster(request);
 		SimpleRaster simpleRaster = subRaster.getAsSimpleRaster();
-		Assert.assertEquals(3, simpleRaster.getColumns());
-		Assert.assertEquals(3, simpleRaster.getRows());
+		assertEquals(3, simpleRaster.getColumns());
+		assertEquals(3, simpleRaster.getRows());
 		writeDebugFile(name, simpleRaster);
 		testValues(UL0_CENTER_RESULT, simpleRaster);
 
@@ -167,8 +167,8 @@ public class GriddedTileContainerTest extends CenterOuterTest {
 		name = "ul0_outer_";
 		subRaster = rasterOuter.getSubRaster(request);
 		simpleRaster = subRaster.getAsSimpleRaster();
-		Assert.assertEquals(2, simpleRaster.getColumns());
-		Assert.assertEquals(2, simpleRaster.getRows());
+		assertEquals(2, simpleRaster.getColumns());
+		assertEquals(2, simpleRaster.getRows());
 		writeDebugFile(name, simpleRaster);
 		testValues(UL0_OUTER_RESULT, simpleRaster);
 	}
@@ -184,8 +184,8 @@ public class GriddedTileContainerTest extends CenterOuterTest {
 		String name = "ul0Overlap_center_";
 		TiledRaster subRaster = rasterCenter.getSubRaster(request);
 		SimpleRaster simpleRaster = subRaster.getAsSimpleRaster();
-		Assert.assertEquals(5, simpleRaster.getColumns());
-		Assert.assertEquals(5, simpleRaster.getRows());
+		assertEquals(5, simpleRaster.getColumns());
+		assertEquals(5, simpleRaster.getRows());
 		writeDebugFile(name, simpleRaster);
 		testValues(UL0OVERLAP_CENTER_RESULT, simpleRaster);
 
@@ -193,8 +193,8 @@ public class GriddedTileContainerTest extends CenterOuterTest {
 		name = "ul0Overlap_outer_";
 		subRaster = rasterOuter.getSubRaster(request);
 		simpleRaster = subRaster.getAsSimpleRaster();
-		Assert.assertEquals(4, simpleRaster.getColumns());
-		Assert.assertEquals(4, simpleRaster.getRows());
+		assertEquals(4, simpleRaster.getColumns());
+		assertEquals(4, simpleRaster.getRows());
 		writeDebugFile(name, simpleRaster);
 		testValues(UL0OVERLAP_OUTER_RESULT, simpleRaster);
 
@@ -211,8 +211,8 @@ public class GriddedTileContainerTest extends CenterOuterTest {
 		String name = "lr9Overlap_center_";
 		TiledRaster subRaster = rasterCenter.getSubRaster(request);
 		SimpleRaster simpleRaster = subRaster.getAsSimpleRaster();
-		Assert.assertEquals(3, simpleRaster.getColumns());
-		Assert.assertEquals(5, simpleRaster.getRows());
+		assertEquals(3, simpleRaster.getColumns());
+		assertEquals(5, simpleRaster.getRows());
 		writeDebugFile(name, simpleRaster);
 		testValues(LR9OVERLAP_CENTER_RESULT, simpleRaster);
 
@@ -220,8 +220,8 @@ public class GriddedTileContainerTest extends CenterOuterTest {
 		name = "lr9Overlap_outer_";
 		subRaster = rasterOuter.getSubRaster(request);
 		simpleRaster = subRaster.getAsSimpleRaster();
-		Assert.assertEquals(4, simpleRaster.getColumns());
-		Assert.assertEquals(4, simpleRaster.getRows());
+		assertEquals(4, simpleRaster.getColumns());
+		assertEquals(4, simpleRaster.getRows());
 		writeDebugFile(name, simpleRaster);
 		testValues(LR9OVERLAP_OUTER_RESULT, simpleRaster);
 	}
@@ -237,8 +237,8 @@ public class GriddedTileContainerTest extends CenterOuterTest {
 		String name = "ul0Outside_center_";
 		TiledRaster subRaster = rasterCenter.getSubRaster(request);
 		SimpleRaster simpleRaster = subRaster.getAsSimpleRaster();
-		Assert.assertEquals(3, simpleRaster.getColumns());
-		Assert.assertEquals(7, simpleRaster.getRows());
+		assertEquals(3, simpleRaster.getColumns());
+		assertEquals(7, simpleRaster.getRows());
 		writeDebugFile(name, simpleRaster);
 		testValues(UL0OUTSIDE_CENTER_RESULT, simpleRaster);
 
@@ -246,8 +246,8 @@ public class GriddedTileContainerTest extends CenterOuterTest {
 		name = "ul0Outside_outer_";
 		subRaster = rasterOuter.getSubRaster(request);
 		simpleRaster = subRaster.getAsSimpleRaster();
-		Assert.assertEquals(2, simpleRaster.getColumns());
-		Assert.assertEquals(6, simpleRaster.getRows());
+		assertEquals(2, simpleRaster.getColumns());
+		assertEquals(6, simpleRaster.getRows());
 		writeDebugFile(name, simpleRaster);
 		testValues(UL0OUTSIDE_OUTER_RESULT, simpleRaster);
 	}
@@ -263,8 +263,8 @@ public class GriddedTileContainerTest extends CenterOuterTest {
 		String name = "ul0Inside_center_";
 		TiledRaster subRaster = rasterCenter.getSubRaster(request);
 		SimpleRaster simpleRaster = subRaster.getAsSimpleRaster();
-		Assert.assertEquals(4, simpleRaster.getColumns());
-		Assert.assertEquals(3, simpleRaster.getRows());
+		assertEquals(4, simpleRaster.getColumns());
+		assertEquals(3, simpleRaster.getRows());
 		writeDebugFile(name, simpleRaster);
 		testValues(UL0INSIDE_CENTER_RESULT, simpleRaster);
 
@@ -272,8 +272,8 @@ public class GriddedTileContainerTest extends CenterOuterTest {
 		name = "ul0Inside_outer_";
 		subRaster = rasterOuter.getSubRaster(request);
 		simpleRaster = subRaster.getAsSimpleRaster();
-		Assert.assertEquals(5, simpleRaster.getColumns());
-		Assert.assertEquals(4, simpleRaster.getRows());
+		assertEquals(5, simpleRaster.getColumns());
+		assertEquals(4, simpleRaster.getRows());
 		writeDebugFile(name, simpleRaster);
 		testValues(UL0INSIDE_OUTER_RESULT, simpleRaster);
 	}
@@ -289,8 +289,8 @@ public class GriddedTileContainerTest extends CenterOuterTest {
 		String name = "ul01Strife_center_";
 		TiledRaster subRaster = rasterCenter.getSubRaster(request);
 		SimpleRaster simpleRaster = subRaster.getAsSimpleRaster();
-		Assert.assertEquals(4, simpleRaster.getColumns());
-		Assert.assertEquals(3, simpleRaster.getRows());
+		assertEquals(4, simpleRaster.getColumns());
+		assertEquals(3, simpleRaster.getRows());
 		writeDebugFile(name, simpleRaster);
 		testValues(UL01STRIFE_CENTER_RESULT, simpleRaster);
 
@@ -298,8 +298,8 @@ public class GriddedTileContainerTest extends CenterOuterTest {
 		name = "ul01Strife_outer_";
 		subRaster = rasterOuter.getSubRaster(request);
 		simpleRaster = subRaster.getAsSimpleRaster();
-		Assert.assertEquals(3, simpleRaster.getColumns());
-		Assert.assertEquals(3, simpleRaster.getRows());
+		assertEquals(3, simpleRaster.getColumns());
+		assertEquals(3, simpleRaster.getRows());
 		writeDebugFile(name, simpleRaster);
 		testValues(UL01STRIFE_OUTER_RESULT, simpleRaster);
 	}
@@ -315,8 +315,8 @@ public class GriddedTileContainerTest extends CenterOuterTest {
 		String name = "ul03Strife_center_";
 		TiledRaster subRaster = rasterCenter.getSubRaster(request);
 		SimpleRaster simpleRaster = subRaster.getAsSimpleRaster();
-		Assert.assertEquals(4, simpleRaster.getColumns());
-		Assert.assertEquals(7, simpleRaster.getRows());
+		assertEquals(4, simpleRaster.getColumns());
+		assertEquals(7, simpleRaster.getRows());
 		writeDebugFile(name, simpleRaster);
 		testValues(UL03STRIFE_CENTER_RESULT, simpleRaster);
 
@@ -324,8 +324,8 @@ public class GriddedTileContainerTest extends CenterOuterTest {
 		name = "ul03Strife_outer_";
 		subRaster = rasterOuter.getSubRaster(request);
 		simpleRaster = subRaster.getAsSimpleRaster();
-		Assert.assertEquals(4, simpleRaster.getColumns());
-		Assert.assertEquals(7, simpleRaster.getRows());
+		assertEquals(4, simpleRaster.getColumns());
+		assertEquals(7, simpleRaster.getRows());
 		writeDebugFile(name, simpleRaster);
 		testValues(UL03STRIFE_OUTER_RESULT, simpleRaster);
 	}
@@ -341,8 +341,8 @@ public class GriddedTileContainerTest extends CenterOuterTest {
 		String name = "allStrife_center_";
 		TiledRaster subRaster = rasterCenter.getSubRaster(request);
 		SimpleRaster simpleRaster = subRaster.getAsSimpleRaster();
-		Assert.assertEquals(13, simpleRaster.getColumns());
-		Assert.assertEquals(13, simpleRaster.getRows());
+		assertEquals(13, simpleRaster.getColumns());
+		assertEquals(13, simpleRaster.getRows());
 		writeDebugFile(name, simpleRaster);
 		testValues(ALLSTRIFE_CENTER_RESULT, simpleRaster);
 
@@ -350,8 +350,8 @@ public class GriddedTileContainerTest extends CenterOuterTest {
 		name = "allStrife_outer_";
 		subRaster = rasterOuter.getSubRaster(request);
 		simpleRaster = subRaster.getAsSimpleRaster();
-		Assert.assertEquals(13, simpleRaster.getColumns());
-		Assert.assertEquals(13, simpleRaster.getRows());
+		assertEquals(13, simpleRaster.getColumns());
+		assertEquals(13, simpleRaster.getRows());
 		writeDebugFile(name, simpleRaster);
 		testValues(ALLSTRIFE_OUTER_RESULT, simpleRaster);
 	}
@@ -367,8 +367,8 @@ public class GriddedTileContainerTest extends CenterOuterTest {
 		String name = "allOverlap_center_";
 		TiledRaster subRaster = rasterCenter.getSubRaster(request);
 		SimpleRaster simpleRaster = subRaster.getAsSimpleRaster();
-		Assert.assertEquals(34, simpleRaster.getColumns());
-		Assert.assertEquals(34, simpleRaster.getRows());
+		assertEquals(34, simpleRaster.getColumns());
+		assertEquals(34, simpleRaster.getRows());
 		writeDebugFile(name, simpleRaster);
 		testValues(ALLOVERLAP_CENTER_RESULT, simpleRaster);
 
@@ -376,8 +376,8 @@ public class GriddedTileContainerTest extends CenterOuterTest {
 		name = "allOverlap_outer_";
 		subRaster = rasterOuter.getSubRaster(request);
 		simpleRaster = subRaster.getAsSimpleRaster();
-		Assert.assertEquals(34, simpleRaster.getColumns());
-		Assert.assertEquals(34, simpleRaster.getRows());
+		assertEquals(34, simpleRaster.getColumns());
+		assertEquals(34, simpleRaster.getRows());
 		writeDebugFile(name, simpleRaster);
 		testValues(ALLOVERLAP_OUTER_RESULT, simpleRaster);
 	}

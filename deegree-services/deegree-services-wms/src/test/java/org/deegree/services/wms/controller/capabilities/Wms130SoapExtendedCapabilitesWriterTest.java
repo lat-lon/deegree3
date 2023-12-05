@@ -35,8 +35,8 @@
 package org.deegree.services.wms.controller.capabilities;
 
 import org.deegree.services.encoding.SupportedEncodings;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 import org.xmlunit.builder.Input;
 import org.xmlunit.matchers.HasXPathMatcher;
 import org.xmlunit.matchers.ValidationMatcher;
@@ -109,7 +109,7 @@ public class Wms130SoapExtendedCapabilitesWriterTest {
 			.withNamespaceContext(nsBindings())));
 	}
 
-	@Ignore("Requires access to referenced schema")
+	@Disabled("Requires access to referenced schema")
 	@Test
 	public void testWriteSoapWmsExtendedCapabilites_SchemaValid() throws Exception {
 		Wms130SoapExtendedCapabilitesWriter writer = new Wms130SoapExtendedCapabilitesWriter();

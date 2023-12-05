@@ -34,18 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.protocol.wfs.client;
 
-import static junit.framework.Assert.assertNotNull;
-import static org.deegree.gml.GMLVersion.GML_31;
-import static org.deegree.protocol.wfs.WFSVersion.WFS_100;
-import static org.deegree.protocol.wfs.WFSVersion.WFS_110;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-
-import java.net.URL;
-import java.util.Iterator;
-
-import javax.xml.namespace.QName;
-
 import org.deegree.commons.ows.metadata.ServiceIdentification;
 import org.deegree.commons.ows.metadata.party.Address;
 import org.deegree.commons.ows.metadata.party.ContactInfo;
@@ -62,9 +50,20 @@ import org.deegree.filter.OperatorFilter;
 import org.deegree.filter.comparison.PropertyIsEqualTo;
 import org.deegree.filter.expression.Literal;
 import org.deegree.filter.expression.ValueReference;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.xml.namespace.QName;
+import java.net.URL;
+import java.util.Iterator;
+
+import static org.deegree.gml.GMLVersion.GML_31;
+import static org.deegree.protocol.wfs.WFSVersion.WFS_100;
+import static org.deegree.protocol.wfs.WFSVersion.WFS_110;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Tests the {@link WFSClient} against various WFS server instances.

@@ -35,10 +35,6 @@
 
 package org.deegree.cs.persistence.gml;
 
-import java.net.URISyntaxException;
-
-import junit.framework.TestCase;
-
 import org.deegree.cs.CRSCodeType;
 import org.deegree.cs.components.Axis;
 import org.deegree.cs.components.IAxis;
@@ -55,7 +51,13 @@ import org.deegree.cs.projections.IProjection;
 import org.deegree.cs.projections.cylindric.TransverseMercator;
 import org.deegree.cs.transformations.Transformation;
 import org.deegree.cs.transformations.helmert.Helmert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import java.net.URISyntaxException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * <code>GMLCRSProviderTest</code> test the loading of a projected crs as well as the
@@ -64,7 +66,7 @@ import org.junit.Test;
  * @author <a href="mailto:bezema@lat-lon.de">Rutger Bezema</a>
  *
  */
-public class GMLCRSProviderTest extends TestCase {
+public class GMLCRSProviderTest {
 
 	private static final String CONFIG_FILE = "gml-store.xml";
 

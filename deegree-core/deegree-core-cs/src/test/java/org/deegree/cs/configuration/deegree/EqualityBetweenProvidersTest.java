@@ -35,9 +35,7 @@
 
 package org.deegree.cs.configuration.deegree;
 
-import junit.framework.TestCase;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * <b>Since the retrieval of all CRSs takes too much time this test should be skipped</b>
@@ -56,7 +54,7 @@ import org.junit.Test;
  * @author <a href="mailto:ionita@deegree.org">Andrei Ionita</a>
  *
  */
-public class EqualityBetweenProvidersTest extends TestCase {
+public class EqualityBetweenProvidersTest {
 
 	/**
 	 *

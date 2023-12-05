@@ -34,20 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.protocol.wms.client;
 
-import static org.deegree.protocol.wms.WMSConstants.WMSRequestType.DescribeLayer;
-import static org.deegree.protocol.wms.WMSConstants.WMSRequestType.GetMap;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
-import java.net.URL;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.stream.XMLStreamException;
-
 import org.apache.axiom.om.OMElement;
 import org.deegree.commons.ows.metadata.Description;
 import org.deegree.commons.ows.metadata.OperationsMetadata;
@@ -68,8 +54,21 @@ import org.deegree.cs.exceptions.UnknownCRSException;
 import org.deegree.layer.metadata.LayerMetadata;
 import org.deegree.layer.metadata.MetadataUrl;
 import org.deegree.style.se.unevaluated.Style;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
+import javax.xml.stream.XMLStreamException;
+import java.net.URL;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import static org.deegree.protocol.wms.WMSConstants.WMSRequestType.DescribeLayer;
+import static org.deegree.protocol.wms.WMSConstants.WMSRequestType.GetMap;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * TODO add class documentation here
@@ -177,7 +176,7 @@ public abstract class WMSCapabilitiesAdapterTest {
 		assertEquals(getServiceVersion(), serviceIdentification.getServiceTypeVersion().get(0));
 	}
 
-	@Ignore
+	@Disabled
 	@Test
 	public void testWMSCapabilitiesServiceProvider() throws XMLStreamException {
 		WMSCapabilitiesAdapter capabilities = createCapabilities();

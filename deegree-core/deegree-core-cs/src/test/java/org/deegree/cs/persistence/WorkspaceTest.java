@@ -34,23 +34,24 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.cs.persistence;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import org.deegree.cs.coordinatesystems.ICRS;
+import org.deegree.cs.exceptions.UnknownCRSException;
+import org.deegree.cs.transformations.TransformationFactory.DSTransform;
+import org.deegree.workspace.Workspace;
+import org.deegree.workspace.standard.DefaultWorkspace;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collection;
 
-import org.deegree.cs.coordinatesystems.ICRS;
-import org.deegree.cs.exceptions.UnknownCRSException;
-import org.deegree.cs.transformations.TransformationFactory.DSTransform;
-import org.deegree.workspace.Workspace;
-import org.deegree.workspace.standard.DefaultWorkspace;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * TODO add class documentation here
@@ -71,14 +72,14 @@ public class WorkspaceTest {
 
 	private Workspace workspace;
 
-	@Before
+	@BeforeEach
 	public void beforeAll() throws URISyntaxException {
 		URL resource = WorkspaceTest.class.getResource(".");
 		workspace = new DefaultWorkspace(new File(resource.toURI()));
 		workspace.initAll();
 	}
 
-	@After
+	@AfterEach
 	public void afterAll() {
 		workspace.destroy();
 	}
@@ -109,9 +110,11 @@ public class WorkspaceTest {
 		assertNotNull(crs);
 	}
 
-	@Test(expected = UnknownCRSException.class)
-	public void testLookupUnknownCRSFromDeegree() throws UnknownCRSException {
-		CRSManager.lookup(STORE_DEEGREE, CRS_FROM_GML1);
+	@Test
+	public void testLookupUnknownCRSFromDeegree() {
+		assertThrows(UnknownCRSException.class, () -> {
+			CRSManager.lookup(STORE_DEEGREE, CRS_FROM_GML1);
+		});
 	}
 
 	@Test
@@ -120,9 +123,11 @@ public class WorkspaceTest {
 		assertNotNull(crs);
 	}
 
-	@Test(expected = UnknownCRSException.class)
-	public void testLookupUnknownCRSFromGML() throws UnknownCRSException {
-		System.out.println(CRSManager.lookup(STORE_GML1, CRS_FROM_DEEGREE));
+	@Test
+	public void testLookupUnknownCRSFromGML() {
+		assertThrows(UnknownCRSException.class, () -> {
+			CRSManager.lookup(STORE_GML1, CRS_FROM_DEEGREE);
+		});
 	}
 
 	@Test

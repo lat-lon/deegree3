@@ -34,22 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.filter.xml;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
 import org.deegree.commons.tom.primitive.PrimitiveValue;
 import org.deegree.commons.xml.XMLParsingException;
 import org.deegree.commons.xml.schema.RedirectingEntityResolver;
@@ -81,10 +65,25 @@ import org.deegree.filter.spatial.Within;
 import org.deegree.geometry.Envelope;
 import org.deegree.geometry.primitive.Polygon;
 import org.deegree.workspace.standard.DefaultWorkspace;
-import org.hamcrest.CoreMatchers;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests the correct parsing of Filter Encoding 2.0.0 documents using the official
@@ -99,7 +98,7 @@ public class Filter200XMLDecoderTest {
 	// deegree-ogcschemas)
 	private static final String OGC_EXAMPLES_BASE_URL = "http://schemas.opengis.net/filter/2.0/examples/";
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		new DefaultWorkspace(new File("nix")).initAll();
 	}
@@ -110,12 +109,12 @@ public class Filter200XMLDecoderTest {
 		for (Filter filter : getFilters("filter01.xml")) {
 			PropertyIsEqualTo op = (PropertyIsEqualTo) ((OperatorFilter) filter).getOperator();
 			ValueReference valRef = (ValueReference) op.getParameter1();
-			Assert.assertEquals("SomeProperty", valRef.getAsText());
-			Assert.assertEquals(new QName("SomeProperty"), valRef.getAsQName());
+			assertEquals("SomeProperty", valRef.getAsText());
+			assertEquals(new QName("SomeProperty"), valRef.getAsQName());
 			@SuppressWarnings("unchecked")
 			Literal<PrimitiveValue> literal = (Literal<PrimitiveValue>) op.getParameter2();
 			PrimitiveValue pv = literal.getValue();
-			Assert.assertEquals("100", pv.getValue());
+			assertEquals("100", pv.getValue());
 		}
 	}
 
@@ -125,12 +124,12 @@ public class Filter200XMLDecoderTest {
 		for (Filter filter : getFilters("filter02.xml")) {
 			PropertyIsLessThan op = (PropertyIsLessThan) ((OperatorFilter) filter).getOperator();
 			ValueReference valRef = (ValueReference) op.getParameter1();
-			Assert.assertEquals("DEPTH", valRef.getAsText());
-			Assert.assertEquals(new QName("DEPTH"), valRef.getAsQName());
+			assertEquals("DEPTH", valRef.getAsText());
+			assertEquals(new QName("DEPTH"), valRef.getAsQName());
 			@SuppressWarnings("unchecked")
 			Literal<PrimitiveValue> literal = (Literal<PrimitiveValue>) op.getParameter2();
 			PrimitiveValue pv = literal.getValue();
-			Assert.assertEquals("30", pv.getValue());
+			assertEquals("30", pv.getValue());
 		}
 	}
 
@@ -148,10 +147,10 @@ public class Filter200XMLDecoderTest {
 			Not not = (Not) ((OperatorFilter) filter).getOperator();
 			Disjoint op = (Disjoint) not.getParameter();
 			ValueReference valRef = (ValueReference) op.getParam1();
-			Assert.assertEquals("Geometry", valRef.getAsText());
-			Assert.assertEquals(new QName("Geometry"), valRef.getAsQName());
+			assertEquals("Geometry", valRef.getAsText());
+			assertEquals(new QName("Geometry"), valRef.getAsQName());
 			Envelope env = (Envelope) op.getGeometry();
-			// Assert.assertEquals( "urn:fes:def:crs:EPSG::4326",
+			// assertEquals( "urn:fes:def:crs:EPSG::4326",
 			// env.getCoordinateSystem().getName() );
 		}
 	}
@@ -164,20 +163,20 @@ public class Filter200XMLDecoderTest {
 
 			PropertyIsLessThan propIsLessThan = (PropertyIsLessThan) and.getParams()[0];
 			ValueReference valRef = (ValueReference) propIsLessThan.getParameter1();
-			Assert.assertEquals("DEPTH", valRef.getAsText());
-			Assert.assertEquals(new QName("DEPTH"), valRef.getAsQName());
+			assertEquals("DEPTH", valRef.getAsText());
+			assertEquals(new QName("DEPTH"), valRef.getAsQName());
 			@SuppressWarnings("unchecked")
 			Literal<PrimitiveValue> literal = (Literal<PrimitiveValue>) propIsLessThan.getParameter2();
 			PrimitiveValue pv = literal.getValue();
-			Assert.assertEquals("30", pv.getValue());
+			assertEquals("30", pv.getValue());
 
 			Not not = (Not) and.getParams()[1];
 			Disjoint op = (Disjoint) not.getParameter();
 			valRef = (ValueReference) op.getParam1();
-			Assert.assertEquals("Geometry", valRef.getAsText());
-			Assert.assertEquals(new QName("Geometry"), valRef.getAsQName());
+			assertEquals("Geometry", valRef.getAsText());
+			assertEquals(new QName("Geometry"), valRef.getAsQName());
 			Envelope env = (Envelope) op.getGeometry();
-			// Assert.assertEquals( "urn:fes:def:crs:EPSG::4326",
+			// assertEquals( "urn:fes:def:crs:EPSG::4326",
 			// env.getCoordinateSystem().getName() );
 		}
 	}
@@ -187,13 +186,13 @@ public class Filter200XMLDecoderTest {
 
 		for (Filter filter : getFilters("filter05.xml")) {
 			IdFilter idFilter = (IdFilter) filter;
-			Assert.assertTrue(idFilter.getSelectedIds().size() == 6);
-			Assert.assertEquals("TREESA_1M.1234", idFilter.getSelectedIds().get(0).getRid());
-			Assert.assertEquals("TREESA_1M.5678", idFilter.getSelectedIds().get(1).getRid());
-			Assert.assertEquals("TREESA_1M.9012", idFilter.getSelectedIds().get(2).getRid());
-			Assert.assertEquals("INWATERA_1M.3456", idFilter.getSelectedIds().get(3).getRid());
-			Assert.assertEquals("INWATERA_1M.7890", idFilter.getSelectedIds().get(4).getRid());
-			Assert.assertEquals("BUILTUPA_1M.4321", idFilter.getSelectedIds().get(5).getRid());
+			assertTrue(idFilter.getSelectedIds().size() == 6);
+			assertEquals("TREESA_1M.1234", idFilter.getSelectedIds().get(0).getRid());
+			assertEquals("TREESA_1M.5678", idFilter.getSelectedIds().get(1).getRid());
+			assertEquals("TREESA_1M.9012", idFilter.getSelectedIds().get(2).getRid());
+			assertEquals("INWATERA_1M.3456", idFilter.getSelectedIds().get(3).getRid());
+			assertEquals("INWATERA_1M.7890", idFilter.getSelectedIds().get(4).getRid());
+			assertEquals("BUILTUPA_1M.4321", idFilter.getSelectedIds().get(5).getRid());
 		}
 	}
 
@@ -203,13 +202,13 @@ public class Filter200XMLDecoderTest {
 		for (Filter filter : getFilters("filter06.xml")) {
 			PropertyIsEqualTo op = (PropertyIsEqualTo) ((OperatorFilter) filter).getOperator();
 			Function function = (Function) op.getParameter1();
-			Assert.assertEquals("SIN", function.getName());
+			assertEquals("SIN", function.getName());
 			ValueReference valRef = (ValueReference) function.getParams()[0];
-			Assert.assertEquals("DISPERSION_ANGLE", valRef.getAsText());
+			assertEquals("DISPERSION_ANGLE", valRef.getAsText());
 			@SuppressWarnings("unchecked")
 			Literal<PrimitiveValue> literal = (Literal<PrimitiveValue>) op.getParameter2();
 			PrimitiveValue pv = literal.getValue();
-			Assert.assertEquals("1", pv.getValue());
+			assertEquals("1", pv.getValue());
 		}
 	}
 
@@ -220,16 +219,16 @@ public class Filter200XMLDecoderTest {
 			PropertyIsEqualTo op = (PropertyIsEqualTo) ((OperatorFilter) filter).getOperator();
 
 			ValueReference valRef = (ValueReference) op.getParameter1();
-			Assert.assertEquals("PROPA", valRef.getAsText());
+			assertEquals("PROPA", valRef.getAsText());
 
 			Function function = (Function) op.getParameter2();
-			Assert.assertEquals("Add", function.getName());
+			assertEquals("Add", function.getName());
 			valRef = (ValueReference) function.getParams()[0];
-			Assert.assertEquals("PROPB", valRef.getAsText());
+			assertEquals("PROPB", valRef.getAsText());
 			@SuppressWarnings("unchecked")
 			Literal<PrimitiveValue> literal = (Literal<PrimitiveValue>) function.getParams()[1];
 			PrimitiveValue pv = literal.getValue();
-			Assert.assertEquals("100", pv.getValue());
+			assertEquals("100", pv.getValue());
 		}
 	}
 
@@ -241,15 +240,15 @@ public class Filter200XMLDecoderTest {
 			PropertyIsBetween op = (PropertyIsBetween) ((OperatorFilter) filter).getOperator();
 
 			ValueReference valRef = (ValueReference) op.getExpression();
-			Assert.assertEquals("DEPTH", valRef.getAsText());
+			assertEquals("DEPTH", valRef.getAsText());
 
 			Literal<PrimitiveValue> literal = (Literal<PrimitiveValue>) op.getLowerBoundary();
 			PrimitiveValue pv = literal.getValue();
-			Assert.assertEquals("100", pv.getValue());
+			assertEquals("100", pv.getValue());
 
 			literal = (Literal<PrimitiveValue>) op.getUpperBoundary();
 			pv = literal.getValue();
-			Assert.assertEquals("200", pv.getValue());
+			assertEquals("200", pv.getValue());
 		}
 	}
 
@@ -261,15 +260,15 @@ public class Filter200XMLDecoderTest {
 			PropertyIsBetween op = (PropertyIsBetween) ((OperatorFilter) filter).getOperator();
 
 			ValueReference valRef = (ValueReference) op.getExpression();
-			Assert.assertEquals("SAMPLE_DATE", valRef.getAsText());
+			assertEquals("SAMPLE_DATE", valRef.getAsText());
 
 			Literal<PrimitiveValue> literal = (Literal<PrimitiveValue>) op.getLowerBoundary();
 			PrimitiveValue pv = literal.getValue();
-			Assert.assertEquals("2001-01-15T20:07:48.11", pv.getValue());
+			assertEquals("2001-01-15T20:07:48.11", pv.getValue());
 
 			literal = (Literal<PrimitiveValue>) op.getUpperBoundary();
 			pv = literal.getValue();
-			Assert.assertEquals("2001-03-06T12:00:00.00", pv.getValue());
+			assertEquals("2001-03-06T12:00:00.00", pv.getValue());
 		}
 	}
 
@@ -298,7 +297,7 @@ public class Filter200XMLDecoderTest {
 			ValueReference valRef = (ValueReference) op.getParam1();
 			assertEquals("Geometry", valRef.getAsText());
 			Polygon polygon = (Polygon) op.getGeometry();
-			// Assert.assertEquals( "urn:fes:def:crs:EPSG::4326",
+			// assertEquals( "urn:fes:def:crs:EPSG::4326",
 			// polygon.getCoordinateSystem().getName() );
 		}
 	}
@@ -331,110 +330,112 @@ public class Filter200XMLDecoderTest {
 	public void parseBBoxWithSpatialJoin() throws XMLStreamException, FactoryConfigurationError, IOException {
 		BBOX bbox = (BBOX) parseFilter("v200/bboxWithSpatialJoin.xml");
 
-		assertThat(((ValueReference) bbox.getParam1()).getAsText(), is("app:ft1/geometry"));
-		assertThat(bbox.getGeometry(), is(CoreMatchers.nullValue()));
-		assertThat(bbox.getBoundingBox(), is(CoreMatchers.nullValue()));
-		assertThat(bbox.getValueReference().getAsText(), is("app:ft2/geometry"));
+		assertEquals(((ValueReference) bbox.getParam1()).getAsText(), "app:ft1/geometry");
+		assertNull(bbox.getGeometry());
+		assertNull(bbox.getBoundingBox());
+		assertEquals(bbox.getValueReference().getAsText(), "app:ft2/geometry");
 	}
 
 	@Test
 	public void parseBeyondWithSpatialJoin() throws XMLStreamException, FactoryConfigurationError, IOException {
 		Beyond beyond = (Beyond) parseFilter("v200/beyondWithSpatialJoin.xml");
 
-		assertThat(((ValueReference) beyond.getParam1()).getAsText(), is("app:ft1/geometry"));
-		assertThat(beyond.getGeometry(), is(CoreMatchers.nullValue()));
-		assertThat(beyond.getValueReference().getAsText(), is("app:ft2/geometry"));
-		assertThat(beyond.getDistance().getValueAsDouble(), is(10d));
+		assertEquals(((ValueReference) beyond.getParam1()).getAsText(), "app:ft1/geometry");
+		assertNull(beyond.getGeometry());
+		assertEquals(beyond.getValueReference().getAsText(), "app:ft2/geometry");
+		assertEquals(beyond.getDistance().getValueAsDouble(), 10d);
 	}
 
 	@Test
 	public void parseContainsWithSpatialJoin() throws XMLStreamException, FactoryConfigurationError, IOException {
 		Contains contains = (Contains) parseFilter("v200/containsWithSpatialJoin.xml");
 
-		assertThat(((ValueReference) contains.getParam1()).getAsText(), is("app:ft1/geometry"));
-		assertThat(contains.getGeometry(), is(CoreMatchers.nullValue()));
-		assertThat(contains.getValueReference().getAsText(), is("app:ft2/geometry"));
+		assertEquals(((ValueReference) contains.getParam1()).getAsText(), "app:ft1/geometry");
+		assertNull(contains.getGeometry());
+		assertEquals(contains.getValueReference().getAsText(), "app:ft2/geometry");
 	}
 
 	@Test
 	public void parseCrossesWithSpatialJoin() throws XMLStreamException, FactoryConfigurationError, IOException {
 		Crosses crosses = (Crosses) parseFilter("v200/crossesWithSpatialJoin.xml");
 
-		assertThat(((ValueReference) crosses.getParam1()).getAsText(), is("app:ft1/geometry"));
-		assertThat(crosses.getGeometry(), is(CoreMatchers.nullValue()));
-		assertThat(crosses.getValueReference().getAsText(), is("app:ft2/geometry"));
+		assertEquals(((ValueReference) crosses.getParam1()).getAsText(), "app:ft1/geometry");
+		assertNull(crosses.getGeometry());
+		assertEquals(crosses.getValueReference().getAsText(), "app:ft2/geometry");
 	}
 
 	@Test
 	public void parseDisjointWithSpatialJoin() throws XMLStreamException, FactoryConfigurationError, IOException {
 		Disjoint disjoint = (Disjoint) parseFilter("v200/disjointWithSpatialJoin.xml");
 
-		assertThat(((ValueReference) disjoint.getParam1()).getAsText(), is("app:ft1/geometry"));
-		assertThat(disjoint.getGeometry(), is(CoreMatchers.nullValue()));
-		assertThat(disjoint.getValueReference().getAsText(), is("app:ft2/geometry"));
+		assertEquals(((ValueReference) disjoint.getParam1()).getAsText(), "app:ft1/geometry");
+		assertNull(disjoint.getGeometry());
+		assertEquals(disjoint.getValueReference().getAsText(), "app:ft2/geometry");
 	}
 
 	@Test
 	public void parseDWithinWithSpatialJoin() throws XMLStreamException, FactoryConfigurationError, IOException {
 		DWithin dwithin = (DWithin) parseFilter("v200/dwithinWithSpatialJoin.xml");
 
-		assertThat(((ValueReference) dwithin.getParam1()).getAsText(), is("app:ft1/geometry"));
-		assertThat(dwithin.getGeometry(), is(CoreMatchers.nullValue()));
-		assertThat(dwithin.getValueReference().getAsText(), is("app:ft2/geometry"));
-		assertThat(dwithin.getDistance().getValueAsDouble(), is(10d));
+		assertEquals(((ValueReference) dwithin.getParam1()).getAsText(), "app:ft1/geometry");
+		assertNull(dwithin.getGeometry());
+		assertEquals(dwithin.getValueReference().getAsText(), "app:ft2/geometry");
+		assertEquals(dwithin.getDistance().getValueAsDouble(), 10d);
 	}
 
 	@Test
 	public void parseEqualsWithSpatialJoin() throws XMLStreamException, FactoryConfigurationError, IOException {
 		Equals equals = (Equals) parseFilter("v200/equalsWithSpatialJoin.xml");
 
-		assertThat(((ValueReference) equals.getParam1()).getAsText(), is("app:ft1/geometry"));
-		assertThat(equals.getGeometry(), is(CoreMatchers.nullValue()));
-		assertThat(equals.getValueReference().getAsText(), is("app:ft2/geometry"));
+		assertEquals(((ValueReference) equals.getParam1()).getAsText(), "app:ft1/geometry");
+		assertNull(equals.getGeometry());
+		assertEquals(equals.getValueReference().getAsText(), "app:ft2/geometry");
 	}
 
 	@Test
 	public void parseIntersectsWithSpatialJoin() throws XMLStreamException, FactoryConfigurationError, IOException {
 		Intersects intersects = (Intersects) parseFilter("v200/intersectsWithSpatialJoin.xml");
 
-		assertThat(((ValueReference) intersects.getParam1()).getAsText(), is("app:ft1/geometry"));
-		assertThat(intersects.getGeometry(), is(CoreMatchers.nullValue()));
-		assertThat(intersects.getValueReference().getAsText(), is("app:ft2/geometry"));
+		assertEquals(((ValueReference) intersects.getParam1()).getAsText(), "app:ft1/geometry");
+		assertNull(intersects.getGeometry());
+		assertEquals(intersects.getValueReference().getAsText(), "app:ft2/geometry");
 	}
 
 	@Test
 	public void parseOverlapsWithSpatialJoin() throws XMLStreamException, FactoryConfigurationError, IOException {
 		Overlaps overlaps = (Overlaps) parseFilter("v200/overlapsWithSpatialJoin.xml");
 
-		assertThat(((ValueReference) overlaps.getParam1()).getAsText(), is("app:ft1/geometry"));
-		assertThat(overlaps.getGeometry(), is(CoreMatchers.nullValue()));
-		assertThat(overlaps.getValueReference().getAsText(), is("app:ft2/geometry"));
+		assertEquals(((ValueReference) overlaps.getParam1()).getAsText(), "app:ft1/geometry");
+		assertNull(overlaps.getGeometry());
+		assertEquals(overlaps.getValueReference().getAsText(), "app:ft2/geometry");
 	}
 
 	@Test
 	public void parseTouchesWithSpatialJoin() throws XMLStreamException, FactoryConfigurationError, IOException {
 		Touches touches = (Touches) parseFilter("v200/touchesWithSpatialJoin.xml");
 
-		assertThat(((ValueReference) touches.getParam1()).getAsText(), is("app:ft1/geometry"));
-		assertThat(touches.getGeometry(), is(CoreMatchers.nullValue()));
-		assertThat(touches.getValueReference().getAsText(), is("app:ft2/geometry"));
+		assertEquals(((ValueReference) touches.getParam1()).getAsText(), "app:ft1/geometry");
+		assertNull(touches.getGeometry());
+		assertEquals(touches.getValueReference().getAsText(), "app:ft2/geometry");
 	}
 
 	@Test
 	public void parseWithinWithSpatialJoin() throws XMLStreamException, FactoryConfigurationError, IOException {
 		Within within = (Within) parseFilter("v200/withinWithSpatialJoin.xml");
 
-		assertThat(((ValueReference) within.getParam1()).getAsText(), is("app:ft1/geometry"));
-		assertThat(within.getGeometry(), is(CoreMatchers.nullValue()));
-		assertThat(within.getValueReference().getAsText(), is("app:ft2/geometry"));
+		assertEquals(((ValueReference) within.getParam1()).getAsText(), "app:ft1/geometry");
+		assertNull(within.getGeometry());
+		assertEquals(within.getValueReference().getAsText(), "app:ft2/geometry");
 	}
 
-	@Test(expected = XMLParsingException.class)
+	@Test
 	public void parsePropertyIsLessThanOrEuqlToWithLiteralContainingUnexpectedGeometry() throws Exception {
-		InputStream filterAsStream = this.getClass().getResourceAsStream("v200/unexectedTestfilter.xml");
-		XMLStreamReader xmlStream = XMLInputFactory.newInstance().createXMLStreamReader(filterAsStream);
-		XMLStreamUtils.skipStartDocument(xmlStream);
-		Filter200XMLDecoder.parse(xmlStream);
+		assertThrows(XMLParsingException.class, () -> {
+			InputStream filterAsStream = this.getClass().getResourceAsStream("v200/unexectedTestfilter.xml");
+			XMLStreamReader xmlStream = XMLInputFactory.newInstance().createXMLStreamReader(filterAsStream);
+			XMLStreamUtils.skipStartDocument(xmlStream);
+			Filter200XMLDecoder.parse(xmlStream);
+		});
 	}
 
 	// @Test
@@ -477,9 +478,9 @@ public class Filter200XMLDecoderTest {
 			XMLStreamReader xmlStream = XMLInputFactory.newInstance().createXMLStreamReader(is);
 			XMLStreamUtils.skipStartDocument(xmlStream);
 			filters[i] = Filter200XMLDecoder.parse(xmlStream);
-			Assert.assertNotNull(filters[i]);
+			assertNotNull(filters[i]);
 		}
-		Assert.assertEquals(4, filters.length);
+		assertEquals(4, filters.length);
 		return filters;
 	}
 

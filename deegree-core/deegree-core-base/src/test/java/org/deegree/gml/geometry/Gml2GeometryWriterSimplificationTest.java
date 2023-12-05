@@ -34,19 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.gml.geometry;
 
-import static org.deegree.gml.GMLVersion.GML_2;
-import static org.deegree.gml.GMLVersion.GML_31;
-
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
-
 import org.deegree.commons.xml.XMLParsingException;
 import org.deegree.cs.exceptions.TransformationException;
 import org.deegree.cs.exceptions.UnknownCRSException;
@@ -60,9 +47,22 @@ import org.deegree.gml.GMLStreamReader;
 import org.deegree.gml.GMLStreamWriter;
 import org.deegree.junit.XMLAssert;
 import org.deegree.junit.XMLMemoryStreamWriter;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+
+import static org.deegree.gml.GMLVersion.GML_2;
+import static org.deegree.gml.GMLVersion.GML_31;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Tests for {@link Geometry} simplification in {@link GML2GeometryWriter}.
@@ -80,7 +80,7 @@ public class Gml2GeometryWriterSimplificationTest {
 
 	GML2GeometryWriter gmlWriterWithSimplification;
 
-	@Before
+	@BeforeEach
 	public void setup() throws XMLStreamException, FactoryConfigurationError {
 		gmlWriterWithoutSimplification = getGmlWriterWithoutSimplification();
 		memoryWriter = new XMLMemoryStreamWriter();
@@ -103,11 +103,12 @@ public class Gml2GeometryWriterSimplificationTest {
 		return new GML2GeometryWriter(gmlWriter);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testCurveWithArcsNoSimplification()
-			throws XMLParsingException, XMLStreamException, UnknownCRSException, TransformationException {
-		Geometry geom = readGml31Geometry("../misc/geometry/Curve.gml");
-		gmlWriterWithoutSimplification.export(geom);
+	@Test
+	public void testCurveWithArcsNoSimplification() throws XMLParsingException {
+		assertThrows(IllegalArgumentException.class, () -> {
+			Geometry geom = readGml31Geometry("../misc/geometry/Curve.gml");
+			gmlWriterWithoutSimplification.export(geom);
+		});
 	}
 
 	@Test
@@ -118,11 +119,12 @@ public class Gml2GeometryWriterSimplificationTest {
 		XMLAssert.assertValidity(memoryWriter.getReader(), SCHEMA_LOCATION);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testSurfaceNoSimplification()
-			throws XMLParsingException, XMLStreamException, UnknownCRSException, TransformationException {
-		Geometry geom = readGml31Geometry("../misc/geometry/Surface.gml");
-		gmlWriterWithoutSimplification.export(geom);
+	@Test
+	public void testSurfaceNoSimplification() throws XMLParsingException {
+		assertThrows(IllegalArgumentException.class, () -> {
+			Geometry geom = readGml31Geometry("../misc/geometry/Surface.gml");
+			gmlWriterWithoutSimplification.export(geom);
+		});
 	}
 
 	@Test
@@ -142,7 +144,7 @@ public class Gml2GeometryWriterSimplificationTest {
 			geometry = gmlReader.readGeometry();
 		}
 		catch (Exception e) {
-			Assert.fail("Creation of geometry failed.");
+			fail("Creation of geometry failed.");
 		}
 		return geometry;
 	}

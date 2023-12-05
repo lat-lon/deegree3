@@ -40,6 +40,17 @@
 
 package org.deegree.tile.persistence.filesystem;
 
+import org.deegree.tile.Tile;
+import org.deegree.tile.TileDataLevel;
+import org.deegree.tile.persistence.TileStore;
+import org.deegree.tile.persistence.TileStoreProvider;
+import org.deegree.tile.persistence.TileStoreTransaction;
+import org.deegree.workspace.Workspace;
+import org.deegree.workspace.standard.DefaultWorkspace;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -50,17 +61,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import org.deegree.tile.Tile;
-import org.deegree.tile.TileDataLevel;
-import org.deegree.tile.persistence.TileStore;
-import org.deegree.tile.persistence.TileStoreProvider;
-import org.deegree.tile.persistence.TileStoreTransaction;
-import org.deegree.workspace.Workspace;
-import org.deegree.workspace.standard.DefaultWorkspace;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
 /**
  * <code>FileSystemTileStoreTest</code>
  *
@@ -70,7 +70,7 @@ public class FileSystemTileStoreTest {
 
 	private Workspace workspace;
 
-	@Before
+	@BeforeEach
 	public void setup() throws URISyntaxException, IOException {
 		URL u = FileSystemTileStoreTest.class.getResource("FileSystemTileStoreTest.class");
 		File dir = new File(new File(u.toURI()).getParentFile(),
@@ -80,7 +80,7 @@ public class FileSystemTileStoreTest {
 		workspace.initAll();
 	}
 
-	@After
+	@AfterEach
 	public void shutdown() {
 		workspace.destroy();
 	}

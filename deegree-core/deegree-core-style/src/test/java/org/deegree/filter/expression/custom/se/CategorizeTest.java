@@ -35,43 +35,39 @@
 
 package org.deegree.filter.expression.custom.se;
 
-import static org.slf4j.LoggerFactory.getLogger;
+import org.deegree.style.se.parser.SymbologyParser;
+import org.deegree.style.se.parser.SymbologyParserTest;
+import org.deegree.style.se.unevaluated.Symbolizer;
+import org.deegree.style.styling.RasterStyling;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
 
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
-import junit.framework.TestCase;
-
-import org.deegree.filter.expression.custom.se.Categorize;
-import org.deegree.style.se.parser.SymbologyParser;
-import org.deegree.style.se.parser.SymbologyParserTest;
-import org.deegree.style.se.unevaluated.Symbolizer;
-import org.deegree.style.styling.RasterStyling;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.slf4j.Logger;
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * <code>CategorizeTest</code>
  *
  * @author <a href="mailto:schmitz@lat-lon.de">Andreas Schmitz</a>
  */
-public class CategorizeTest extends TestCase {
+public class CategorizeTest {
 
 	private static final Logger LOG = getLogger(CategorizeTest.class);
 
 	private static Categorize cat = null;
 
-	@BeforeClass
-	private void loadCategorizeFromXml() throws URISyntaxException, XMLStreamException, FileNotFoundException {
+	@BeforeAll
+	public static void loadCategorizeFromXml() throws URISyntaxException, XMLStreamException, FileNotFoundException {
 		URI uri = SymbologyParserTest.class.getResource("setest17.xml").toURI();
 		LOG.debug("Loading resource: {}", uri);
 		File f = new File(uri);

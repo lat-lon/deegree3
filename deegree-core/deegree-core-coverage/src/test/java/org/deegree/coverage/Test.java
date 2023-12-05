@@ -40,10 +40,10 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.coverage;
 
-import java.io.File;
-
 import org.deegree.workspace.Workspace;
 import org.deegree.workspace.standard.DefaultWorkspace;
+
+import java.io.File;
 
 /**
  * TODO add class documentation here
@@ -52,7 +52,7 @@ import org.deegree.workspace.standard.DefaultWorkspace;
  */
 public class Test {
 
-	@org.junit.Test
+	@org.junit.jupiter.api.Test
 	public void testSomething() {
 		Workspace ws = new DefaultWorkspace(
 				new File("/home/stranger/.deegree/deegree-workspace-utah-3.2-pre9-20120717.234406-9"));

@@ -37,17 +37,18 @@
 
 package org.deegree.geometry;
 
+import org.deegree.commons.index.QTree;
+import org.deegree.commons.utils.GraphvizDot;
+import org.junit.jupiter.api.Test;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
-import junit.framework.Assert;
-
-import org.deegree.commons.index.QTree;
-import org.deegree.commons.utils.GraphvizDot;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * The <code>QTreeTest</code> class TODO add class documentation here.
@@ -134,7 +135,7 @@ public class QTreeTest {
 	private QTree<Integer> fillTree(boolean output) throws IOException {
 		QTree<Integer> qTree = new QTree<Integer>(env, 3);
 		for (int i = 1; i <= TEST.length; ++i) {
-			Assert.assertTrue(qTree.insert(TEST[i - 1], i));
+			assertTrue(qTree.insert(TEST[i - 1], i));
 			if (output) {
 				output(qTree, "add_" + i);
 			}
@@ -151,7 +152,7 @@ public class QTreeTest {
 	public void testInsert() throws IOException {
 		QTree<Integer> qTree = fillTree(outputTree);
 		List<Integer> objects = qTree.getObjects();
-		Assert.assertEquals(TEST.length, objects.size());
+		assertEquals(TEST.length, objects.size());
 	}
 
 	private void output(QTree<Integer> tree, String i) throws IOException {
@@ -171,53 +172,53 @@ public class QTreeTest {
 		QTree<Integer> qTree = fillTree(outputTree);
 		// request 10
 		List<Integer> objects = qTree.query(new float[] { -4, .5f, -3, .9f });
-		Assert.assertEquals(1, objects.size());
+		assertEquals(1, objects.size());
 		Collections.sort(objects);
-		Assert.assertEquals(10, (int) objects.get(0));
+		assertEquals(10, (int) objects.get(0));
 
 		// test for difficult intersects with 7
 		objects = qTree.query(new float[] { -2.5f, 4.91f, -1, 4.99f });
-		Assert.assertEquals(1, objects.size());
-		Assert.assertEquals(7, (int) objects.get(0));
+		assertEquals(1, objects.size());
+		assertEquals(7, (int) objects.get(0));
 
 		// test for total
 		objects = qTree.query(new float[] { -7, -7, 6.1f, 6.1f });
-		Assert.assertEquals(TEST.length, objects.size());
+		assertEquals(TEST.length, objects.size());
 		Collections.sort(objects);
 		for (int i = 0; i < objects.size(); ++i) {
-			Assert.assertEquals(i + 1, (int) objects.get(i));
+			assertEquals(i + 1, (int) objects.get(i));
 		}
 
 		// test for very small intersection on cross from 3, 6, 5 and because of it's size
 		// 10
 		objects = qTree.query(new float[] { 2.49999f, 1.49999f, 2.50001f, 1.50001f });
-		Assert.assertEquals(4, objects.size());
+		assertEquals(4, objects.size());
 		Collections.sort(objects);
-		Assert.assertEquals(3, (int) objects.get(0));
-		Assert.assertEquals(5, (int) objects.get(1));
-		Assert.assertEquals(6, (int) objects.get(2));
-		Assert.assertEquals(10, (int) objects.get(3));
+		assertEquals(3, (int) objects.get(0));
+		assertEquals(5, (int) objects.get(1));
+		assertEquals(6, (int) objects.get(2));
+		assertEquals(10, (int) objects.get(3));
 
 		// test for the same envelope as e6
 		objects = qTree.query(new float[] { 2, -4.8f, 4, 1.5f });
-		Assert.assertEquals(5, objects.size());
+		assertEquals(5, objects.size());
 		Collections.sort(objects);
-		Assert.assertEquals(3, (int) objects.get(0));
-		Assert.assertEquals(5, (int) objects.get(1));
-		Assert.assertEquals(6, (int) objects.get(2));
-		Assert.assertEquals(9, (int) objects.get(3));
-		Assert.assertEquals(10, (int) objects.get(4));
+		assertEquals(3, (int) objects.get(0));
+		assertEquals(5, (int) objects.get(1));
+		assertEquals(6, (int) objects.get(2));
+		assertEquals(9, (int) objects.get(3));
+		assertEquals(10, (int) objects.get(4));
 
 		// test for the equal envelopes 11,12,13,14 and of course 5, 10
 		objects = qTree.query(new float[] { 4.5f, 4.5f, 4.7f, 4.7f });
-		Assert.assertEquals(6, objects.size());
+		assertEquals(6, objects.size());
 		Collections.sort(objects);
-		Assert.assertEquals(5, (int) objects.get(0));
-		Assert.assertEquals(10, (int) objects.get(1));
-		Assert.assertEquals(11, (int) objects.get(2));
-		Assert.assertEquals(12, (int) objects.get(3));
-		Assert.assertEquals(13, (int) objects.get(4));
-		Assert.assertEquals(14, (int) objects.get(5));
+		assertEquals(5, (int) objects.get(0));
+		assertEquals(10, (int) objects.get(1));
+		assertEquals(11, (int) objects.get(2));
+		assertEquals(12, (int) objects.get(3));
+		assertEquals(13, (int) objects.get(4));
+		assertEquals(14, (int) objects.get(5));
 
 	}
 
@@ -229,16 +230,16 @@ public class QTreeTest {
 	public void testDelete() throws IOException {
 		QTree<Integer> qTree = fillTree(outputTree);
 		List<Integer> objects = qTree.getObjects();
-		Assert.assertEquals(TEST.length, objects.size());
+		assertEquals(TEST.length, objects.size());
 		for (int i = TEST.length; i > 0; --i) {
-			Assert.assertTrue(remove(qTree, i));
+			assertTrue(remove(qTree, i));
 		}
 	}
 
 	private boolean remove(QTree<Integer> qTree, int i) throws IOException {
 		boolean result = qTree.remove(i);
 		List<Integer> objects = qTree.getObjects();
-		Assert.assertEquals(i - 1, objects.size());
+		assertEquals(i - 1, objects.size());
 		if (outputTree) {
 			output(qTree, "remove_" + (i - 1));
 		}

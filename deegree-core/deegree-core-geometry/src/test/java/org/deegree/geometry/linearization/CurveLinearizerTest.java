@@ -35,16 +35,9 @@
 
 package org.deegree.geometry.linearization;
 
-import static org.slf4j.LoggerFactory.getLogger;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.deegree.cs.persistence.CRSManager;
 import org.deegree.geometry.Geometry;
 import org.deegree.geometry.io.WKTReader;
-import org.deegree.geometry.io.WKTWriter;
 import org.deegree.geometry.points.Points;
 import org.deegree.geometry.primitive.Curve;
 import org.deegree.geometry.primitive.Point;
@@ -57,19 +50,24 @@ import org.deegree.geometry.standard.curvesegments.DefaultCubicSpline;
 import org.deegree.geometry.standard.points.PointsList;
 import org.deegree.geometry.standard.primitive.DefaultCurve;
 import org.deegree.geometry.standard.primitive.DefaultPoint;
-import org.hamcrest.CoreMatchers;
-import org.hamcrest.MatcherAssert;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.slf4j.Logger;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.CoordinateSequence;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.impl.CoordinateArraySequence;
 import org.locationtech.jts.io.ParseException;
+import org.slf4j.Logger;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * Tests for {@link CurveLinearizer}.
@@ -86,7 +84,7 @@ public class CurveLinearizerTest {
 
 	private boolean outputWKT = false;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		geomFac = new org.deegree.geometry.GeometryFactory();
 		linearizer = new CurveLinearizer(geomFac);
@@ -102,8 +100,8 @@ public class CurveLinearizerTest {
 		double dp0 = getDistance(center, p0);
 		double dp1 = getDistance(center, p1);
 		double dp2 = getDistance(center, p2);
-		Assert.assertEquals(dp0, dp1, 1E-9);
-		Assert.assertEquals(dp1, dp2, 1E-9);
+		assertEquals(dp0, dp1, 1E-9);
+		assertEquals(dp1, dp2, 1E-9);
 	}
 
 	private void testLinearization(Point p0, Point p1, Point p2, int numPositions) {
@@ -114,7 +112,7 @@ public class CurveLinearizerTest {
 		Points positions = linearizer.linearize(circle, new NumPointsCriterion(numPositions)).getControlPoints();
 		for (Point point : positions) {
 			double dist = getDistance(center, point);
-			Assert.assertEquals(radius, dist, 1E-9);
+			assertEquals(radius, dist, 1E-9);
 		}
 
 		Point lastPoint = null;
@@ -138,7 +136,7 @@ public class CurveLinearizerTest {
 		for (Point point : positions) {
 			double dist = getDistance(center, point);
 			// every segment start/end point must be *on* arc
-			Assert.assertEquals(radius, dist, 0.00000001);
+			assertEquals(radius, dist, 0.00000001);
 
 			if (start != null) {
 				Point end = point;
@@ -151,8 +149,7 @@ public class CurveLinearizerTest {
 				Point mid = new DefaultPoint(null, start.getCoordinateSystem(), null, coords);
 				dist = getDistance(center, mid);
 				double actualError = Math.abs(radius - dist);
-				Assert.assertTrue("Actual error is " + actualError + ", allowed error is " + error,
-						actualError < error);
+				assertTrue(actualError < error, "Actual error is " + actualError + ", allowed error is " + error);
 			}
 			start = point;
 		}
@@ -187,13 +184,13 @@ public class CurveLinearizerTest {
 		Point p0 = geomFac.createPoint(null, new double[] { -2, 0 }, null);
 		Point p1 = geomFac.createPoint(null, new double[] { 0, 2 }, null);
 		Point p2 = geomFac.createPoint(null, new double[] { 2, 0 }, null);
-		Assert.assertTrue(linearizer.isClockwise(p0, p1, p2));
-		Assert.assertFalse(linearizer.isClockwise(p0, p2, p1));
+		assertTrue(linearizer.isClockwise(p0, p1, p2));
+		assertFalse(linearizer.isClockwise(p0, p2, p1));
 
 		p0 = geomFac.createPoint(null, new double[] { -2, 0 }, null);
 		p1 = geomFac.createPoint(null, new double[] { 0, -2 }, null);
 		p2 = geomFac.createPoint(null, new double[] { 2, 0 }, null);
-		Assert.assertFalse(linearizer.isClockwise(p0, p1, p2));
+		assertFalse(linearizer.isClockwise(p0, p1, p2));
 	}
 
 	/**
@@ -256,10 +253,10 @@ public class CurveLinearizerTest {
 
 		for (int i = 0; i < numOfPoints; i++) {
 			if (Math.abs(pts.get(i).get0() - -3) < 1E-3) {
-				Assert.assertEquals(pts.get(i).get1(), -0.535536466911, 1E-3);
+				assertEquals(pts.get(i).get1(), -0.535536466911, 1E-3);
 			}
 			if (Math.abs(pts.get(i).get0() - -5) < 1E-3) {
-				Assert.assertEquals(pts.get(i).get1(), 0.4464878443629, 1E-3);
+				assertEquals(pts.get(i).get1(), 0.4464878443629, 1E-3);
 			}
 		}
 
@@ -282,15 +279,15 @@ public class CurveLinearizerTest {
 			if (lastPoint != null) {
 				double delta = Math.sqrt((point.get0() - lastPoint.get0()) * (point.get0() - lastPoint.get0())
 						+ (point.get1() - lastPoint.get1()) * (point.get1() - lastPoint.get1()));
-				Assert.assertEquals(0.199115, delta, 0.000001);
+				assertEquals(0.199115, delta, 0.000001);
 			}
 			lastPoint = point;
 		}
-		Assert.assertEquals(15, positions.size());
-		Assert.assertEquals(p0[0], positions.get(0).get0(), 1E-15);
-		Assert.assertEquals(p0[1], positions.get(0).get1(), 1E-15);
-		Assert.assertEquals(p2[0], positions.get(positions.size() - 1).get0(), 1E-15);
-		Assert.assertEquals(p2[1], positions.get(positions.size() - 1).get1(), 1E-15);
+		assertEquals(15, positions.size());
+		assertEquals(p0[0], positions.get(0).get0(), 1E-15);
+		assertEquals(p0[1], positions.get(0).get1(), 1E-15);
+		assertEquals(p2[0], positions.get(positions.size() - 1).get0(), 1E-15);
+		assertEquals(p2[1], positions.get(positions.size() - 1).get1(), 1E-15);
 	}
 
 	/**
@@ -305,11 +302,11 @@ public class CurveLinearizerTest {
 
 		Points positions = createLinearArc(p0, p1, p2, false);
 
-		Assert.assertEquals(2, positions.size());
-		Assert.assertEquals(p0[0], positions.get(0).get0(), 1.0E-9);
-		Assert.assertEquals(p0[1], positions.get(0).get1(), 1.0E-9);
-		Assert.assertEquals(p2[0], positions.get(1).get0(), 1.0E-9);
-		Assert.assertEquals(p2[1], positions.get(1).get1(), 1.0E-9);
+		assertEquals(2, positions.size());
+		assertEquals(p0[0], positions.get(0).get0(), 1.0E-9);
+		assertEquals(p0[1], positions.get(0).get1(), 1.0E-9);
+		assertEquals(p2[0], positions.get(1).get0(), 1.0E-9);
+		assertEquals(p2[1], positions.get(1).get1(), 1.0E-9);
 	}
 
 	/**
@@ -324,13 +321,13 @@ public class CurveLinearizerTest {
 
 		Points positions = createLinearArc(p0, p1, p2, true);
 
-		Assert.assertEquals(3, positions.size());
-		Assert.assertEquals(p0[0], positions.get(0).get0(), 1.0E-9);
-		Assert.assertEquals(p0[1], positions.get(0).get1(), 1.0E-9);
-		Assert.assertEquals(p1[0], positions.get(1).get0(), 1.0E-9);
-		Assert.assertEquals(p1[1], positions.get(1).get1(), 1.0E-9);
-		Assert.assertEquals(p0[0], positions.get(2).get0(), 1.0E-9);
-		Assert.assertEquals(p0[1], positions.get(2).get1(), 1.0E-9);
+		assertEquals(3, positions.size());
+		assertEquals(p0[0], positions.get(0).get0(), 1.0E-9);
+		assertEquals(p0[1], positions.get(0).get1(), 1.0E-9);
+		assertEquals(p1[0], positions.get(1).get0(), 1.0E-9);
+		assertEquals(p1[1], positions.get(1).get1(), 1.0E-9);
+		assertEquals(p0[0], positions.get(2).get0(), 1.0E-9);
+		assertEquals(p0[1], positions.get(2).get1(), 1.0E-9);
 	}
 
 	/**
@@ -347,7 +344,7 @@ public class CurveLinearizerTest {
 
 		Curve linearizedCurve = linearizer.linearize(curve, new MaxErrorCriterion(1.0, 500));
 		Points controlPoints = linearizedCurve.getControlPoints();
-		Assert.assertTrue(controlPoints.size() > 2);
+		assertTrue(controlPoints.size() > 2);
 	}
 
 	/**
@@ -384,8 +381,8 @@ public class CurveLinearizerTest {
 		Points ps = ((Curve) g).getControlPoints();
 		for (Point p : ps) {
 			Point act = it.next();
-			Assert.assertEquals(p.get0(), act.get0(), 1.0E-9);
-			Assert.assertEquals(p.get1(), act.get1(), 1.0E-9);
+			assertEquals(p.get0(), act.get0(), 1.0E-9);
+			assertEquals(p.get1(), act.get1(), 1.0E-9);
 		}
 	}
 

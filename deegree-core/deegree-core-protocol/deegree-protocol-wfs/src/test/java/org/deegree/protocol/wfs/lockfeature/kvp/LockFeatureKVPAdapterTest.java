@@ -34,15 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.protocol.wfs.lockfeature.kvp;
 
-import java.math.BigInteger;
-import java.net.URL;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.namespace.QName;
-
-import junit.framework.TestCase;
-
 import org.deegree.commons.utils.kvp.KVPUtils;
 import org.deegree.filter.OperatorFilter;
 import org.deegree.filter.spatial.Within;
@@ -52,14 +43,25 @@ import org.deegree.protocol.wfs.lockfeature.LockFeature;
 import org.deegree.protocol.wfs.query.FeatureIdQuery;
 import org.deegree.protocol.wfs.query.FilterQuery;
 import org.deegree.protocol.wfs.query.Query;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import javax.xml.namespace.QName;
+import java.math.BigInteger;
+import java.net.URL;
+import java.util.List;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * The <code>LockFeatureKVPAdapterTest</code> class TODO add class documentation here.
  *
  * @author <a href="mailto:ionita@lat-lon.de">Andrei Ionita</a>
  */
-public class LockFeatureKVPAdapterTest extends TestCase {
+public class LockFeatureKVPAdapterTest {
 
 	private final static String EXAMPLE1_WFS110 = "wfs110/example1.kvp";
 
@@ -83,9 +85,6 @@ public class LockFeatureKVPAdapterTest extends TestCase {
 		assertEquals(new QName("InWaterA_1M"), filterLock.getTypeNames()[0].getFeatureTypeName());
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void testExample2Wfs110() throws Exception {
 		URL example = this.getClass().getResource(EXAMPLE2_WFS110);
@@ -96,9 +95,6 @@ public class LockFeatureKVPAdapterTest extends TestCase {
 		assertEquals("RoadL_1M.1013", featureLock.getFeatureIds()[0]);
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void testExample3Wfs110() throws Exception {
 		URL example = this.getClass().getResource(EXAMPLE3_WFS110);
@@ -111,9 +107,6 @@ public class LockFeatureKVPAdapterTest extends TestCase {
 		assertEquals(new QName("BuiltUpA_1M"), featureLock1.getTypeNames()[0].getFeatureTypeName());
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@SuppressWarnings("boxing")
 	@Test
 	public void testExample4Wfs110() throws Exception {

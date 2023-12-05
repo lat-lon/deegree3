@@ -1,13 +1,13 @@
 package org.deegree.tools.featurestoresql.loader;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-
 import org.deegree.feature.Feature;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author <a href="mailto:goltz@lat-lon.de">Lyn Goltz </a>

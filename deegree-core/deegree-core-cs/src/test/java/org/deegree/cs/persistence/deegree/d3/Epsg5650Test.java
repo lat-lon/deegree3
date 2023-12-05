@@ -34,16 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.cs.persistence.deegree.d3;
 
-import static org.deegree.cs.transformations.CRSDefines.DEGREE_EPSILON;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-
-import java.util.Collections;
-import java.util.List;
-
-import javax.vecmath.Point3d;
-
 import org.deegree.cs.CRSCodeType;
 import org.deegree.cs.CoordinateTransformer;
 import org.deegree.cs.coordinatesystems.ICRS;
@@ -52,7 +42,16 @@ import org.deegree.cs.persistence.CRSStore;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import javax.vecmath.Point3d;
+import java.util.Collections;
+import java.util.List;
+
+import static org.deegree.cs.transformations.CRSDefines.DEGREE_EPSILON;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author <a href="mailto:goltz@lat-lon.de">Lyn Goltz</a>

@@ -34,22 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.filter.xml;
 
-import static org.junit.Assert.assertNotNull;
-import static org.slf4j.LoggerFactory.getLogger;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
-
 import org.deegree.commons.xml.XMLParsingException;
 import org.deegree.cs.exceptions.TransformationException;
 import org.deegree.cs.exceptions.UnknownCRSException;
@@ -63,10 +47,27 @@ import org.deegree.filter.logical.LogicalOperator;
 import org.deegree.junit.XMLAssert;
 import org.deegree.junit.XMLMemoryStreamWriter;
 import org.deegree.workspace.standard.DefaultWorkspace;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
+
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * Tests the correct parsing and exporting of Filter Encoding 1.1.0 documents.
@@ -77,7 +78,7 @@ public class Filter110XMLEncoderTest {
 
 	private static final Logger LOG = getLogger(Filter110XMLEncoderTest.class);
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		new DefaultWorkspace(new File("nix")).initAll();
 	}
@@ -103,52 +104,55 @@ public class Filter110XMLEncoderTest {
 			TransformationException {
 		Filter filter = testImportExportImport("testfilter_110_id.xml");
 		assertNotNull(filter);
-		Assert.assertEquals(Filter.Type.ID_FILTER, filter.getType());
+		assertEquals(Filter.Type.ID_FILTER, filter.getType());
 		IdFilter idFilter = (IdFilter) filter;
-		Assert.assertEquals(4, idFilter.getMatchingIds().size());
-		Assert.assertTrue(idFilter.getMatchingIds().contains("PHILOSOPHER_966"));
-		Assert.assertTrue(idFilter.getMatchingIds().contains("PHILOSOPHER_967"));
-		Assert.assertTrue(idFilter.getMatchingIds().contains("PHILOSOPHER_968"));
-		Assert.assertTrue(idFilter.getMatchingIds().contains("PHILOSOPHER_969"));
+		assertEquals(4, idFilter.getMatchingIds().size());
+		assertTrue(idFilter.getMatchingIds().contains("PHILOSOPHER_966"));
+		assertTrue(idFilter.getMatchingIds().contains("PHILOSOPHER_967"));
+		assertTrue(idFilter.getMatchingIds().contains("PHILOSOPHER_968"));
+		assertTrue(idFilter.getMatchingIds().contains("PHILOSOPHER_969"));
 	}
 
-	@Test(expected = XMLParsingException.class)
-	public void parseMixedIdFilter() throws XMLStreamException, FactoryConfigurationError, IOException,
-			UnknownCRSException, TransformationException {
-		testImportExportImport("testfilter_110_id_mixed.xml");
+	@Test
+	public void parseMixedIdFilter() throws FactoryConfigurationError {
+		assertThrows(XMLParsingException.class, () -> {
+			testImportExportImport("testfilter_110_id_mixed.xml");
+		});
 	}
 
 	@Test
 	public void parseOperatorFilter() throws XMLStreamException, FactoryConfigurationError, IOException,
 			UnknownCRSException, TransformationException {
 		Filter filter = testImportExportImport("testfilter_110_operator.xml");
-		Assert.assertNotNull(filter);
-		Assert.assertEquals(Filter.Type.OPERATOR_FILTER, filter.getType());
+		assertNotNull(filter);
+		assertEquals(Filter.Type.OPERATOR_FILTER, filter.getType());
 		OperatorFilter operatorFilter = (OperatorFilter) filter;
-		Assert.assertEquals(Operator.Type.LOGICAL, operatorFilter.getOperator().getType());
+		assertEquals(Operator.Type.LOGICAL, operatorFilter.getOperator().getType());
 		LogicalOperator logicalOperator = (LogicalOperator) operatorFilter.getOperator();
-		Assert.assertEquals(LogicalOperator.SubType.AND, logicalOperator.getSubType());
+		assertEquals(LogicalOperator.SubType.AND, logicalOperator.getSubType());
 		And and = (And) logicalOperator;
-		Assert.assertEquals(2, and.getSize());
-		Assert.assertEquals(Operator.Type.COMPARISON, and.getParameter(0).getType());
+		assertEquals(2, and.getSize());
+		assertEquals(Operator.Type.COMPARISON, and.getParameter(0).getType());
 		ComparisonOperator param1Oper = (ComparisonOperator) and.getParameter(0);
-		Assert.assertEquals(ComparisonOperator.SubType.PROPERTY_IS_GREATER_THAN, param1Oper.getSubType());
-		Assert.assertEquals(Operator.Type.COMPARISON, and.getParameter(1).getType());
+		assertEquals(ComparisonOperator.SubType.PROPERTY_IS_GREATER_THAN, param1Oper.getSubType());
+		assertEquals(Operator.Type.COMPARISON, and.getParameter(1).getType());
 		ComparisonOperator param2Oper = (ComparisonOperator) and.getParameter(1);
-		Assert.assertEquals(ComparisonOperator.SubType.PROPERTY_IS_EQUAL_TO, param2Oper.getSubType());
+		assertEquals(ComparisonOperator.SubType.PROPERTY_IS_EQUAL_TO, param2Oper.getSubType());
 
 	}
 
-	@Test(expected = XMLParsingException.class)
-	public void parseBrokenIdFilterDocument() throws XMLStreamException, FactoryConfigurationError, IOException,
-			UnknownCRSException, TransformationException {
-		testImportExportImport("testfilter_110_id.invalid_xml");
+	@Test
+	public void parseBrokenIdFilterDocument() throws FactoryConfigurationError {
+		assertThrows(XMLParsingException.class, () -> {
+			testImportExportImport("testfilter_110_id.invalid_xml");
+		});
 	}
 
-	@Test(expected = XMLParsingException.class)
-	public void parseBrokenIdFilterDocument2() throws XMLStreamException, FactoryConfigurationError, IOException,
-			UnknownCRSException, TransformationException {
-		testImportExportImport("testfilter_110_id2.invalid_xml");
+	@Test
+	public void parseBrokenIdFilterDocument2() throws FactoryConfigurationError {
+		assertThrows(XMLParsingException.class, () -> {
+			testImportExportImport("testfilter_110_id2.invalid_xml");
+		});
 	}
 
 	@Test
@@ -168,7 +172,7 @@ public class Filter110XMLEncoderTest {
 	public void parseBeyondFilter() throws XMLStreamException, FactoryConfigurationError, IOException,
 			UnknownCRSException, TransformationException {
 		Filter filter = testImportExportImport("testfilter15.xml");
-		Assert.assertNotNull(filter);
+		assertNotNull(filter);
 
 	}
 
@@ -176,7 +180,7 @@ public class Filter110XMLEncoderTest {
 	public void parseDisjointFilter() throws XMLStreamException, FactoryConfigurationError, IOException,
 			UnknownCRSException, TransformationException {
 		Filter filter = testImportExportImport("testfilter16.xml");
-		Assert.assertNotNull(filter);
+		assertNotNull(filter);
 
 	}
 
@@ -184,7 +188,7 @@ public class Filter110XMLEncoderTest {
 	public void parseContainsFilter() throws XMLStreamException, FactoryConfigurationError, IOException,
 			UnknownCRSException, TransformationException {
 		Filter filter = testImportExportImport("testfilter17.xml");
-		Assert.assertNotNull(filter);
+		assertNotNull(filter);
 
 	}
 
@@ -192,7 +196,7 @@ public class Filter110XMLEncoderTest {
 	public void parseCrossesFilter() throws XMLStreamException, FactoryConfigurationError, IOException,
 			UnknownCRSException, TransformationException {
 		Filter filter = testImportExportImport("testfilter18.xml");
-		Assert.assertNotNull(filter);
+		assertNotNull(filter);
 
 	}
 
@@ -200,7 +204,7 @@ public class Filter110XMLEncoderTest {
 	public void parseDWithinFilter() throws XMLStreamException, FactoryConfigurationError, IOException,
 			UnknownCRSException, TransformationException {
 		Filter filter = testImportExportImport("testfilter19.xml");
-		Assert.assertNotNull(filter);
+		assertNotNull(filter);
 
 	}
 
@@ -208,7 +212,7 @@ public class Filter110XMLEncoderTest {
 	public void parseIntersectsFilter() throws XMLStreamException, FactoryConfigurationError, IOException,
 			UnknownCRSException, TransformationException {
 		Filter filter = testImportExportImport("testfilter20.xml");
-		Assert.assertNotNull(filter);
+		assertNotNull(filter);
 
 	}
 
@@ -216,7 +220,7 @@ public class Filter110XMLEncoderTest {
 	public void parseEqualsFilter() throws XMLStreamException, FactoryConfigurationError, IOException,
 			UnknownCRSException, TransformationException {
 		Filter filter = testImportExportImport("testfilter21.xml");
-		Assert.assertNotNull(filter);
+		assertNotNull(filter);
 
 	}
 
@@ -224,7 +228,7 @@ public class Filter110XMLEncoderTest {
 	public void parseOverlapsFilter() throws XMLStreamException, FactoryConfigurationError, IOException,
 			UnknownCRSException, TransformationException {
 		Filter filter = testImportExportImport("testfilter22.xml");
-		Assert.assertNotNull(filter);
+		assertNotNull(filter);
 
 	}
 
@@ -232,7 +236,7 @@ public class Filter110XMLEncoderTest {
 	public void parseTouchesFilter() throws XMLStreamException, FactoryConfigurationError, IOException,
 			UnknownCRSException, TransformationException {
 		Filter filter = testImportExportImport("testfilter23.xml");
-		Assert.assertNotNull(filter);
+		assertNotNull(filter);
 
 	}
 
@@ -240,7 +244,7 @@ public class Filter110XMLEncoderTest {
 	public void parseWithinFilter() throws XMLStreamException, FactoryConfigurationError, IOException,
 			UnknownCRSException, TransformationException {
 		Filter filter = testImportExportImport("testfilter24.xml");
-		Assert.assertNotNull(filter);
+		assertNotNull(filter);
 
 	}
 
@@ -248,63 +252,63 @@ public class Filter110XMLEncoderTest {
 	public void parseBBoxWithSpatialJoin() throws XMLStreamException, FactoryConfigurationError, IOException,
 			UnknownCRSException, TransformationException {
 		Filter filter = testImportExportImport("bboxWithSpatialJoin.xml");
-		Assert.assertNotNull(filter);
+		assertNotNull(filter);
 	}
 
 	@Test
 	public void parseContainsWithSpatialJoin() throws XMLStreamException, FactoryConfigurationError, IOException,
 			UnknownCRSException, TransformationException {
 		Filter filter = testImportExportImport("containsWithSpatialJoin.xml");
-		Assert.assertNotNull(filter);
+		assertNotNull(filter);
 	}
 
 	@Test
 	public void parseCrossesWithSpatialJoin() throws XMLStreamException, FactoryConfigurationError, IOException,
 			UnknownCRSException, TransformationException {
 		Filter filter = testImportExportImport("crossesWithSpatialJoin.xml");
-		Assert.assertNotNull(filter);
+		assertNotNull(filter);
 	}
 
 	@Test
 	public void parseDisjointWithSpatialJoin() throws XMLStreamException, FactoryConfigurationError, IOException,
 			UnknownCRSException, TransformationException {
 		Filter filter = testImportExportImport("disjointWithSpatialJoin.xml");
-		Assert.assertNotNull(filter);
+		assertNotNull(filter);
 	}
 
 	@Test
 	public void parseEqualsWithSpatialJoin() throws XMLStreamException, FactoryConfigurationError, IOException,
 			UnknownCRSException, TransformationException {
 		Filter filter = testImportExportImport("equalsWithSpatialJoin.xml");
-		Assert.assertNotNull(filter);
+		assertNotNull(filter);
 	}
 
 	@Test
 	public void parseIntersectsWithSpatialJoin() throws XMLStreamException, FactoryConfigurationError, IOException,
 			UnknownCRSException, TransformationException {
 		Filter filter = testImportExportImport("intersectsWithSpatialJoin.xml");
-		Assert.assertNotNull(filter);
+		assertNotNull(filter);
 	}
 
 	@Test
 	public void parseOverlapsWithSpatialJoin() throws XMLStreamException, FactoryConfigurationError, IOException,
 			UnknownCRSException, TransformationException {
 		Filter filter = testImportExportImport("overlapsWithSpatialJoin.xml");
-		Assert.assertNotNull(filter);
+		assertNotNull(filter);
 	}
 
 	@Test
 	public void parseTouchesWithSpatialJoin() throws XMLStreamException, FactoryConfigurationError, IOException,
 			UnknownCRSException, TransformationException {
 		Filter filter = testImportExportImport("touchesWithSpatialJoin.xml");
-		Assert.assertNotNull(filter);
+		assertNotNull(filter);
 	}
 
 	@Test
 	public void parseWithinWithSpatialJoin() throws XMLStreamException, FactoryConfigurationError, IOException,
 			UnknownCRSException, TransformationException {
 		Filter filter = testImportExportImport("withinWithSpatialJoin.xml");
-		Assert.assertNotNull(filter);
+		assertNotNull(filter);
 	}
 
 }

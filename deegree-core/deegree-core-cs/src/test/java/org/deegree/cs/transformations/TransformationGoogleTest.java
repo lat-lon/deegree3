@@ -34,17 +34,17 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.cs.transformations;
 
-import static org.deegree.cs.transformations.CRSDefines.EPSILON_D;
-import static org.deegree.cs.transformations.CRSDefines.EPSILON_M;
-
-import javax.vecmath.Point3d;
-
 import org.deegree.cs.coordinatesystems.ICRS;
 import org.deegree.cs.exceptions.TransformationException;
 import org.deegree.cs.exceptions.UnknownCRSException;
 import org.deegree.cs.persistence.CRSManager;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
+import javax.vecmath.Point3d;
+
+import static org.deegree.cs.transformations.CRSDefines.EPSILON_D;
+import static org.deegree.cs.transformations.CRSDefines.EPSILON_M;
 
 /**
  *
@@ -55,7 +55,7 @@ import org.junit.Test;
  */
 public class TransformationGoogleTest extends TransformationAccuracy {
 
-	@Ignore
+	@Disabled
 	@Test
 	public void test31466To900913ForwardAndInverse() throws TransformationException, UnknownCRSException {
 		ICRS srcCrs = CRSManager.lookup("epsg:31466");
@@ -80,7 +80,7 @@ public class TransformationGoogleTest extends TransformationAccuracy {
 		doForward(srcCrs, targetCrs, source, target, EPSILON_M);
 	}
 
-	@Ignore
+	@Disabled
 	@Test
 	public void test900913To31466() throws TransformationException, UnknownCRSException {
 		ICRS srcCrs = CRSManager.lookup("epsg:900913");

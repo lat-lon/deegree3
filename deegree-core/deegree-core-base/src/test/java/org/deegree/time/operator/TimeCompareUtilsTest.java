@@ -34,14 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.time.operator;
 
-import static java.util.Collections.emptyList;
-import static org.deegree.time.operator.TimeCompareUtils.compareEndWithBegin;
-import static org.deegree.time.position.IndeterminateValue.UNKNOWN;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-
-import java.util.List;
-
 import org.deegree.commons.tom.gml.property.Property;
 import org.deegree.time.position.TimePosition;
 import org.deegree.time.primitive.GenericTimeInstant;
@@ -49,98 +41,112 @@ import org.deegree.time.primitive.GenericTimePeriod;
 import org.deegree.time.primitive.RelatedTime;
 import org.deegree.time.primitive.TimeInstant;
 import org.deegree.time.primitive.TimePeriod;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
+import static java.util.Collections.emptyList;
+import static org.deegree.time.operator.TimeCompareUtils.compareEndWithBegin;
+import static org.deegree.time.position.IndeterminateValue.UNKNOWN;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @author <a href="mailto:goltz@lat-lon.de">Lyn Goltz</a>
  */
 public class TimeCompareUtilsTest {
 
-	@Test(expected = NullPointerException.class)
+	@Test
 	public void evaluateInstantInstant_BothNull() {
-		compareEndWithBegin(null, null);
+		assertThrows(NullPointerException.class, () -> {
+			compareEndWithBegin(null, null);
+		});
 	}
 
-	@Test(expected = NullPointerException.class)
+	@Test
 	public void evaluateInstantInstant_FirstNull() {
-		compareEndWithBegin(null, instant("2014-01-01"));
+		assertThrows(NullPointerException.class, () -> {
+			compareEndWithBegin(null, instant("2014-01-01"));
+		});
 	}
 
-	@Test(expected = NullPointerException.class)
+	@Test
 	public void evaluateInstantInstant_SecondNull() {
-		compareEndWithBegin(instant("2014-01-01"), null);
+		assertThrows(NullPointerException.class, () -> {
+			compareEndWithBegin(instant("2014-01-01"), null);
+		});
 	}
 
 	@Test
 	public void evaluateInstantInstant() {
-		assertThat(compareEndWithBegin(instant("2014-01-01"), instant("2014-01-01")), is(0));
-		assertThat(compareEndWithBegin(instant("2014-01-01T00:00:01"), instant("2014-01-01T00:00:01")), is(0));
-		assertThat(compareEndWithBegin(instant("2014-01-01T00:00:01.000"), instant("2014-01-01T00:00:01.000")), is(0));
-		assertThat(compareEndWithBegin(instant("INDETERMINATE"), instant("INDETERMINATE")), is(0));
-		assertThat(compareEndWithBegin(instant("INDETERMINATE"), instant("2014-01-01T00:00:01")), is(0));
-		assertThat(compareEndWithBegin(instant("2014-01-01T00:00:01"), instant("INDETERMINATE")), is(0));
+		assertEquals(compareEndWithBegin(instant("2014-01-01"), instant("2014-01-01")), 0);
+		assertEquals(compareEndWithBegin(instant("2014-01-01T00:00:01"), instant("2014-01-01T00:00:01")), 0);
+		assertEquals(compareEndWithBegin(instant("2014-01-01T00:00:01.000"), instant("2014-01-01T00:00:01.000")), 0);
+		assertEquals(compareEndWithBegin(instant("INDETERMINATE"), instant("INDETERMINATE")), 0);
+		assertEquals(compareEndWithBegin(instant("INDETERMINATE"), instant("2014-01-01T00:00:01")), 0);
+		assertEquals(compareEndWithBegin(instant("2014-01-01T00:00:01"), instant("INDETERMINATE")), 0);
 
-		assertThat(compareEndWithBegin(instant("2015-01-01"), instant("2014-01-01")), is(1));
-		assertThat(compareEndWithBegin(instant("2014-01-01T00:00:02"), instant("2014-01-01T00:00:01")), is(1));
-		assertThat(compareEndWithBegin(instant("2014-01-01T00:00:01.001"), instant("2014-01-01T00:00:01.000")), is(1));
+		assertEquals(compareEndWithBegin(instant("2015-01-01"), instant("2014-01-01")), 1);
+		assertEquals(compareEndWithBegin(instant("2014-01-01T00:00:02"), instant("2014-01-01T00:00:01")), 1);
+		assertEquals(compareEndWithBegin(instant("2014-01-01T00:00:01.001"), instant("2014-01-01T00:00:01.000")), 1);
 
-		assertThat(compareEndWithBegin(instant("2014-01-01"), instant("2015-01-01")), is(-1));
-		assertThat(compareEndWithBegin(instant("2014-01-01T00:00:01"), instant("2014-01-01T00:00:02")), is(-1));
-		assertThat(compareEndWithBegin(instant("2014-01-01T00:00:01.000"), instant("2014-01-01T00:00:01.001")), is(-1));
+		assertEquals(compareEndWithBegin(instant("2014-01-01"), instant("2015-01-01")), -1);
+		assertEquals(compareEndWithBegin(instant("2014-01-01T00:00:01"), instant("2014-01-01T00:00:02")), -1);
+		assertEquals(compareEndWithBegin(instant("2014-01-01T00:00:01.000"), instant("2014-01-01T00:00:01.001")), -1);
 	}
 
 	@Test
 	public void evaluateInstantPeriod() {
-		assertThat(compareEndWithBegin(instant("2014-01-01T00:00:01"),
-				period("2014-01-01T00:00:01", "2014-01-01T00:00:01")), is(0));
-		assertThat(compareEndWithBegin(instant("2014-01-01T00:00:01"),
-				period("2014-01-01T00:00:01", "2014-01-01T00:00:03")), is(0));
+		assertEquals(compareEndWithBegin(instant("2014-01-01T00:00:01"),
+				period("2014-01-01T00:00:01", "2014-01-01T00:00:01")), 0);
+		assertEquals(compareEndWithBegin(instant("2014-01-01T00:00:01"),
+				period("2014-01-01T00:00:01", "2014-01-01T00:00:03")), 0);
 
-		assertThat(compareEndWithBegin(instant("2014-01-01T00:00:02"),
-				period("2014-01-01T00:00:01", "2014-01-01T00:00:03")), is(1));
-		assertThat(compareEndWithBegin(instant("2014-01-01T00:00:03"),
-				period("2014-01-01T00:00:01", "2014-01-01T00:00:03")), is(1));
-		assertThat(compareEndWithBegin(instant("2014-01-01T00:00:04"),
-				period("2014-01-01T00:00:01", "2014-01-01T00:00:03")), is(1));
+		assertEquals(compareEndWithBegin(instant("2014-01-01T00:00:02"),
+				period("2014-01-01T00:00:01", "2014-01-01T00:00:03")), 1);
+		assertEquals(compareEndWithBegin(instant("2014-01-01T00:00:03"),
+				period("2014-01-01T00:00:01", "2014-01-01T00:00:03")), 1);
+		assertEquals(compareEndWithBegin(instant("2014-01-01T00:00:04"),
+				period("2014-01-01T00:00:01", "2014-01-01T00:00:03")), 1);
 
-		assertThat(compareEndWithBegin(instant("2014-01-01T00:00:00"),
-				period("2014-01-01T00:00:01", "2014-01-01T00:00:03")), is(-1));
+		assertEquals(compareEndWithBegin(instant("2014-01-01T00:00:00"),
+				period("2014-01-01T00:00:01", "2014-01-01T00:00:03")), -1);
 	}
 
 	@Test
 	public void evaluatePeriodInstant() {
-		assertThat(compareEndWithBegin(period("2014-01-01T00:00:01", "2014-01-01T00:00:01"),
-				instant("2014-01-01T00:00:01")), is(0));
-		assertThat(compareEndWithBegin(period("2014-01-01T00:00:01", "2014-01-01T00:00:03"),
-				instant("2014-01-01T00:00:03")), is(0));
+		assertEquals(compareEndWithBegin(period("2014-01-01T00:00:01", "2014-01-01T00:00:01"),
+				instant("2014-01-01T00:00:01")), 0);
+		assertEquals(compareEndWithBegin(period("2014-01-01T00:00:01", "2014-01-01T00:00:03"),
+				instant("2014-01-01T00:00:03")), 0);
 
-		assertThat(compareEndWithBegin(period("2014-01-01T00:00:01", "2014-01-01T00:00:03"),
-				instant("2014-01-01T00:00:02")), is(1));
-		assertThat(compareEndWithBegin(period("2014-01-01T00:00:01", "2014-01-01T00:00:03"),
-				instant("2014-01-01T00:00:01")), is(1));
-		assertThat(compareEndWithBegin(period("2014-01-01T00:00:01", "2014-01-01T00:00:03"),
-				instant("2014-01-01T00:00:00")), is(1));
+		assertEquals(compareEndWithBegin(period("2014-01-01T00:00:01", "2014-01-01T00:00:03"),
+				instant("2014-01-01T00:00:02")), 1);
+		assertEquals(compareEndWithBegin(period("2014-01-01T00:00:01", "2014-01-01T00:00:03"),
+				instant("2014-01-01T00:00:01")), 1);
+		assertEquals(compareEndWithBegin(period("2014-01-01T00:00:01", "2014-01-01T00:00:03"),
+				instant("2014-01-01T00:00:00")), 1);
 
-		assertThat(compareEndWithBegin(period("2014-01-01T00:00:01", "2014-01-01T00:00:03"),
-				instant("2014-01-01T00:00:04")), is(-1));
+		assertEquals(compareEndWithBegin(period("2014-01-01T00:00:01", "2014-01-01T00:00:03"),
+				instant("2014-01-01T00:00:04")), -1);
 	}
 
 	@Test
 	public void evaluatePeriodPeriod() {
-		assertThat(compareEndWithBegin(period("2014-01-01T00:00:01", "2014-01-01T00:00:01"),
-				period("2014-01-01T00:00:01", "2014-01-01T00:00:01")), is(0));
-		assertThat(compareEndWithBegin(period("2014-01-01T00:00:00", "2014-01-01T00:00:01"),
-				period("2014-01-01T00:00:01", "2014-01-01T00:00:02")), is(0));
+		assertEquals(compareEndWithBegin(period("2014-01-01T00:00:01", "2014-01-01T00:00:01"),
+				period("2014-01-01T00:00:01", "2014-01-01T00:00:01")), 0);
+		assertEquals(compareEndWithBegin(period("2014-01-01T00:00:00", "2014-01-01T00:00:01"),
+				period("2014-01-01T00:00:01", "2014-01-01T00:00:02")), 0);
 
-		assertThat(compareEndWithBegin(period("2014-01-01T00:00:02", "2014-01-01T00:00:03"),
-				period("2014-01-01T00:00:00", "2014-01-01T00:00:01")), is(1));
-		assertThat(compareEndWithBegin(period("2014-01-01T00:00:02", "2014-01-01T00:00:03"),
-				period("2014-01-01T00:00:01", "2014-01-01T00:00:02")), is(1));
-		assertThat(compareEndWithBegin(period("2014-01-01T00:00:02", "2014-01-01T00:00:03"),
-				period("2014-01-01T00:00:02", "2014-01-01T00:00:03")), is(1));
+		assertEquals(compareEndWithBegin(period("2014-01-01T00:00:02", "2014-01-01T00:00:03"),
+				period("2014-01-01T00:00:00", "2014-01-01T00:00:01")), 1);
+		assertEquals(compareEndWithBegin(period("2014-01-01T00:00:02", "2014-01-01T00:00:03"),
+				period("2014-01-01T00:00:01", "2014-01-01T00:00:02")), 1);
+		assertEquals(compareEndWithBegin(period("2014-01-01T00:00:02", "2014-01-01T00:00:03"),
+				period("2014-01-01T00:00:02", "2014-01-01T00:00:03")), 1);
 
-		assertThat(compareEndWithBegin(period("2014-01-01T00:00:01", "2014-01-01T00:00:02"),
-				period("2014-01-01T00:00:03", "2014-01-01T00:00:04")), is(-1));
+		assertEquals(compareEndWithBegin(period("2014-01-01T00:00:01", "2014-01-01T00:00:02"),
+				period("2014-01-01T00:00:03", "2014-01-01T00:00:04")), -1);
 	}
 
 	private TimeInstant instant(final String s) {

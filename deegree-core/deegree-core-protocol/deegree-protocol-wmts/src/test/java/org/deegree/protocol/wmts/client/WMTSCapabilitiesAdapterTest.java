@@ -34,30 +34,29 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.protocol.wmts.client;
 
-import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
-import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
-import static junit.framework.Assert.assertEquals;
-import static org.deegree.commons.xml.stax.XMLStreamUtils.skipStartDocument;
-import static org.deegree.protocol.wmts.WMTSConstants.WMTS_100_NS;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.List;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
 import org.deegree.cs.coordinatesystems.ICRS;
 import org.deegree.cs.persistence.CRSManager;
 import org.deegree.geometry.metadata.SpatialMetadata;
 import org.deegree.protocol.ows.exception.OWSExceptionReport;
 import org.deegree.tile.TileMatrix;
 import org.deegree.tile.TileMatrixSet;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import java.io.IOException;
+import java.net.URL;
+import java.util.List;
+
+import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
+import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
+import static org.deegree.commons.xml.stax.XMLStreamUtils.skipStartDocument;
+import static org.deegree.protocol.wmts.WMTSConstants.WMTS_100_NS;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests for {@link WMTSCapabilitiesAdapter}.
@@ -68,7 +67,7 @@ public class WMTSCapabilitiesAdapterTest {
 
 	private WMTSCapabilitiesAdapter adapter;
 
-	@Before
+	@BeforeEach
 	public void setup() throws OWSExceptionReport, XMLStreamException, IOException {
 		adapter = new WMTSCapabilitiesAdapter();
 		URL capaUrl = WMTSClientTest.class.getResource("wmts100_capabilities_example.xml");

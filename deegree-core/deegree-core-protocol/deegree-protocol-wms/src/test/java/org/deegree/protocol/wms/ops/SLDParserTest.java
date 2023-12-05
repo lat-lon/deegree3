@@ -34,21 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.protocol.wms.ops;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-
-import java.io.InputStream;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
 import org.deegree.commons.utils.Pair;
 import org.deegree.commons.utils.Triple;
 import org.deegree.filter.OperatorFilter;
@@ -56,7 +41,20 @@ import org.deegree.layer.LayerRef;
 import org.deegree.protocol.wms.sld.StyleContainer;
 import org.deegree.protocol.wms.sld.StylesContainer;
 import org.deegree.style.StyleRef;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import java.io.InputStream;
+import java.util.LinkedList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.mock;
 
 /**
  * TODO add class documentation here
@@ -72,17 +70,17 @@ public class SLDParserTest {
 		Triple<LinkedList<LayerRef>, LinkedList<StyleRef>, LinkedList<OperatorFilter>> sld = SLDParser.parse(in, gm);
 
 		LinkedList<LayerRef> layerRefs = sld.first;
-		assertThat(layerRefs.size(), is(1));
-		assertThat(layerRefs.get(0).getName(), is("OCEANSEA_1M:Foundation"));
+		assertEquals(layerRefs.size(), 1);
+		assertEquals(layerRefs.get(0).getName(), "OCEANSEA_1M:Foundation");
 
 		LinkedList<StyleRef> styleRefs = sld.second;
-		assertThat(styleRefs.size(), is(1));
-		assertThat(styleRefs.get(0).getStyle().getFeatureType(), is(new QName("Foundation")));
-		assertThat(styleRefs.get(0).getStyle().getRules().size(), is(1));
+		assertEquals(styleRefs.size(), 1);
+		assertEquals(styleRefs.get(0).getStyle().getFeatureType(), new QName("Foundation"));
+		assertEquals(styleRefs.get(0).getStyle().getRules().size(), 1);
 
 		LinkedList<OperatorFilter> operatorFilters = sld.third;
-		assertThat(operatorFilters.size(), is(1));
-		assertThat(operatorFilters.get(0), is(nullValue()));
+		assertEquals(operatorFilters.size(), 1);
+		assertNull(operatorFilters.get(0));
 	}
 
 	@Test
@@ -90,22 +88,22 @@ public class SLDParserTest {
 		XMLStreamReader in = retrieveSldAsStream("example-sld.xml");
 		StylesContainer sld = SLDParser.parse(in);
 		List<Pair<String, List<?>>> dimensions = sld.getDimensions();
-		assertThat(dimensions.size(), is(0));
+		assertEquals(dimensions.size(), 0);
 
 		List<StyleContainer> styles = sld.getStyles();
-		assertThat(styles.size(), is(1));
+		assertEquals(styles.size(), 1);
 
 		StyleContainer styleInformation = styles.get(0);
 
 		LayerRef layerRefs = styleInformation.getLayerRef();
-		assertThat(layerRefs.getName(), is("OCEANSEA_1M:Foundation"));
+		assertEquals(layerRefs.getName(), "OCEANSEA_1M:Foundation");
 
 		StyleRef layerRef = styleInformation.getStyleRef();
-		assertThat(layerRef.getStyle().getFeatureType(), is(new QName("Foundation")));
-		assertThat(layerRef.getStyle().getRules().size(), is(1));
+		assertEquals(layerRef.getStyle().getFeatureType(), new QName("Foundation"));
+		assertEquals(layerRef.getStyle().getRules().size(), 1);
 
 		OperatorFilter filter = styleInformation.getFilter();
-		assertThat(filter, is(nullValue()));
+		assertNull(filter);
 	}
 
 	private XMLStreamReader retrieveSldAsStream(String resource) throws XMLStreamException, FactoryConfigurationError {

@@ -40,19 +40,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.services.wms.controller.capabilities.theme;
 
-import static java.util.Arrays.asList;
-import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.deegree.commons.ows.metadata.Description;
 import org.deegree.commons.tom.ows.CodeType;
 import org.deegree.commons.tom.ows.LanguageString;
@@ -67,8 +54,21 @@ import org.deegree.layer.metadata.LayerMetadata;
 import org.deegree.rendering.r2d.context.MapOptions;
 import org.deegree.theme.Theme;
 import org.deegree.theme.persistence.standard.StandardTheme;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
 
 /**
  * Unit tests for {@link LayerMetadataMerger}.
@@ -184,9 +184,9 @@ public class LayerMetadataMergerTest {
 		final LayerMetadata mergedSubThemeWithOpaque = merger.merge(subThemeWithOpaque);
 		final LayerMetadata mergedSubThemeWithoutOpaque = merger.merge(subThemeWithoutOpaque);
 
-		assertThat(mergedTheme.getMapOptions().isOpaque(), is(true));
-		assertThat(mergedSubThemeWithOpaque.getMapOptions().isOpaque(), is(true));
-		assertThat(mergedSubThemeWithoutOpaque.getMapOptions().isOpaque(), is(false));
+		assertTrue(mergedTheme.getMapOptions().isOpaque());
+		assertTrue(mergedSubThemeWithOpaque.getMapOptions().isOpaque());
+		assertFalse(mergedSubThemeWithoutOpaque.getMapOptions().isOpaque());
 	}
 
 	private Theme createThemeWithoutMetadata(final String name, final List<Layer> layers, final List<Theme> themes) {

@@ -34,22 +34,21 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.cs.coordinatesystems;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.vecmath.Point3d;
-
 import org.deegree.cs.CoordinateTransformer;
 import org.deegree.cs.components.Axis;
 import org.deegree.cs.components.IAxis;
 import org.deegree.cs.exceptions.TransformationException;
 import org.deegree.cs.exceptions.UnknownCRSException;
 import org.deegree.cs.persistence.CRSManager;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import javax.vecmath.Point3d;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test for correctness of AxisOrder, if x/y forced or not.

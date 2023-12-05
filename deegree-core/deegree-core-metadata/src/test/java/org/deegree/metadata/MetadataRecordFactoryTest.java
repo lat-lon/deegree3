@@ -34,19 +34,17 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.metadata;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-
-import java.io.InputStream;
+import org.deegree.metadata.iso.ISORecord;
+import org.junit.jupiter.api.Test;
 
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import java.io.InputStream;
 
-import org.deegree.metadata.iso.ISORecord;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 /**
  * @author <a href="mailto:goltz@lat-lon.de">Lyn Goltz</a>
@@ -58,8 +56,8 @@ public class MetadataRecordFactoryTest {
 		XMLStreamReader xmlStream = createStream("metadataRecord.xml");
 		MetadataRecord record = MetadataRecordFactory.create(xmlStream);
 
-		assertThat(record, instanceOf(ISORecord.class));
-		assertThat(record.getIdentifier(), is("655e5998-a20e-66b5-c888-00005553421"));
+		assertInstanceOf(ISORecord.class, record);
+		assertEquals(record.getIdentifier(), "655e5998-a20e-66b5-c888-00005553421");
 	}
 
 	@Test
@@ -67,8 +65,8 @@ public class MetadataRecordFactoryTest {
 		XMLStreamReader xmlStream = createStream("metadataRecord_namespaceDuplicated.xml");
 		MetadataRecord record = MetadataRecordFactory.create(xmlStream);
 
-		assertThat(record, instanceOf(ISORecord.class));
-		assertThat(record.getIdentifier(), is("655e5998-a20e-66b5-c888-00005553499"));
+		assertInstanceOf(ISORecord.class, record);
+		assertEquals(record.getIdentifier(), "655e5998-a20e-66b5-c888-00005553499");
 	}
 
 	private XMLStreamReader createStream(String name) throws XMLStreamException, FactoryConfigurationError {

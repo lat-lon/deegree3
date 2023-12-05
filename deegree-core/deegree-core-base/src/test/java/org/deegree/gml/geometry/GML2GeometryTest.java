@@ -34,19 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.gml.geometry;
 
-import static org.deegree.gml.GMLVersion.GML_2;
-
-import java.io.IOException;
-import java.util.List;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamConstants;
-import javax.xml.stream.XMLStreamException;
-
-import junit.framework.TestCase;
-
 import org.deegree.commons.xml.stax.SchemaLocationXMLStreamWriter;
 import org.deegree.commons.xml.stax.XMLStreamReaderWrapper;
 import org.deegree.cs.exceptions.TransformationException;
@@ -67,15 +54,25 @@ import org.deegree.gml.GMLStreamReader;
 import org.deegree.gml.GMLStreamWriter;
 import org.deegree.junit.XMLAssert;
 import org.deegree.junit.XMLMemoryStreamWriter;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+import java.io.IOException;
+import java.util.List;
+
+import static org.deegree.gml.GMLVersion.GML_2;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * The class tests both the {@link GML2GeometryWriter} and the {@link GML2GeometryReader}.
  *
  * @author <a href="mailto:ionita@lat-lon.de">Andrei Ionita</a>
  */
-public class GML2GeometryTest extends TestCase {
+public class GML2GeometryTest {
 
 	private static final String BASE_DIR = "../misc/geometry/gml21/";
 
@@ -118,18 +115,17 @@ public class GML2GeometryTest extends TestCase {
 		XMLStreamReaderWrapper xmlReader = new XMLStreamReaderWrapper(this.getClass().getResource(BASE_DIR + BOX_FILE));
 		xmlReader.nextTag();
 
-		Assert.assertEquals(XMLStreamConstants.START_ELEMENT, xmlReader.getEventType());
-		Assert.assertEquals(new QName(GML21NS, "Box"), xmlReader.getName());
+		assertEquals(XMLStreamConstants.START_ELEMENT, xmlReader.getEventType());
+		assertEquals(new QName(GML21NS, "Box"), xmlReader.getName());
 
 		Envelope envelope = getGML2GeometryReader(xmlReader).parseEnvelope(xmlReader, null);
-		Assert.assertEquals(XMLStreamConstants.END_ELEMENT, xmlReader.getEventType());
-		Assert.assertEquals(new QName(GML21NS, "Box"), xmlReader.getName());
-		Assert.assertEquals(0.0, envelope.getMin().get0(), DELTA);
-		Assert.assertEquals(0.0, envelope.getMin().get1(), DELTA);
-		Assert.assertEquals(100.0, envelope.getMax().get0(), DELTA);
-		Assert.assertEquals(100.0, envelope.getMax().get1(), DELTA);
-		Assert.assertEquals(CRSManager.lookup("http://www.opengis.net/gml/srs/epsg.xml#4326"),
-				envelope.getCoordinateSystem());
+		assertEquals(XMLStreamConstants.END_ELEMENT, xmlReader.getEventType());
+		assertEquals(new QName(GML21NS, "Box"), xmlReader.getName());
+		assertEquals(0.0, envelope.getMin().get0(), DELTA);
+		assertEquals(0.0, envelope.getMin().get1(), DELTA);
+		assertEquals(100.0, envelope.getMax().get0(), DELTA);
+		assertEquals(100.0, envelope.getMax().get1(), DELTA);
+		assertEquals(CRSManager.lookup("http://www.opengis.net/gml/srs/epsg.xml#4326"), envelope.getCoordinateSystem());
 
 		XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
 		outputFactory.setProperty("javax.xml.stream.isRepairingNamespaces", new Boolean(true));
@@ -167,16 +163,15 @@ public class GML2GeometryTest extends TestCase {
 				this.getClass().getResource(BASE_DIR + POINT_FILE));
 		xmlReader.nextTag();
 
-		Assert.assertEquals(XMLStreamConstants.START_ELEMENT, xmlReader.getEventType());
-		Assert.assertEquals(new QName(GML21NS, "Point"), xmlReader.getName());
+		assertEquals(XMLStreamConstants.START_ELEMENT, xmlReader.getEventType());
+		assertEquals(new QName(GML21NS, "Point"), xmlReader.getName());
 
 		Point point = getGML2GeometryReader(xmlReader).parsePoint(xmlReader, null);
-		Assert.assertEquals(XMLStreamConstants.END_ELEMENT, xmlReader.getEventType());
-		Assert.assertEquals(new QName(GML21NS, "Point"), xmlReader.getName());
-		Assert.assertEquals(5.0, point.get0(), DELTA);
-		Assert.assertEquals(40.0, point.get1(), DELTA);
-		Assert.assertEquals(CRSManager.lookup("http://www.opengis.net/gml/srs/epsg.xml#4326"),
-				point.getCoordinateSystem());
+		assertEquals(XMLStreamConstants.END_ELEMENT, xmlReader.getEventType());
+		assertEquals(new QName(GML21NS, "Point"), xmlReader.getName());
+		assertEquals(5.0, point.get0(), DELTA);
+		assertEquals(40.0, point.get1(), DELTA);
+		assertEquals(CRSManager.lookup("http://www.opengis.net/gml/srs/epsg.xml#4326"), point.getCoordinateSystem());
 
 		XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
 		outputFactory.setProperty("javax.xml.stream.isRepairingNamespaces", new Boolean(true));
@@ -206,8 +201,8 @@ public class GML2GeometryTest extends TestCase {
 				this.getClass().getResource(BASE_DIR + POINT2_FILE));
 		xmlReader.nextTag();
 		Point point = getGML2GeometryReader(xmlReader).parsePoint(xmlReader, null);
-		Assert.assertEquals(5.0, point.get0(), DELTA);
-		Assert.assertEquals(30.0, point.get1(), DELTA);
+		assertEquals(5.0, point.get0(), DELTA);
+		assertEquals(30.0, point.get1(), DELTA);
 
 		XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
 		outputFactory.setProperty("javax.xml.stream.isRepairingNamespaces", new Boolean(true));
@@ -237,12 +232,12 @@ public class GML2GeometryTest extends TestCase {
 				this.getClass().getResource(BASE_DIR + POLYGON_FILE));
 		xmlReader.nextTag();
 
-		Assert.assertEquals(XMLStreamConstants.START_ELEMENT, xmlReader.getEventType());
-		Assert.assertEquals(new QName(GML21NS, "Polygon"), xmlReader.getName());
+		assertEquals(XMLStreamConstants.START_ELEMENT, xmlReader.getEventType());
+		assertEquals(new QName(GML21NS, "Polygon"), xmlReader.getName());
 
 		Polygon polygon = getGML2GeometryReader(xmlReader).parsePolygon(xmlReader, null);
-		Assert.assertEquals(XMLStreamConstants.END_ELEMENT, xmlReader.getEventType());
-		Assert.assertEquals(new QName(GML21NS, "Polygon"), xmlReader.getName());
+		assertEquals(XMLStreamConstants.END_ELEMENT, xmlReader.getEventType());
+		assertEquals(new QName(GML21NS, "Polygon"), xmlReader.getName());
 
 		Points points = polygon.getExteriorRing().getControlPoints();
 		comparePoint(0.0, 0.0, points.get(0));
@@ -266,8 +261,7 @@ public class GML2GeometryTest extends TestCase {
 		comparePoint(90.0, 60.0, points2.get(3));
 		comparePoint(60.0, 60.0, points2.get(4));
 
-		Assert.assertEquals(CRSManager.lookup("http://www.opengis.net/gml/srs/epsg.xml#4326"),
-				polygon.getCoordinateSystem());
+		assertEquals(CRSManager.lookup("http://www.opengis.net/gml/srs/epsg.xml#4326"), polygon.getCoordinateSystem());
 
 		XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
 		outputFactory.setProperty("javax.xml.stream.isRepairingNamespaces", new Boolean(true));
@@ -298,19 +292,19 @@ public class GML2GeometryTest extends TestCase {
 				this.getClass().getResource(BASE_DIR + LINESTRING_FILE));
 		xmlReader.nextTag();
 
-		Assert.assertEquals(XMLStreamConstants.START_ELEMENT, xmlReader.getEventType());
-		Assert.assertEquals(new QName(GML21NS, "LineString"), xmlReader.getName());
+		assertEquals(XMLStreamConstants.START_ELEMENT, xmlReader.getEventType());
+		assertEquals(new QName(GML21NS, "LineString"), xmlReader.getName());
 
 		LineString lineString = getGML2GeometryReader(xmlReader).parseLineString(xmlReader, null);
-		Assert.assertEquals(XMLStreamConstants.END_ELEMENT, xmlReader.getEventType());
-		Assert.assertEquals(new QName(GML21NS, "LineString"), xmlReader.getName());
+		assertEquals(XMLStreamConstants.END_ELEMENT, xmlReader.getEventType());
+		assertEquals(new QName(GML21NS, "LineString"), xmlReader.getName());
 
 		Points controlPoints = lineString.getControlPoints();
 		comparePoint(0.0, 0.0, controlPoints.get(0));
 		comparePoint(20.0, 35.0, controlPoints.get(1));
 		comparePoint(100.0, 100.0, controlPoints.get(2));
 
-		Assert.assertEquals(CRSManager.lookup("http://www.opengis.net/gml/srs/epsg.xml#4326"),
+		assertEquals(CRSManager.lookup("http://www.opengis.net/gml/srs/epsg.xml#4326"),
 				lineString.getCoordinateSystem());
 
 		XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
@@ -342,8 +336,8 @@ public class GML2GeometryTest extends TestCase {
 				this.getClass().getResource(BASE_DIR + MULTIGEOMETRY_FILE));
 		xmlReader.nextTag();
 
-		Assert.assertEquals(XMLStreamConstants.START_ELEMENT, xmlReader.getEventType());
-		Assert.assertEquals(new QName(GML21NS, "MultiGeometry"), xmlReader.getName());
+		assertEquals(XMLStreamConstants.START_ELEMENT, xmlReader.getEventType());
+		assertEquals(new QName(GML21NS, "MultiGeometry"), xmlReader.getName());
 
 		MultiGeometry<?> multiGeometry = getGML2GeometryReader(xmlReader).parseMultiGeometry(xmlReader, null);
 		assertEquals("c731", multiGeometry.getId());
@@ -398,8 +392,8 @@ public class GML2GeometryTest extends TestCase {
 				this.getClass().getResource(BASE_DIR + MULTILINESTRING_FILE));
 		xmlReader.nextTag();
 
-		Assert.assertEquals(XMLStreamConstants.START_ELEMENT, xmlReader.getEventType());
-		Assert.assertEquals(new QName(GML21NS, "MultiLineString"), xmlReader.getName());
+		assertEquals(XMLStreamConstants.START_ELEMENT, xmlReader.getEventType());
+		assertEquals(new QName(GML21NS, "MultiLineString"), xmlReader.getName());
 
 		MultiLineString multiLineString = getGML2GeometryReader(xmlReader).parseMultiLineString(xmlReader, null);
 		LineString firstMember = multiLineString.get(0);
@@ -449,8 +443,8 @@ public class GML2GeometryTest extends TestCase {
 				this.getClass().getResource(BASE_DIR + MULTIPOINT_FILE));
 		xmlReader.nextTag();
 
-		Assert.assertEquals(XMLStreamConstants.START_ELEMENT, xmlReader.getEventType());
-		Assert.assertEquals(new QName(GML21NS, "MultiPoint"), xmlReader.getName());
+		assertEquals(XMLStreamConstants.START_ELEMENT, xmlReader.getEventType());
+		assertEquals(new QName(GML21NS, "MultiPoint"), xmlReader.getName());
 
 		MultiPoint multiPoint = getGML2GeometryReader(xmlReader).parseMultiPoint(xmlReader, null);
 
@@ -489,8 +483,8 @@ public class GML2GeometryTest extends TestCase {
 				this.getClass().getResource(BASE_DIR + MULTIPOLYGON_FILE));
 		xmlReader.nextTag();
 
-		Assert.assertEquals(XMLStreamConstants.START_ELEMENT, xmlReader.getEventType());
-		Assert.assertEquals(new QName(GML21NS, "MultiPolygon"), xmlReader.getName());
+		assertEquals(XMLStreamConstants.START_ELEMENT, xmlReader.getEventType());
+		assertEquals(new QName(GML21NS, "MultiPolygon"), xmlReader.getName());
 
 		MultiPolygon multiPolygon = getGML2GeometryReader(xmlReader).parseMultiPolygon(xmlReader, null);
 
@@ -525,7 +519,7 @@ public class GML2GeometryTest extends TestCase {
 		comparePoint(0.0, 100.0, points.get(3));
 		comparePoint(0.0, 0.0, points.get(4));
 
-		Assert.assertEquals(CRSManager.lookup("http://www.opengis.net/gml/srs/epsg.xml#4326"),
+		assertEquals(CRSManager.lookup("http://www.opengis.net/gml/srs/epsg.xml#4326"),
 				multiPolygon.getCoordinateSystem());
 
 		XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
@@ -549,8 +543,8 @@ public class GML2GeometryTest extends TestCase {
 	}
 
 	private void comparePoint(double x, double y, Point point) {
-		Assert.assertEquals(x, point.get0(), DELTA);
-		Assert.assertEquals(y, point.get1(), DELTA);
+		assertEquals(x, point.get0(), DELTA);
+		assertEquals(y, point.get1(), DELTA);
 	}
 
 }

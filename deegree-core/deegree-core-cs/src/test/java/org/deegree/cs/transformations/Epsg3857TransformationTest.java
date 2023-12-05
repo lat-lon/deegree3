@@ -4,7 +4,7 @@ import org.deegree.cs.coordinatesystems.ICRS;
 import org.deegree.cs.exceptions.TransformationException;
 import org.deegree.cs.exceptions.UnknownCRSException;
 import org.deegree.cs.persistence.CRSManager;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.vecmath.Point3d;
 

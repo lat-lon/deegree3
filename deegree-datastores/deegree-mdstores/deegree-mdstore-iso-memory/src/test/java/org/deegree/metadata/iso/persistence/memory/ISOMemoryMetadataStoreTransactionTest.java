@@ -34,15 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.metadata.iso.persistence.memory;
 
-import static junit.framework.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
-
-import java.io.File;
-import java.io.FilenameFilter;
-import java.net.URL;
-import java.util.Collections;
-import java.util.List;
-
 import org.apache.commons.io.FileUtils;
 import org.deegree.filter.Filter;
 import org.deegree.filter.IdFilter;
@@ -52,9 +43,18 @@ import org.deegree.metadata.persistence.transaction.DeleteOperation;
 import org.deegree.metadata.persistence.transaction.InsertOperation;
 import org.deegree.metadata.persistence.transaction.UpdateOperation;
 import org.deegree.protocol.csw.MetadataStoreException;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
+import java.io.File;
+import java.io.FilenameFilter;
+import java.net.URL;
+import java.util.Collections;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author <a href="mailto:goltz@lat-lon.de">Lyn Goltz</a>
@@ -63,7 +63,7 @@ public class ISOMemoryMetadataStoreTransactionTest {
 
 	private File directory;
 
-	@Before
+	@BeforeEach
 	public void setupTestDirectory() throws Exception {
 		try {
 			directory = File.createTempFile("deegreecswtest", "");

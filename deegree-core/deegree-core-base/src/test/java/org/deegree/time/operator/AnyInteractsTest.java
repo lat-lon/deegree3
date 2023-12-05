@@ -1,10 +1,5 @@
 package org.deegree.time.operator;
 
-import static java.util.Collections.emptyList;
-import static org.deegree.time.position.IndeterminateValue.UNKNOWN;
-
-import java.util.List;
-
 import org.deegree.commons.tom.gml.property.Property;
 import org.deegree.time.position.TimePosition;
 import org.deegree.time.primitive.GenericTimeInstant;
@@ -13,8 +8,14 @@ import org.deegree.time.primitive.RelatedTime;
 import org.deegree.time.primitive.TimeGeometricPrimitive;
 import org.deegree.time.primitive.TimeInstant;
 import org.deegree.time.primitive.TimePeriod;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
+import static java.util.Collections.emptyList;
+import static org.deegree.time.position.IndeterminateValue.UNKNOWN;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AnyInteractsTest {
 
@@ -144,11 +145,11 @@ public class AnyInteractsTest {
 	}
 
 	private void assertAnyInteracts(TimeGeometricPrimitive a, TimeGeometricPrimitive b) {
-		Assert.assertTrue(anyInteracts(a, b));
+		assertTrue(anyInteracts(a, b));
 	}
 
 	private void assertNotAnyInteracts(TimeGeometricPrimitive a, TimeGeometricPrimitive b) {
-		Assert.assertFalse(anyInteracts(a, b));
+		assertFalse(anyInteracts(a, b));
 	}
 
 	private boolean anyInteracts(TimeGeometricPrimitive a, TimeGeometricPrimitive b) {

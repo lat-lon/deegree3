@@ -41,26 +41,20 @@
 package org.deegree.services.wms;
 
 import org.apache.commons.io.IOUtils;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.slf4j.Logger;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.awt.image.RenderedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.stream.Stream;
 
 import static org.deegree.commons.utils.net.HttpUtils.IMAGE;
 import static org.deegree.commons.utils.net.HttpUtils.retrieve;
 import static org.deegree.commons.utils.test.IntegrationTestUtils.isImageSimilar;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
@@ -69,54 +63,35 @@ import static org.slf4j.LoggerFactory.getLogger;
  * @author <a href="mailto:schmitz@occamlabs.de">Andreas Schmitz</a>
  */
 
-@RunWith(Parameterized.class)
-@Ignore
+@Disabled
 public class RemoteWMSIntegrationTest {
 
 	private static final Logger LOG = getLogger(RemoteWMSIntegrationTest.class);
 
-	private static int numFailed = 0;
+	private Stream<Arguments> getParameters() {
+		return Stream.of(Arguments.of("featureinfofromdeegree"), Arguments.of("multiple"),
+				Arguments.of("optionsmultiple"), Arguments.of("optionssingle"), Arguments.of("parameters"),
+				Arguments.of("parametersext"), Arguments.of("single"), Arguments.of("timeout"),
+				Arguments.of("transformedgif"));
+	}
 
-	private final String resourceName;
-
-	private final String request;
-
-	private final BufferedImage expected;
-
-	public RemoteWMSIntegrationTest(String resourceName) throws IOException {
-		this.resourceName = resourceName;
-		this.request = IOUtils
+	@ParameterizedTest
+	@MethodSource("getParameters")
+	public void testSimilarity(String resourceName) throws Exception {
+		String kvpRequest = IOUtils
 			.toString(RemoteWMSIntegrationTest.class.getResourceAsStream("/requests/" + resourceName + ".kvp"));
-		this.expected = ImageIO
+		BufferedImage expected = ImageIO
 			.read(RemoteWMSIntegrationTest.class.getResourceAsStream("/requests/" + resourceName + ".response"));
-	}
 
-	@Parameters(name = "{index}: {0}")
-	public static Collection<Object[]> getParameters() {
-		List<Object[]> requests = new ArrayList<>();
-		requests.add(new Object[] { "featureinfofromdeegree" });
-		requests.add(new Object[] { "multiple" });
-		requests.add(new Object[] { "optionsmultiple" });
-		requests.add(new Object[] { "optionssingle" });
-		requests.add(new Object[] { "parameters" });
-		requests.add(new Object[] { "parametersext" });
-		requests.add(new Object[] { "single" });
-		requests.add(new Object[] { "timeout" });
-		requests.add(new Object[] { "transformedgif" });
-		return requests;
-	}
-
-	@Test
-	public void testSimilarity() throws Exception {
-		String request = createRequest();
+		String request = createRequest(kvpRequest);
 		LOG.info("Requesting {}", request);
 		BufferedImage actual = retrieve(IMAGE, request);
 
-		assertTrue("Image for " + resourceName + "are not similar enough",
-				isImageSimilar(expected, actual, 0.01, getClass().getName() + resourceName));
+		assertTrue(isImageSimilar(expected, actual, 0.01, getClass().getName() + resourceName),
+				"Image for " + resourceName + "are not similar enough");
 	}
 
-	private String createRequest() {
+	private String createRequest(String request) {
 		StringBuffer sb = new StringBuffer();
 		sb.append("http://localhost:");
 		sb.append(System.getProperty("portnumber", "8080"));
@@ -127,14 +102,6 @@ public class RemoteWMSIntegrationTest {
 			sb.append("?");
 		sb.append(request);
 		return sb.toString();
-	}
-
-	private byte[] parseAsBytes(RenderedImage actual) throws IOException {
-		ByteArrayOutputStream bosActual = new ByteArrayOutputStream();
-		ImageIO.write(actual, "png", bosActual);
-		bosActual.flush();
-		bosActual.close();
-		return bosActual.toByteArray();
 	}
 
 }

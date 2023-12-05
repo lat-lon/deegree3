@@ -32,14 +32,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.tile.persistence.filesystem.layout;
 
-import static java.util.Collections.singletonList;
-import static junit.framework.Assert.assertEquals;
-import static org.mockito.Mockito.when;
-
-import java.io.File;
-import java.math.BigInteger;
-import java.util.Collections;
-
 import org.deegree.cs.coordinatesystems.ICRS;
 import org.deegree.cs.persistence.CRSManager;
 import org.deegree.geometry.Envelope;
@@ -48,9 +40,17 @@ import org.deegree.geometry.metadata.SpatialMetadata;
 import org.deegree.tile.TileDataLevel;
 import org.deegree.tile.TileDataSet;
 import org.deegree.tile.TileMatrix;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
+import java.io.File;
+import java.math.BigInteger;
+import java.util.Collections;
+
+import static java.util.Collections.singletonList;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 
 /**
  * Basic tests for {@link TileCacheDiskLayout}.
@@ -61,7 +61,7 @@ public class TileCacheDiskLayoutTest {
 
 	private TileCacheDiskLayout layout;
 
-	@Before
+	@BeforeEach
 	public void setup() {
 		SimpleGeometryFactory fac = new SimpleGeometryFactory();
 		ICRS crs = CRSManager.getCRSRef("EPSG:31466");

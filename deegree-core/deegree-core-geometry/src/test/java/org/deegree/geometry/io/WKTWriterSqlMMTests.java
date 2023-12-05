@@ -52,7 +52,7 @@ import org.deegree.geometry.primitive.Point;
 import org.deegree.geometry.primitive.Ring;
 import org.deegree.geometry.primitive.segments.ArcString;
 import org.deegree.geometry.primitive.segments.LineStringSegment;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class WKTWriterSqlMMTests {
 

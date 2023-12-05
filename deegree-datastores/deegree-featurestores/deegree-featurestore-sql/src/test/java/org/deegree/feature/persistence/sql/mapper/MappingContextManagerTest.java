@@ -1,13 +1,11 @@
 package org.deegree.feature.persistence.sql.mapper;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-
-import java.util.Collections;
+import org.junit.jupiter.api.Test;
 
 import javax.xml.namespace.QName;
+import java.util.Collections;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author <a href="mailto:goltz@lat-lon.de">Lyn Goltz </a>
@@ -21,10 +19,10 @@ public class MappingContextManagerTest {
 		MappingContext mappingContext = mappingContextManager.newContext(new QName("first"), "id");
 
 		MappingContext parent = mappingContextManager.mapOneToOneElement(mappingContext, new QName("parent"));
-		assertThat(parent.getColumn(), is("parent"));
+		assertEquals(parent.getColumn(), "parent");
 
 		MappingContext shortName = mappingContextManager.mapOneToOneElement(parent, new QName("sn"));
-		assertThat(shortName.getColumn(), is("parent_sn"));
+		assertEquals(shortName.getColumn(), "parent_sn");
 	}
 
 	@Test
@@ -38,8 +36,8 @@ public class MappingContextManagerTest {
 
 		MappingContext columnLongerWithSmallId = mappingContextManager.mapOneToOneElement(parent, new QName("longer"));
 		// parent_longer, last id = 100
-		assertThat(columnLongerWithSmallId.getColumn().length(), is(10));
-		assertThat(columnLongerWithSmallId.getColumn(), is("parent_101"));
+		assertEquals(columnLongerWithSmallId.getColumn().length(), 10);
+		assertEquals(columnLongerWithSmallId.getColumn(), "parent_101");
 	}
 
 	@Test
@@ -53,8 +51,8 @@ public class MappingContextManagerTest {
 
 		MappingContext columnLongerWithLargeId = mappingContextManager.mapOneToOneElement(parent, new QName("longer"));
 		// parent_longer, last id = 1000000
-		assertThat(columnLongerWithLargeId.getColumn().length(), is(10));
-		assertThat(columnLongerWithLargeId.getColumn(), is("pa_1000001"));
+		assertEquals(columnLongerWithLargeId.getColumn().length(), 10);
+		assertEquals(columnLongerWithLargeId.getColumn(), "pa_1000001");
 	}
 
 	@Test
@@ -67,8 +65,8 @@ public class MappingContextManagerTest {
 		createMappings(mappingContextManager, parent, "99");
 		// parent_longer, last id = 100
 		MappingContext columnLongerWithLargeId = mappingContextManager.mapOneToOneElement(parent, new QName("longer"));
-		assertThat(columnLongerWithLargeId.getColumn().length(), is(3));
-		assertThat(columnLongerWithLargeId.getColumn(), is("100"));
+		assertEquals(columnLongerWithLargeId.getColumn().length(), 3);
+		assertEquals(columnLongerWithLargeId.getColumn(), "100");
 	}
 
 	@Test
@@ -79,7 +77,7 @@ public class MappingContextManagerTest {
 
 		createMappings(mappingContextManager, mappingContext, "9");
 		MappingContext first = mappingContextManager.mapOneToOneElement(mappingContext, new QName("first"));
-		assertThat(first.getColumn().length(), is(1));
+		assertEquals(first.getColumn().length(), 1);
 	}
 
 	private void createMappings(MappingContextManager mappingContextManager, MappingContext mappingContext,

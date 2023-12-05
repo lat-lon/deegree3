@@ -1,6 +1,6 @@
 package org.deegree.commons.utils.io;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.imageio.ImageIO;
 import java.awt.image.RenderedImage;

@@ -34,24 +34,23 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.protocol.wfs.client;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNull;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.Iterator;
+import org.deegree.feature.Feature;
+import org.deegree.feature.types.AppSchema;
+import org.deegree.gml.GMLVersion;
+import org.deegree.gml.schema.GMLAppSchemaReader;
+import org.junit.jupiter.api.Test;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Iterator;
 
-import org.deegree.feature.Feature;
-import org.deegree.feature.types.AppSchema;
-import org.deegree.gml.GMLVersion;
-import org.deegree.gml.schema.GMLAppSchemaReader;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class WFSFeatureCollectionTest {
 

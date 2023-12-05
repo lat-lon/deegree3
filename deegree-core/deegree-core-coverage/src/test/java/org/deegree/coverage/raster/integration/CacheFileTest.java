@@ -37,17 +37,6 @@
 
 package org.deegree.coverage.raster.integration;
 
-import static org.deegree.coverage.raster.io.WorldFileAccess.readWorldFile;
-import static org.deegree.coverage.raster.utils.RasterFactory.loadRasterFromStream;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.math.BigInteger;
-import java.net.URISyntaxException;
-
-import junit.framework.Assert;
-
 import org.deegree.commons.utils.FileUtils;
 import org.deegree.coverage.raster.AbstractRaster;
 import org.deegree.coverage.raster.SimpleRaster;
@@ -64,7 +53,19 @@ import org.deegree.coverage.raster.io.RasterIOOptions;
 import org.deegree.coverage.raster.io.RasterReader;
 import org.deegree.coverage.raster.utils.RasterFactory;
 import org.deegree.geometry.Envelope;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.math.BigInteger;
+import java.net.URISyntaxException;
+
+import static org.deegree.coverage.raster.io.WorldFileAccess.readWorldFile;
+import static org.deegree.coverage.raster.utils.RasterFactory.loadRasterFromStream;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * The <code>CacheFileTest</code> class TODO add class documentation here.
@@ -118,37 +119,37 @@ public class CacheFileTest extends CenterOuterTest {
 		opts.add(RasterIOOptions.OPT_FORMAT, "png");
 		opts.add(RasterIOOptions.ORIGIN_OF_RASTER, f + "_" + type);
 		AbstractRaster raster = loadRasterFromStream(TestRasterCache.class.getResourceAsStream(f + ".png"), opts);
-		Assert.assertTrue(raster.isSimpleRaster());
+		assertTrue(raster.isSimpleRaster());
 		SimpleRaster result = (SimpleRaster) raster;
 		RasterData data = result.getReadOnlyRasterData();
-		Assert.assertTrue(data instanceof ByteBufferRasterData);
+		assertTrue(data instanceof ByteBufferRasterData);
 		ByteBufferRasterData bbData = (ByteBufferRasterData) data;
 		// really load all data into memory.
 		bbData.getByteBuffer();
 
 		RasterReader reader = bbData.getReader();
-		Assert.assertTrue(reader instanceof CacheRasterReader);
+		assertTrue(reader instanceof CacheRasterReader);
 		CacheRasterReader crReader = (CacheRasterReader) reader;
 
 		crReader.flush();
 
 		File cFile = crReader.file();
-		Assert.assertNotNull(cFile);
-		Assert.assertTrue(cFile.exists());
-		Assert.assertEquals((334 * 334 * 3 * 9), cFile.length());
+		assertNotNull(cFile);
+		assertTrue(cFile.exists());
+		assertEquals((334 * 334 * 3 * 9), cFile.length());
 		String infName = FileUtils.getFilename(cFile);
 		File infoFile = new File(cFile.getParent(), infName + ".info");
-		Assert.assertTrue(infoFile.exists());
+		assertTrue(infoFile.exists());
 		cFile.deleteOnExit();
 		infoFile.deleteOnExit();
 		SimpleRaster resultRaster = RasterCache.getInstance().createFromCache(null, infName);
 		// RasterFactory.saveRasterToFile( resultRaster, new File( "/dev/shm/cFile_" +
 		// type + ".png" ) );
-		Assert.assertEquals(resultRaster.getBands(), result.getBands());
-		// Assert.assertEquals( resultRaster.getColumns(), result.getColumns() );
-		// Assert.assertEquals( resultRaster.getRows(), result.getRows() );
-		Assert.assertEquals(resultRaster.getName(), result.getName());
-		// Assert.assertEquals( resultRaster.getEnvelope(), result.getEnvelope() );
+		assertEquals(resultRaster.getBands(), result.getBands());
+		// assertEquals( resultRaster.getColumns(), result.getColumns() );
+		// assertEquals( resultRaster.getRows(), result.getRows() );
+		assertEquals(resultRaster.getName(), result.getName());
+		// assertEquals( resultRaster.getEnvelope(), result.getEnvelope() );
 
 		return resultRaster;
 	}
@@ -169,8 +170,8 @@ public class CacheFileTest extends CenterOuterTest {
 		// center, rb: visually verified 06.05.2010
 		String name = "soleInside_center";
 		SimpleRaster simpleRaster = soleRasterCenter.getSubRaster(request);
-		Assert.assertEquals(301, simpleRaster.getColumns());
-		Assert.assertEquals(201, simpleRaster.getRows());
+		assertEquals(301, simpleRaster.getColumns());
+		assertEquals(201, simpleRaster.getRows());
 		writeDebugFile(name, simpleRaster);
 		testValues(FP_SOLEINSIDE_CENTER, simpleRaster);
 
@@ -178,8 +179,8 @@ public class CacheFileTest extends CenterOuterTest {
 		// rast_env( 0, 220 | 300, 20)
 		name = "soleInside_outer";
 		simpleRaster = soleRasterOuter.getSubRaster(request);
-		Assert.assertEquals(300, simpleRaster.getColumns());
-		Assert.assertEquals(200, simpleRaster.getRows());
+		assertEquals(300, simpleRaster.getColumns());
+		assertEquals(200, simpleRaster.getRows());
 		writeDebugFile(name, simpleRaster);
 		testValues(FP_SOLEINSIDE_OUTER, simpleRaster);
 	}
@@ -194,12 +195,12 @@ public class CacheFileTest extends CenterOuterTest {
 		String name = "soleUL0Overlap_center";
 		SimpleRaster simpleRaster = soleRasterCenter.getSubRaster(request);
 		double[] origin = simpleRaster.getRasterReference().getOrigin();
-		Assert.assertEquals(998.85, origin[0], 0.001);
-		Assert.assertEquals(2101.55, origin[1], 0.001);
+		assertEquals(998.85, origin[0], 0.001);
+		assertEquals(2101.55, origin[1], 0.001);
 		// the cache works with outer.
-		Assert.assertEquals(OriginLocation.OUTER, simpleRaster.getRasterReference().getOriginLocation());
-		Assert.assertEquals(364, simpleRaster.getColumns());
-		Assert.assertEquals(357, simpleRaster.getRows());
+		assertEquals(OriginLocation.OUTER, simpleRaster.getRasterReference().getOriginLocation());
+		assertEquals(364, simpleRaster.getColumns());
+		assertEquals(357, simpleRaster.getRows());
 		writeDebugFile(name, simpleRaster);
 		testValues(FP_SOLEUL0OVERLAP_CENTER, simpleRaster);
 
@@ -207,11 +208,11 @@ public class CacheFileTest extends CenterOuterTest {
 		name = "soleUL0Overlap_outer";
 		simpleRaster = soleRasterOuter.getSubRaster(request);
 		origin = simpleRaster.getRasterReference().getOrigin();
-		Assert.assertEquals(998.9, origin[0], 0.001);
-		Assert.assertEquals(2101.5, origin[1], 0.001);
-		Assert.assertEquals(OriginLocation.OUTER, simpleRaster.getRasterReference().getOriginLocation());
-		Assert.assertEquals(363, simpleRaster.getColumns());
-		Assert.assertEquals(356, simpleRaster.getRows());
+		assertEquals(998.9, origin[0], 0.001);
+		assertEquals(2101.5, origin[1], 0.001);
+		assertEquals(OriginLocation.OUTER, simpleRaster.getRasterReference().getOriginLocation());
+		assertEquals(363, simpleRaster.getColumns());
+		assertEquals(356, simpleRaster.getRows());
 		writeDebugFile(name, simpleRaster);
 		testValues(FP_SOLEUL0OVERLAP_OUTER, simpleRaster);
 	}
@@ -225,16 +226,16 @@ public class CacheFileTest extends CenterOuterTest {
 	// // center, rb: visually verified 28.10.2009
 	// String name = "soleLROverlap_center_";
 	// SimpleRaster simpleRaster = soleRasterCenter.getSubRaster( request );
-	// Assert.assertEquals( 3, simpleRaster.getColumns() );
-	// Assert.assertEquals( 5, simpleRaster.getRows() );
+	// assertEquals( 3, simpleRaster.getColumns() );
+	// assertEquals( 5, simpleRaster.getRows() );
 	// writeDebugFile( name, simpleRaster );
 	// testValues( SOLELROVERLAP_CENTER_RESULT, simpleRaster );
 	//
 	// // outer, rb: visually verified 28.10.2009
 	// name = "soleLROverlap_outer_";
 	// simpleRaster = soleRasterOuter.getSubRaster( request );
-	// Assert.assertEquals( 4, simpleRaster.getColumns() );
-	// Assert.assertEquals( 4, simpleRaster.getRows() );
+	// assertEquals( 4, simpleRaster.getColumns() );
+	// assertEquals( 4, simpleRaster.getRows() );
 	// writeDebugFile( name, simpleRaster );
 	// testValues( SOLELROVERLAP_OUTER_RESULT, simpleRaster );
 	// }
@@ -248,16 +249,16 @@ public class CacheFileTest extends CenterOuterTest {
 	// // center, rb: visually verified 28.10.2009
 	// String name = "sole0Outside_center_";
 	// SimpleRaster simpleRaster = soleRasterCenter.getSubRaster( request );
-	// Assert.assertEquals( 3, simpleRaster.getColumns() );
-	// Assert.assertEquals( 7, simpleRaster.getRows() );
+	// assertEquals( 3, simpleRaster.getColumns() );
+	// assertEquals( 7, simpleRaster.getRows() );
 	// writeDebugFile( name, simpleRaster );
 	// testValues( UL0OUTSIDE_CENTER_RESULT, simpleRaster );
 	//
 	// // outer, rb: visually verified 28.10.2009
 	// name = "sole0Outside_outer_";
 	// simpleRaster = soleRasterOuter.getSubRaster( request );
-	// Assert.assertEquals( 2, simpleRaster.getColumns() );
-	// Assert.assertEquals( 6, simpleRaster.getRows() );
+	// assertEquals( 2, simpleRaster.getColumns() );
+	// assertEquals( 6, simpleRaster.getRows() );
 	// writeDebugFile( name, simpleRaster );
 	// testValues( UL0OUTSIDE_OUTER_RESULT, simpleRaster );
 	// }
@@ -271,16 +272,16 @@ public class CacheFileTest extends CenterOuterTest {
 	// // center, rb: visually verified 28.10.2009
 	// String name = "soleTotalOverlap_center_";
 	// SimpleRaster simpleRaster = soleRasterCenter.getSubRaster( request );
-	// Assert.assertEquals( 14, simpleRaster.getColumns() );
-	// Assert.assertEquals( 14, simpleRaster.getRows() );
+	// assertEquals( 14, simpleRaster.getColumns() );
+	// assertEquals( 14, simpleRaster.getRows() );
 	// writeDebugFile( name, simpleRaster );
 	// testValues( SOLETOTALOVERLAP_CENTER_RESULT, simpleRaster );
 	//
 	// // outer, rb: visually verified 28.10.2009
 	// name = "soleTotalOverlap_outer_";
 	// simpleRaster = soleRasterOuter.getSubRaster( request );
-	// Assert.assertEquals( 14, simpleRaster.getColumns() );
-	// Assert.assertEquals( 14, simpleRaster.getRows() );
+	// assertEquals( 14, simpleRaster.getColumns() );
+	// assertEquals( 14, simpleRaster.getRows() );
 	// writeDebugFile( name, simpleRaster );
 	// testValues( SOLETOTALOVERLAP_OUTER_RESULT, simpleRaster );
 	// }

@@ -1,16 +1,15 @@
 package org.deegree.tools.featurestoresql.config;
 
-import static org.hamcrest.CoreMatchers.hasItem;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import org.junit.jupiter.api.Test;
 
+import javax.xml.namespace.QName;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.List;
 
-import javax.xml.namespace.QName;
-
-import org.junit.Test;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author <a href="mailto:goltz@lat-lon.de">Lyn Goltz </a>

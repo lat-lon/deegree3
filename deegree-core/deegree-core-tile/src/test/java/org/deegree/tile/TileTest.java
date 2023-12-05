@@ -39,21 +39,17 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.tile;
 
+import org.junit.jupiter.api.Test;
+
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-
-import java.io.IOException;
-
-import junit.framework.TestCase;
-
-import org.junit.Test;
 
 /**
  * <code>TestTile</code>
  *
  * @author <a href="mailto:schmitz@occamlabs.de">Andreas Schmitz</a>
  */
-public class TileTest extends TestCase {
+public class TileTest {
 
 	@Test
 	public void testGetEnvelope() {

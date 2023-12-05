@@ -34,27 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.metadata.iso;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.hasItems;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.xmlunit.matchers.CompareMatcher.isSimilarTo;
-
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.List;
-
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.commons.io.IOUtils;
 import org.deegree.commons.tom.primitive.PrimitiveValue;
@@ -73,9 +52,30 @@ import org.deegree.filter.expression.Literal;
 import org.deegree.filter.expression.ValueReference;
 import org.deegree.filter.spatial.BBOX;
 import org.deegree.geometry.GeometryFactory;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.List;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.hasItems;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.xmlunit.matchers.CompareMatcher.isSimilarTo;
 
 /**
  * Basic tests for creation (XML parsing) of {@link ISORecord} instances.
@@ -88,7 +88,7 @@ public class ISORecordTest {
 
 	private static final URL DATASET = ISORecordTest.class.getResource("full.xml");
 
-	@Ignore
+	@Disabled
 	@Test
 	public void testFull() throws Exception {
 		XMLAdapter xml = new XMLAdapter(DATASET);
@@ -98,7 +98,7 @@ public class ISORecordTest {
 		assertThat(actual, isSimilarTo(expected).ignoreWhitespace());
 	}
 
-	@Ignore
+	@Disabled
 	@Test
 	public void testBrief() throws Exception {
 		XMLAdapter xml = new XMLAdapter(DATASET);
@@ -108,7 +108,7 @@ public class ISORecordTest {
 		assertThat(actual, isSimilarTo(expected).ignoreWhitespace());
 	}
 
-	@Ignore
+	@Disabled
 	@Test
 	public void testSummary() throws Exception {
 		XMLAdapter xml = new XMLAdapter(DATASET);
@@ -177,7 +177,7 @@ public class ISORecordTest {
 
 		Filter filter = new OperatorFilter(operator);
 		boolean isMatching = record.eval(filter);
-		Assert.assertFalse(isMatching);
+		assertFalse(isMatching);
 	}
 
 	@Test
@@ -195,7 +195,7 @@ public class ISORecordTest {
 		assertTrue(isMatching);
 	}
 
-	@Test(expected = FilterEvaluationException.class)
+	@Test
 	public void testEvalFilterUnknownPropertyName() throws Exception {
 		InputStream is = ISORecordTest.class.getResourceAsStream("datasetRecord.xml");
 		XMLStreamReader xmlStream = XMLInputFactory.newInstance().createXMLStreamReader(is);
@@ -205,8 +205,9 @@ public class ISORecordTest {
 		Operator operator = new PropertyIsEqualTo(new ValueReference("Unknown", nsContext), literal, true, null);
 
 		Filter filter = new OperatorFilter(operator);
-		boolean isMatching = record.eval(filter);
-		assertTrue(isMatching);
+		assertThrows(FilterEvaluationException.class, () -> {
+			record.eval(filter);
+		});
 	}
 
 	@Test

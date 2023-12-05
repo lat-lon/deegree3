@@ -1,18 +1,5 @@
 package org.deegree.filter;
 
-import static org.deegree.gml.GMLVersion.GML_32;
-
-import java.io.File;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
 import org.deegree.feature.Feature;
 import org.deegree.feature.FeatureCollection;
 import org.deegree.feature.xpath.TypedObjectNodeXPathEvaluator;
@@ -23,9 +10,22 @@ import org.deegree.gml.GMLStreamReader;
 import org.deegree.workspace.Workspace;
 import org.deegree.workspace.standard.DefaultWorkspace;
 import org.jaxen.SimpleNamespaceContext;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.deegree.gml.GMLVersion.GML_32;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TemporalFilterEvaluationTest {
 
@@ -33,7 +33,7 @@ public class TemporalFilterEvaluationTest {
 
 	private SimpleNamespaceContext nsContext;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		Workspace workspace = new DefaultWorkspace(new File("nix"));
 		workspace.initAll();
@@ -54,13 +54,13 @@ public class TemporalFilterEvaluationTest {
 	}
 
 	private void assertResultSet(FeatureCollection fc, String... expectedIds) {
-		Assert.assertEquals(expectedIds.length, fc.size());
+		assertEquals(expectedIds.length, fc.size());
 		Set<String> ids = new HashSet<String>();
 		for (Feature feature : fc) {
 			ids.add(feature.getId());
 		}
 		for (String string : expectedIds) {
-			Assert.assertTrue(ids.contains(string));
+			assertTrue(ids.contains(string));
 		}
 	}
 

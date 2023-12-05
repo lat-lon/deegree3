@@ -37,21 +37,6 @@
 
 package org.deegree.protocol.wfs.getfeature.xml;
 
-import static java.math.BigInteger.valueOf;
-import static org.deegree.filter.Operator.Type.COMPARISON;
-import static org.deegree.filter.Operator.Type.LOGICAL;
-import static org.deegree.filter.logical.LogicalOperator.SubType.AND;
-import static org.deegree.protocol.wfs.WFSConstants.VERSION_200;
-
-import java.math.BigInteger;
-import java.net.URL;
-import java.util.List;
-import java.util.Set;
-
-import javax.xml.namespace.QName;
-
-import junit.framework.TestCase;
-
 import org.deegree.commons.xml.XMLAdapter;
 import org.deegree.filter.Filter;
 import org.deegree.filter.IdFilter;
@@ -75,14 +60,30 @@ import org.deegree.protocol.wfs.getfeature.GetFeature;
 import org.deegree.protocol.wfs.getfeature.TypeName;
 import org.deegree.protocol.wfs.query.FilterQuery;
 import org.deegree.protocol.wfs.query.Query;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import javax.xml.namespace.QName;
+import java.math.BigInteger;
+import java.net.URL;
+import java.util.List;
+import java.util.Set;
+
+import static java.math.BigInteger.valueOf;
+import static org.deegree.filter.Operator.Type.COMPARISON;
+import static org.deegree.filter.Operator.Type.LOGICAL;
+import static org.deegree.filter.logical.LogicalOperator.SubType.AND;
+import static org.deegree.protocol.wfs.WFSConstants.VERSION_200;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test class for the GetFeatureXMLAdapter.
  *
  * @author <a href="mailto:ionita@lat-lon.de">Andrei Ionita</a>
  */
-public class GetFeatureXMLAdapterTest extends TestCase {
+public class GetFeatureXMLAdapterTest {
 
 	// ---------------------version 1.0.0------------------------------
 	private final String V100_EXAMPLE1 = "wfs100/example1.xml";
@@ -124,9 +125,7 @@ public class GetFeatureXMLAdapterTest extends TestCase {
 
 	private final String V110_EXAMPLE12 = "wfs110/example12.xml";
 
-	/**
-	 * @throws Exception
-	 */
+	@Test
 	public void test_V100_EXAMPLE01() throws Exception {
 		URL exampleURL = this.getClass().getResource(V100_EXAMPLE1);
 		XMLAdapter xmlAdapter = new XMLAdapter(exampleURL);
@@ -175,9 +174,7 @@ public class GetFeatureXMLAdapterTest extends TestCase {
 		assertTrue(ids.contains("InWaterA_1M.1234"));
 	}
 
-	/**
-	 * @throws Exception
-	 */
+	@Test
 	public void test_V100_EXAMPLE2() throws Exception {
 
 		URL exampleURL = this.getClass().getResource(V100_EXAMPLE2);
@@ -231,9 +228,7 @@ public class GetFeatureXMLAdapterTest extends TestCase {
 		assertTrue(ids.contains("InWaterA1M.1013"));
 	}
 
-	/**
-	 * @throws Exception
-	 */
+	@Test
 	public void test_V100_EXAMPLE3() throws Exception {
 
 		URL exampleURL = this.getClass().getResource(V100_EXAMPLE3);
@@ -279,9 +274,7 @@ public class GetFeatureXMLAdapterTest extends TestCase {
 		assertTrue(ids.contains("InWaterA1M.1015"));
 	}
 
-	/**
-	 * @throws Exception
-	 */
+	@Test
 	public void test_V100_EXAMPLE4() throws Exception {
 
 		URL exampleURL = this.getClass().getResource(V100_EXAMPLE4);
@@ -340,9 +333,7 @@ public class GetFeatureXMLAdapterTest extends TestCase {
 		assertTrue(ids.contains("InWaterA1M.1015"));
 	}
 
-	/**
-	 * @throws Exception
-	 */
+	@Test
 	public void test_V100_EXAMPLE5() throws Exception {
 
 		URL exampleURL = this.getClass().getResource(V100_EXAMPLE5);
@@ -359,9 +350,7 @@ public class GetFeatureXMLAdapterTest extends TestCase {
 				filterQuery.getTypeNames()[0].getFeatureTypeName());
 	}
 
-	/**
-	 * @throws Exception
-	 */
+	@Test
 	public void test_V100_EXAMPLE6() throws Exception {
 
 		URL exampleURL = this.getClass().getResource(V100_EXAMPLE6);
@@ -384,9 +373,7 @@ public class GetFeatureXMLAdapterTest extends TestCase {
 				filterQuery.getTypeNames()[0].getFeatureTypeName());
 	}
 
-	/**
-	 * @throws Exception
-	 */
+	@Test
 	public void test_V100_EXAMPLE7() throws Exception {
 
 		URL exampleURL = this.getClass().getResource(V100_EXAMPLE7);
@@ -406,9 +393,7 @@ public class GetFeatureXMLAdapterTest extends TestCase {
 				((PropertyName) filterQuery.getProjectionClauses()[1]).getPropertyName().getAsText());
 	}
 
-	/**
-	 * @throws Exception
-	 */
+	@Test
 	@SuppressWarnings("boxing")
 	public void test_V100_EXAMPLE8() throws Exception {
 
@@ -505,9 +490,7 @@ public class GetFeatureXMLAdapterTest extends TestCase {
 	// new QName( "http://demo.cubewerx.com/yourns", "RoadL_1M" ) );
 	// }
 
-	/**
-	 * @throws Exception
-	 */
+	@Test
 	public void test_V100_EXAMPLE9() throws Exception {
 
 		URL exampleURL = this.getClass().getResource(V100_EXAMPLE9);
@@ -729,6 +712,7 @@ public class GetFeatureXMLAdapterTest extends TestCase {
 	 * parsing (superfluous in this case, since we are testing 1.1.0 files and parsing is
 	 * supported for this version)
 	 */
+	@Test
 	public void test_V110_EXAMPLE12() throws Exception {
 
 		URL exampleURL = this.getClass().getResource(V110_EXAMPLE12);
@@ -788,78 +772,97 @@ public class GetFeatureXMLAdapterTest extends TestCase {
 		assertEquals("InWaterA_1M.1234", filter.getSelectedIds().get(0).getRid());
 	}
 
+	@Test
 	public void test200Example2() throws Exception {
 		GetFeature request = parseExample("wfs200/example2.xml");
 	}
 
+	@Test
 	public void test200Example3() throws Exception {
 		GetFeature request = parseExample("wfs200/example3.xml");
 	}
 
+	@Test
 	public void test200Example4() throws Exception {
 		GetFeature request = parseExample("wfs200/example4.xml");
 	}
 
+	@Test
 	public void test200Example5() throws Exception {
 		GetFeature request = parseExample("wfs200/example5.xml");
 	}
 
+	@Test
 	public void test200Example6() throws Exception {
 		GetFeature request = parseExample("wfs200/example6.xml");
 	}
 
+	@Test
 	public void test200Example7() throws Exception {
 		GetFeature request = parseExample("wfs200/example7.xml");
 	}
 
+	@Test
 	public void test200Example8() throws Exception {
 		// GetFeature request = parseExample( "wfs200/example8.xml" );
 	}
 
+	@Test
 	public void test200Example9() throws Exception {
 		GetFeature request = parseExample("wfs200/example9.xml");
 	}
 
+	@Test
 	public void test200Example10() throws Exception {
 		GetFeature request = parseExample("wfs200/example10.xml");
 	}
 
+	@Test
 	public void test200Example11() throws Exception {
 		GetFeature request = parseExample("wfs200/example11.xml");
 	}
 
+	@Test
 	public void test200Example12() throws Exception {
 		GetFeature request = parseExample("wfs200/example12.xml");
 	}
 
+	@Test
 	public void test200Example13() throws Exception {
 		// GetFeature request = parseExample( "wfs200/example13.xml" );
 	}
 
+	@Test
 	public void test200Example14() throws Exception {
 		GetFeature request = parseExample("wfs200/example14.xml");
 	}
 
+	@Test
 	public void test200Example15() throws Exception {
 		// GetFeature request = parseExample( "wfs200/example15.xml" );
 	}
 
+	@Test
 	public void test200Example16() throws Exception {
 		GetFeature request = parseExample("wfs200/example16.xml");
 	}
 
+	@Test
 	public void test200Example17() throws Exception {
 		// GetFeature request = parseExample( "wfs200/example17.xml" );
 	}
 
+	@Test
 	public void test200Example18() throws Exception {
 		GetFeature request = parseExample("wfs200/example18.xml");
 	}
 
+	@Test
 	public void test200Example19() throws Exception {
 		GetFeature request = parseExample("wfs200/example19.xml");
 	}
 
+	@Test
 	public void testTemporalityExtension100Example4() throws Exception {
 		GetFeature request = parseExample("te100/example4.xml");
 		List<Query> queries = request.getQueries();

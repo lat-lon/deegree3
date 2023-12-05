@@ -34,32 +34,30 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.layer.config;
 
-import static java.util.Collections.singletonList;
-import static org.deegree.layer.config.ConfigUtils.parseStyles;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
-
-import java.io.InputStream;
-import java.net.URL;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.transform.stream.StreamSource;
-
 import org.deegree.commons.utils.Pair;
 import org.deegree.layer.persistence.base.jaxb.StyleRefType;
 import org.deegree.style.persistence.StyleStore;
 import org.deegree.style.persistence.StyleStoreProvider;
 import org.deegree.style.se.unevaluated.Style;
 import org.deegree.workspace.Workspace;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.stream.StreamSource;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.List;
+import java.util.Map;
+
+import static java.util.Collections.singletonList;
+import static org.deegree.layer.config.ConfigUtils.parseStyles;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 /**
  * @author <a href="mailto:goltz@lat-lon.de">Lyn Goltz</a>
@@ -78,12 +76,12 @@ public class ConfigUtilsTest {
 		Map<String, Style> styleMap = selectedStyles.getFirst();
 		Map<String, Style> legendStyleMap = selectedStyles.getSecond();
 
-		assertThat(styleMap.size(), is(3));
-		assertThat(legendStyleMap.size(), is(3));
+		assertEquals(styleMap.size(), 3);
+		assertEquals(legendStyleMap.size(), 3);
 
 		Style defaultLegendStyle = legendStyleMap.get("default");
-		assertThat(defaultLegendStyle.getName(), is("default"));
-		assertThat(defaultLegendStyle.getLegendURL(), is(new URL("http://test.de/legende.png")));
+		assertEquals(defaultLegendStyle.getName(), "default");
+		assertEquals(defaultLegendStyle.getLegendURL(), new URL("http://test.de/legende.png"));
 	}
 
 	@Test
@@ -98,12 +96,12 @@ public class ConfigUtilsTest {
 		Map<String, Style> styleMap = selectedStyles.getFirst();
 		Map<String, Style> legendStyleMap = selectedStyles.getSecond();
 
-		assertThat(styleMap.size(), is(3));
-		assertThat(legendStyleMap.size(), is(3));
+		assertEquals(styleMap.size(), 3);
+		assertEquals(legendStyleMap.size(), 3);
 
 		Style defaultLegendStyle = legendStyleMap.get("default");
-		assertThat(defaultLegendStyle.getName(), is("default"));
-		assertThat(defaultLegendStyle.getLegendURL(), is(new URL("http://test.de/legende2.png")));
+		assertEquals(defaultLegendStyle.getName(), "default");
+		assertEquals(defaultLegendStyle.getLegendURL(), new URL("http://test.de/legende2.png"));
 	}
 
 	@Test
@@ -118,12 +116,12 @@ public class ConfigUtilsTest {
 		Map<String, Style> styleMap = selectedStyles.getFirst();
 		Map<String, Style> legendStyleMap = selectedStyles.getSecond();
 
-		assertThat(styleMap.size(), is(3));
-		assertThat(legendStyleMap.size(), is(2));
+		assertEquals(styleMap.size(), 3);
+		assertEquals(legendStyleMap.size(), 2);
 
 		Style defaultLegendStyle = legendStyleMap.get("default");
-		assertThat(defaultLegendStyle.getName(), is("legendStyle"));
-		assertThat(defaultLegendStyle.getLegendURL(), nullValue());
+		assertEquals(defaultLegendStyle.getName(), "legendStyle");
+		assertNull(defaultLegendStyle.getLegendURL());
 	}
 
 	@Test
@@ -138,12 +136,12 @@ public class ConfigUtilsTest {
 		Map<String, Style> styleMap = selectedStyles.getFirst();
 		Map<String, Style> legendStyleMap = selectedStyles.getSecond();
 
-		assertThat(styleMap.size(), is(3));
-		assertThat(legendStyleMap.size(), is(3));
+		assertEquals(styleMap.size(), 3);
+		assertEquals(legendStyleMap.size(), 3);
 
 		Style defaultLegendStyle = legendStyleMap.get("default");
-		assertThat(defaultLegendStyle.getName(), is("simpleStyle"));
-		assertThat(defaultLegendStyle.getLegendURL(), is(new URL("http://test.de/legende.png")));
+		assertEquals(defaultLegendStyle.getName(), "simpleStyle");
+		assertEquals(defaultLegendStyle.getLegendURL(), new URL("http://test.de/legende.png"));
 	}
 
 	private StyleStore mockStyleStoreWithThreeStyles_EqualDefaultAndSimple() {

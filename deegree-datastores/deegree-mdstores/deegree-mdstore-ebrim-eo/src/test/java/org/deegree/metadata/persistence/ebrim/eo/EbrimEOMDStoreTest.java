@@ -34,22 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.metadata.persistence.ebrim.eo;
 
-import static org.deegree.metadata.persistence.ebrim.eo.Helper.getConnection;
-import static org.deegree.metadata.persistence.ebrim.eo.Helper.setUpTables;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.slf4j.LoggerFactory.getLogger;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.deegree.commons.tom.primitive.PrimitiveValue;
 import org.deegree.commons.utils.JDBCUtils;
 import org.deegree.commons.xml.CommonNamespaces;
@@ -72,12 +56,27 @@ import org.deegree.metadata.persistence.transaction.InsertOperation;
 import org.deegree.protocol.csw.MetadataStoreException;
 import org.deegree.workspace.Workspace;
 import org.deegree.workspace.standard.DefaultWorkspace;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import static org.deegree.metadata.persistence.ebrim.eo.Helper.getConnection;
+import static org.deegree.metadata.persistence.ebrim.eo.Helper.setUpTables;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * TODO add class documentation here
@@ -105,7 +104,7 @@ public class EbrimEOMDStoreTest {
 		ns.addNamespace("wrs", "http://www.opengis.net/cat/wrs/1.0");
 	}
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		File wsDir = new File(EbrimEOMDStore.class.getResource("eotest").toURI());
 		ws = new DefaultWorkspace(wsDir);
@@ -113,8 +112,8 @@ public class EbrimEOMDStoreTest {
 		store = (EbrimEOMDStore) ws.getResource(MetadataStoreProvider.class, MDSTORE_ID);
 	}
 
-	@After
-	public void tearDown() throws Exception {
+	@AfterEach
+	public void tearDown() {
 		ws.destroy();
 	}
 
@@ -138,7 +137,7 @@ public class EbrimEOMDStoreTest {
 		recordById.next();
 
 		RegistryObject record = recordById.getRecord();
-		Assert.assertNotNull(record);
+		assertNotNull(record);
 
 		assertEquals(id_rec1, record.getIdentifier());
 	}
@@ -177,7 +176,7 @@ public class EbrimEOMDStoreTest {
 		MetadataQuery query = new MetadataQuery(null, null, null, null, 1, 20);
 		MetadataResultSet<RegistryObject> records = store.getRecords(query);
 
-		Assert.assertNotNull(records);
+		assertNotNull(records);
 
 		int count = 0;
 		while (records.next()) {
@@ -206,19 +205,19 @@ public class EbrimEOMDStoreTest {
 		MetadataQuery query = new MetadataQuery(null, null, filter, null, 1, 20);
 		MetadataResultSet<RegistryObject> recordById = store.getRecords(query);
 
-		Assert.assertNotNull(recordById);
+		assertNotNull(recordById);
 
 		recordById.next();
 
 		RegistryObject record = recordById.getRecord();
-		Assert.assertNotNull(record);
+		assertNotNull(record);
 
-		Assert.assertEquals(id_rec1, record.getIdentifier());
+		assertEquals(id_rec1, record.getIdentifier());
 	}
 
-	@BeforeClass
-	public static void insertTestDatasets() throws UnsupportedEncodingException, SQLException, IOException,
-			MetadataStoreException, MetadataInspectorException {
+	@BeforeAll
+	public static void insertTestDatasets()
+			throws SQLException, IOException, MetadataStoreException, MetadataInspectorException {
 
 		Connection conn = getConnection();
 		if (conn == null) {

@@ -35,29 +35,6 @@
 
 package org.deegree.gml.geometry;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
-import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
-import static org.deegree.gml.GMLInputFactory.createGMLStreamReader;
-import static org.deegree.gml.GMLOutputFactory.createGMLStreamWriter;
-import static org.deegree.gml.GMLVersion.GML_31;
-import static org.deegree.gml.GMLVersion.GML_32;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.xmlunit.matchers.CompareMatcher.isSimilarTo;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.commons.io.IOUtils;
 import org.deegree.commons.tom.ReferenceResolvingException;
 import org.deegree.commons.xml.XMLParsingException;
@@ -77,10 +54,33 @@ import org.deegree.gml.GMLStreamWriter;
 import org.deegree.gml.schema.GMLAppSchemaReader;
 import org.deegree.junit.XMLAssert;
 import org.deegree.junit.XMLMemoryStreamWriter;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
+import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
+import static org.deegree.gml.GMLInputFactory.createGMLStreamReader;
+import static org.deegree.gml.GMLOutputFactory.createGMLStreamWriter;
+import static org.deegree.gml.GMLVersion.GML_31;
+import static org.deegree.gml.GMLVersion.GML_32;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.xmlunit.matchers.CompareMatcher.isSimilarTo;
 
 /**
  * Exporting all types of geometries and validating them.
@@ -434,12 +434,12 @@ public class GML3GeometryWriterTest {
 		gmlStream.setApplicationSchema(schema);
 
 		XMLStreamReader xmlReader = gmlStream.getXMLReader();
-		Assert.assertEquals(START_ELEMENT, xmlReader.getEventType());
+		assertEquals(START_ELEMENT, xmlReader.getEventType());
 		QName elName = xmlReader.getName();
-		Assert.assertTrue(gmlStream.isGeometryElement());
+		assertTrue(gmlStream.isGeometryElement());
 		Geometry geom = gmlStream.readGeometry();
-		Assert.assertEquals(END_ELEMENT, xmlReader.getEventType());
-		Assert.assertEquals(elName, xmlReader.getName());
+		assertEquals(END_ELEMENT, xmlReader.getEventType());
+		assertEquals(elName, xmlReader.getName());
 		return geom;
 	}
 

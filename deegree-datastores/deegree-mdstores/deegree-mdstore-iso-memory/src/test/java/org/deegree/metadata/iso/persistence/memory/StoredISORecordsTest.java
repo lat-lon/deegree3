@@ -34,16 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.metadata.iso.persistence.memory;
 
-import static java.util.Collections.singletonList;
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
-import static org.deegree.metadata.iso.persistence.memory.GetTestRecordsUtils.getRecord;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.deegree.commons.tom.primitive.PrimitiveValue;
 import org.deegree.commons.xml.CommonNamespaces;
 import org.deegree.commons.xml.NamespaceBindings;
@@ -62,7 +52,18 @@ import org.deegree.metadata.iso.ISORecord;
 import org.deegree.metadata.persistence.MetadataQuery;
 import org.deegree.metadata.persistence.MetadataResultSet;
 import org.deegree.protocol.csw.MetadataStoreException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.util.Collections.singletonList;
+import static org.deegree.metadata.iso.persistence.memory.GetTestRecordsUtils.getRecord;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author <a href="mailto:goltz@lat-lon.de">Lyn Goltz</a>
@@ -129,10 +130,12 @@ public class StoredISORecordsTest {
 		assertFalse(recordResultSet.next());
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testGetRecordByIdNullList() throws Exception {
 		StoredISORecords storedIsoRecords = getStoredIsoRecords();
-		storedIsoRecords.getRecordById(null);
+		assertThrows(IllegalArgumentException.class, () -> {
+			storedIsoRecords.getRecordById(null);
+		});
 	}
 
 	/*
@@ -281,11 +284,13 @@ public class StoredISORecordsTest {
 		assertEquals(4, allRecords.getRemaining());
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testGetRecordsWithNullQuery() throws Exception {
 		StoredISORecords storedIsoRecords = getStoredIsoRecords();
 		MetadataQuery query = null;
-		storedIsoRecords.getRecords(query);
+		assertThrows(IllegalArgumentException.class, () -> {
+			storedIsoRecords.getRecords(query);
+		});
 	}
 
 	/*

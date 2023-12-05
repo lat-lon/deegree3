@@ -35,14 +35,14 @@
 
 package org.deegree.cs.projections.conic;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import javax.vecmath.Point2d;
 
 import org.deegree.cs.components.Unit;
 import org.deegree.cs.exceptions.ProjectionException;
 import org.deegree.cs.projections.ProjectionBase;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * <code>StereographicAlternativeTest</code> test the lambert conformal conic projection

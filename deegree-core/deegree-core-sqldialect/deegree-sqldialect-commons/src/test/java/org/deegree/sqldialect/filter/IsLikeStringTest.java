@@ -35,10 +35,10 @@
 
 package org.deegree.sqldialect.filter;
 
-import junit.framework.TestCase;
-
 import org.deegree.sqldialect.filter.islike.IsLikeString;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Test class for SQL generation of some weird combinations of wildCard and escapeChar (in
@@ -50,7 +50,7 @@ import org.junit.Test;
  * @author <a href="mailto:schneider@lat-lon.de">Markus Schneider </a>
  * @author <a href="mailto:buesching@lat-lon.de">Lyn Buesching </a>
  */
-public class IsLikeStringTest extends TestCase {
+public class IsLikeStringTest {
 
 	@Test
 	public void testLiteral1() throws Exception {

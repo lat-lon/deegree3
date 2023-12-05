@@ -34,12 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.commons.xml.schema;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.List;
-
-import javax.xml.namespace.QName;
-
 import org.apache.xerces.xs.XSComplexTypeDefinition;
 import org.apache.xerces.xs.XSConstants;
 import org.apache.xerces.xs.XSElementDeclaration;
@@ -47,10 +41,15 @@ import org.apache.xerces.xs.XSModelGroup;
 import org.apache.xerces.xs.XSObjectList;
 import org.apache.xerces.xs.XSParticle;
 import org.apache.xerces.xs.XSTerm;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.xml.namespace.QName;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Tests for the {@link XMLSchemaInfoSet}.
@@ -191,7 +190,7 @@ public class XSModelAnalyzerTest {
 				}
 			}
 			default: {
-				Assert.fail();
+				fail();
 			}
 		}
 	}

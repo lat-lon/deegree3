@@ -34,33 +34,32 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.services.wms.utils;
 
+import org.deegree.services.encoding.LimitedSupportedEncodings;
+import org.deegree.services.encoding.SupportedEncodings;
+import org.deegree.services.encoding.UnlimitedSupportedEncodings;
+import org.deegree.services.jaxb.wms.DeegreeWMS;
+import org.deegree.services.jaxb.wms.DeegreeWMS.SupportedRequests;
+import org.deegree.services.jaxb.wms.RequestType;
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.junit.jupiter.api.Test;
+
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
+
 import static org.deegree.protocol.wms.WMSConstants.WMSRequestType;
 import static org.deegree.protocol.wms.WMSConstants.WMSRequestType.DescribeLayer;
 import static org.deegree.protocol.wms.WMSConstants.WMSRequestType.GetCapabilities;
 import static org.deegree.protocol.wms.WMSConstants.WMSRequestType.GetFeatureInfo;
 import static org.deegree.protocol.wms.WMSConstants.WMSRequestType.GetMap;
 import static org.deegree.protocol.wms.WMSConstants.WMSRequestType.map;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
-
-import org.deegree.services.encoding.LimitedSupportedEncodings;
-import org.deegree.services.encoding.SupportedEncodings;
-import org.deegree.services.encoding.UnlimitedSupportedEncodings;
-import org.deegree.services.jaxb.wms.DeegreeWMS;
-import org.deegree.services.jaxb.wms.RequestType;
-import org.deegree.services.jaxb.wms.DeegreeWMS.SupportedRequests;
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.CoreMatchers;
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.junit.Test;
 
 /**
  * @author <a href="mailto:goltz@lat-lon.de">Lyn Goltz </a>
@@ -79,18 +78,24 @@ public class SupportedEncodingsParserTest {
 			.getEnabledEncodingsPerRequestType();
 
 		Set<String> getCapabilitiesEncodings = enabledEncodings.get(GetCapabilities);
-		assertThat(getCapabilitiesEncodings, hasOnlyItems("xml", "soap"));
+		assertEquals(getCapabilitiesEncodings.size(), 2);
+		assertTrue(getCapabilitiesEncodings.contains("xml"));
+		assertTrue(getCapabilitiesEncodings.contains("soap"));
 
 		Set<String> describeLayerEncodings = enabledEncodings.get(DescribeLayer);
-		assertThat(describeLayerEncodings, hasOnlyItems("xml"));
+		assertEquals(describeLayerEncodings.size(), 1);
+		assertTrue(describeLayerEncodings.contains("xml"));
 
 		Set<String> getMapEncodings = enabledEncodings.get(GetMap);
-		assertThat(getMapEncodings, hasOnlyItems("xml"));
+		assertEquals(getMapEncodings.size(), 1);
+		assertTrue(getMapEncodings.contains("xml"));
+
 		Set<String> mapEncodings = enabledEncodings.get(map);
-		assertThat(mapEncodings, hasOnlyItems("xml"));
+		assertEquals(mapEncodings.size(), 1);
+		assertTrue(mapEncodings.contains("xml"));
 
 		Set<String> getFeatureInfoEncodings = enabledEncodings.get(GetFeatureInfo);
-		assertThat(getFeatureInfoEncodings.size(), is(0));
+		assertEquals(getFeatureInfoEncodings.size(), 0);
 	}
 
 	@Test
@@ -103,18 +108,28 @@ public class SupportedEncodingsParserTest {
 			.getEnabledEncodingsPerRequestType();
 
 		Set<String> getCapabilitiesEncodings = enabledEncodings.get(GetCapabilities);
-		assertThat(getCapabilitiesEncodings, hasOnlyItems("kvp", "xml", "soap"));
+		assertEquals(getCapabilitiesEncodings.size(), 3);
+		assertTrue(getCapabilitiesEncodings.contains("kvp"));
+		assertTrue(getCapabilitiesEncodings.contains("xml"));
+		assertTrue(getCapabilitiesEncodings.contains("soap"));
 
 		Set<String> describeLayerEncodings = enabledEncodings.get(DescribeLayer);
-		assertThat(describeLayerEncodings, hasOnlyItems("kvp", "xml"));
+		assertEquals(describeLayerEncodings.size(), 2);
+		assertTrue(describeLayerEncodings.contains("kvp"));
+		assertTrue(describeLayerEncodings.contains("xml"));
 
 		Set<String> getMapEncodings = enabledEncodings.get(GetMap);
-		assertThat(getMapEncodings, hasOnlyItems("kvp", "xml"));
+		assertEquals(getMapEncodings.size(), 2);
+		assertTrue(getMapEncodings.contains("kvp"));
+		assertTrue(getMapEncodings.contains("xml"));
+
 		Set<String> mapEncodings = enabledEncodings.get(map);
-		assertThat(mapEncodings, hasOnlyItems("kvp", "xml"));
+		assertEquals(mapEncodings.size(), 2);
+		assertTrue(mapEncodings.contains("kvp"));
+		assertTrue(mapEncodings.contains("xml"));
 
 		Set<String> getFeatureInfoEncodings = enabledEncodings.get(GetFeatureInfo);
-		assertThat(getFeatureInfoEncodings.size(), is(0));
+		assertEquals(getFeatureInfoEncodings.size(), 0);
 	}
 
 	@Test
@@ -127,18 +142,24 @@ public class SupportedEncodingsParserTest {
 			.getEnabledEncodingsPerRequestType();
 
 		Set<String> getCapabilitiesEncodings = enabledEncodings.get(GetCapabilities);
-		assertThat(getCapabilitiesEncodings, hasOnlyItems("kvp"));
+		assertEquals(getCapabilitiesEncodings.size(), 1);
+		assertTrue(getCapabilitiesEncodings.contains("kvp"));
 
 		Set<String> describeLayerEncodings = enabledEncodings.get(DescribeLayer);
-		assertThat(describeLayerEncodings, hasOnlyItems("kvp"));
+		assertEquals(describeLayerEncodings.size(), 1);
+		assertTrue(describeLayerEncodings.contains("kvp"));
 
 		Set<String> getMapEncodings = enabledEncodings.get(GetMap);
-		assertThat(getMapEncodings, hasOnlyItems("kvp"));
+		assertEquals(getMapEncodings.size(), 1);
+		assertTrue(getMapEncodings.contains("kvp"));
+
 		Set<String> mapEncodings = enabledEncodings.get(map);
-		assertThat(mapEncodings, hasOnlyItems("kvp"));
+		assertEquals(mapEncodings.size(), 1);
+		assertTrue(mapEncodings.contains("kvp"));
 
 		Set<String> getFeatureInfoEncodings = enabledEncodings.get(GetFeatureInfo);
-		assertThat(getFeatureInfoEncodings, hasOnlyItems("kvp"));
+		assertEquals(getFeatureInfoEncodings.size(), 1);
+		assertTrue(getFeatureInfoEncodings.contains("kvp"));
 	}
 
 	@Test
@@ -151,20 +172,21 @@ public class SupportedEncodingsParserTest {
 			.getEnabledEncodingsPerRequestType();
 
 		Set<String> getCapabilitiesEncodings = enabledEncodings.get(GetCapabilities);
-		assertThat(getCapabilitiesEncodings, hasOnlyItems("kvp"));
-		assertThat(getCapabilitiesEncodings, not(hasOnlyItems("xml", "soap")));
+		assertEquals(getCapabilitiesEncodings.size(), 1);
+		assertTrue(getCapabilitiesEncodings.contains("kvp"));
 
 		Set<String> describeLayerEncodings = enabledEncodings.get(DescribeLayer);
-		assertThat(describeLayerEncodings, hasOnlyItems("kvp"));
-		assertThat(getCapabilitiesEncodings, not(hasOnlyItems("xml", "soap")));
+		assertEquals(describeLayerEncodings.size(), 1);
+		assertTrue(describeLayerEncodings.contains("kvp"));
 
 		Set<String> getMapEncodings = enabledEncodings.get(GetMap);
-		assertThat(getMapEncodings.size(), is(0));
+		assertEquals(getMapEncodings.size(), 0);
+
 		Set<String> mapEncodings = enabledEncodings.get(map);
-		assertThat(mapEncodings.size(), is(0));
+		assertEquals(mapEncodings.size(), 0);
 
 		Set<String> getFeatureInfoEncodings = enabledEncodings.get(GetFeatureInfo);
-		assertThat(getFeatureInfoEncodings.size(), is(0));
+		assertEquals(getFeatureInfoEncodings.size(), 0);
 	}
 
 	@Test
@@ -177,18 +199,26 @@ public class SupportedEncodingsParserTest {
 			.getEnabledEncodingsPerRequestType();
 
 		Set<String> getCapabilitiesEncodings = enabledEncodings.get(GetCapabilities);
-		assertThat(getCapabilitiesEncodings, hasOnlyItems("xml", "soap"));
+		assertEquals(getCapabilitiesEncodings.size(), 2);
+		assertTrue(getCapabilitiesEncodings.contains("xml"));
+		assertTrue(getCapabilitiesEncodings.contains("soap"));
 
 		Set<String> describeLayerEncodings = enabledEncodings.get(DescribeLayer);
-		assertThat(describeLayerEncodings, hasOnlyItems("xml", "soap", "kvp"));
+		assertEquals(describeLayerEncodings.size(), 3);
+		assertTrue(describeLayerEncodings.contains("xml"));
+		assertTrue(describeLayerEncodings.contains("kvp"));
+		assertTrue(describeLayerEncodings.contains("soap"));
 
 		Set<String> getMapEncodings = enabledEncodings.get(GetMap);
-		assertThat(getMapEncodings, hasOnlyItems("xml"));
+		assertEquals(getMapEncodings.size(), 1);
+		assertTrue(getMapEncodings.contains("xml"));
+
 		Set<String> mapEncodings = enabledEncodings.get(map);
-		assertThat(mapEncodings, hasOnlyItems("xml"));
+		assertEquals(mapEncodings.size(), 1);
+		assertTrue(mapEncodings.contains("xml"));
 
 		Set<String> getFeatureInfoEncodings = enabledEncodings.get(GetFeatureInfo);
-		assertThat(getFeatureInfoEncodings.size(), is(0));
+		assertEquals(getFeatureInfoEncodings.size(), 0);
 	}
 
 	@Test
@@ -201,18 +231,28 @@ public class SupportedEncodingsParserTest {
 			.getEnabledEncodingsPerRequestType();
 
 		Set<String> getCapabilitiesEncodings = enabledEncodings.get(GetCapabilities);
-		assertThat(getCapabilitiesEncodings, hasOnlyItems("kvp", "xml", "soap"));
+		assertEquals(getCapabilitiesEncodings.size(), 3);
+		assertTrue(getCapabilitiesEncodings.contains("kvp"));
+		assertTrue(getCapabilitiesEncodings.contains("xml"));
+		assertTrue(getCapabilitiesEncodings.contains("soap"));
 
 		Set<String> getMapEncodings = enabledEncodings.get(GetMap);
-		assertThat(getMapEncodings, hasOnlyItems("kvp", "xml", "soap"));
+		assertEquals(getMapEncodings.size(), 3);
+		assertTrue(getMapEncodings.contains("kvp"));
+		assertTrue(getMapEncodings.contains("xml"));
+		assertTrue(getMapEncodings.contains("soap"));
+
 		Set<String> mapEncodings = enabledEncodings.get(map);
-		assertThat(mapEncodings, hasOnlyItems("kvp", "xml", "soap"));
+		assertEquals(mapEncodings.size(), 3);
+		assertTrue(mapEncodings.contains("kvp"));
+		assertTrue(mapEncodings.contains("xml"));
+		assertTrue(mapEncodings.contains("soap"));
 
 		Set<String> describeLayerEncodings = enabledEncodings.get(DescribeLayer);
-		assertThat(describeLayerEncodings.size(), is(0));
+		assertEquals(describeLayerEncodings.size(), 0);
 
 		Set<String> getFeatureInfoEncodings = enabledEncodings.get(GetFeatureInfo);
-		assertThat(getFeatureInfoEncodings.size(), is(0));
+		assertEquals(getFeatureInfoEncodings.size(), 0);
 	}
 
 	@Test
@@ -221,7 +261,7 @@ public class SupportedEncodingsParserTest {
 
 		SupportedEncodings unlimitedSupportedEncodings = webFeatureService.parseEncodings(deegreeWmsConfig);
 
-		assertThat(unlimitedSupportedEncodings, CoreMatchers.instanceOf(UnlimitedSupportedEncodings.class));
+		assertInstanceOf(UnlimitedSupportedEncodings.class, unlimitedSupportedEncodings);
 	}
 
 	@Test
@@ -230,7 +270,7 @@ public class SupportedEncodingsParserTest {
 
 		SupportedEncodings unlimitedSupportedEncodings = webFeatureService.parseEncodings(deegreeWmsConfig);
 
-		assertThat(unlimitedSupportedEncodings, CoreMatchers.instanceOf(UnlimitedSupportedEncodings.class));
+		assertInstanceOf(UnlimitedSupportedEncodings.class, unlimitedSupportedEncodings);
 	}
 
 	private DeegreeWMS prepareSupportedRequestsWithRequestTypeSpecific() {

@@ -34,13 +34,12 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.gml.schema;
 
-import junit.framework.Assert;
 import org.apache.xerces.xs.XSElementDeclaration;
 import org.apache.xerces.xs.XSTypeDefinition;
 import org.deegree.commons.xml.stax.IndentingXMLStreamWriter;
 import org.deegree.feature.types.AppSchema;
 import org.deegree.gml.GMLVersion;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.xmlunit.matchers.EvaluateXPathMatcher;
 
@@ -62,6 +61,8 @@ import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
@@ -106,8 +107,8 @@ public class GMLAppSchemaWriterTest {
 		String schemaURL = this.getClass().getResource("../misc/schema/Philosopher.xsd").toString();
 		String schemaURL2 = "http://schemas.opengis.net/wfs/1.1.0/wfs.xsd";
 		GMLSchemaInfoSet analyzer = new GMLSchemaInfoSet(null, schemaURL2, schemaURL);
-		Assert.assertEquals(4, analyzer.getFeatureElementDeclarations("http://www.deegree.org/app", true).size());
-		Assert.assertEquals(1, analyzer.getFeatureElementDeclarations("http://www.opengis.net/wfs", true).size());
+		assertEquals(4, analyzer.getFeatureElementDeclarations("http://www.deegree.org/app", true).size());
+		assertEquals(1, analyzer.getFeatureElementDeclarations("http://www.opengis.net/wfs", true).size());
 	}
 
 	@Test
@@ -169,11 +170,11 @@ public class GMLAppSchemaWriterTest {
 		String schemaURL = "http://schemas.opengis.net/gml/3.1.1/base/gml.xsd";
 		GMLSchemaInfoSet analyzer = new GMLSchemaInfoSet(null, schemaURL);
 		Set<String> substitutionts = getConcreteSubstitutions("_Curve", analyzer);
-		Assert.assertEquals(4, substitutionts.size());
-		Assert.assertTrue(substitutionts.contains("CompositeCurve"));
-		Assert.assertTrue(substitutionts.contains("Curve"));
-		Assert.assertTrue(substitutionts.contains("LineString"));
-		Assert.assertTrue(substitutionts.contains("OrientableCurve"));
+		assertEquals(4, substitutionts.size());
+		assertTrue(substitutionts.contains("CompositeCurve"));
+		assertTrue(substitutionts.contains("Curve"));
+		assertTrue(substitutionts.contains("LineString"));
+		assertTrue(substitutionts.contains("OrientableCurve"));
 	}
 
 	@Test
@@ -183,9 +184,9 @@ public class GMLAppSchemaWriterTest {
 		String schemaURL = "http://schemas.opengis.net/gml/3.1.1/base/gml.xsd";
 		GMLSchemaInfoSet analyzer = new GMLSchemaInfoSet(null, schemaURL);
 		Set<String> substitutionts = getConcreteSubstitutions("_Ring", analyzer);
-		Assert.assertEquals(2, substitutionts.size());
-		Assert.assertTrue(substitutionts.contains("LinearRing"));
-		Assert.assertTrue(substitutionts.contains("Ring"));
+		assertEquals(2, substitutionts.size());
+		assertTrue(substitutionts.contains("LinearRing"));
+		assertTrue(substitutionts.contains("Ring"));
 	}
 
 	@Test
@@ -195,14 +196,14 @@ public class GMLAppSchemaWriterTest {
 		String schemaURL = "http://schemas.opengis.net/gml/3.1.1/base/gml.xsd";
 		GMLSchemaInfoSet analyzer = new GMLSchemaInfoSet(null, schemaURL);
 		Set<String> substitutions = getConcreteSubstitutions("_Surface", analyzer);
-		Assert.assertEquals(7, substitutions.size());
-		Assert.assertTrue(substitutions.contains("CompositeSurface"));
-		Assert.assertTrue(substitutions.contains("OrientableSurface"));
-		Assert.assertTrue(substitutions.contains("Polygon"));
-		Assert.assertTrue(substitutions.contains("PolyhedralSurface"));
-		Assert.assertTrue(substitutions.contains("Surface"));
-		Assert.assertTrue(substitutions.contains("Tin"));
-		Assert.assertTrue(substitutions.contains("TriangulatedSurface"));
+		assertEquals(7, substitutions.size());
+		assertTrue(substitutions.contains("CompositeSurface"));
+		assertTrue(substitutions.contains("OrientableSurface"));
+		assertTrue(substitutions.contains("Polygon"));
+		assertTrue(substitutions.contains("PolyhedralSurface"));
+		assertTrue(substitutions.contains("Surface"));
+		assertTrue(substitutions.contains("Tin"));
+		assertTrue(substitutions.contains("TriangulatedSurface"));
 	}
 
 	@Test
@@ -212,9 +213,9 @@ public class GMLAppSchemaWriterTest {
 		String schemaURL = "http://schemas.opengis.net/gml/3.1.1/base/gml.xsd";
 		GMLSchemaInfoSet analyzer = new GMLSchemaInfoSet(null, schemaURL);
 		Set<String> substitutions = getConcreteSubstitutions("_Solid", analyzer);
-		Assert.assertEquals(2, substitutions.size());
-		Assert.assertTrue(substitutions.contains("CompositeSolid"));
-		Assert.assertTrue(substitutions.contains("Solid"));
+		assertEquals(2, substitutions.size());
+		assertTrue(substitutions.contains("CompositeSolid"));
+		assertTrue(substitutions.contains("Solid"));
 	}
 
 	@Test

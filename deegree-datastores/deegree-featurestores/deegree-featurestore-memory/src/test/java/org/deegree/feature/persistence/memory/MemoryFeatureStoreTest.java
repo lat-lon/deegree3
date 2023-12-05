@@ -34,23 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.feature.persistence.memory;
 
-import static org.deegree.gml.GMLVersion.GML_31;
-import static org.deegree.protocol.wfs.transaction.action.IDGenMode.USE_EXISTING;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.net.URL;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
-
-import org.deegree.commons.config.ResourceInitException;
 import org.deegree.commons.tom.ReferenceResolvingException;
 import org.deegree.commons.xml.XMLParsingException;
 import org.deegree.cs.exceptions.TransformationException;
@@ -76,10 +59,26 @@ import org.deegree.gml.GMLVersion;
 import org.deegree.gml.schema.GMLAppSchemaReader;
 import org.deegree.protocol.wfs.getfeature.TypeName;
 import org.deegree.workspace.standard.DefaultWorkspace;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URL;
+
+import static org.deegree.gml.GMLVersion.GML_31;
+import static org.deegree.protocol.wfs.transaction.action.IDGenMode.USE_EXISTING;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * The <code></code> class TODO add class documentation here.
@@ -94,10 +93,10 @@ public class MemoryFeatureStoreTest {
 
 	private DefaultWorkspace workspace;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws XMLParsingException, XMLStreamException, UnknownCRSException, FactoryConfigurationError,
 			IOException, FeatureStoreException, ReferenceResolvingException, ClassCastException, ClassNotFoundException,
-			InstantiationException, IllegalAccessException, ResourceInitException {
+			InstantiationException, IllegalAccessException {
 
 		workspace = new DefaultWorkspace(new File("nix"));
 		workspace.initAll();
@@ -121,7 +120,7 @@ public class MemoryFeatureStoreTest {
 		ta.commit();
 	}
 
-	@After
+	@AfterEach
 	public void shutDown() {
 		workspace.destroy();
 	}
@@ -132,8 +131,8 @@ public class MemoryFeatureStoreTest {
 				new TypeName(QName.valueOf("{http://www.deegree.org/app}Philosopher"), null) };
 		Query query = new Query(typeNames, null, null, null, null);
 		FeatureCollection fc = store.query(query).toCollection();
-		Assert.assertEquals(typeNames[0].getFeatureTypeName(), fc.iterator().next().getName());
-		Assert.assertEquals(7, fc.size());
+		assertEquals(typeNames[0].getFeatureTypeName(), fc.iterator().next().getName());
+		assertEquals(7, fc.size());
 	}
 
 	@Test
@@ -142,8 +141,8 @@ public class MemoryFeatureStoreTest {
 				new TypeName(QName.valueOf("{http://www.deegree.org/app}Place"), null) };
 		Query query = new Query(typeNames, null, null, null, null);
 		FeatureCollection fc = store.query(query).toCollection();
-		Assert.assertEquals(typeNames[0].getFeatureTypeName(), fc.iterator().next().getName());
-		Assert.assertEquals(7, fc.size());
+		assertEquals(typeNames[0].getFeatureTypeName(), fc.iterator().next().getName());
+		assertEquals(7, fc.size());
 	}
 
 	@Test
@@ -152,8 +151,8 @@ public class MemoryFeatureStoreTest {
 				new TypeName(QName.valueOf("{http://www.deegree.org/app}Country"), null) };
 		Query query = new Query(typeNames, null, null, null, null);
 		FeatureCollection fc = store.query(query).toCollection();
-		Assert.assertEquals(typeNames[0].getFeatureTypeName(), fc.iterator().next().getName());
-		Assert.assertEquals(4, fc.size());
+		assertEquals(typeNames[0].getFeatureTypeName(), fc.iterator().next().getName());
+		assertEquals(4, fc.size());
 	}
 
 	// @Test
@@ -161,8 +160,8 @@ public class MemoryFeatureStoreTest {
 		TypeName[] typeNames = new TypeName[] { new TypeName(QName.valueOf("{http://www.deegree.org/app}Book"), null) };
 		Query query = new Query(typeNames, null, null, null, null);
 		FeatureCollection fc = store.query(query).toCollection();
-		Assert.assertEquals(typeNames[0].getFeatureTypeName(), fc.iterator().next().getName());
-		Assert.assertEquals(1, fc.size());
+		assertEquals(typeNames[0].getFeatureTypeName(), fc.iterator().next().getName());
+		assertEquals(1, fc.size());
 	}
 
 	@Test
@@ -172,27 +171,27 @@ public class MemoryFeatureStoreTest {
 		Filter filter = new IdFilter("PHILOSOPHER_1", "PHILOSOPHER_2");
 		Query query = new Query(typeNames, filter, null, null, null);
 		FeatureCollection fc = store.query(query).toCollection();
-		Assert.assertEquals(typeNames[0].getFeatureTypeName(), fc.iterator().next().getName());
-		Assert.assertEquals(2, fc.size());
+		assertEquals(typeNames[0].getFeatureTypeName(), fc.iterator().next().getName());
+		assertEquals(2, fc.size());
 	}
 
 	@Test
 	public void testGetObjectByIdFeature() {
 		Object o = store.getObjectById("PHILOSOPHER_7");
-		Assert.assertTrue(o instanceof Feature);
+		assertTrue(o instanceof Feature);
 	}
 
 	@Test
 	public void testGetObjectByIdGeometry1() {
 		Object o = store.getObjectById("MULTIPOLYGON_1");
-		Assert.assertTrue(o instanceof Geometry);
+		assertTrue(o instanceof Geometry);
 	}
 
 	@Test
 	public void testGetObjectByIdGeometry2()
 			throws FileNotFoundException, XMLStreamException, UnknownCRSException, TransformationException {
 		Object o = store.getObjectById("RING_1");
-		Assert.assertTrue(o instanceof Ring);
+		assertTrue(o instanceof Ring);
 
 		XMLOutputFactory outputFactory = XMLOutputFactory.newInstance();
 		outputFactory.setProperty("javax.xml.stream.isRepairingNamespaces", new Boolean(true));

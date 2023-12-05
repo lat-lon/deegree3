@@ -34,12 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.cs.transformations;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
-import junit.framework.Assert;
-
 import org.deegree.cs.CRSCodeType;
 import org.deegree.cs.CRSIdentifiable;
 import org.deegree.cs.EPSGCode;
@@ -59,7 +53,17 @@ import org.deegree.cs.transformations.coordinate.ProjectionTransform;
 import org.deegree.cs.transformations.helmert.Helmert;
 import org.deegree.cs.transformations.ntv2.NTv2Transformation;
 import org.deegree.cs.utilities.MappingUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests the substitution of transformations.
@@ -150,17 +154,17 @@ public class TransformationSubstitutionTest implements CRSDefines {
 	public void oneFitsAll() throws IllegalArgumentException, TransformationException {
 		TransformationFactory factory = getFactory();
 		Transformation created = factory.createFromCoordinateSystems(projected_31467, projected_28992);
-		Assert.assertNotNull(created);
-		Assert.assertTrue(created instanceof ConcatenatedTransform);
-		Assert.assertEquals(projected_31467, created.getSourceCRS());
-		Assert.assertEquals(projected_28992, created.getTargetCRS());
+		assertNotNull(created);
+		assertTrue(created instanceof ConcatenatedTransform);
+		assertEquals(projected_31467, created.getSourceCRS());
+		assertEquals(projected_28992, created.getTargetCRS());
 
 		Transformation sub = new NotSupportedTransformation(projected_31467, projected_28992);
 		List<Transformation> transList = new ArrayList<Transformation>();
 		transList.add(sub);
 		Transformation replaced = factory.createFromCoordinateSystems(projected_31467, projected_28992, transList);
-		Assert.assertNotNull(replaced);
-		Assert.assertTrue("Substitute was not used", replaced.equals(sub));
+		assertNotNull(replaced);
+		assertTrue(replaced.equals(sub), "Substitute was not used");
 	}
 
 	/**
@@ -172,10 +176,10 @@ public class TransformationSubstitutionTest implements CRSDefines {
 	public void substituteInverseProjection() throws IllegalArgumentException, TransformationException {
 		TransformationFactory factory = getFactory();
 		Transformation created = factory.createFromCoordinateSystems(projected_31467, projected_28992);
-		Assert.assertNotNull(created);
-		Assert.assertTrue(created instanceof ConcatenatedTransform);
-		Assert.assertEquals(projected_31467, created.getSourceCRS());
-		Assert.assertEquals(projected_28992, created.getTargetCRS());
+		assertNotNull(created);
+		assertTrue(created instanceof ConcatenatedTransform);
+		assertEquals(projected_31467, created.getSourceCRS());
+		assertEquals(projected_28992, created.getTargetCRS());
 
 		ProjectedCRS np = new ProjectedCRS(projected_31467.getProjection(), projected_31467.getGeographicCRS(),
 				projected_31467.getAxis(), projected_31467);
@@ -188,12 +192,12 @@ public class TransformationSubstitutionTest implements CRSDefines {
 		List<Transformation> transList = new ArrayList<Transformation>();
 		transList.add(sub);
 		Transformation replaced = factory.createFromCoordinateSystems(projected_31467, projected_28992, transList);
-		Assert.assertNotNull(replaced);
+		assertNotNull(replaced);
 		// equals only tests on the id's.
-		Assert.assertEquals(created, replaced);
+		assertEquals(created, replaced);
 		/* check if the name was not accidentally set in the static crs */
-		Assert.assertNull(projected_31467.getName());
-		Assert.assertEquals(name, replaced.getSourceCRS().getName());
+		assertNull(projected_31467.getName());
+		assertEquals(name, replaced.getSourceCRS().getName());
 
 	}
 
@@ -206,10 +210,10 @@ public class TransformationSubstitutionTest implements CRSDefines {
 	public void substituteProjection() throws IllegalArgumentException, TransformationException {
 		TransformationFactory factory = getFactory();
 		Transformation created = factory.createFromCoordinateSystems(projected_31467, projected_28992);
-		Assert.assertNotNull(created);
-		Assert.assertTrue(created instanceof ConcatenatedTransform);
-		Assert.assertEquals(projected_31467, created.getSourceCRS());
-		Assert.assertEquals(projected_28992, created.getTargetCRS());
+		assertNotNull(created);
+		assertTrue(created instanceof ConcatenatedTransform);
+		assertEquals(projected_31467, created.getSourceCRS());
+		assertEquals(projected_28992, created.getTargetCRS());
 
 		ProjectedCRS np = new ProjectedCRS(projected_28992.getProjection(), projected_28992.getGeographicCRS(),
 				projected_28992.getAxis(), projected_28992);
@@ -220,12 +224,12 @@ public class TransformationSubstitutionTest implements CRSDefines {
 		List<Transformation> transList = new ArrayList<Transformation>();
 		transList.add(sub);
 		Transformation replaced = factory.createFromCoordinateSystems(projected_31467, projected_28992, transList);
-		Assert.assertNotNull(replaced);
+		assertNotNull(replaced);
 		// equals only tests on the id's.
-		Assert.assertEquals(created, replaced);
+		assertEquals(created, replaced);
 		/* check if the name was not accidentally set in the static crs */
-		Assert.assertNull(projected_28992.getName());
-		Assert.assertEquals(name, replaced.getTargetCRS().getName());
+		assertNull(projected_28992.getName());
+		assertEquals(name, replaced.getTargetCRS().getName());
 	}
 
 	/**
@@ -239,10 +243,10 @@ public class TransformationSubstitutionTest implements CRSDefines {
 		TransformationFactory factory = getFactory();
 
 		Transformation created = factory.createFromCoordinateSystems(projected_31467, projected_25832);
-		Assert.assertNotNull(created);
-		Assert.assertTrue(created instanceof ConcatenatedTransform);
-		Assert.assertEquals(projected_31467, created.getSourceCRS());
-		Assert.assertEquals(projected_25832, created.getTargetCRS());
+		assertNotNull(created);
+		assertTrue(created instanceof ConcatenatedTransform);
+		assertEquals(projected_31467, created.getSourceCRS());
+		assertEquals(projected_25832, created.getTargetCRS());
 
 		URL beta2007 = DeegreeReferenceResolver.class.getResource("config/ntv2/beta2007.gsb");
 		Transformation sub = new NTv2Transformation(geographic_4314, geographic_4258,
@@ -251,15 +255,15 @@ public class TransformationSubstitutionTest implements CRSDefines {
 		List<Transformation> transList = new ArrayList<Transformation>();
 		transList.add(sub);
 		Transformation replaced = factory.createFromCoordinateSystems(projected_31467, projected_25832, transList);
-		Assert.assertNotNull(replaced);
-		Assert.assertTrue(replaced instanceof ConcatenatedTransform);
+		assertNotNull(replaced);
+		assertTrue(replaced instanceof ConcatenatedTransform);
 		// equals only tests on the id's.
-		Assert.assertNotSame(created, replaced);
+		assertNotSame(created, replaced);
 
-		Assert.assertTrue(((ConcatenatedTransform) replaced).getSecondTransform() instanceof ConcatenatedTransform);
+		assertTrue(((ConcatenatedTransform) replaced).getSecondTransform() instanceof ConcatenatedTransform);
 		ConcatenatedTransform second = (ConcatenatedTransform) ((ConcatenatedTransform) replaced).getSecondTransform();
 
-		Assert.assertEquals(sub, second.getFirstTransform());
+		assertEquals(sub, second.getFirstTransform());
 	}
 
 	/**
@@ -278,10 +282,10 @@ public class TransformationSubstitutionTest implements CRSDefines {
 				null/* version */, null/* description */, new String[] { "7.5,47.27,10.5,55.06" });
 
 		Transformation created = factory.createFromCoordinateSystems(projected_31467_lat_lon, projected_25832_lat_lon);
-		Assert.assertNotNull(created);
-		Assert.assertTrue(created instanceof ConcatenatedTransform);
-		Assert.assertEquals(projected_31467_lat_lon, created.getSourceCRS());
-		Assert.assertEquals(projected_25832_lat_lon, created.getTargetCRS());
+		assertNotNull(created);
+		assertTrue(created instanceof ConcatenatedTransform);
+		assertEquals(projected_31467_lat_lon, created.getSourceCRS());
+		assertEquals(projected_25832_lat_lon, created.getTargetCRS());
 
 		URL beta2007 = DeegreeReferenceResolver.class.getResource("config/ntv2/beta2007.gsb");
 		Transformation sub = new NTv2Transformation(geographic_4314_lat_lon, geographic_4258_lat_lon,
@@ -291,15 +295,15 @@ public class TransformationSubstitutionTest implements CRSDefines {
 		transList.add(sub);
 		Transformation replaced = factory.createFromCoordinateSystems(projected_31467_lat_lon, projected_25832_lat_lon,
 				transList);
-		Assert.assertNotNull(replaced);
-		Assert.assertTrue(replaced instanceof ConcatenatedTransform);
+		assertNotNull(replaced);
+		assertTrue(replaced instanceof ConcatenatedTransform);
 		// equals only tests on the id's.
-		Assert.assertNotSame(created, replaced);
+		assertNotSame(created, replaced);
 
 		List<String> implNames = filterImplementationNames(replaced);
-		Assert.assertTrue(implNames.size() > 3);
-		Assert.assertEquals("Projection-Transform", implNames.get(0));
-		Assert.assertEquals("NTv2", implNames.get(2));
+		assertTrue(implNames.size() > 3);
+		assertEquals("Projection-Transform", implNames.get(0));
+		assertEquals("NTv2", implNames.get(2));
 	}
 
 	private List<String> filterImplementationNames(Transformation transformation) {
@@ -327,10 +331,10 @@ public class TransformationSubstitutionTest implements CRSDefines {
 		factory.setPreferredTransformation(DSTransform.NTv2);
 
 		Transformation created = factory.createFromCoordinateSystems(projected_31467, projected_25832);
-		Assert.assertNotNull(created);
-		Assert.assertTrue(created instanceof ConcatenatedTransform);
-		Assert.assertEquals(projected_31467, created.getSourceCRS());
-		Assert.assertEquals(projected_25832, created.getTargetCRS());
+		assertNotNull(created);
+		assertTrue(created instanceof ConcatenatedTransform);
+		assertEquals(projected_31467, created.getSourceCRS());
+		assertEquals(projected_25832, created.getTargetCRS());
 
 		GeocentricTransform geo1 = new GeocentricTransform(geographic_4314,
 				new GeocentricCRS(datum_6314, axis_geocentric, new EPSGCode(14314)));
@@ -349,27 +353,27 @@ public class TransformationSubstitutionTest implements CRSDefines {
 
 		ConcatenatedTransform replaced = (ConcatenatedTransform) factory.createFromCoordinateSystems(projected_31467,
 				projected_25832, transList);
-		Assert.assertNotNull(replaced);
+		assertNotNull(replaced);
 		// equals only tests on the id's.
-		Assert.assertNotSame(created, replaced);
+		assertNotSame(created, replaced);
 
-		Assert.assertTrue(replaced.getFirstTransform() instanceof ConcatenatedTransform);
+		assertTrue(replaced.getFirstTransform() instanceof ConcatenatedTransform);
 
 		ConcatenatedTransform f = (ConcatenatedTransform) replaced.getFirstTransform();
-		Assert.assertTrue(f.getFirstTransform() instanceof ConcatenatedTransform);
+		assertTrue(f.getFirstTransform() instanceof ConcatenatedTransform);
 
 		ConcatenatedTransform ff = (ConcatenatedTransform) f.getFirstTransform();
-		Assert.assertTrue(ff.getFirstTransform() instanceof ConcatenatedTransform);
+		assertTrue(ff.getFirstTransform() instanceof ConcatenatedTransform);
 		ConcatenatedTransform fff = (ConcatenatedTransform) ff.getFirstTransform();
 
-		Assert.assertEquals(geo1, fff.getSecondTransform());
-		Assert.assertEquals(wgs_1777, ff.getSecondTransform());
+		assertEquals(geo1, fff.getSecondTransform());
+		assertEquals(wgs_1777, ff.getSecondTransform());
 
-		Assert.assertEquals(h_inv, f.getSecondTransform());
+		assertEquals(h_inv, f.getSecondTransform());
 
-		Assert.assertTrue((replaced).getSecondTransform() instanceof ConcatenatedTransform);
+		assertTrue((replaced).getSecondTransform() instanceof ConcatenatedTransform);
 		ConcatenatedTransform s = (ConcatenatedTransform) replaced.getSecondTransform();
-		Assert.assertEquals(inv_geo, s.getFirstTransform());
+		assertEquals(inv_geo, s.getFirstTransform());
 		factory.setPreferredTransformation(DSTransform.HELMERT);
 	}
 
@@ -387,22 +391,22 @@ public class TransformationSubstitutionTest implements CRSDefines {
 		tbus.add(tbu);
 		Transformation result = MappingUtils.updateFromDefinedTransformations(tbus, a);
 
-		Assert.assertNotNull(result);
-		Assert.assertTrue(result instanceof ConcatenatedTransform);
+		assertNotNull(result);
+		assertTrue(result instanceof ConcatenatedTransform);
 		ConcatenatedTransform test = (ConcatenatedTransform) result;
-		Assert.assertEquals(test.getFirstTransform(), tbu);
+		assertEquals(test.getFirstTransform(), tbu);
 
-		Assert.assertTrue(test.getSecondTransform() instanceof ConcatenatedTransform);
+		assertTrue(test.getSecondTransform() instanceof ConcatenatedTransform);
 
 		test = (ConcatenatedTransform) test.getSecondTransform();
-		Assert.assertEquals(test.getFirstTransform(), h);
+		assertEquals(test.getFirstTransform(), h);
 
-		Assert.assertTrue("Second should be concatenated, but was: " + test.getSecondTransform(),
-				test.getSecondTransform() instanceof ConcatenatedTransform);
+		assertTrue(test.getSecondTransform() instanceof ConcatenatedTransform,
+				"Second should be concatenated, but was: " + test.getSecondTransform());
 		test = (ConcatenatedTransform) test.getSecondTransform();
 
-		Assert.assertEquals(test.getFirstTransform(), j);
-		Assert.assertEquals(test.getSecondTransform(), k);
+		assertEquals(test.getFirstTransform(), j);
+		assertEquals(test.getSecondTransform(), k);
 	}
 
 	/**
@@ -419,23 +423,23 @@ public class TransformationSubstitutionTest implements CRSDefines {
 		tbus.add(tbu);
 		Transformation result = MappingUtils.updateFromDefinedTransformations(tbus, a);
 
-		Assert.assertNotNull(result);
-		Assert.assertTrue(result instanceof ConcatenatedTransform);
+		assertNotNull(result);
+		assertTrue(result instanceof ConcatenatedTransform);
 		ConcatenatedTransform test = (ConcatenatedTransform) result;
-		Assert.assertEquals(test.getFirstTransform(), c);
+		assertEquals(test.getFirstTransform(), c);
 
-		Assert.assertTrue("Second should be concatenated, but was: " + test.getSecondTransform(),
-				test.getSecondTransform() instanceof ConcatenatedTransform);
+		assertTrue(test.getSecondTransform() instanceof ConcatenatedTransform,
+				"Second should be concatenated, but was: " + test.getSecondTransform());
 
 		test = (ConcatenatedTransform) test.getSecondTransform();
-		Assert.assertEquals(test.getFirstTransform(), e);
+		assertEquals(test.getFirstTransform(), e);
 
-		Assert.assertTrue("Second should be concatenated, but was: " + test.getSecondTransform(),
-				test.getSecondTransform() instanceof ConcatenatedTransform);
+		assertTrue(test.getSecondTransform() instanceof ConcatenatedTransform,
+				"Second should be concatenated, but was: " + test.getSecondTransform());
 		test = (ConcatenatedTransform) test.getSecondTransform();
 
-		Assert.assertEquals(test.getFirstTransform(), f);
-		Assert.assertEquals(test.getSecondTransform(), tbu);
+		assertEquals(test.getFirstTransform(), f);
+		assertEquals(test.getSecondTransform(), tbu);
 	}
 
 	/**
@@ -452,39 +456,39 @@ public class TransformationSubstitutionTest implements CRSDefines {
 		tbus.add(tbu);
 		Transformation result = MappingUtils.updateFromDefinedTransformations(tbus, l);
 
-		Assert.assertNotNull(result);
-		Assert.assertTrue(result instanceof ConcatenatedTransform);
+		assertNotNull(result);
+		assertTrue(result instanceof ConcatenatedTransform);
 		ConcatenatedTransform test = (ConcatenatedTransform) result;
-		Assert.assertEquals(test.getFirstTransform(), c);
+		assertEquals(test.getFirstTransform(), c);
 
-		Assert.assertTrue("Second should be concatenated, but was: " + test.getSecondTransform(),
-				test.getSecondTransform() instanceof ConcatenatedTransform);
+		assertTrue(test.getSecondTransform() instanceof ConcatenatedTransform,
+				"Second should be concatenated, but was: " + test.getSecondTransform());
 
 		test = (ConcatenatedTransform) test.getSecondTransform();
-		Assert.assertEquals(test.getFirstTransform(), e);
+		assertEquals(test.getFirstTransform(), e);
 
-		Assert.assertTrue("Second should be concatenated, but was: " + test.getSecondTransform(),
-				test.getSecondTransform() instanceof ConcatenatedTransform);
+		assertTrue(test.getSecondTransform() instanceof ConcatenatedTransform,
+				"Second should be concatenated, but was: " + test.getSecondTransform());
 		test = (ConcatenatedTransform) test.getSecondTransform();
 
-		Assert.assertEquals(test.getFirstTransform(), f);
+		assertEquals(test.getFirstTransform(), f);
 
-		Assert.assertTrue("Second should be concatenated, but was: " + test.getSecondTransform(),
-				test.getSecondTransform() instanceof ConcatenatedTransform);
+		assertTrue(test.getSecondTransform() instanceof ConcatenatedTransform,
+				"Second should be concatenated, but was: " + test.getSecondTransform());
 		test = (ConcatenatedTransform) test.getSecondTransform();
 
-		Assert.assertEquals(test.getFirstTransform(), tbu);
+		assertEquals(test.getFirstTransform(), tbu);
 
-		Assert.assertTrue("Second should be concatenated, but was: " + test.getSecondTransform(),
-				test.getSecondTransform() instanceof ConcatenatedTransform);
+		assertTrue(test.getSecondTransform() instanceof ConcatenatedTransform,
+				"Second should be concatenated, but was: " + test.getSecondTransform());
 		test = (ConcatenatedTransform) test.getSecondTransform();
-		Assert.assertEquals(test.getFirstTransform(), n);
+		assertEquals(test.getFirstTransform(), n);
 
-		Assert.assertTrue("Second should be concatenated, but was: " + test.getSecondTransform(),
-				test.getSecondTransform() instanceof ConcatenatedTransform);
+		assertTrue(test.getSecondTransform() instanceof ConcatenatedTransform,
+				"Second should be concatenated, but was: " + test.getSecondTransform());
 		test = (ConcatenatedTransform) test.getSecondTransform();
-		Assert.assertEquals(test.getFirstTransform(), p);
-		Assert.assertEquals(test.getSecondTransform(), q);
+		assertEquals(test.getFirstTransform(), p);
+		assertEquals(test.getSecondTransform(), q);
 
 	}
 

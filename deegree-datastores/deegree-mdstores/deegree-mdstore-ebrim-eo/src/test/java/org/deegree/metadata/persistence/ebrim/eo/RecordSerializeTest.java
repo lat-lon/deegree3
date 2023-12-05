@@ -34,24 +34,23 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.metadata.persistence.ebrim.eo;
 
-import java.io.InputStream;
-import java.io.StringReader;
-import java.io.StringWriter;
-
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
-
-import junit.framework.Assert;
-
 import org.deegree.commons.xml.CommonNamespaces;
 import org.deegree.commons.xml.NamespaceBindings;
 import org.deegree.commons.xml.XMLAdapter;
 import org.deegree.commons.xml.XPath;
 import org.deegree.metadata.ebrim.RegistryPackage;
 import org.deegree.protocol.csw.CSWConstants.ReturnableElement;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.io.StringWriter;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * TODO add class documentation here
@@ -82,7 +81,7 @@ public class RecordSerializeTest {
 
 		XMLAdapter adapter = new XMLAdapter(reader);
 		String[] slots = adapter.getNodesAsStrings(adapter.getRootElement(), new XPath("//rim:Slot", ns));
-		Assert.assertEquals(0, slots.length);
+		assertEquals(0, slots.length);
 	}
 
 }

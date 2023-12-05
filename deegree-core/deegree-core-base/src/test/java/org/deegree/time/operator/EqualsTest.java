@@ -2,8 +2,8 @@ package org.deegree.time.operator;
 
 import static java.util.Collections.emptyList;
 import static org.deegree.time.position.IndeterminateValue.UNKNOWN;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import org.deegree.time.primitive.RelatedTime;
 import org.deegree.time.primitive.TimeGeometricPrimitive;
 import org.deegree.time.primitive.TimeInstant;
 import org.deegree.time.primitive.TimePeriod;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class EqualsTest {
 

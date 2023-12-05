@@ -36,7 +36,7 @@ package org.deegree.geometry.metadata;
 
 import org.deegree.geometry.Envelope;
 import org.deegree.geometry.metadata.jaxb.EnvelopeType;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -44,8 +44,7 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.transform.stream.StreamSource;
 import java.io.InputStream;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author <a href="mailto:goltz@lat-lon.de">Lyn Goltz </a>
@@ -56,10 +55,10 @@ public class SpatialMetadataConverterTest {
 	public void testConvertEnvelopeFromJaxb() throws JAXBException {
 		EnvelopeType env = createEnvelopeType();
 		Envelope envelope = SpatialMetadataConverter.fromJaxb(env);
-		assertThat(envelope.getMin().get(0), is(8.3));
-		assertThat(envelope.getMin().get(1), is(53.2));
-		assertThat(envelope.getMax().get(0), is(10.4));
-		assertThat(envelope.getMax().get(1), is(54.0));
+		assertEquals(envelope.getMin().get(0), 8.3);
+		assertEquals(envelope.getMin().get(1), 53.2);
+		assertEquals(envelope.getMax().get(0), 10.4);
+		assertEquals(envelope.getMax().get(1), 54.0);
 
 	}
 

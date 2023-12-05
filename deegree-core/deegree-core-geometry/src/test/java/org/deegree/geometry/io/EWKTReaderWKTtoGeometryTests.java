@@ -22,30 +22,27 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.geometry.io;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 import org.deegree.geometry.Geometry;
 import org.deegree.geometry.multi.MultiCurve;
 import org.deegree.geometry.multi.MultiGeometry;
 import org.deegree.geometry.multi.MultiSurface;
 import org.deegree.geometry.primitive.Curve;
 import org.deegree.geometry.primitive.Curve.CurveType;
-import org.deegree.geometry.primitive.LineString;
 import org.deegree.geometry.primitive.Polygon;
 import org.deegree.geometry.primitive.Ring.RingType;
 import org.deegree.geometry.primitive.Surface;
 import org.deegree.geometry.primitive.Surface.SurfaceType;
 import org.deegree.geometry.primitive.segments.ArcString;
 import org.deegree.geometry.primitive.segments.CurveSegment.CurveSegmentType;
-import org.hamcrest.CoreMatchers;
-import org.hamcrest.MatcherAssert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.locationtech.jts.io.ParseException;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class EWKTReaderWKTtoGeometryTests {
 
@@ -63,15 +60,15 @@ public class EWKTReaderWKTtoGeometryTests {
 		String WKT = "CIRCULARSTRING(220268.439465645 150415.359530563, 220227.333322076 150505.561285879, 220227.353105332 150406.434743975)";
 
 		Geometry geometry = read(WKT);
-		assertNotNull("parsed circularstring", geometry);
+		assertNotNull(geometry, "parsed circularstring");
 
 		assertTrue(geometry instanceof Curve);
 		Curve curve = (Curve) geometry;
-		assertEquals("one segment curve", 1, curve.getCurveSegments().size());
-		assertEquals("arc string segment", CurveSegmentType.ARC_STRING,
-				curve.getCurveSegments().get(0).getSegmentType());
+		assertEquals(1, curve.getCurveSegments().size(), "one segment curve");
+		assertEquals(CurveSegmentType.ARC_STRING, curve.getCurveSegments().get(0).getSegmentType(),
+				"arc string segment");
 		ArcString segment = (ArcString) curve.getCurveSegments().get(0);
-		assertEquals("not segmentized ", 3, segment.getControlPoints().size());
+		assertEquals(3, segment.getControlPoints().size(), "not segmentized ");
 	}
 
 	@Test
@@ -81,23 +78,23 @@ public class EWKTReaderWKTtoGeometryTests {
 				+ "(144.84399355252685 -31.26123924022086, 144.20551952601693 -32.27215644886158, 145.55230712890625 -33.49203872680664, 147.97080993652344 -32.03618621826172, 146.38697244992585 -31.47406391572417, 144.84399355252685 -31.26123924022086))";
 
 		Polygon polygon = (Polygon) read(WKT);
-		assertTrue("ring", polygon.getExteriorRing().isClosed());
-		assertEquals("arc string segment", CurveSegmentType.ARC_STRING,
-				polygon.getExteriorRing().getCurveSegments().get(0).getSegmentType());
-		assertEquals("one holes", 1, polygon.getInteriorRings().size());
-		assertEquals("arc string segment", CurveSegmentType.LINE_STRING_SEGMENT,
-				polygon.getInteriorRings().get(0).getCurveSegments().get(0).getSegmentType());
+		assertTrue(polygon.getExteriorRing().isClosed(), "ring");
+		assertEquals(CurveSegmentType.ARC_STRING, polygon.getExteriorRing().getCurveSegments().get(0).getSegmentType(),
+				"arc string segment");
+		assertEquals(1, polygon.getInteriorRings().size(), "one holes");
+		assertEquals(CurveSegmentType.LINE_STRING_SEGMENT,
+				polygon.getInteriorRings().get(0).getCurveSegments().get(0).getSegmentType(), "arc string segment");
 
 		WKT = "CURVEPOLYGON(COMPOUNDCURVE(CIRCULARSTRING(0 0,2 0, 2 1, 2 3, 4 3),(4 3, 4 5, 1 4, 0 0)), CIRCULARSTRING(1.7 1, 1.4 0.4, 1.6 0.4, 1.6 0.5, 1.7 1) )";
 		polygon = (Polygon) read(WKT);
-		assertTrue("ring", polygon.getExteriorRing().isClosed());
+		assertTrue(polygon.getExteriorRing().isClosed(), "ring");
 		assertEquals(RingType.Ring, polygon.getExteriorRing().getRingType());
 		assertEquals(1, polygon.getExteriorRing().getMembers().size());
 		assertEquals(CurveType.CompositeCurve, polygon.getExteriorRing().getMembers().get(0).getCurveType());
 
-		assertEquals("one holes", 1, polygon.getInteriorRings().size());
-		assertEquals("arc string segment", CurveSegmentType.ARC_STRING,
-				polygon.getInteriorRings().get(0).getCurveSegments().get(0).getSegmentType());
+		assertEquals(1, polygon.getInteriorRings().size(), "one holes");
+		assertEquals(CurveSegmentType.ARC_STRING,
+				polygon.getInteriorRings().get(0).getCurveSegments().get(0).getSegmentType(), "arc string segment");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -109,8 +106,8 @@ public class EWKTReaderWKTtoGeometryTests {
 		assertEquals(2, ml.size());
 		assertEquals(CurveType.LineString, ml.get(0).getCurveType());
 		assertEquals(CurveType.Curve, ml.get(1).getCurveType());
-		assertEquals("arc string segment", CurveSegmentType.ARC_STRING,
-				ml.get(1).getCurveSegments().get(0).getSegmentType());
+		assertEquals(CurveSegmentType.ARC_STRING, ml.get(1).getCurveSegments().get(0).getSegmentType(),
+				"arc string segment");
 
 		WKT = "MULTICURVE((100 100, 120 120), COMPOUNDCURVE(CIRCULARSTRING(0 0, 2 0, 2 1, 2 3, 4 3),(4 3, 4 5, 1 4, 0 0)))";
 		ml = (MultiCurve<Curve>) read(WKT);

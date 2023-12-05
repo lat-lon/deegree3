@@ -34,7 +34,7 @@
 ----------------------------------------------------------------------------*/
 package org.deegree.test.services.util;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * This is a simple class to validate a HTTP response.

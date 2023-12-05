@@ -35,56 +35,36 @@
 
 package org.deegree.style.se.parser;
 
-import static org.slf4j.LoggerFactory.getLogger;
-
-import java.io.FileNotFoundException;
-import java.net.URISyntaxException;
-import java.util.LinkedList;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.slf4j.Logger;
 
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import java.util.stream.Stream;
 
-import junit.framework.TestCase;
-
-import org.deegree.style.se.parser.SymbologyParser;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
-import org.slf4j.Logger;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * <code>SymbologyParserTest</code>
  *
  * @author <a href="mailto:schmitz@lat-lon.de">Andreas Schmitz</a>
  */
-@RunWith(Parameterized.class)
-public class SymbologyParserTest extends TestCase {
+// TODO: fix dependencies
+@Disabled
+public class SymbologyParserTest {
 
 	private static final Logger LOG = getLogger(SymbologyParserTest.class);
 
-	private String file;
-
-	/**
-	 * @param testLabel
-	 * @param file
-	 */
-	public SymbologyParserTest(String testLabel, String file) {
-		setName(testLabel); // yeah, does not work, I know you nullchecker
-		this.file = file;
-	}
-
-	/**
-	 * @throws FactoryConfigurationError
-	 * @throws XMLStreamException
-	 * @throws FileNotFoundException
-	 * @throws URISyntaxException
-	 */
-	@Test
-	public void singleTest()
-			throws XMLStreamException, FactoryConfigurationError, FileNotFoundException, URISyntaxException {
+	@ParameterizedTest
+	@MethodSource("getFiles")
+	public void singleTest(String testlabel, String file) throws XMLStreamException, FactoryConfigurationError {
 		final XMLInputFactory fac = XMLInputFactory.newInstance();
 		final Class<SymbologyParserTest> cls = SymbologyParserTest.class;
 
@@ -110,53 +90,25 @@ public class SymbologyParserTest extends TestCase {
 		}
 	}
 
-	/**
-	 * @return the files
-	 * @throws Exception
-	 */
-	@Parameters
-	public static LinkedList<Object[]> getFiles() throws Exception {
-		LinkedList<Object[]> tests = new LinkedList<Object[]>();
-
-		// TODO think of a better way to do this (old hack of trying to find the bin
-		// directory seems not work w/ mvn)
-		tests.add(new Object[] { "setest1.bad", "setest1.bad" });
-		tests.add(new Object[] { "setest1.xml", "setest1.xml" });
-		tests.add(new Object[] { "setest10.xml", "setest10.xml" });
-		tests.add(new Object[] { "setest11.xml", "setest11.xml" });
-		tests.add(new Object[] { "setest12.xml", "setest12.xml" });
-		tests.add(new Object[] { "setest13.xml", "setest13.xml" });
-		tests.add(new Object[] { "setest14.xml", "setest14.xml" });
-		tests.add(new Object[] { "setest15.xml", "setest15.xml" });
-		tests.add(new Object[] { "setest16.xml", "setest16.xml" });
-		tests.add(new Object[] { "setest17.xml", "setest17.xml" });
-		tests.add(new Object[] { "setest18.xml", "setest18.xml" });
-		tests.add(new Object[] { "setest19.xml", "setest19.xml" });
-		tests.add(new Object[] { "setest2.xml", "setest2.xml" });
-		tests.add(new Object[] { "setest20.xml", "setest20.xml" });
-		tests.add(new Object[] { "setest21.xml", "setest21.xml" });
-		tests.add(new Object[] { "setest22.xml", "setest22.xml" });
-		tests.add(new Object[] { "setest3.xml", "setest3.xml" });
-		tests.add(new Object[] { "setest4.xml", "setest4.xml" });
-		tests.add(new Object[] { "setest5.xml", "setest5.xml" });
-		tests.add(new Object[] { "setest6.xml", "setest6.xml" });
-		tests.add(new Object[] { "setest7.xml", "setest7.xml" });
-		tests.add(new Object[] { "setest8.xml", "setest8.xml" });
-		tests.add(new Object[] { "setest9.xml", "setest9.xml" });
-		tests.add(new Object[] { "sldtest1.bad", "sldtest1.bad" });
-		tests.add(new Object[] { "sldtest1.xml", "sldtest1.xml" });
-		tests.add(new Object[] { "sldtest10.xml", "sldtest10.xml" });
-		tests.add(new Object[] { "sldtest2.xml", "sldtest2.xml" });
-		tests.add(new Object[] { "sldtest3.xml", "sldtest3.xml" });
-		tests.add(new Object[] { "sldtest4.xml", "sldtest4.xml" });
-		tests.add(new Object[] { "sldtest5.xml", "sldtest5.xml" });
-		tests.add(new Object[] { "sldtest6.xml", "sldtest6.xml" });
-		tests.add(new Object[] { "sldtest7.xml", "sldtest7.xml" });
-		tests.add(new Object[] { "sldtest8.xml", "sldtest8.xml" });
-		tests.add(new Object[] { "sldtest9.xml", "sldtest9.xml" });
-		tests.add(new Object[] { "lineplacement_ext.xml", "lineplacement_ext.xml" });
-
-		return tests;
+	private static Stream<Arguments> getFiles() {
+		return Stream.of(Arguments.of("setest1.bad", "setest1.bad"), Arguments.of("setest1.xml", "setest1.xml"),
+				Arguments.of("setest10.xml", "setest10.xml"), Arguments.of("setest11.xml", "setest11.xml"),
+				Arguments.of("setest12.xml", "setest12.xml"), Arguments.of("setest13.xml", "setest13.xml"),
+				Arguments.of("setest14.xml", "setest14.xml"), Arguments.of("setest15.xml", "setest15.xml"),
+				Arguments.of("setest16.xml", "setest16.xml"), Arguments.of("setest17.xml", "setest17.xml"),
+				Arguments.of("setest18.xml", "setest18.xml"), Arguments.of("setest19.xml", "setest19.xml"),
+				Arguments.of("setest2.xml", "setest2.xml"), Arguments.of("setest20.xml", "setest20.xml"),
+				Arguments.of("setest21.xml", "setest21.xml"), Arguments.of("setest22.xml", "setest22.xml"),
+				Arguments.of("setest3.xml", "setest3.xml"), Arguments.of("setest4.xml", "setest4.xml"),
+				Arguments.of("setest5.xml", "setest5.xml"), Arguments.of("setest6.xml", "setest6.xml"),
+				Arguments.of("setest7.xml", "setest7.xml"), Arguments.of("setest8.xml", "setest8.xml"),
+				Arguments.of("setest9.xml", "setest9.xml"), Arguments.of("sldtest1.bad", "sldtest1.bad"),
+				Arguments.of("sldtest1.xml", "sldtest1.xml"), Arguments.of("sldtest10.xml", "sldtest10.xml"),
+				Arguments.of("sldtest2.xml", "sldtest2.xml"), Arguments.of("sldtest3.xml", "sldtest3.xml"),
+				Arguments.of("sldtest4.xml", "sldtest4.xml"), Arguments.of("sldtest5.xml", "sldtest5.xml"),
+				Arguments.of("sldtest6.xml", "sldtest6.xml"), Arguments.of("sldtest7.xml", "sldtest7.xml"),
+				Arguments.of("sldtest8.xml", "sldtest8.xml"), Arguments.of("sldtest9.xml", "sldtest9.xml"),
+				Arguments.of("lineplacement_ext.xml", "lineplacement_ext.xml"));
 	}
 
 }

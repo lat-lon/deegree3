@@ -37,17 +37,16 @@
 
 package org.deegree.coverage.raster.geom;
 
-import static junit.framework.Assert.assertEquals;
-import static org.deegree.coverage.raster.geom.RasterGeoReference.OriginLocation.CENTER;
-import static org.deegree.coverage.raster.geom.RasterGeoReference.OriginLocation.OUTER;
-import junit.framework.Assert;
-
 import org.deegree.coverage.raster.geom.RasterGeoReference.OriginLocation;
 import org.deegree.cs.coordinatesystems.ICRS;
 import org.deegree.cs.persistence.CRSManager;
 import org.deegree.geometry.Envelope;
 import org.deegree.geometry.GeometryFactory;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.deegree.coverage.raster.geom.RasterGeoReference.OriginLocation.CENTER;
+import static org.deegree.coverage.raster.geom.RasterGeoReference.OriginLocation.OUTER;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * The <code>RasterGeoRefTest</code> class TODO add class documentation here.
@@ -81,12 +80,12 @@ public class RasterGeoRefTest {
 	@Test
 	public void relocatedOrigin() {
 		double[] origin = REF_CENTER.getOrigin(OUTER);
-		Assert.assertEquals(995., origin[0]);
-		Assert.assertEquals(1005., origin[1]);
+		assertEquals(995., origin[0]);
+		assertEquals(1005., origin[1]);
 
 		origin = REF_OUTER.getOrigin(CENTER);
-		Assert.assertEquals(1005., origin[0]);
-		Assert.assertEquals(995., origin[1]);
+		assertEquals(1005., origin[0]);
+		assertEquals(995., origin[1]);
 	}
 
 	/**
@@ -101,19 +100,19 @@ public class RasterGeoRefTest {
 		 */
 		// 991-> CENTER=[1,2[, OUTER=[0,1[
 		int[] rasterCoords = REF_CENTER.getRasterCoordinate(1031, 991);
-		Assert.assertEquals(3, rasterCoords[0]);
-		Assert.assertEquals(1, rasterCoords[1]);
+		assertEquals(3, rasterCoords[0]);
+		assertEquals(1, rasterCoords[1]);
 
 		// 981-> CENTER=[2,3[, OUTER=[1,2[
 		rasterCoords = REF_CENTER.getRasterCoordinate(1031, 981);
-		Assert.assertEquals(3, rasterCoords[0]);
-		Assert.assertEquals(2, rasterCoords[1]);
+		assertEquals(3, rasterCoords[0]);
+		assertEquals(2, rasterCoords[1]);
 
 		// 1025-> CENTER=[3,4[; OUTER=[2,3[
 		// 981 -> CENTER=[2,3[, OUTER=[1,2[
 		rasterCoords = REF_CENTER.getRasterCoordinate(1025, 981);
-		Assert.assertEquals(3, rasterCoords[0]);
-		Assert.assertEquals(2, rasterCoords[1]);
+		assertEquals(3, rasterCoords[0]);
+		assertEquals(2, rasterCoords[1]);
 
 		/**
 		 * Test the lower left domain of the origin.
@@ -121,8 +120,8 @@ public class RasterGeoRefTest {
 		// 994 -> CENTER=[-1,0[; OUTER=[-1,0[
 		// 995 -> CENTER=]0,1]; OUTER=[0,1[
 		rasterCoords = REF_CENTER.getRasterCoordinate(994, 995);
-		Assert.assertEquals(-1, rasterCoords[0]);
-		Assert.assertEquals(1, rasterCoords[1]);
+		assertEquals(-1, rasterCoords[0]);
+		assertEquals(1, rasterCoords[1]);
 
 		/**
 		 * Test the upper left domain of the origin.
@@ -130,8 +129,8 @@ public class RasterGeoRefTest {
 		// 994 -> CENTER=[-1,0[; OUTER=[
 		// 1014 -> CENTER=]-1,0]; OUTER=[
 		rasterCoords = REF_CENTER.getRasterCoordinate(994, 1014);
-		Assert.assertEquals(-1, rasterCoords[0]);
-		Assert.assertEquals(-1, rasterCoords[1]);
+		assertEquals(-1, rasterCoords[0]);
+		assertEquals(-1, rasterCoords[1]);
 
 		/**
 		 * Test the upper right domain of the origin.
@@ -139,8 +138,8 @@ public class RasterGeoRefTest {
 		// 1014 -> CENTER=[1,2[; OUTER=[1,2[
 		// 1014 -> CENTER=]-1,0]; OUTER=[-2,-1[
 		rasterCoords = REF_CENTER.getRasterCoordinate(1014, 1014);
-		Assert.assertEquals(1, rasterCoords[0]);
-		Assert.assertEquals(-1, rasterCoords[1]);
+		assertEquals(1, rasterCoords[0]);
+		assertEquals(-1, rasterCoords[1]);
 
 	}
 
@@ -156,19 +155,19 @@ public class RasterGeoRefTest {
 		 */
 		// 991-> CENTER=[1,2[, OUTER=[0,1[
 		int[] rasterCoords = REF_OUTER.getRasterCoordinate(1031, 991);
-		Assert.assertEquals(3, rasterCoords[0]);
-		Assert.assertEquals(0, rasterCoords[1]);
+		assertEquals(3, rasterCoords[0]);
+		assertEquals(0, rasterCoords[1]);
 
 		// 981-> CENTER=[2,3[, OUTER=[1,2[
 		rasterCoords = REF_OUTER.getRasterCoordinate(1031, 981);
-		Assert.assertEquals(3, rasterCoords[0]);
-		Assert.assertEquals(1, rasterCoords[1]);
+		assertEquals(3, rasterCoords[0]);
+		assertEquals(1, rasterCoords[1]);
 
 		// 1025-> CENTER=[3,4[; OUTER=[2,3[,
 		// 981 -> CENTER=[2,3[, OUTER=[1,2[
 		rasterCoords = REF_OUTER.getRasterCoordinate(1025, 981);
-		Assert.assertEquals(2, rasterCoords[0]);
-		Assert.assertEquals(1, rasterCoords[1]);
+		assertEquals(2, rasterCoords[0]);
+		assertEquals(1, rasterCoords[1]);
 
 		/**
 		 * Test the left domain of the origin.
@@ -176,8 +175,8 @@ public class RasterGeoRefTest {
 		// 994 -> CENTER=[-1,0[; OUTER=[-1,0[
 		// 995 -> CENTER=]0,1]; OUTER=[0,1[
 		rasterCoords = REF_OUTER.getRasterCoordinate(994, 995);
-		Assert.assertEquals(-1, rasterCoords[0]);
-		Assert.assertEquals(0, rasterCoords[1]);
+		assertEquals(-1, rasterCoords[0]);
+		assertEquals(0, rasterCoords[1]);
 
 		/**
 		 * Test the upper left domain of the origin.
@@ -185,8 +184,8 @@ public class RasterGeoRefTest {
 		// 994 -> CENTER=[-1,0[; OUTER=[-1,0[
 		// 1014 -> CENTER=]-1,0]; OUTER=[-2,-1[
 		rasterCoords = REF_OUTER.getRasterCoordinate(994, 1014);
-		Assert.assertEquals(-1, rasterCoords[0]);
-		Assert.assertEquals(-2, rasterCoords[1]);
+		assertEquals(-1, rasterCoords[0]);
+		assertEquals(-2, rasterCoords[1]);
 
 		/**
 		 * Test the upper right domain of the origin.
@@ -194,8 +193,8 @@ public class RasterGeoRefTest {
 		// 1014 -> CENTER=[1,2[; OUTER=[1,2[
 		// 1014 -> CENTER=]-1,0]; OUTER=[-2,-1[
 		rasterCoords = REF_OUTER.getRasterCoordinate(1014, 1014);
-		Assert.assertEquals(1, rasterCoords[0]);
-		Assert.assertEquals(-2, rasterCoords[1]);
+		assertEquals(1, rasterCoords[0]);
+		assertEquals(-2, rasterCoords[1]);
 	}
 
 	/**
@@ -209,13 +208,13 @@ public class RasterGeoRefTest {
 		 */
 		// 991-> CENTER=[1,2[, OUTER=[0,1[
 		double[] rasterCoords = REF_CENTER.getRasterCoordinateUnrounded(1031, 991);
-		Assert.assertEquals(3.6, rasterCoords[0], 0.00001);
-		Assert.assertEquals(1.4, rasterCoords[1], 0.00001);
+		assertEquals(3.6, rasterCoords[0], 0.00001);
+		assertEquals(1.4, rasterCoords[1], 0.00001);
 
 		// 981-> CENTER=[2,3[, OUTER=[1,2[
 		rasterCoords = REF_CENTER.getRasterCoordinateUnrounded(1031, 981);
-		Assert.assertEquals(3.6, rasterCoords[0], 0.00001);
-		Assert.assertEquals(2.4, rasterCoords[1], 0.00001);
+		assertEquals(3.6, rasterCoords[0], 0.00001);
+		assertEquals(2.4, rasterCoords[1], 0.00001);
 
 		/**
 		 * Test the left domain of the origin.
@@ -223,8 +222,8 @@ public class RasterGeoRefTest {
 		// 994 -> CENTER=[-1,0[; OUTER=[-1,0[
 		// 995 -> CENTER=]0,1]; OUTER=[0,1[
 		rasterCoords = REF_CENTER.getRasterCoordinateUnrounded(994, 995);
-		Assert.assertEquals(-0.1, rasterCoords[0], 0.00001);
-		Assert.assertEquals(1, rasterCoords[1], 0.00001);
+		assertEquals(-0.1, rasterCoords[0], 0.00001);
+		assertEquals(1, rasterCoords[1], 0.00001);
 
 		/**
 		 * Test the upper left domain of the origin.
@@ -232,8 +231,8 @@ public class RasterGeoRefTest {
 		// 994 -> CENTER=[-1,0[; OUTER=[-1,0[
 		// 1014 -> CENTER=]-1,0]; OUTER=[-2,-1[
 		rasterCoords = REF_CENTER.getRasterCoordinateUnrounded(994, 1014);
-		Assert.assertEquals(-0.1, rasterCoords[0], 0.00001);
-		Assert.assertEquals(-0.9, rasterCoords[1], 0.00001);
+		assertEquals(-0.1, rasterCoords[0], 0.00001);
+		assertEquals(-0.9, rasterCoords[1], 0.00001);
 
 		/**
 		 * Test the upper right domain of the origin.
@@ -241,8 +240,8 @@ public class RasterGeoRefTest {
 		// 1014 -> CENTER=[1,2[; OUTER=[1,2[
 		// 1014 -> CENTER=]-1,0]; OUTER=[-2,-1[
 		rasterCoords = REF_CENTER.getRasterCoordinateUnrounded(1014, 1014);
-		Assert.assertEquals(1.9, rasterCoords[0], 0.00001);
-		Assert.assertEquals(-0.9, rasterCoords[1], 0.00001);
+		assertEquals(1.9, rasterCoords[0], 0.00001);
+		assertEquals(-0.9, rasterCoords[1], 0.00001);
 
 	}
 
@@ -257,13 +256,13 @@ public class RasterGeoRefTest {
 		 */
 		// 991-> CENTER=[1,2[, OUTER=[0,1[
 		double[] rasterCoords = REF_OUTER.getRasterCoordinateUnrounded(1031, 991);
-		Assert.assertEquals(3.1, rasterCoords[0], 0.00001);
-		Assert.assertEquals(0.9, rasterCoords[1], 0.00001);
+		assertEquals(3.1, rasterCoords[0], 0.00001);
+		assertEquals(0.9, rasterCoords[1], 0.00001);
 
 		// 981-> CENTER=[2,3[, OUTER=[1,2[
 		rasterCoords = REF_OUTER.getRasterCoordinateUnrounded(1031, 981);
-		Assert.assertEquals(3.1, rasterCoords[0], 0.00001);
-		Assert.assertEquals(1.9, rasterCoords[1], 0.00001);
+		assertEquals(3.1, rasterCoords[0], 0.00001);
+		assertEquals(1.9, rasterCoords[1], 0.00001);
 
 		/**
 		 * Test the left domain of the origin.
@@ -271,8 +270,8 @@ public class RasterGeoRefTest {
 		// 994 -> CENTER=[-1,0[; OUTER=[-1,0[
 		// 995 -> CENTER=]0,1]; OUTER=[0,1[
 		rasterCoords = REF_OUTER.getRasterCoordinateUnrounded(994, 995);
-		Assert.assertEquals(-0.6, rasterCoords[0], 0.00001);
-		Assert.assertEquals(0.5, rasterCoords[1], 0.00001);
+		assertEquals(-0.6, rasterCoords[0], 0.00001);
+		assertEquals(0.5, rasterCoords[1], 0.00001);
 
 		/**
 		 * Test the upper left domain of the origin.
@@ -280,8 +279,8 @@ public class RasterGeoRefTest {
 		// 994 -> CENTER=[-1,0[; OUTER=[-1,0[
 		// 1014 -> CENTER=]-1,0]; OUTER=[-2,-1[
 		rasterCoords = REF_OUTER.getRasterCoordinateUnrounded(994, 1014);
-		Assert.assertEquals(-0.6, rasterCoords[0], 0.00001);
-		Assert.assertEquals(-1.4, rasterCoords[1], 0.00001);
+		assertEquals(-0.6, rasterCoords[0], 0.00001);
+		assertEquals(-1.4, rasterCoords[1], 0.00001);
 
 		/**
 		 * Test the upper right domain of the origin.
@@ -289,8 +288,8 @@ public class RasterGeoRefTest {
 		// 1014 -> CENTER=[1,2[; OUTER=[1,2[
 		// 1014 -> CENTER=]-1,0]; OUTER=[-2,-1[
 		rasterCoords = REF_OUTER.getRasterCoordinateUnrounded(1014, 1014);
-		Assert.assertEquals(1.4, rasterCoords[0], 0.00001);
-		Assert.assertEquals(-1.4, rasterCoords[1], 0.00001);
+		assertEquals(1.4, rasterCoords[0], 0.00001);
+		assertEquals(-1.4, rasterCoords[1], 0.00001);
 
 	}
 
@@ -314,29 +313,29 @@ public class RasterGeoRefTest {
 		double[] rasterCoords = REF_CENTER.getWorldCoordinate(2.1, 3.11);
 		// 2.1 : CENTER->1000 + ((2.1 - 0.5)* 10); OUTER -> 1000 + ( 2.1 * 10 )
 		// 3.11: CENTER->1000 + ((3.11 - 0.5)*-10); OUTER -> 1000 + (3.11 * -10 )
-		Assert.assertEquals(1016, rasterCoords[0], 0.00001);
-		Assert.assertEquals(973.9, rasterCoords[1], 0.00001);
+		assertEquals(1016, rasterCoords[0], 0.00001);
+		assertEquals(973.9, rasterCoords[1], 0.00001);
 
 		/**
 		 * Test the lower left domain of the origin.
 		 */
 		rasterCoords = REF_CENTER.getWorldCoordinate(0.01, 2.18);
-		Assert.assertEquals(995.1, rasterCoords[0], 0.00001);
-		Assert.assertEquals(983.2, rasterCoords[1], 0.00001);
+		assertEquals(995.1, rasterCoords[0], 0.00001);
+		assertEquals(983.2, rasterCoords[1], 0.00001);
 
 		/**
 		 * Test the upper left domain of the origin.
 		 */
 		rasterCoords = REF_CENTER.getWorldCoordinate(-1.02, 0.04);
-		Assert.assertEquals(984.8, rasterCoords[0], 0.00001);
-		Assert.assertEquals(1004.6, rasterCoords[1], 0.00001);
+		assertEquals(984.8, rasterCoords[0], 0.00001);
+		assertEquals(1004.6, rasterCoords[1], 0.00001);
 
 		/**
 		 * Test the upper right domain of the origin.
 		 */
 		rasterCoords = REF_CENTER.getWorldCoordinate(1.56, -0.4);
-		Assert.assertEquals(1010.6, rasterCoords[0], 0.00001);
-		Assert.assertEquals(1009, rasterCoords[1], 0.00001);
+		assertEquals(1010.6, rasterCoords[0], 0.00001);
+		assertEquals(1009, rasterCoords[1], 0.00001);
 	}
 
 	/**
@@ -359,29 +358,29 @@ public class RasterGeoRefTest {
 		double[] rasterCoords = REF_OUTER.getWorldCoordinate(2.1, 3.11);
 		// 2.1 : CENTER->1000 + ((2.1 - 0.5)* 10); OUTER -> 1000 + ( 2.1 * 10 )
 		// 3.11: CENTER->1000 + ((3.11 - 0.5)*-10); OUTER -> 1000 + (3.11 * -10 )
-		Assert.assertEquals(1021, rasterCoords[0], 0.00001);
-		Assert.assertEquals(968.9, rasterCoords[1], 0.00001);
+		assertEquals(1021, rasterCoords[0], 0.00001);
+		assertEquals(968.9, rasterCoords[1], 0.00001);
 
 		/**
 		 * Test the lower left domain of the origin.
 		 */
 		rasterCoords = REF_OUTER.getWorldCoordinate(0.01, 2.18);
-		Assert.assertEquals(1000.1, rasterCoords[0], 0.00001);
-		Assert.assertEquals(978.20, rasterCoords[1], 0.00001);
+		assertEquals(1000.1, rasterCoords[0], 0.00001);
+		assertEquals(978.20, rasterCoords[1], 0.00001);
 
 		/**
 		 * Test the upper left domain of the origin.
 		 */
 		rasterCoords = REF_OUTER.getWorldCoordinate(-1.02, 0.04);
-		Assert.assertEquals(989.80, rasterCoords[0], 0.00001);
-		Assert.assertEquals(999.60, rasterCoords[1], 0.00001);
+		assertEquals(989.80, rasterCoords[0], 0.00001);
+		assertEquals(999.60, rasterCoords[1], 0.00001);
 
 		/**
 		 * Test the upper right domain of the origin.
 		 */
 		rasterCoords = REF_OUTER.getWorldCoordinate(1.56, -0.4);
-		Assert.assertEquals(1015.6, rasterCoords[0], 0.00001);
-		Assert.assertEquals(1004, rasterCoords[1], 0.00001);
+		assertEquals(1015.6, rasterCoords[0], 0.00001);
+		assertEquals(1004, rasterCoords[1], 0.00001);
 	}
 
 	/**
@@ -394,20 +393,20 @@ public class RasterGeoRefTest {
 		// CENTER, note the 995 maps to the raster interval [1,2[
 		RasterRect rr = REF_CENTER.convertEnvelopeToRasterCRS(env);
 
-		Assert.assertEquals(-1, rr.x);
-		Assert.assertEquals(-1, rr.y);
+		assertEquals(-1, rr.x);
+		assertEquals(-1, rr.y);
 
-		Assert.assertEquals(4, rr.width);
-		Assert.assertEquals(2, rr.height);
+		assertEquals(4, rr.width);
+		assertEquals(2, rr.height);
 
 		// OUTER, note the 995 maps to the raster interval [0,1[
 		rr = REF_OUTER.convertEnvelopeToRasterCRS(env);
 
-		Assert.assertEquals(-1, rr.x);
-		Assert.assertEquals(-2, rr.y);
+		assertEquals(-1, rr.x);
+		assertEquals(-2, rr.y);
 
-		Assert.assertEquals(3, rr.width);
-		Assert.assertEquals(3, rr.height);
+		assertEquals(3, rr.width);
+		assertEquals(3, rr.height);
 	}
 
 	/**
@@ -554,24 +553,24 @@ public class RasterGeoRefTest {
 		// CENTER, note the 995 maps to the raster interval [1,2[
 		int[] size = REF_CENTER.getSize(env);
 
-		Assert.assertEquals(4, size[0]);
-		Assert.assertEquals(2, size[1]);
+		assertEquals(4, size[0]);
+		assertEquals(2, size[1]);
 
 		// OUTER, note the 995 maps to the raster interval [0,1[
 		size = REF_OUTER.getSize(env);
 
-		Assert.assertEquals(3, size[0]);
-		Assert.assertEquals(3, size[1]);
+		assertEquals(3, size[0]);
+		assertEquals(3, size[1]);
 
 		env = geomFactor.createEnvelope(1005, 985, 1025, 1005, defaultCRS);
 		size = REF_CENTER.getSize(env);
-		Assert.assertEquals(2, size[0]);
-		Assert.assertEquals(2, size[1]);
+		assertEquals(2, size[0]);
+		assertEquals(2, size[1]);
 
 		size = REF_OUTER.getSize(env);
 
-		Assert.assertEquals(3, size[0]);
-		Assert.assertEquals(3, size[1]);
+		assertEquals(3, size[0]);
+		assertEquals(3, size[1]);
 
 	}
 
@@ -586,12 +585,12 @@ public class RasterGeoRefTest {
 		RasterGeoReference result = RasterGeoReference.merger(ref1, ref2);
 
 		double[] origin = result.getOrigin();
-		Assert.assertEquals(1999, origin[0], 0.00001);
-		Assert.assertEquals(1000, origin[1], 0.00001);
-		Assert.assertEquals(2, result.getResolutionX(), 0.00001);
-		Assert.assertEquals(-4, result.getResolutionY(), 0.00001);
-		Assert.assertEquals(2, result.getRotationX(), 0.00001);
-		Assert.assertEquals(1, result.getRotationY(), 0.00001);
+		assertEquals(1999, origin[0], 0.00001);
+		assertEquals(1000, origin[1], 0.00001);
+		assertEquals(2, result.getResolutionX(), 0.00001);
+		assertEquals(-4, result.getResolutionY(), 0.00001);
+		assertEquals(2, result.getRotationX(), 0.00001);
+		assertEquals(1, result.getRotationY(), 0.00001);
 
 		// negative x and y res
 		ref1 = new RasterGeoReference(OriginLocation.CENTER, -5, -4, 2, 1, 1999, 1000, defaultCRS);
@@ -599,12 +598,12 @@ public class RasterGeoRefTest {
 		result = RasterGeoReference.merger(ref1, ref2);
 
 		origin = result.getOrigin();
-		Assert.assertEquals(2000, origin[0], 0.00001);
-		Assert.assertEquals(1000, origin[1], 0.00001);
-		Assert.assertEquals(-2, result.getResolutionX(), 0.00001);
-		Assert.assertEquals(-4, result.getResolutionY(), 0.00001);
-		Assert.assertEquals(2, result.getRotationX(), 0.00001);
-		Assert.assertEquals(1, result.getRotationY(), 0.00001);
+		assertEquals(2000, origin[0], 0.00001);
+		assertEquals(1000, origin[1], 0.00001);
+		assertEquals(-2, result.getResolutionX(), 0.00001);
+		assertEquals(-4, result.getResolutionY(), 0.00001);
+		assertEquals(2, result.getRotationX(), 0.00001);
+		assertEquals(1, result.getRotationY(), 0.00001);
 
 		// negative x and postive y res
 		ref1 = new RasterGeoReference(OriginLocation.CENTER, -5, 4, 2, 1, 1999, 1000, defaultCRS);
@@ -612,12 +611,12 @@ public class RasterGeoRefTest {
 		result = RasterGeoReference.merger(ref1, ref2);
 
 		origin = result.getOrigin();
-		Assert.assertEquals(2000, origin[0], 0.00001);
-		Assert.assertEquals(999, origin[1], 0.00001);
-		Assert.assertEquals(-2, result.getResolutionX(), 0.00001);
-		Assert.assertEquals(4, result.getResolutionY(), 0.00001);
-		Assert.assertEquals(2, result.getRotationX(), 0.00001);
-		Assert.assertEquals(1, result.getRotationY(), 0.00001);
+		assertEquals(2000, origin[0], 0.00001);
+		assertEquals(999, origin[1], 0.00001);
+		assertEquals(-2, result.getResolutionX(), 0.00001);
+		assertEquals(4, result.getResolutionY(), 0.00001);
+		assertEquals(2, result.getRotationX(), 0.00001);
+		assertEquals(1, result.getRotationY(), 0.00001);
 
 		// postive x and postive y res
 		ref1 = new RasterGeoReference(OriginLocation.CENTER, 5, 4, 2, 1, 1999, 1000, defaultCRS);
@@ -625,12 +624,12 @@ public class RasterGeoRefTest {
 		result = RasterGeoReference.merger(ref1, ref2);
 
 		origin = result.getOrigin();
-		Assert.assertEquals(1999, origin[0], 0.00001);
-		Assert.assertEquals(999, origin[1], 0.00001);
-		Assert.assertEquals(2, result.getResolutionX(), 0.00001);
-		Assert.assertEquals(4, result.getResolutionY(), 0.00001);
-		Assert.assertEquals(2, result.getRotationX(), 0.00001);
-		Assert.assertEquals(1, result.getRotationY(), 0.00001);
+		assertEquals(1999, origin[0], 0.00001);
+		assertEquals(999, origin[1], 0.00001);
+		assertEquals(2, result.getResolutionX(), 0.00001);
+		assertEquals(4, result.getResolutionY(), 0.00001);
+		assertEquals(2, result.getRotationX(), 0.00001);
+		assertEquals(1, result.getRotationY(), 0.00001);
 
 	}
 
@@ -643,23 +642,23 @@ public class RasterGeoRefTest {
 		Envelope env = geomFactor.createEnvelope(0, 0, 3000, 2000, defaultCRS);
 		RasterGeoReference result = RasterGeoReference.create(OriginLocation.CENTER, env, 300, 200);
 		double[] origin = result.getOrigin();
-		Assert.assertEquals(0, origin[0], 0.00001);
-		Assert.assertEquals(2000, origin[1], 0.00001);
-		Assert.assertEquals(10, result.getResolutionX(), 0.00001);
-		Assert.assertEquals(-10, result.getResolutionY(), 0.00001);
-		Assert.assertEquals(0, result.getRotationX(), 0.00001);
-		Assert.assertEquals(0, result.getRotationY(), 0.00001);
-		Assert.assertEquals(OriginLocation.CENTER, result.getOriginLocation());
+		assertEquals(0, origin[0], 0.00001);
+		assertEquals(2000, origin[1], 0.00001);
+		assertEquals(10, result.getResolutionX(), 0.00001);
+		assertEquals(-10, result.getResolutionY(), 0.00001);
+		assertEquals(0, result.getRotationX(), 0.00001);
+		assertEquals(0, result.getRotationY(), 0.00001);
+		assertEquals(OriginLocation.CENTER, result.getOriginLocation());
 
 		result = RasterGeoReference.create(OriginLocation.OUTER, env, 300, 200);
 		origin = result.getOrigin();
-		Assert.assertEquals(0, origin[0], 0.00001);
-		Assert.assertEquals(2000, origin[1], 0.00001);
-		Assert.assertEquals(10, result.getResolutionX(), 0.00001);
-		Assert.assertEquals(-10, result.getResolutionY(), 0.00001);
-		Assert.assertEquals(0, result.getRotationX(), 0.00001);
-		Assert.assertEquals(0, result.getRotationY(), 0.00001);
-		Assert.assertEquals(OriginLocation.OUTER, result.getOriginLocation());
+		assertEquals(0, origin[0], 0.00001);
+		assertEquals(2000, origin[1], 0.00001);
+		assertEquals(10, result.getResolutionX(), 0.00001);
+		assertEquals(-10, result.getResolutionY(), 0.00001);
+		assertEquals(0, result.getRotationX(), 0.00001);
+		assertEquals(0, result.getRotationY(), 0.00001);
+		assertEquals(OriginLocation.OUTER, result.getOriginLocation());
 
 	}
 
@@ -671,23 +670,23 @@ public class RasterGeoRefTest {
 		Envelope env = geomFactor.createEnvelope(1005, 975, 1035, 995, defaultCRS);
 		RasterGeoReference result = REF_CENTER.createRelocatedReference(env);
 		double[] origin = result.getOrigin();
-		Assert.assertEquals(1010, origin[0], 0.00001);
-		Assert.assertEquals(990, origin[1], 0.00001);
-		Assert.assertEquals(10, result.getResolutionX(), 0.00001);
-		Assert.assertEquals(-10, result.getResolutionY(), 0.00001);
-		Assert.assertEquals(0, result.getRotationX(), 0.00001);
-		Assert.assertEquals(0, result.getRotationY(), 0.00001);
-		Assert.assertEquals(OriginLocation.CENTER, result.getOriginLocation());
+		assertEquals(1010, origin[0], 0.00001);
+		assertEquals(990, origin[1], 0.00001);
+		assertEquals(10, result.getResolutionX(), 0.00001);
+		assertEquals(-10, result.getResolutionY(), 0.00001);
+		assertEquals(0, result.getRotationX(), 0.00001);
+		assertEquals(0, result.getRotationY(), 0.00001);
+		assertEquals(OriginLocation.CENTER, result.getOriginLocation());
 
 		result = REF_OUTER.createRelocatedReference(env);
 		origin = result.getOrigin();
-		Assert.assertEquals(1000, origin[0], 0.00001);
-		Assert.assertEquals(1000, origin[1], 0.00001);
-		Assert.assertEquals(10, result.getResolutionX(), 0.00001);
-		Assert.assertEquals(-10, result.getResolutionY(), 0.00001);
-		Assert.assertEquals(0, result.getRotationX(), 0.00001);
-		Assert.assertEquals(0, result.getRotationY(), 0.00001);
-		Assert.assertEquals(OriginLocation.OUTER, result.getOriginLocation());
+		assertEquals(1000, origin[0], 0.00001);
+		assertEquals(1000, origin[1], 0.00001);
+		assertEquals(10, result.getResolutionX(), 0.00001);
+		assertEquals(-10, result.getResolutionY(), 0.00001);
+		assertEquals(0, result.getRotationX(), 0.00001);
+		assertEquals(0, result.getRotationY(), 0.00001);
+		assertEquals(OriginLocation.OUTER, result.getOriginLocation());
 
 	}
 
@@ -699,23 +698,23 @@ public class RasterGeoRefTest {
 		Envelope env = geomFactor.createEnvelope(1005, 975, 1035, 995, defaultCRS);
 		RasterGeoReference result = REF_CENTER.createRelocatedReference(OUTER, env);
 		double[] origin = result.getOrigin();
-		Assert.assertEquals(1005, origin[0], 0.00001);
-		Assert.assertEquals(995, origin[1], 0.00001);
-		Assert.assertEquals(10, result.getResolutionX(), 0.00001);
-		Assert.assertEquals(-10, result.getResolutionY(), 0.00001);
-		Assert.assertEquals(0, result.getRotationX(), 0.00001);
-		Assert.assertEquals(0, result.getRotationY(), 0.00001);
-		Assert.assertEquals(OUTER, result.getOriginLocation());
+		assertEquals(1005, origin[0], 0.00001);
+		assertEquals(995, origin[1], 0.00001);
+		assertEquals(10, result.getResolutionX(), 0.00001);
+		assertEquals(-10, result.getResolutionY(), 0.00001);
+		assertEquals(0, result.getRotationX(), 0.00001);
+		assertEquals(0, result.getRotationY(), 0.00001);
+		assertEquals(OUTER, result.getOriginLocation());
 
 		result = REF_OUTER.createRelocatedReference(CENTER, env);
 		origin = result.getOrigin();
-		Assert.assertEquals(1005, origin[0], 0.00001);
-		Assert.assertEquals(995, origin[1], 0.00001);
-		Assert.assertEquals(10, result.getResolutionX(), 0.00001);
-		Assert.assertEquals(-10, result.getResolutionY(), 0.00001);
-		Assert.assertEquals(0, result.getRotationX(), 0.00001);
-		Assert.assertEquals(0, result.getRotationY(), 0.00001);
-		Assert.assertEquals(CENTER, result.getOriginLocation());
+		assertEquals(1005, origin[0], 0.00001);
+		assertEquals(995, origin[1], 0.00001);
+		assertEquals(10, result.getResolutionX(), 0.00001);
+		assertEquals(-10, result.getResolutionY(), 0.00001);
+		assertEquals(0, result.getRotationX(), 0.00001);
+		assertEquals(0, result.getRotationY(), 0.00001);
+		assertEquals(CENTER, result.getOriginLocation());
 
 	}
 
@@ -729,20 +728,20 @@ public class RasterGeoRefTest {
 		Envelope result = REF_CENTER.relocateEnvelope(OUTER, env);
 		double[] min = result.getMin().getAsArray();
 		double[] max = result.getMax().getAsArray();
-		Assert.assertEquals(1000, min[0], 0.00001);
-		Assert.assertEquals(980, min[1], 0.00001);
-		Assert.assertEquals(1030, max[0], 0.00001);
-		Assert.assertEquals(1000, max[1], 0.00001);
-		Assert.assertEquals(env.getCoordinateSystem(), defaultCRS);
+		assertEquals(1000, min[0], 0.00001);
+		assertEquals(980, min[1], 0.00001);
+		assertEquals(1030, max[0], 0.00001);
+		assertEquals(1000, max[1], 0.00001);
+		assertEquals(env.getCoordinateSystem(), defaultCRS);
 
 		result = REF_OUTER.relocateEnvelope(CENTER, env);
 		min = result.getMin().getAsArray();
 		max = result.getMax().getAsArray();
-		Assert.assertEquals(1010, min[0], 0.00001);
-		Assert.assertEquals(970, min[1], 0.00001);
-		Assert.assertEquals(1040, max[0], 0.00001);
-		Assert.assertEquals(990, max[1], 0.00001);
-		Assert.assertEquals(env.getCoordinateSystem(), defaultCRS);
+		assertEquals(1010, min[0], 0.00001);
+		assertEquals(970, min[1], 0.00001);
+		assertEquals(1040, max[0], 0.00001);
+		assertEquals(990, max[1], 0.00001);
+		assertEquals(env.getCoordinateSystem(), defaultCRS);
 
 	}
 

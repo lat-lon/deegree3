@@ -41,22 +41,19 @@
 package org.deegree.services.wmts;
 
 import org.apache.commons.io.IOUtils;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.stream.Stream;
 
 import static org.deegree.commons.utils.net.HttpUtils.STREAM;
 import static org.deegree.commons.utils.net.HttpUtils.retrieve;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
@@ -65,32 +62,25 @@ import static org.slf4j.LoggerFactory.getLogger;
  * @author <a href="mailto:schmitz@occamlabs.de">Andreas Schmitz</a>
  */
 
-@RunWith(Parameterized.class)
 public class WmtsGetFeatureInfoSimilarityIT extends AbstractWmtsSimilarityIT {
 
 	private static final Logger LOG = getLogger(WmtsGetFeatureInfoSimilarityIT.class);
 
-	private final String expected;
+	private Stream<Arguments> getParameters() {
+		return Stream.of(Arguments.of("cached_gfi"), Arguments.of("remotewmsfi"));
+	}
 
-	public WmtsGetFeatureInfoSimilarityIT(String resourceName) throws IOException {
-		super(resourceName, "/getFeatureInfo");
-		this.expected = IOUtils
+	@ParameterizedTest
+	@MethodSource("getParameters")
+	public void testSimilarity(String resourceName) throws IOException {
+		String kvpRequest = IOUtils.toString(
+				WmtsGetFeatureInfoSimilarityIT.class.getResourceAsStream("/getFeatureInfo/" + resourceName + ".kvp"));
+		String expected = IOUtils
 			.toString(WmtsGetFeatureInfoSimilarityIT.class
 				.getResourceAsStream("/getFeatureInfo/" + resourceName + ".html"))
 			.trim();
-	}
 
-	@Parameters
-	public static Collection<Object[]> getParameters() {
-		List<Object[]> requests = new ArrayList<>();
-		requests.add(new Object[] { "cached_gfi" });
-		requests.add(new Object[] { "remotewmsfi" });
-		return requests;
-	}
-
-	@Test
-	public void testSimilarity() throws IOException {
-		String request = createRequest();
+		String request = createRequest(kvpRequest);
 		InputStream in = retrieve(STREAM, request);
 		LOG.info("Requesting {}", request);
 		String actual = IOUtils.toString(in);

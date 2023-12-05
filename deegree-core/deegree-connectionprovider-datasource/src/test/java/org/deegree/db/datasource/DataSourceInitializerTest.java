@@ -1,16 +1,15 @@
 package org.deegree.db.datasource;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.lang.reflect.InvocationTargetException;
-
-import javax.sql.DataSource;
-
 import org.deegree.db.datasource.jaxb.DataSourceConnectionProvider;
 import org.deegree.db.datasource.jaxb.DataSourceConnectionProvider.Property;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import javax.sql.DataSource;
+import java.lang.reflect.InvocationTargetException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DataSourceInitializerTest {
 
@@ -42,8 +41,8 @@ public class DataSourceInitializerTest {
 		DataSourceMock ds = (DataSourceMock) initializer.getDataSourceInstance(config);
 		assertNotNull(ds);
 		assertTrue(ds instanceof DataSourceMock);
-		Assert.assertEquals("aeiou", ds.getStringConstructorArg());
-		Assert.assertEquals(4711, ds.getIntConstructorArg());
+		assertEquals("aeiou", ds.getStringConstructorArg());
+		assertEquals(4711, ds.getIntConstructorArg());
 	}
 
 	@Test
@@ -74,8 +73,8 @@ public class DataSourceInitializerTest {
 		DataSourceMock ds = (DataSourceMock) initializer.getDataSourceInstance(config);
 		assertNotNull(ds);
 		assertTrue(ds instanceof DataSourceMock);
-		Assert.assertEquals("aeiou", ds.getStringConstructorArg());
-		Assert.assertEquals(4711, ds.getIntConstructorArg());
+		assertEquals("aeiou", ds.getStringConstructorArg());
+		assertEquals(4711, ds.getIntConstructorArg());
 	}
 
 	@Test
@@ -85,7 +84,7 @@ public class DataSourceInitializerTest {
 		property.setName("stringProperty");
 		property.setValue("value");
 		initializer.setProperty(ds, property);
-		Assert.assertEquals("value", ds.getStringProperty());
+		assertEquals("value", ds.getStringProperty());
 	}
 
 	@Test
@@ -95,7 +94,7 @@ public class DataSourceInitializerTest {
 		property.setName("intProperty");
 		property.setValue("4711");
 		initializer.setProperty(ds, property);
-		Assert.assertEquals(4711, ds.getIntProperty());
+		assertEquals(4711, ds.getIntProperty());
 	}
 
 }

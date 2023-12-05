@@ -34,20 +34,19 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.services.wms.controller.capabilities.theme;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.StringWriter;
 
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
-
-import junit.framework.Assert;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * This class creates a {@link XMLStreamWriter} that writes into a temporary buffer and
@@ -81,7 +80,7 @@ class XMLMemoryStreamWriter {
 				xmlWriter = factory.createXMLStreamWriter(writer);
 			}
 			catch (XMLStreamException e) {
-				Assert.fail("error while creating the xml writer: " + e.getMessage());
+				fail("error while creating the xml writer: " + e.getMessage());
 			}
 		}
 		return xmlWriter;

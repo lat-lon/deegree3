@@ -37,17 +37,16 @@
 
 package org.deegree.protocol.wfs.describefeaturetype.xml;
 
-import static junit.framework.Assert.assertEquals;
-import static org.deegree.protocol.wfs.WFSConstants.VERSION_200;
+import org.deegree.commons.xml.schema.RedirectingEntityResolver;
+import org.deegree.protocol.wfs.describefeaturetype.DescribeFeatureType;
+import org.junit.jupiter.api.Test;
 
+import javax.xml.namespace.QName;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import javax.xml.namespace.QName;
-
-import org.deegree.commons.xml.schema.RedirectingEntityResolver;
-import org.deegree.protocol.wfs.describefeaturetype.DescribeFeatureType;
-import org.junit.Test;
+import static org.deegree.protocol.wfs.WFSConstants.VERSION_200;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests for {@link DescribeFeatureTypeXMLAdapter}.

@@ -5,7 +5,7 @@ import org.deegree.filter.OperatorFilter;
 import org.deegree.filter.comparison.PropertyIsEqualTo;
 import org.deegree.filter.logical.Or;
 import org.deegree.layer.LayerQuery;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import javax.xml.namespace.QName;
@@ -14,10 +14,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * @author <a href="mailto:goltz@lat-lon.de">Lyn Goltz </a>
@@ -33,7 +31,7 @@ public class FilterBuilderTest {
 		Set<QName> propertyNames = createPropertyNames(filterProperty);
 		OperatorFilter operatorFilter = FilterBuilder.buildRequestFilter(layerQuery, propertyNames);
 
-		assertThat(operatorFilter.getOperator(), instanceOf(PropertyIsEqualTo.class));
+		assertInstanceOf(PropertyIsEqualTo.class, operatorFilter.getOperator());
 	}
 
 	@Test
@@ -44,7 +42,7 @@ public class FilterBuilderTest {
 		Set<QName> propertyNames = createPropertyNames(filterProperty);
 		OperatorFilter operatorFilter = FilterBuilder.buildRequestFilter(layerQuery, propertyNames);
 
-		assertThat(operatorFilter.getOperator(), instanceOf(Or.class));
+		assertInstanceOf(Or.class, operatorFilter.getOperator());
 	}
 
 	@Test
@@ -55,7 +53,7 @@ public class FilterBuilderTest {
 		Set<QName> propertyNames = createPropertyNames(filterProperty);
 		OperatorFilter operatorFilter = FilterBuilder.buildRequestFilter(layerQuery, propertyNames);
 
-		assertThat(operatorFilter, is(nullValue()));
+		assertNull(operatorFilter);
 	}
 
 	@Test
@@ -64,7 +62,7 @@ public class FilterBuilderTest {
 		Set<QName> propertyNames = createPropertyNames("abc");
 		OperatorFilter operatorFilter = FilterBuilder.buildRequestFilter(layerQuery, propertyNames);
 
-		assertThat(operatorFilter, is(nullValue()));
+		assertNull(operatorFilter);
 	}
 
 	@Test
@@ -76,7 +74,7 @@ public class FilterBuilderTest {
 		Set<QName> propertyNames = createPropertyNames("anothertype");
 		OperatorFilter operatorFilter = FilterBuilder.buildRequestFilter(layerQuery, propertyNames);
 
-		assertThat(operatorFilter, is(nullValue()));
+		assertNull(operatorFilter);
 	}
 
 	private LayerQuery mockLayerQuery(String filterProperty, List<String> filterValues) {

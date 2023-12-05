@@ -34,11 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.geometry.linearization;
 
-import static org.slf4j.LoggerFactory.getLogger;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.deegree.geometry.points.Points;
 import org.deegree.geometry.primitive.Curve;
 import org.deegree.geometry.primitive.Point;
@@ -50,9 +45,14 @@ import org.deegree.geometry.standard.primitive.DefaultCurve;
 import org.deegree.geometry.standard.primitive.DefaultPoint;
 import org.deegree.geometry.standard.primitive.DefaultPolygon;
 import org.deegree.geometry.standard.primitive.DefaultRing;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * The <code>SurfaceLinearizerTest</code> class verifies the corecteness of the surface
@@ -79,7 +79,7 @@ public class SurfaceLinearizerTest {
 
 	private SurfaceLinearizer linearizer;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		geomFac = new org.deegree.geometry.GeometryFactory();
 		linearizer = new SurfaceLinearizer(geomFac);

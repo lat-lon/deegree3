@@ -34,8 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.metadata.iso.persistence;
 
-import static org.slf4j.LoggerFactory.getLogger;
-
 import org.deegree.commons.tom.primitive.PrimitiveValue;
 import org.deegree.cs.CRSUtils;
 import org.deegree.filter.Filter;
@@ -49,10 +47,12 @@ import org.deegree.filter.logical.And;
 import org.deegree.filter.spatial.BBOX;
 import org.deegree.geometry.GeometryFactory;
 import org.deegree.metadata.persistence.MetadataQuery;
-import org.junit.Assert;
-import org.junit.Assume;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * TODO add class documentation here
@@ -67,7 +67,7 @@ public class ISOMetadataStoreTest extends AbstractISOTest {
 	public void testBBoxFilter() throws Exception {
 		LOG.info("START Test: testInsert");
 		initStore(TstConstants.configURL);
-		Assume.assumeNotNull(store);
+		assumeTrue(store != null);
 
 		TstUtils.insertMetadata(store, TstConstants.tst_9, TstConstants.tst_10, TstConstants.tst_1);
 		GeometryFactory gf = new GeometryFactory();
@@ -82,7 +82,7 @@ public class ISOMetadataStoreTest extends AbstractISOTest {
 	public void testKeywordFilter() throws Exception {
 		LOG.info("START Test: testInsert");
 		initStore(TstConstants.configURL);
-		Assume.assumeNotNull(store);
+		assumeTrue(store != null);
 
 		TstUtils.insertMetadata(store, TstConstants.tst_9, TstConstants.tst_10, TstConstants.tst_1);
 		Literal<PrimitiveValue> lit1 = new Literal<PrimitiveValue>("Hessen Wasser Analyser");
@@ -101,7 +101,7 @@ public class ISOMetadataStoreTest extends AbstractISOTest {
 	public void testEqualKeywordFilter() throws Exception {
 		LOG.info("START Test: testInsert");
 		initStore(TstConstants.configURL);
-		Assume.assumeNotNull(store);
+		assumeTrue(store != null);
 
 		TstUtils.insertMetadata(store, TstConstants.tst_9, TstConstants.tst_10);
 		Literal<PrimitiveValue> lit2 = new Literal<PrimitiveValue>("SPOT 5");
@@ -111,7 +111,7 @@ public class ISOMetadataStoreTest extends AbstractISOTest {
 		MetadataQuery query = new MetadataQuery(null, null, filter, null, 1, 10);
 		int recordCount = store.getRecordCount(query);
 
-		Assert.assertEquals(1, recordCount);
+		assertEquals(1, recordCount);
 
 	}
 

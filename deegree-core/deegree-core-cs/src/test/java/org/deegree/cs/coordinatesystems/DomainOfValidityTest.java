@@ -34,10 +34,11 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.cs.coordinatesystems;
 
-import junit.framework.Assert;
-
 import org.deegree.cs.transformations.CRSDefines;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Test the domain of validity for a known crs.
@@ -52,18 +53,18 @@ public class DomainOfValidityTest implements CRSDefines {
 	@Test
 	public void wgs84GeoTest() {
 		double[] areaOfUse = CRSDefines.geographic_4314.getAreaOfUseBBox();
-		Assert.assertNotNull(areaOfUse);
-		Assert.assertEquals(5.87, areaOfUse[0], 1E-8);
-		Assert.assertEquals(47.27, areaOfUse[1], 1E-8);
-		Assert.assertEquals(13.83, areaOfUse[2], 1E-8);
-		Assert.assertEquals(55.04, areaOfUse[3], 1E-8);
+		assertNotNull(areaOfUse);
+		assertEquals(5.87, areaOfUse[0], 1E-8);
+		assertEquals(47.27, areaOfUse[1], 1E-8);
+		assertEquals(13.83, areaOfUse[2], 1E-8);
+		assertEquals(55.04, areaOfUse[3], 1E-8);
 
 		areaOfUse = CRSDefines.geographic_4314_lat_lon.getAreaOfUseBBox();
-		Assert.assertNotNull(areaOfUse);
-		Assert.assertEquals(5.87, areaOfUse[0], 1E-8);
-		Assert.assertEquals(47.27, areaOfUse[1], 1E-8);
-		Assert.assertEquals(13.83, areaOfUse[2], 1E-8);
-		Assert.assertEquals(55.04, areaOfUse[3], 1E-8);
+		assertNotNull(areaOfUse);
+		assertEquals(5.87, areaOfUse[0], 1E-8);
+		assertEquals(47.27, areaOfUse[1], 1E-8);
+		assertEquals(13.83, areaOfUse[2], 1E-8);
+		assertEquals(55.04, areaOfUse[3], 1E-8);
 
 	}
 
@@ -73,18 +74,18 @@ public class DomainOfValidityTest implements CRSDefines {
 	@Test
 	public void validGeoAreaTest() {
 		double[] areaOfUse = CRSDefines.geographic_4314.getValidDomain();
-		Assert.assertNotNull(areaOfUse);
-		Assert.assertEquals(5.870573065378319, areaOfUse[0], 1E-10);
-		Assert.assertEquals(47.27080493906228, areaOfUse[1], 1E-10);
-		Assert.assertEquals(13.83188074193107, areaOfUse[2], 1E-10);
-		Assert.assertEquals(55.04172947548665, areaOfUse[3], 1E-10);
+		assertNotNull(areaOfUse);
+		assertEquals(5.870573065378319, areaOfUse[0], 1E-10);
+		assertEquals(47.27080493906228, areaOfUse[1], 1E-10);
+		assertEquals(13.83188074193107, areaOfUse[2], 1E-10);
+		assertEquals(55.04172947548665, areaOfUse[3], 1E-10);
 
 		areaOfUse = CRSDefines.geographic_4314_lat_lon.getValidDomain();
-		Assert.assertNotNull(areaOfUse);
-		Assert.assertEquals(47.27080493906228, areaOfUse[0], 1E-10);
-		Assert.assertEquals(5.870573065378319, areaOfUse[1], 1E-10);
-		Assert.assertEquals(55.04172947548665, areaOfUse[2], 1E-10);
-		Assert.assertEquals(13.83188074193107, areaOfUse[3], 1E-10);
+		assertNotNull(areaOfUse);
+		assertEquals(47.27080493906228, areaOfUse[0], 1E-10);
+		assertEquals(5.870573065378319, areaOfUse[1], 1E-10);
+		assertEquals(55.04172947548665, areaOfUse[2], 1E-10);
+		assertEquals(13.83188074193107, areaOfUse[3], 1E-10);
 	}
 
 	/**
@@ -93,25 +94,25 @@ public class DomainOfValidityTest implements CRSDefines {
 	@Test
 	public void wgs84ProjectedTest() {
 		double[] areaOfUse = CRSDefines.projected_25832.getAreaOfUseBBox();
-		Assert.assertNotNull(areaOfUse);
-		Assert.assertEquals(5.05, areaOfUse[0], 1E-8);
-		Assert.assertEquals(57.9, areaOfUse[1], 1E-8);
-		Assert.assertEquals(12.0, areaOfUse[2], 1E-8);
-		Assert.assertEquals(65.67, areaOfUse[3], 1E-8);
+		assertNotNull(areaOfUse);
+		assertEquals(5.05, areaOfUse[0], 1E-8);
+		assertEquals(57.9, areaOfUse[1], 1E-8);
+		assertEquals(12.0, areaOfUse[2], 1E-8);
+		assertEquals(65.67, areaOfUse[3], 1E-8);
 
 		areaOfUse = CRSDefines.projected_25832_lat_lon.getAreaOfUseBBox();
-		Assert.assertNotNull(areaOfUse);
-		Assert.assertEquals(5.05, areaOfUse[0], 1E-8);
-		Assert.assertEquals(57.9, areaOfUse[1], 1E-8);
-		Assert.assertEquals(12.0, areaOfUse[2], 1E-8);
-		Assert.assertEquals(65.67, areaOfUse[3], 1E-8);
+		assertNotNull(areaOfUse);
+		assertEquals(5.05, areaOfUse[0], 1E-8);
+		assertEquals(57.9, areaOfUse[1], 1E-8);
+		assertEquals(12.0, areaOfUse[2], 1E-8);
+		assertEquals(65.67, areaOfUse[3], 1E-8);
 
 		areaOfUse = CRSDefines.projected_25832_yx.getAreaOfUseBBox();
-		Assert.assertNotNull(areaOfUse);
-		Assert.assertEquals(5.05, areaOfUse[0], 1E-8);
-		Assert.assertEquals(57.9, areaOfUse[1], 1E-8);
-		Assert.assertEquals(12.0, areaOfUse[2], 1E-8);
-		Assert.assertEquals(65.67, areaOfUse[3], 1E-8);
+		assertNotNull(areaOfUse);
+		assertEquals(5.05, areaOfUse[0], 1E-8);
+		assertEquals(57.9, areaOfUse[1], 1E-8);
+		assertEquals(12.0, areaOfUse[2], 1E-8);
+		assertEquals(65.67, areaOfUse[3], 1E-8);
 
 	}
 
@@ -121,25 +122,25 @@ public class DomainOfValidityTest implements CRSDefines {
 	@Test
 	public void validProjectedAreaTest() {
 		double[] areaOfUse = CRSDefines.projected_25832.getValidDomain();
-		Assert.assertNotNull(areaOfUse);
-		Assert.assertEquals(265948.819050026, areaOfUse[0], 1E-8);
-		Assert.assertEquals(6417675.8029399365, areaOfUse[1], 1E-8);
-		Assert.assertEquals(677786.3628639532, areaOfUse[2], 1E-8);
-		Assert.assertEquals(7288831.70135825, areaOfUse[3], 1E-8);
+		assertNotNull(areaOfUse);
+		assertEquals(265948.819050026, areaOfUse[0], 1E-8);
+		assertEquals(6417675.8029399365, areaOfUse[1], 1E-8);
+		assertEquals(677786.3628639532, areaOfUse[2], 1E-8);
+		assertEquals(7288831.70135825, areaOfUse[3], 1E-8);
 
 		areaOfUse = CRSDefines.projected_25832_lat_lon.getValidDomain();
-		Assert.assertNotNull(areaOfUse);
-		Assert.assertEquals(265948.819050026, areaOfUse[0], 1E-8);
-		Assert.assertEquals(6417675.8029399365, areaOfUse[1], 1E-8);
-		Assert.assertEquals(677786.3628639532, areaOfUse[2], 1E-8);
-		Assert.assertEquals(7288831.70135825, areaOfUse[3], 1E-8);
+		assertNotNull(areaOfUse);
+		assertEquals(265948.819050026, areaOfUse[0], 1E-8);
+		assertEquals(6417675.8029399365, areaOfUse[1], 1E-8);
+		assertEquals(677786.3628639532, areaOfUse[2], 1E-8);
+		assertEquals(7288831.70135825, areaOfUse[3], 1E-8);
 
 		areaOfUse = CRSDefines.projected_25832_yx.getValidDomain();
-		Assert.assertNotNull(areaOfUse);
-		Assert.assertEquals(6417675.8029399365, areaOfUse[0], 1E-8);
-		Assert.assertEquals(265948.819050026, areaOfUse[1], 1E-8);
-		Assert.assertEquals(7288831.70135825, areaOfUse[2], 1E-8);
-		Assert.assertEquals(677786.3628639532, areaOfUse[3], 1E-8);
+		assertNotNull(areaOfUse);
+		assertEquals(6417675.8029399365, areaOfUse[0], 1E-8);
+		assertEquals(265948.819050026, areaOfUse[1], 1E-8);
+		assertEquals(7288831.70135825, areaOfUse[2], 1E-8);
+		assertEquals(677786.3628639532, areaOfUse[3], 1E-8);
 	}
 
 }

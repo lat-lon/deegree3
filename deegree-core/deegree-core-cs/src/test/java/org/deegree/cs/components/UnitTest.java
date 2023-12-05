@@ -35,6 +35,8 @@
 
 package org.deegree.cs.components;
 
+import org.junit.jupiter.api.Test;
+
 import static org.deegree.cs.components.Unit.ARC_SEC;
 import static org.deegree.cs.components.Unit.BRITISHYARD;
 import static org.deegree.cs.components.Unit.DEGREE;
@@ -44,9 +46,8 @@ import static org.deegree.cs.components.Unit.RADIAN;
 import static org.deegree.cs.components.Unit.SECOND;
 import static org.deegree.cs.components.Unit.USFOOT;
 import static org.deegree.cs.utilities.ProjectionUtils.DTR;
-import junit.framework.TestCase;
-
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * <code>UnitTest</code> tests the conversion of different units into each other.
@@ -54,7 +55,7 @@ import org.junit.Test;
  * @author <a href="mailto:bezema@lat-lon.de">Rutger Bezema</a>
  *
  */
-public class UnitTest extends TestCase {
+public class UnitTest {
 
 	/**
 	 * Tests the conversion of known units and the conversion of incompatible units.

@@ -34,16 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.metadata.persistence.ebrim.eo.io;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNull;
-import static junit.framework.Assert.assertTrue;
-import static org.deegree.metadata.persistence.ebrim.eo.mapping.SlotMapper.SLOTURN;
-
-import java.io.InputStream;
-import java.text.ParseException;
-import java.util.List;
-
 import org.deegree.commons.xml.XMLAdapter;
 import org.deegree.geometry.Geometry;
 import org.deegree.geometry.multi.MultiSurface;
@@ -53,7 +43,16 @@ import org.deegree.metadata.ebrim.ClassificationNode;
 import org.deegree.metadata.ebrim.ExtrinsicObject;
 import org.deegree.metadata.ebrim.RegistryPackage;
 import org.deegree.metadata.persistence.ebrim.eo.mapping.SlotMapper.EOTYPE;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import java.io.InputStream;
+import java.util.List;
+
+import static org.deegree.metadata.persistence.ebrim.eo.mapping.SlotMapper.SLOTURN;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * TODO add class documentation here
@@ -63,7 +62,7 @@ import org.junit.Test;
 public class EbrimEOAdapterTest {
 
 	@Test
-	public void testParsingExtrinsicObject() throws ParseException {
+	public void testParsingExtrinsicObject() {
 		InputStream is = EbrimEOAdapterTest.class.getResourceAsStream("ebrimRecord1.xml");
 		RegistryPackage rp = new RegistryPackage(new XMLAdapter(is).getRootElement());
 

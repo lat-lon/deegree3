@@ -34,9 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.geometry;
 
-import static junit.framework.Assert.assertTrue;
-import junit.framework.Assert;
-
 import org.deegree.cs.CRSUtils;
 import org.deegree.cs.coordinatesystems.ICRS;
 import org.deegree.cs.persistence.CRSManager;
@@ -44,8 +41,11 @@ import org.deegree.geometry.primitive.LineString;
 import org.deegree.geometry.primitive.Point;
 import org.deegree.geometry.standard.points.PackedPoints;
 import org.deegree.geometry.standard.primitive.DefaultPoint;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Basic test for some spatial analyis operations.
@@ -69,7 +69,7 @@ public class GeometryAnalysisTest {
 	/**
 	 * common envelopes as test geometry
 	 */
-	@Before
+	@BeforeEach
 	public void setUp() {
 
 		ICRS crs = CRSManager.getCRSRef("EPSG:4326");
@@ -99,7 +99,7 @@ public class GeometryAnalysisTest {
 	@Test
 	public void testIntersectionPointLineString() {
 		Geometry result = p1.getIntersection(l1);
-		Assert.assertNull(result);
+		assertNull(result);
 
 		result = p4.getIntersection(l1);
 		assertTrue(result instanceof Point);
@@ -109,14 +109,14 @@ public class GeometryAnalysisTest {
 	@Test
 	public void testIntersectionLineStringLineString() {
 		Geometry result = l1.getIntersection(l1);
-		Assert.assertTrue(l1.equals(result));
+		assertTrue(l1.equals(result));
 
 		result = l2.getIntersection(l1);
-		Assert.assertTrue(result
+		assertTrue(result
 			.equals(new DefaultPoint(null, CRSManager.getCRSRef("EPSG:4326"), null, new double[] { 15.0, 9.0 })));
 
 		result = l3.getIntersection(l4);
-		Assert.assertNull(result);
+		assertNull(result);
 	}
 
 	// private void writeResult( Geometry result )

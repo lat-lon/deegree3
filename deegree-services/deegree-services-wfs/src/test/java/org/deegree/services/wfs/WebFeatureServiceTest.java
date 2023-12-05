@@ -34,20 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.services.wfs;
 
-import static org.deegree.protocol.wfs.WFSRequestType.DescribeFeatureType;
-import static org.deegree.protocol.wfs.WFSRequestType.GetCapabilities;
-import static org.deegree.protocol.wfs.WFSRequestType.GetFeature;
-import static org.deegree.protocol.wfs.WFSRequestType.GetPropertyValue;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
-
 import org.deegree.protocol.wfs.WFSRequestType;
 import org.deegree.services.encoding.LimitedSupportedEncodings;
 import org.deegree.services.encoding.SupportedEncodings;
@@ -56,10 +42,23 @@ import org.deegree.services.jaxb.wfs.DeegreeWFS;
 import org.deegree.services.jaxb.wfs.DeegreeWFS.SupportedRequests;
 import org.deegree.services.jaxb.wfs.RequestType;
 import org.hamcrest.BaseMatcher;
-import org.hamcrest.CoreMatchers;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
+
+import static org.deegree.protocol.wfs.WFSRequestType.DescribeFeatureType;
+import static org.deegree.protocol.wfs.WFSRequestType.GetCapabilities;
+import static org.deegree.protocol.wfs.WFSRequestType.GetFeature;
+import static org.deegree.protocol.wfs.WFSRequestType.GetPropertyValue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * @author <a href="mailto:goltz@lat-lon.de">Lyn Goltz</a>
@@ -80,16 +79,19 @@ public class WebFeatureServiceTest {
 			.getEnabledEncodingsPerRequestType();
 
 		Set<String> capabilitiesEncodings = enabledEncodings.get(GetCapabilities);
-		assertThat(capabilitiesEncodings, hasOnlyItems("xml", "soap"));
+		assertTrue(capabilitiesEncodings.contains("xml"));
+		assertTrue(capabilitiesEncodings.contains("soap"));
 
 		Set<String> describeFeatureTypeEncodings = enabledEncodings.get(DescribeFeatureType);
-		assertThat(describeFeatureTypeEncodings, hasOnlyItems("xml"));
+		assertEquals(describeFeatureTypeEncodings.size(), 1);
+		assertTrue(describeFeatureTypeEncodings.contains("xml"));
 
 		Set<String> getFeatureEncodings = enabledEncodings.get(GetFeature);
-		assertThat(getFeatureEncodings, hasOnlyItems("xml"));
+		assertEquals(describeFeatureTypeEncodings.size(), 1);
+		assertTrue(getFeatureEncodings.contains("xml"));
 
 		Set<String> getPropertyValueEncodings = enabledEncodings.get(GetPropertyValue);
-		assertThat(getPropertyValueEncodings.size(), is(0));
+		assertEquals(getPropertyValueEncodings.size(), 0);
 	}
 
 	@Test
@@ -102,16 +104,23 @@ public class WebFeatureServiceTest {
 			.getEnabledEncodingsPerRequestType();
 
 		Set<String> capabilitiesEncodings = enabledEncodings.get(GetCapabilities);
-		assertThat(capabilitiesEncodings, hasOnlyItems("kvp", "xml", "soap"));
+		assertEquals(capabilitiesEncodings.size(), 3);
+		assertTrue(capabilitiesEncodings.contains("kvp"));
+		assertTrue(capabilitiesEncodings.contains("xml"));
+		assertTrue(capabilitiesEncodings.contains("soap"));
 
 		Set<String> describeFeatureTypeEncodings = enabledEncodings.get(DescribeFeatureType);
-		assertThat(describeFeatureTypeEncodings, hasOnlyItems("kvp", "xml"));
+		assertEquals(describeFeatureTypeEncodings.size(), 2);
+		assertTrue(describeFeatureTypeEncodings.contains("kvp"));
+		assertTrue(describeFeatureTypeEncodings.contains("xml"));
 
 		Set<String> getFeatureEncodings = enabledEncodings.get(GetFeature);
-		assertThat(getFeatureEncodings, hasOnlyItems("kvp", "xml"));
+		assertEquals(getFeatureEncodings.size(), 2);
+		assertTrue(getFeatureEncodings.contains("kvp"));
+		assertTrue(getFeatureEncodings.contains("xml"));
 
 		Set<String> getPropertyValueEncodings = enabledEncodings.get(GetPropertyValue);
-		assertThat(getPropertyValueEncodings.size(), is(0));
+		assertEquals(getPropertyValueEncodings.size(), 0);
 	}
 
 	@Test
@@ -124,16 +133,20 @@ public class WebFeatureServiceTest {
 			.getEnabledEncodingsPerRequestType();
 
 		Set<String> capabilitiesEncodings = enabledEncodings.get(GetCapabilities);
-		assertThat(capabilitiesEncodings, hasOnlyItems("kvp"));
+		assertEquals(capabilitiesEncodings.size(), 1);
+		assertTrue(capabilitiesEncodings.contains("kvp"));
 
 		Set<String> describeFeatureTypeEncodings = enabledEncodings.get(DescribeFeatureType);
-		assertThat(describeFeatureTypeEncodings, hasOnlyItems("kvp"));
+		assertEquals(describeFeatureTypeEncodings.size(), 1);
+		assertTrue(describeFeatureTypeEncodings.contains("kvp"));
 
 		Set<String> getFeatureEncodings = enabledEncodings.get(GetFeature);
-		assertThat(getFeatureEncodings, hasOnlyItems("kvp"));
+		assertEquals(getFeatureEncodings.size(), 1);
+		assertTrue(getFeatureEncodings.contains("kvp"));
 
 		Set<String> getPropertyValueEncodings = enabledEncodings.get(GetPropertyValue);
-		assertThat(getPropertyValueEncodings, hasOnlyItems("kvp"));
+		assertEquals(getPropertyValueEncodings.size(), 1);
+		assertTrue(getPropertyValueEncodings.contains("kvp"));
 	}
 
 	@Test
@@ -146,18 +159,18 @@ public class WebFeatureServiceTest {
 			.getEnabledEncodingsPerRequestType();
 
 		Set<String> capabilitiesEncodings = enabledEncodings.get(GetCapabilities);
-		assertThat(capabilitiesEncodings, hasOnlyItems("kvp"));
-		assertThat(capabilitiesEncodings, not(hasOnlyItems("xml", "soap")));
+		assertEquals(capabilitiesEncodings.size(), 1);
+		assertTrue(capabilitiesEncodings.contains("kvp"));
 
 		Set<String> describeFeatureTypeEncodings = enabledEncodings.get(DescribeFeatureType);
-		assertThat(describeFeatureTypeEncodings, hasOnlyItems("kvp"));
-		assertThat(capabilitiesEncodings, not(hasOnlyItems("xml", "soap")));
+		assertEquals(describeFeatureTypeEncodings.size(), 1);
+		assertTrue(describeFeatureTypeEncodings.contains("kvp"));
 
 		Set<String> getFeatureEncodings = enabledEncodings.get(GetFeature);
-		assertThat(getFeatureEncodings.size(), is(0));
+		assertEquals(getFeatureEncodings.size(), 0);
 
 		Set<String> getPropertyValueEncodings = enabledEncodings.get(GetPropertyValue);
-		assertThat(getPropertyValueEncodings.size(), is(0));
+		assertEquals(getPropertyValueEncodings.size(), 0);
 	}
 
 	@Test
@@ -170,16 +183,22 @@ public class WebFeatureServiceTest {
 			.getEnabledEncodingsPerRequestType();
 
 		Set<String> capabilitiesEncodings = enabledEncodings.get(GetCapabilities);
-		assertThat(capabilitiesEncodings, hasOnlyItems("xml", "soap"));
+		assertEquals(capabilitiesEncodings.size(), 2);
+		assertTrue(capabilitiesEncodings.contains("xml"));
+		assertTrue(capabilitiesEncodings.contains("soap"));
 
 		Set<String> describeFeatureTypeEncodings = enabledEncodings.get(DescribeFeatureType);
-		assertThat(describeFeatureTypeEncodings, hasOnlyItems("xml", "soap", "kvp"));
+		assertEquals(describeFeatureTypeEncodings.size(), 3);
+		assertTrue(describeFeatureTypeEncodings.contains("kvp"));
+		assertTrue(describeFeatureTypeEncodings.contains("xml"));
+		assertTrue(describeFeatureTypeEncodings.contains("soap"));
 
 		Set<String> getFeatureEncodings = enabledEncodings.get(GetFeature);
-		assertThat(getFeatureEncodings, hasOnlyItems("xml"));
+		assertEquals(getFeatureEncodings.size(), 1);
+		assertTrue(getFeatureEncodings.contains("xml"));
 
 		Set<String> getPropertyValueEncodings = enabledEncodings.get(GetPropertyValue);
-		assertThat(getPropertyValueEncodings.size(), is(0));
+		assertEquals(getPropertyValueEncodings.size(), 0);
 	}
 
 	@Test
@@ -192,16 +211,22 @@ public class WebFeatureServiceTest {
 			.getEnabledEncodingsPerRequestType();
 
 		Set<String> capabilitiesEncodings = enabledEncodings.get(GetCapabilities);
-		assertThat(capabilitiesEncodings, hasOnlyItems("kvp", "xml", "soap"));
+		assertEquals(capabilitiesEncodings.size(), 3);
+		assertTrue(capabilitiesEncodings.contains("kvp"));
+		assertTrue(capabilitiesEncodings.contains("xml"));
+		assertTrue(capabilitiesEncodings.contains("soap"));
 
 		Set<String> getFeatureEncodings = enabledEncodings.get(GetFeature);
-		assertThat(getFeatureEncodings, hasOnlyItems("kvp", "xml", "soap"));
+		assertEquals(getFeatureEncodings.size(), 3);
+		assertTrue(getFeatureEncodings.contains("kvp"));
+		assertTrue(getFeatureEncodings.contains("xml"));
+		assertTrue(getFeatureEncodings.contains("soap"));
 
 		Set<String> describeFeatureTypeEncodings = enabledEncodings.get(DescribeFeatureType);
-		assertThat(describeFeatureTypeEncodings.size(), is(0));
+		assertEquals(describeFeatureTypeEncodings.size(), 0);
 
 		Set<String> getPropertyValueEncodings = enabledEncodings.get(GetPropertyValue);
-		assertThat(getPropertyValueEncodings.size(), is(0));
+		assertEquals(getPropertyValueEncodings.size(), 0);
 	}
 
 	@Test
@@ -210,7 +235,7 @@ public class WebFeatureServiceTest {
 
 		SupportedEncodings unlimitedSupportedEncodings = webFeatureService.parseEncodings(supportedRequests);
 
-		assertThat(unlimitedSupportedEncodings, CoreMatchers.instanceOf(UnlimitedSupportedEncodings.class));
+		assertInstanceOf(UnlimitedSupportedEncodings.class, unlimitedSupportedEncodings);
 	}
 
 	@Test
@@ -219,7 +244,7 @@ public class WebFeatureServiceTest {
 
 		SupportedEncodings unlimitedSupportedEncodings = webFeatureService.parseEncodings(supportedRequests);
 
-		assertThat(unlimitedSupportedEncodings, CoreMatchers.instanceOf(UnlimitedSupportedEncodings.class));
+		assertInstanceOf(UnlimitedSupportedEncodings.class, unlimitedSupportedEncodings);
 	}
 
 	private DeegreeWFS prepareSupportedRequestsWithRequestTypeSpecific() {

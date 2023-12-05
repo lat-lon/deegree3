@@ -34,17 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.protocol.wfs.getfeature.kvp;
 
-import static org.deegree.protocol.wfs.WFSConstants.VERSION_200;
-
-import java.math.BigInteger;
-import java.net.URL;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.namespace.QName;
-
-import junit.framework.TestCase;
-
 import org.deegree.commons.utils.kvp.KVPUtils;
 import org.deegree.cs.coordinatesystems.ICRS;
 import org.deegree.cs.persistence.CRSManager;
@@ -64,14 +53,25 @@ import org.deegree.protocol.wfs.query.BBoxQuery;
 import org.deegree.protocol.wfs.query.FeatureIdQuery;
 import org.deegree.protocol.wfs.query.FilterQuery;
 import org.deegree.protocol.wfs.query.Query;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import javax.xml.namespace.QName;
+import java.math.BigInteger;
+import java.net.URL;
+import java.util.List;
+import java.util.Map;
+
+import static org.deegree.protocol.wfs.WFSConstants.VERSION_200;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * The <code>GetFeatureKVPAdapterTest</code> class tests the GetFeature KVP adapter.
  *
  * @author <a href="mailto:ionita@lat-lon.de">Andrei Ionita</a>
  */
-public class GetFeatureKVPAdapterTest extends TestCase {
+public class GetFeatureKVPAdapterTest {
 
 	// ----------------------V 1.0.0 ---------------------------------
 	private final String V100_EXAMPLE_1 = "wfs100/example1.kvp";
@@ -133,9 +133,6 @@ public class GetFeatureKVPAdapterTest extends TestCase {
 
 	private final String V110_EXAMPLE_sortby = "wfs110/example_sortby.kvp";
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void test_V100_EXAMPLE_1() throws Exception {
 		URL exampleURL = this.getClass().getResource(V100_EXAMPLE_1);
@@ -146,9 +143,6 @@ public class GetFeatureKVPAdapterTest extends TestCase {
 				((AdHocQuery) getFeature.getQueries().get(0)).getTypeNames()[0].getFeatureTypeName());
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void test_V110_EXAMPLE_1() throws Exception {
 		URL exampleURL = this.getClass().getResource(V110_EXAMPLE_1);
@@ -160,9 +154,6 @@ public class GetFeatureKVPAdapterTest extends TestCase {
 		assertEquals(((FilterQuery) queries.get(0)).getTypeNames()[0].getFeatureTypeName(), new QName("InWaterA_1M"));
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void test_V100_EXAMPLE_2() throws Exception {
 		URL exampleURL = this.getClass().getResource(V100_EXAMPLE_2);
@@ -178,9 +169,6 @@ public class GetFeatureKVPAdapterTest extends TestCase {
 				((PropertyName) filterQuery.getProjectionClauses()[1]).getPropertyName().getAsText());
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void test_V110_EXAMPLE_2() throws Exception {
 		URL exampleURL = this.getClass().getResource(V110_EXAMPLE_2);
@@ -198,9 +186,6 @@ public class GetFeatureKVPAdapterTest extends TestCase {
 		assertEquals(((FilterQuery) queries.get(0)).getTypeNames()[0].getFeatureTypeName(), new QName("InWaterA_1M"));
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void test_V100_EXAMPLE_3() throws Exception {
 		URL exampleURL = this.getClass().getResource(V100_EXAMPLE_3);
@@ -211,9 +196,6 @@ public class GetFeatureKVPAdapterTest extends TestCase {
 		assertEquals("INWATERA_1M.1013", featureQuery.getFeatureIds()[0]);
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void test_V110_EXAMPLE_3() throws Exception {
 		URL exampleURL = this.getClass().getResource(V110_EXAMPLE_3);
@@ -226,9 +208,6 @@ public class GetFeatureKVPAdapterTest extends TestCase {
 		assertEquals("InWaterA_1M.1013", featureId.getFeatureIds()[0]);
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void test_V100_EXAMPLE_4() throws Exception {
 		URL exampleURL = this.getClass().getResource(V100_EXAMPLE_4);
@@ -246,9 +225,6 @@ public class GetFeatureKVPAdapterTest extends TestCase {
 				((PropertyName) featureId.getProjectionClauses()[1]).getPropertyName().getAsText());
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void test_V110_EXAMPLE_4() throws Exception {
 		URL exampleURL = this.getClass().getResource(V110_EXAMPLE_4);
@@ -265,9 +241,6 @@ public class GetFeatureKVPAdapterTest extends TestCase {
 		assertEquals("InWaterA_1M.1013", featureId.getFeatureIds()[0]);
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void test_V100_EXAMPLE_5() throws Exception {
 		URL exampleURL = this.getClass().getResource(V100_EXAMPLE_5);
@@ -282,9 +255,6 @@ public class GetFeatureKVPAdapterTest extends TestCase {
 		assertEquals("INWATERA_1M.1015", query.getFeatureIds()[2]);
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void test_V110_EXAMPLE_5() throws Exception {
 		URL exampleURL = this.getClass().getResource(V110_EXAMPLE_5);
@@ -299,9 +269,6 @@ public class GetFeatureKVPAdapterTest extends TestCase {
 		assertEquals("InWaterA_1M.1015", query.getFeatureIds()[2]);
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void test_V100_EXAMPLE_6() throws Exception {
 		URL exampleURL = this.getClass().getResource(V100_EXAMPLE_6);
@@ -330,9 +297,6 @@ public class GetFeatureKVPAdapterTest extends TestCase {
 				((PropertyName) query2.getProjectionClauses()[1]).getPropertyName().getAsText());
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void test_V110_EXAMPLE_6() throws Exception {
 		URL exampleURL = this.getClass().getResource(V110_EXAMPLE_6);
@@ -359,9 +323,6 @@ public class GetFeatureKVPAdapterTest extends TestCase {
 				((PropertyName) query2.getProjectionClauses()[1]).getPropertyName().getAsText());
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void test_V100_EXAMPLE_7() throws Exception {
 		URL exampleURL = this.getClass().getResource(V100_EXAMPLE_7);
@@ -376,9 +337,6 @@ public class GetFeatureKVPAdapterTest extends TestCase {
 		verifyEnvelope(env, 10.0, 10.0, 20.0, 20.0);
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void test_V110_EXAMPLE_7() throws Exception {
 		URL exampleURL = this.getClass().getResource(V110_EXAMPLE_7);
@@ -396,9 +354,6 @@ public class GetFeatureKVPAdapterTest extends TestCase {
 		verifyEnvelope(env, 10.0, 10.0, 20.0, 20.0);
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void test_V110_EXAMPLE_8() throws Exception {
 		URL exampleURL = this.getClass().getResource(V110_EXAMPLE_8);
@@ -429,9 +384,6 @@ public class GetFeatureKVPAdapterTest extends TestCase {
 		assertEquals(p2.get1(), g);
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void test_V100_EXAMPLE_9() throws Exception {
 		URL exampleURL = this.getClass().getResource(V100_EXAMPLE_9);
@@ -444,9 +396,6 @@ public class GetFeatureKVPAdapterTest extends TestCase {
 		assertEquals(new QName("BUILTUPA_1M"), filterQuery1.getTypeNames()[0].getFeatureTypeName());
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void test_V110_EXAMPLE_9() throws Exception {
 		URL exampleURL = this.getClass().getResource(V110_EXAMPLE_9);
@@ -461,9 +410,6 @@ public class GetFeatureKVPAdapterTest extends TestCase {
 				query1.getTypeNames()[0].getFeatureTypeName());
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void test_V100_EXAMPLE_10() throws Exception {
 		URL exampleURL = this.getClass().getResource(V100_EXAMPLE_10);
@@ -484,9 +430,6 @@ public class GetFeatureKVPAdapterTest extends TestCase {
 				((PropertyName) filterQuery.getProjectionClauses()[0]).getPropertyName().getAsText());
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void test_V110_EXAMPLE_10() throws Exception {
 		URL exampleURL = this.getClass().getResource(V110_EXAMPLE_10);
@@ -505,9 +448,6 @@ public class GetFeatureKVPAdapterTest extends TestCase {
 		assertEquals(new QName("BuiltUpA_1M"), query1.getTypeNames()[0].getFeatureTypeName());
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void test_V100_EXAMPLE_11() throws Exception {
 		URL exampleURL = this.getClass().getResource(V100_EXAMPLE_11);
@@ -519,9 +459,6 @@ public class GetFeatureKVPAdapterTest extends TestCase {
 		assertEquals("BUILTUP_1M.3456", query.getFeatureIds()[1]);
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void test_V110_EXAMPLE_11() throws Exception {
 		URL exampleURL = this.getClass().getResource(V110_EXAMPLE_11);
@@ -533,9 +470,6 @@ public class GetFeatureKVPAdapterTest extends TestCase {
 		assertEquals("BUILTUP_1M.3456", query.getFeatureIds()[1]);
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void test_V100_EXAMPLE_12() throws Exception {
 		URL exampleURL = this.getClass().getResource(V100_EXAMPLE_12);
@@ -555,9 +489,6 @@ public class GetFeatureKVPAdapterTest extends TestCase {
 				((PropertyName) query0.getProjectionClauses()[2]).getPropertyName().getAsText());
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void test_V110_EXAMPLE_12() throws Exception {
 		URL exampleURL = this.getClass().getResource(V110_EXAMPLE_12);
@@ -575,9 +506,6 @@ public class GetFeatureKVPAdapterTest extends TestCase {
 				((PropertyName) query1.getProjectionClauses()[0]).getPropertyName().getAsText());
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void test_V110_EXAMPLE_13() throws Exception {
 		URL exampleURL = this.getClass().getResource(V110_EXAMPLE_13);
@@ -603,9 +531,6 @@ public class GetFeatureKVPAdapterTest extends TestCase {
 		verifyEnvelope(env, 10.0, 10.0, 20.0, 20.0);
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void test_V110_EXAMPLE_14() throws Exception {
 		URL exampleURL = this.getClass().getResource(V110_EXAMPLE_14);
@@ -638,9 +563,6 @@ public class GetFeatureKVPAdapterTest extends TestCase {
 		verifyEnvelope(env, 10.0, 10.0, 20.0, 20.0);
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void test_V110_EXAMPLE_15() throws Exception {
 		URL exampleURL = this.getClass().getResource(V110_EXAMPLE_15);
@@ -657,9 +579,6 @@ public class GetFeatureKVPAdapterTest extends TestCase {
 		assertEquals(new QName("http://www.theuknamespace.uk", "Town"), typeName[0].getFeatureTypeName());
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void test_V110_EXAMPLE_16() throws Exception {
 		URL exampleURL = this.getClass().getResource(V110_EXAMPLE_16);
@@ -670,9 +589,6 @@ public class GetFeatureKVPAdapterTest extends TestCase {
 		assertEquals(BigInteger.valueOf(60), getFeature.getResolveParams().getTimeout());
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void test_V110_EXAMPLE_17() throws Exception {
 		URL exampleURL = this.getClass().getResource(V110_EXAMPLE_17);
@@ -690,9 +606,6 @@ public class GetFeatureKVPAdapterTest extends TestCase {
 		assertEquals(BigInteger.valueOf(120), ((PropertyName) xlinkProps[1]).getResolveParams().getTimeout());
 	}
 
-	/**
-	 * @throws Exception
-	 */
 	@Test
 	public void test_V110_EXAMPLE_sortby() throws Exception {
 		URL exampleURL = this.getClass().getResource(V110_EXAMPLE_sortby);

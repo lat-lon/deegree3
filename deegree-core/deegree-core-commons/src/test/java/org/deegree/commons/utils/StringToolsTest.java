@@ -34,14 +34,15 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.commons.utils;
 
-import static org.deegree.commons.utils.StringUtils.NO_TRIM_FIELDS;
-import static org.deegree.commons.utils.StringUtils.REMOVE_DOUBLE_FIELDS;
-import static org.deegree.commons.utils.StringUtils.REMOVE_EMPTY_FIELDS;
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import org.junit.Test;
+import static org.deegree.commons.utils.StringUtils.NO_TRIM_FIELDS;
+import static org.deegree.commons.utils.StringUtils.REMOVE_DOUBLE_FIELDS;
+import static org.deegree.commons.utils.StringUtils.REMOVE_EMPTY_FIELDS;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @author <a href="mailto:tonnhofer@lat-lon.de">Oliver Tonnhofer</a>
@@ -64,10 +65,12 @@ public class StringToolsTest {
 	 * Test method for
 	 * {@link org.deegree.commons.utils.StringUtils#replaceAll(java.lang.String, java.lang.String, java.lang.String)}.
 	 */
-	@Test(expected = NullPointerException.class)
+	@Test
 	public void testReplaceAllNull() {
-		// should that be the correct behaviour? or should it return an empty string?
-		StringUtils.replaceAll(null, "*", "$1");
+		assertThrows(NullPointerException.class, () -> {
+			// should that be the correct behaviour? or should it return an empty string?
+			StringUtils.replaceAll(null, "*", "$1");
+		});
 	}
 
 	/**
@@ -127,7 +130,7 @@ public class StringToolsTest {
 
 	// compare all list elements with the given arguments
 	private void arrayCompare(String[] actual, String... expected) {
-		assertEquals("length differ", expected.length, actual.length);
+		assertEquals(expected.length, actual.length, "length differ");
 		for (int i = 0; i < expected.length; i++) {
 			assertEquals(expected[i], actual[i]);
 		}
@@ -135,7 +138,7 @@ public class StringToolsTest {
 
 	// compare all list elements with the given arguments
 	private void listCompare(List<String> actual, String... expected) {
-		assertEquals("length differ", expected.length, actual.size());
+		assertEquals(expected.length, actual.size(), "length differ");
 		for (int i = 0; i < expected.length; i++) {
 			assertEquals(expected[i], actual.get(i));
 		}

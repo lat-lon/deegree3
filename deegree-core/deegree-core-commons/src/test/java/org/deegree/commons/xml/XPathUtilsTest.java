@@ -34,17 +34,16 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.commons.xml;
 
+import org.junit.jupiter.api.Test;
+
 import javax.xml.namespace.QName;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
-
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author <a href="mailto:schmitz@lat-lon.de">Andreas Schmitz</a>
  */
-public class XPathUtilsTest extends TestCase {
+public class XPathUtilsTest {
 
 	@Test
 	public void testFindQNames() {
@@ -52,7 +51,7 @@ public class XPathUtilsTest extends TestCase {
 		ns.addNamespace("app", "http://www.deegree.org/app");
 		XPath path = new XPath("/app:eins/app:zwei/app:drei/app:vier", ns);
 		QName q3 = new QName("http://www.deegree.org/app", "drei");
-		Assert.assertEquals(q3, XPathUtils.extractQNames(path).get(2));
+		assertEquals(q3, XPathUtils.extractQNames(path).get(2));
 	}
 
 }

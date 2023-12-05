@@ -34,14 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.gml.geometry;
 
-import java.io.IOException;
-
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
-import junit.framework.Assert;
-
 import org.deegree.commons.xml.XMLParsingException;
 import org.deegree.commons.xml.stax.XMLStreamReaderWrapper;
 import org.deegree.cs.exceptions.UnknownCRSException;
@@ -55,7 +47,14 @@ import org.deegree.geometry.primitive.patches.Triangle;
 import org.deegree.gml.GMLInputFactory;
 import org.deegree.gml.GMLStreamReader;
 import org.deegree.gml.GMLVersion;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests that check the correct parsing of GML 3.1.1 surface patches, i.e. of elements
@@ -71,11 +70,11 @@ public class GML3SurfacePatchReaderTest {
 		XMLStreamReaderWrapper parser = getParser("PolygonPatch.gml");
 		PolygonPatch patch = (PolygonPatch) getPatchParser().parseSurfacePatch(parser,
 				CRSManager.getCRSRef("EPSG:4326"));
-		Assert.assertEquals(2.0, patch.getExteriorRing().getStartPoint().get0());
-		Assert.assertEquals(0.0, patch.getExteriorRing().getStartPoint().get1());
-		Assert.assertEquals(2.0, patch.getExteriorRing().getEndPoint().get0());
-		Assert.assertEquals(0.0, patch.getExteriorRing().getEndPoint().get1());
-		Assert.assertEquals(2, patch.getInteriorRings().size());
+		assertEquals(2.0, patch.getExteriorRing().getStartPoint().get0());
+		assertEquals(0.0, patch.getExteriorRing().getStartPoint().get1());
+		assertEquals(2.0, patch.getExteriorRing().getEndPoint().get0());
+		assertEquals(0.0, patch.getExteriorRing().getEndPoint().get1());
+		assertEquals(2, patch.getInteriorRings().size());
 	}
 
 	@Test
@@ -83,7 +82,7 @@ public class GML3SurfacePatchReaderTest {
 			UnknownCRSException {
 		XMLStreamReaderWrapper parser = getParser("Triangle.gml");
 		Triangle patch = (Triangle) getPatchParser().parseSurfacePatch(parser, CRSManager.getCRSRef("EPSG:4326"));
-		Assert.assertEquals(4, patch.getExteriorRing().getControlPoints().size());
+		assertEquals(4, patch.getExteriorRing().getControlPoints().size());
 	}
 
 	@Test
@@ -91,7 +90,7 @@ public class GML3SurfacePatchReaderTest {
 			UnknownCRSException {
 		XMLStreamReaderWrapper parser = getParser("Rectangle.gml");
 		Rectangle patch = (Rectangle) getPatchParser().parseSurfacePatch(parser, CRSManager.getCRSRef("EPSG:4326"));
-		Assert.assertEquals(5, patch.getExteriorRing().getControlPoints().size());
+		assertEquals(5, patch.getExteriorRing().getControlPoints().size());
 	}
 
 	@Test
@@ -99,8 +98,8 @@ public class GML3SurfacePatchReaderTest {
 			UnknownCRSException {
 		XMLStreamReaderWrapper parser = getParser("Cone.gml");
 		Cone patch = (Cone) getPatchParser().parseSurfacePatch(parser, CRSManager.getCRSRef("EPSG:4326"));
-		Assert.assertEquals(3, patch.getNumColumns());
-		Assert.assertEquals(2, patch.getNumRows());
+		assertEquals(3, patch.getNumColumns());
+		assertEquals(2, patch.getNumRows());
 	}
 
 	@Test
@@ -108,8 +107,8 @@ public class GML3SurfacePatchReaderTest {
 			UnknownCRSException {
 		XMLStreamReaderWrapper parser = getParser("Cylinder.gml");
 		Cylinder patch = (Cylinder) getPatchParser().parseSurfacePatch(parser, CRSManager.getCRSRef("EPSG:4326"));
-		Assert.assertEquals(3, patch.getNumColumns());
-		Assert.assertEquals(2, patch.getNumRows());
+		assertEquals(3, patch.getNumColumns());
+		assertEquals(2, patch.getNumRows());
 	}
 
 	@Test
@@ -117,8 +116,8 @@ public class GML3SurfacePatchReaderTest {
 			UnknownCRSException {
 		XMLStreamReaderWrapper parser = getParser("Sphere.gml");
 		Sphere patch = (Sphere) getPatchParser().parseSurfacePatch(parser, CRSManager.getCRSRef("EPSG:4326"));
-		Assert.assertEquals(3, patch.getNumColumns());
-		Assert.assertEquals(2, patch.getNumRows());
+		assertEquals(3, patch.getNumColumns());
+		assertEquals(2, patch.getNumRows());
 	}
 
 	private XMLStreamReaderWrapper getParser(String fileName)

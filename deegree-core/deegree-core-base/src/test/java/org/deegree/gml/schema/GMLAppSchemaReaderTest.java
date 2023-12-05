@@ -34,26 +34,10 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.gml.schema;
 
-import static javax.xml.namespace.QName.valueOf;
-import static org.deegree.commons.tom.gml.GMLObjectCategory.TIME_OBJECT;
-import static org.deegree.commons.tom.gml.GMLObjectCategory.TIME_SLICE;
-import static org.deegree.commons.xml.CommonNamespaces.GML3_2_NS;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-
-import javax.xml.namespace.QName;
-
 import org.apache.xerces.impl.xs.XSAttributeDecl;
-import org.apache.xerces.xs.XSAttributeDeclaration;
 import org.apache.xerces.xs.XSAttributeUse;
 import org.apache.xerces.xs.XSComplexTypeDefinition;
 import org.apache.xerces.xs.XSElementDeclaration;
-import org.apache.xerces.xs.XSTypeDefinition;
 import org.deegree.commons.tom.gml.GMLObjectType;
 import org.deegree.commons.tom.gml.property.PropertyType;
 import org.deegree.commons.utils.test.TestProperties;
@@ -62,8 +46,20 @@ import org.deegree.feature.types.FeatureCollectionType;
 import org.deegree.feature.types.FeatureType;
 import org.deegree.feature.types.property.GeometryPropertyType;
 import org.deegree.gml.GMLVersion;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import javax.xml.namespace.QName;
+import java.util.List;
+
+import static javax.xml.namespace.QName.valueOf;
+import static org.deegree.commons.tom.gml.GMLObjectCategory.TIME_OBJECT;
+import static org.deegree.commons.tom.gml.GMLObjectCategory.TIME_SLICE;
+import static org.deegree.commons.xml.CommonNamespaces.GML3_2_NS;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests that check the correct extraction of {@link GMLObjectType}s from various GML
@@ -81,7 +77,7 @@ public class GMLAppSchemaReaderTest {
 		GMLAppSchemaReader adapter = new GMLAppSchemaReader(null, null, schemaURL);
 		AppSchema schema = adapter.extractAppSchema();
 		List<FeatureType> fts = schema.getFeatureTypes("http://www.deegree.org/app", true, true);
-		Assert.assertEquals(4, fts.size());
+		assertEquals(4, fts.size());
 	}
 
 	@Test
@@ -92,7 +88,7 @@ public class GMLAppSchemaReaderTest {
 		String schemaURL2 = "http://schemas.opengis.net/wfs/1.1.0/wfs.xsd";
 		GMLAppSchemaReader adapter = new GMLAppSchemaReader(null, null, schemaURL, schemaURL2);
 		List<FeatureType> fts = adapter.extractAppSchema().getFeatureTypes("http://www.deegree.org/app", false, false);
-		Assert.assertEquals(4, fts.size());
+		assertEquals(4, fts.size());
 	}
 
 	@Test
@@ -103,13 +99,13 @@ public class GMLAppSchemaReaderTest {
 		GMLAppSchemaReader adapter = new GMLAppSchemaReader(null, null, schemaURL);
 		AppSchema schema = adapter.extractAppSchema();
 		FeatureType[] fts = schema.getFeatureTypes();
-		Assert.assertEquals(69, fts.length);
+		assertEquals(69, fts.length);
 
 		FeatureType buildingFt = schema
 			.getFeatureType(QName.valueOf("{http://www.opengis.net/citygml/building/1.0}Building"));
 		PropertyType pt = buildingFt.getPropertyDeclaration(
 				QName.valueOf("{http://www.opengis.net/citygml/1.0}_GenericApplicationPropertyOfCityObject"));
-		Assert.assertEquals(8, pt.getSubstitutions().length);
+		assertEquals(8, pt.getSubstitutions().length);
 	}
 
 	@Test
@@ -134,7 +130,7 @@ public class GMLAppSchemaReaderTest {
 		GMLAppSchemaReader adapter = new GMLAppSchemaReader(null, null, schemaURL);
 		List<FeatureType> fts = adapter.extractAppSchema()
 			.getFeatureTypes("http://cite.opengeospatial.org/gmlsf", false, false);
-		Assert.assertEquals(3, fts.size());
+		assertEquals(3, fts.size());
 	}
 
 	@Test
@@ -144,7 +140,7 @@ public class GMLAppSchemaReaderTest {
 		String schemaURL = this.getClass().getResource("../cite/schema/cite-gmlsf1.xsd").toString();
 		GMLAppSchemaReader adapter = new GMLAppSchemaReader(null, null, schemaURL);
 		FeatureType[] fts = adapter.extractAppSchema().getFeatureTypes();
-		Assert.assertEquals(5, fts.length);
+		assertEquals(5, fts.length);
 	}
 
 	@Test
@@ -154,7 +150,7 @@ public class GMLAppSchemaReaderTest {
 		String schemaURL = this.getClass().getResource("../cite/schema/cite-gmlsf2.xsd").toString();
 		GMLAppSchemaReader adapter = new GMLAppSchemaReader(null, null, schemaURL);
 		FeatureType[] fts = adapter.extractAppSchema().getFeatureTypes();
-		Assert.assertEquals(6, fts.length);
+		assertEquals(6, fts.length);
 	}
 
 	@Test
@@ -164,7 +160,7 @@ public class GMLAppSchemaReaderTest {
 		String schemaURL = this.getClass().getResource("../cite/schema/all.xsd").toString();
 		GMLAppSchemaReader adapter = new GMLAppSchemaReader(null, null, schemaURL);
 		FeatureType[] fts = adapter.extractAppSchema().getFeatureTypes();
-		Assert.assertEquals(21, fts.length);
+		assertEquals(21, fts.length);
 	}
 
 	@Test
@@ -192,7 +188,7 @@ public class GMLAppSchemaReaderTest {
 
 		GMLAppSchemaReader adapter = new GMLAppSchemaReader(GMLVersion.GML_31, null, schemaURL);
 		AppSchema schema = adapter.extractAppSchema();
-		Assert.assertEquals(132, schema.getFeatureTypes().length);
+		assertEquals(132, schema.getFeatureTypes().length);
 	}
 
 	@Test
@@ -206,7 +202,7 @@ public class GMLAppSchemaReaderTest {
 
 		GMLAppSchemaReader adapter = new GMLAppSchemaReader(GMLVersion.GML_30, null, schemaURL);
 		AppSchema schema = adapter.extractAppSchema();
-		Assert.assertEquals(237, schema.getFeatureTypes().length);
+		assertEquals(237, schema.getFeatureTypes().length);
 
 		QName ftName = new QName("http://www.adv-online.de/namespaces/adv/gid/5.1.1", "AX_BesondereFlurstuecksgrenze");
 		FeatureType ft = adapter.extractAppSchema().getFeatureType(ftName);
@@ -229,7 +225,7 @@ public class GMLAppSchemaReaderTest {
 		GMLAppSchemaReader adapter = new GMLAppSchemaReader(GMLVersion.GML_32, null, schemaURL);
 		AppSchema schema = adapter.extractAppSchema();
 		FeatureType[] fts = schema.getFeatureTypes();
-		Assert.assertEquals(75, fts.length);
+		assertEquals(75, fts.length);
 		for (String ns : schema.getGMLSchema().getAppNamespaces()) {
 			System.out.println(ns);
 		}
@@ -242,9 +238,9 @@ public class GMLAppSchemaReaderTest {
 		String schemaURL = this.getClass().getResource("../misc/schema/CustomProperties.xsd").toString();
 		GMLAppSchemaReader adapter = new GMLAppSchemaReader(null, null, schemaURL);
 		List<FeatureType> fts = adapter.extractAppSchema().getFeatureTypes("http://www.deegree.org/app", false, false);
-		Assert.assertEquals(1, fts.size());
+		assertEquals(1, fts.size());
 		FeatureType ft = fts.get(0);
-		Assert.assertEquals(9, ft.getPropertyDeclarations().size());
+		assertEquals(9, ft.getPropertyDeclarations().size());
 	}
 
 	@Test
@@ -255,7 +251,7 @@ public class GMLAppSchemaReaderTest {
 		GMLAppSchemaReader adapter = new GMLAppSchemaReader(null, null, schemaUrl);
 		AppSchema schema = adapter.extractAppSchema();
 		FeatureType[] fts = schema.getFeatureTypes();
-		Assert.assertEquals(157, fts.length);
+		assertEquals(157, fts.length);
 	}
 
 	@Test
@@ -265,7 +261,7 @@ public class GMLAppSchemaReaderTest {
 		String schemaUrl = this.getClass().getResource("../aixm/schema/message/AIXM_BasicMessage.xsd").toString();
 		GMLAppSchemaReader adapter = new GMLAppSchemaReader(null, null, schemaUrl);
 		AppSchema schema = adapter.extractAppSchema();
-		Assert.assertEquals(35, schema.getGeometryTypes().size());
+		assertEquals(35, schema.getGeometryTypes().size());
 	}
 
 	@Test
@@ -326,7 +322,7 @@ public class GMLAppSchemaReaderTest {
 
 		// {http://www.aixm.aero/schema/5.1}Point
 		GMLObjectType gt = schema.getGeometryType(new QName(aixmNs, "Point"));
-		Assert.assertEquals(9, gt.getPropertyDeclarations().size());
+		assertEquals(9, gt.getPropertyDeclarations().size());
 		assertPropertyType(gt, 0, new QName(GML3_2_NS, "metaDataProperty"), 0, -1);
 		assertPropertyType(gt, 1, new QName(GML3_2_NS, "description"), 0, 1);
 		assertPropertyType(gt, 2, new QName(GML3_2_NS, "descriptionReference"), 0, 1);
@@ -341,7 +337,7 @@ public class GMLAppSchemaReaderTest {
 
 		// {http://www.aixm.aero/schema/5.1}ElevatedPoint
 		gt = schema.getGeometryType(new QName(aixmNs, "ElevatedPoint"));
-		Assert.assertEquals(14, gt.getPropertyDeclarations().size());
+		assertEquals(14, gt.getPropertyDeclarations().size());
 		assertPropertyType(gt, 0, new QName(GML3_2_NS, "metaDataProperty"), 0, -1);
 		assertPropertyType(gt, 1, new QName(GML3_2_NS, "description"), 0, 1);
 		assertPropertyType(gt, 2, new QName(GML3_2_NS, "descriptionReference"), 0, 1);
@@ -361,7 +357,7 @@ public class GMLAppSchemaReaderTest {
 
 		// {http://www.aixm.aero/schema/5.1}Curve
 		gt = schema.getGeometryType(new QName(aixmNs, "Curve"));
-		Assert.assertEquals(8, gt.getPropertyDeclarations().size());
+		assertEquals(8, gt.getPropertyDeclarations().size());
 		assertPropertyType(gt, 0, new QName(GML3_2_NS, "metaDataProperty"), 0, -1);
 		assertPropertyType(gt, 1, new QName(GML3_2_NS, "description"), 0, 1);
 		assertPropertyType(gt, 2, new QName(GML3_2_NS, "descriptionReference"), 0, 1);
@@ -373,7 +369,7 @@ public class GMLAppSchemaReaderTest {
 
 		// {http://www.aixm.aero/schema/5.1}ElevatedCurve
 		gt = schema.getGeometryType(new QName(aixmNs, "ElevatedCurve"));
-		Assert.assertEquals(13, gt.getPropertyDeclarations().size());
+		assertEquals(13, gt.getPropertyDeclarations().size());
 		assertPropertyType(gt, 0, new QName(GML3_2_NS, "metaDataProperty"), 0, -1);
 		assertPropertyType(gt, 1, new QName(GML3_2_NS, "description"), 0, 1);
 		assertPropertyType(gt, 2, new QName(GML3_2_NS, "descriptionReference"), 0, 1);
@@ -390,7 +386,7 @@ public class GMLAppSchemaReaderTest {
 
 		// {http://www.aixm.aero/schema/5.1}Surface
 		gt = schema.getGeometryType(new QName(aixmNs, "Surface"));
-		Assert.assertEquals(8, gt.getPropertyDeclarations().size());
+		assertEquals(8, gt.getPropertyDeclarations().size());
 		assertPropertyType(gt, 0, new QName(GML3_2_NS, "metaDataProperty"), 0, -1);
 		assertPropertyType(gt, 1, new QName(GML3_2_NS, "description"), 0, 1);
 		assertPropertyType(gt, 2, new QName(GML3_2_NS, "descriptionReference"), 0, 1);
@@ -402,7 +398,7 @@ public class GMLAppSchemaReaderTest {
 
 		// {http://www.aixm.aero/schema/5.1}ElevatedSurface
 		gt = schema.getGeometryType(new QName(aixmNs, "ElevatedSurface"));
-		Assert.assertEquals(13, gt.getPropertyDeclarations().size());
+		assertEquals(13, gt.getPropertyDeclarations().size());
 		assertPropertyType(gt, 0, new QName(GML3_2_NS, "metaDataProperty"), 0, -1);
 		assertPropertyType(gt, 1, new QName(GML3_2_NS, "description"), 0, 1);
 		assertPropertyType(gt, 2, new QName(GML3_2_NS, "descriptionReference"), 0, 1);
@@ -427,7 +423,7 @@ public class GMLAppSchemaReaderTest {
 		AppSchema schema = adapter.extractAppSchema();
 		GMLSchemaInfoSet gmlSchema = schema.getGMLSchema();
 		List<XSElementDeclaration> timeSliceElementDecls = gmlSchema.getTimeSliceElementDeclarations(null, true);
-		Assert.assertEquals(126, timeSliceElementDecls.size());
+		assertEquals(126, timeSliceElementDecls.size());
 	}
 
 	@Test

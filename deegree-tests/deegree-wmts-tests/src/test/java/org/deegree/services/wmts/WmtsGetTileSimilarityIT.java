@@ -40,24 +40,21 @@
 
 package org.deegree.services.wmts;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.apache.commons.io.IOUtils;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.slf4j.Logger;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.stream.Stream;
 
 import static org.deegree.commons.utils.net.HttpUtils.STREAM;
 import static org.deegree.commons.utils.net.HttpUtils.retrieve;
 import static org.deegree.commons.utils.test.IntegrationTestUtils.isImageSimilar;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.slf4j.LoggerFactory.getLogger;
 
 /**
@@ -66,49 +63,34 @@ import static org.slf4j.LoggerFactory.getLogger;
  * @author <a href="mailto:schmitz@occamlabs.de">Andreas Schmitz</a>
  */
 
-@RunWith(Parameterized.class)
 public class WmtsGetTileSimilarityIT extends AbstractWmtsSimilarityIT {
 
 	private static final Logger LOG = getLogger(WmtsGetTileSimilarityIT.class);
 
-	protected final BufferedImage expected;
+	private Stream<Arguments> getParameters() {
+		return Stream.of(Arguments.of("cache1"), Arguments.of("cache2"), Arguments.of("filesystem1"),
+				Arguments.of("filesystem2"), Arguments.of("remotewms1"), Arguments.of("remotewms130"),
+				Arguments.of("remotewms_cache"), Arguments.of("remotewms_cache2"),
+				// requests.add( new Object[] { "remotewms_gif" } );
+				Arguments.of("remotewmts"), Arguments.of("transparent"), Arguments.of("uncached1"),
+				Arguments.of("uncached2"), Arguments.of("utah4326"), Arguments.of("utah4326_130"));
+	}
 
-	public WmtsGetTileSimilarityIT(String resourceName) throws IOException {
-		super(resourceName, "/getTile");
-		this.expected = ImageIO
+	@ParameterizedTest
+	@MethodSource("getParameters")
+	public void testSimilarity(String resourceName) throws Exception {
+		String kvpRequest = IOUtils
+			.toString(WmtsGetFeatureInfoSimilarityIT.class.getResourceAsStream("/getTile/" + resourceName + ".kvp"));
+		BufferedImage expected = ImageIO
 			.read(WmtsGetFeatureInfoSimilarityIT.class.getResourceAsStream("/getTile/" + resourceName + ".response"));
-	}
 
-	@Parameters
-	public static Collection<Object[]> getParameters() {
-		List<Object[]> requests = new ArrayList<>();
-		requests.add(new Object[] { "cache1" });
-		requests.add(new Object[] { "cache2" });
-		requests.add(new Object[] { "filesystem1" });
-		requests.add(new Object[] { "filesystem2" });
-		requests.add(new Object[] { "remotewms1" });
-		requests.add(new Object[] { "remotewms130" });
-		requests.add(new Object[] { "remotewms_cache" });
-		requests.add(new Object[] { "remotewms_cache2" });
-		// requests.add( new Object[] { "remotewms_gif" } );
-		requests.add(new Object[] { "remotewmts" });
-		requests.add(new Object[] { "transparent" });
-		requests.add(new Object[] { "uncached1" });
-		requests.add(new Object[] { "uncached2" });
-		requests.add(new Object[] { "utah4326" });
-		requests.add(new Object[] { "utah4326_130" });
-		return requests;
-	}
-
-	@Test
-	public void testSimilarity() throws Exception {
-		String request = createRequest();
+		String request = createRequest(kvpRequest);
 		InputStream in = retrieve(STREAM, request);
 		LOG.info("Requesting {}", request);
 		BufferedImage actual = ImageIO.read(in);
 
-		assertTrue("Image for " + resourceName + "are not similar enough",
-				isImageSimilar(expected, actual, 0.01, getClass().getName() + "_" + resourceName));
+		assertTrue(isImageSimilar(expected, actual, 0.01, getClass().getName() + "_" + resourceName),
+				"Image for " + resourceName + "are not similar enough");
 	}
 
 }

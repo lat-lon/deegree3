@@ -5,61 +5,55 @@ import org.deegree.workspace.ResourceLocation;
 import org.deegree.workspace.ResourceMetadata;
 import org.deegree.workspace.ResourceProvider;
 import org.deegree.workspace.Workspace;
-import org.hamcrest.MatcherAssert;
-import org.junit.BeforeClass;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
-import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 
-import static org.hamcrest.CoreMatchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author <a href="mailto:goltz@lat-lon.de">Lyn Goltz </a>
  */
 public class DefaultResourceLocationTest {
 
-	@ClassRule
-	public static TemporaryFolder folder = new TemporaryFolder();
+	@TempDir
+	public static Path folder;
 
-	private static File resourceFile;
+	private static Path resourceFileInSubfolder;
 
-	private static File resourceFileInSubfolder;
-
-	@BeforeClass
-	public static void initFolder() throws IOException {
-		resourceFile = folder.newFile("test.xml");
-		folder.newFolder("test");
-		resourceFileInSubfolder = folder.newFile("test/test.xml");
+	@BeforeAll
+	public static void initFolder() {
+		resourceFileInSubfolder = folder.resolve("test").resolve("test.xml");
 	}
 
 	@Test
 	public void testActivate() {
 		DefaultResourceLocation<Resource> resourceDefaultResourceLocation = new DefaultResourceLocation<>(
-				resourceFileInSubfolder, createIdentifier("test"));
+				resourceFileInSubfolder.toFile(), createIdentifier("test"));
 
 		File resourceFile = resourceDefaultResourceLocation.getAsFile();
-		MatcherAssert.assertThat(resourceFile, is(resourceFileInSubfolder));
+		assertEquals(resourceFile, resourceFileInSubfolder.toFile());
 		resourceDefaultResourceLocation.activate();
 
 		File activatedResourceFile = resourceDefaultResourceLocation.getAsFile();
-		MatcherAssert.assertThat(activatedResourceFile, is(resourceFileInSubfolder));
+		assertEquals(activatedResourceFile, resourceFileInSubfolder.toFile());
 	}
 
 	@Test
 	public void testActivate_InSubDirectory() {
 		DefaultResourceLocation<Resource> resourceDefaultResourceLocation = new DefaultResourceLocation<>(
-				resourceFileInSubfolder, createIdentifier("test/test"));
+				resourceFileInSubfolder.toFile(), createIdentifier("test/test"));
 
 		File resourceFile = resourceDefaultResourceLocation.getAsFile();
-		MatcherAssert.assertThat(resourceFile, is(resourceFileInSubfolder));
+		assertEquals(resourceFile, resourceFileInSubfolder.toFile());
 		resourceDefaultResourceLocation.activate();
 
 		File activatedResourceFile = resourceDefaultResourceLocation.getAsFile();
-		MatcherAssert.assertThat(activatedResourceFile, is(resourceFileInSubfolder));
+		assertEquals(activatedResourceFile, resourceFileInSubfolder.toFile());
 	}
 
 	private DefaultResourceIdentifier<Resource> createIdentifier(String identifier) {

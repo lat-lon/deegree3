@@ -40,12 +40,13 @@ import static org.deegree.services.encoding.LimitedSupportedEncodingsTest.Reques
 import static org.deegree.services.encoding.LimitedSupportedEncodingsTest.RequestType.DescribeFeatureType;
 import static org.deegree.services.encoding.LimitedSupportedEncodingsTest.RequestType.GetCapabilities;
 import static org.deegree.services.encoding.LimitedSupportedEncodingsTest.RequestType.GetFeatureWithLock;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.HashSet;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author <a href="mailto:goltz@lat-lon.de">Lyn Goltz</a>
@@ -56,23 +57,23 @@ public class LimitedSupportedEncodingsTest {
 
 	@Test
 	public void testIsEncodingSupportedUnsupportedRequestType() {
-		assertFalse(limitedSupportedEncodings.isEncodingSupported(GetFeatureWithLock, "xml"));
-		assertFalse(limitedSupportedEncodings.isEncodingSupported(GetFeatureWithLock, "kvp"));
-		assertFalse(limitedSupportedEncodings.isEncodingSupported(GetFeatureWithLock, "soap"));
+		Assertions.assertFalse(limitedSupportedEncodings.isEncodingSupported(GetFeatureWithLock, "xml"));
+		Assertions.assertFalse(limitedSupportedEncodings.isEncodingSupported(GetFeatureWithLock, "kvp"));
+		Assertions.assertFalse(limitedSupportedEncodings.isEncodingSupported(GetFeatureWithLock, "soap"));
 	}
 
 	@Test
 	public void testIsEncodingSupportedSupportedRequestType() {
-		assertTrue(limitedSupportedEncodings.isEncodingSupported(GetCapabilities, "xml"));
-		assertTrue(limitedSupportedEncodings.isEncodingSupported(GetCapabilities, "kvp"));
-		assertTrue(limitedSupportedEncodings.isEncodingSupported(GetCapabilities, "soap"));
+		Assertions.assertTrue(limitedSupportedEncodings.isEncodingSupported(GetCapabilities, "xml"));
+		Assertions.assertTrue(limitedSupportedEncodings.isEncodingSupported(GetCapabilities, "kvp"));
+		Assertions.assertTrue(limitedSupportedEncodings.isEncodingSupported(GetCapabilities, "soap"));
 	}
 
 	@Test
 	public void testIsEncodingSupportedPartlySupportedRequestType() {
-		assertFalse(limitedSupportedEncodings.isEncodingSupported(DescribeFeatureType, "xml"));
-		assertTrue(limitedSupportedEncodings.isEncodingSupported(DescribeFeatureType, "kvp"));
-		assertTrue(limitedSupportedEncodings.isEncodingSupported(DescribeFeatureType, "soap"));
+		Assertions.assertFalse(limitedSupportedEncodings.isEncodingSupported(DescribeFeatureType, "xml"));
+		Assertions.assertTrue(limitedSupportedEncodings.isEncodingSupported(DescribeFeatureType, "kvp"));
+		Assertions.assertTrue(limitedSupportedEncodings.isEncodingSupported(DescribeFeatureType, "soap"));
 	}
 
 	private LimitedSupportedEncodings prepareLimitedSupportedEncodings() {

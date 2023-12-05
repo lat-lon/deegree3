@@ -39,26 +39,33 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.feature.stream;
 
+import org.deegree.feature.Feature;
+import org.deegree.feature.stream.ThreadedFeatureInputStream.Consumer;
+import org.deegree.feature.stream.ThreadedFeatureInputStream.ConsumerClosingMessage;
+import org.deegree.feature.stream.ThreadedFeatureInputStream.ConsumerMessage;
+import org.deegree.feature.stream.ThreadedFeatureInputStream.Producer;
+import org.deegree.feature.stream.ThreadedFeatureInputStream.ProducerExceptionMessage;
+import org.deegree.feature.stream.ThreadedFeatureInputStream.ProducerFeatureMessage;
+import org.deegree.feature.stream.ThreadedFeatureInputStream.ProducerFinishedMessage;
+import org.deegree.feature.stream.ThreadedFeatureInputStream.ProducerMessage;
+import org.junit.jupiter.api.Test;
+import org.mockito.InOrder;
+
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.concurrent.BlockingQueue;
 
-import org.deegree.feature.Feature;
-import org.deegree.feature.stream.ThreadedFeatureInputStream.Consumer;
-import org.deegree.feature.stream.ThreadedFeatureInputStream.ConsumerMessage;
-import org.deegree.feature.stream.ThreadedFeatureInputStream.ConsumerClosingMessage;
-import org.deegree.feature.stream.ThreadedFeatureInputStream.ProducerMessage;
-import org.deegree.feature.stream.ThreadedFeatureInputStream.ProducerExceptionMessage;
-import org.deegree.feature.stream.ThreadedFeatureInputStream.ProducerFeatureMessage;
-import org.deegree.feature.stream.ThreadedFeatureInputStream.ProducerFinishedMessage;
-import org.deegree.feature.stream.ThreadedFeatureInputStream.Producer;
-import org.junit.Test;
-import org.mockito.InOrder;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class ThreadedFeatureInputStreamTest {
 
@@ -181,22 +188,23 @@ public class ThreadedFeatureInputStreamTest {
 		assertFalse(consumer.hasNext());
 	}
 
-	@Test(expected = RuntimeException.class)
+	@Test
 	@SuppressWarnings("unchecked")
-	public void testConsumerException() throws Exception {
+	public void testConsumerException() {
+		assertThrows(RuntimeException.class, () -> {
+			BlockingQueue<ProducerMessage> producerQueue = mock(BlockingQueue.class);
+			BlockingQueue<ConsumerMessage> consumerQueue = mock(BlockingQueue.class);
 
-		BlockingQueue<ProducerMessage> producerQueue = mock(BlockingQueue.class);
-		BlockingQueue<ConsumerMessage> consumerQueue = mock(BlockingQueue.class);
+			Feature feature = mock(Feature.class);
+			when(producerQueue.take()).thenReturn(new ProducerFeatureMessage(feature),
+					new ProducerExceptionMessage(new RuntimeException()), new ProducerFinishedMessage());
 
-		Feature feature = mock(Feature.class);
-		when(producerQueue.take()).thenReturn(new ProducerFeatureMessage(feature),
-				new ProducerExceptionMessage(new RuntimeException()), new ProducerFinishedMessage());
-
-		Consumer consumer = new Consumer(producerQueue, consumerQueue);
-		assertTrue(consumer.hasNext());
-		assertEquals(feature, consumer.next());
-		assertTrue(consumer.hasNext());
-		consumer.next();
+			Consumer consumer = new Consumer(producerQueue, consumerQueue);
+			assertTrue(consumer.hasNext());
+			assertEquals(feature, consumer.next());
+			assertTrue(consumer.hasNext());
+			consumer.next();
+		});
 	}
 
 }

@@ -35,9 +35,10 @@
 package org.deegree.services.wms.utils;
 
 import org.deegree.commons.ows.exception.OWSException;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests for {@link GetMapLimitChecker}.
@@ -49,28 +50,28 @@ public class GetMapLimitCheckerTest {
 
 	private final GetMapLimitChecker checker = new GetMapLimitChecker();
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 	@Test
-	public void checkWidthWithNegativeValue() throws OWSException {
-		thrown.expect(OWSException.class);
-		thrown.expectMessage("Width must be positive.");
-		checker.checkWidth(-1, null);
+	public void checkWidthWithNegativeValue() {
+		OWSException owsException = assertThrows(OWSException.class, () -> {
+			checker.checkWidth(-1, null);
+		});
+		assertEquals(owsException.getMessage(), "Width must be positive.");
 	}
 
 	@Test
-	public void checkWidthWithZero() throws OWSException {
-		thrown.expect(OWSException.class);
-		thrown.expectMessage("Width must be positive.");
-		checker.checkWidth(0, null);
+	public void checkWidthWithZero() {
+		OWSException owsException = assertThrows(OWSException.class, () -> {
+			checker.checkWidth(0, null);
+		});
+		assertEquals(owsException.getMessage(), "Width must be positive.");
 	}
 
 	@Test
-	public void checkWidthTooLarge() throws OWSException {
-		thrown.expect(OWSException.class);
-		thrown.expectMessage("Width out of range. Maximum width: 1024");
-		checker.checkWidth(1025, 1024);
+	public void checkWidthTooLarge() {
+		OWSException owsException = assertThrows(OWSException.class, () -> {
+			checker.checkWidth(1025, 1024);
+		});
+		assertEquals(owsException.getMessage(), "Width out of range. Maximum width: 1024");
 	}
 
 	@Test
@@ -84,24 +85,27 @@ public class GetMapLimitCheckerTest {
 	}
 
 	@Test
-	public void checkHeightWithNegativeValue() throws OWSException {
-		thrown.expect(OWSException.class);
-		thrown.expectMessage("Height must be positive.");
-		checker.checkHeight(-1, null);
+	public void checkHeightWithNegativeValue() {
+		OWSException owsException = assertThrows(OWSException.class, () -> {
+			checker.checkHeight(-1, null);
+		});
+		assertEquals(owsException.getMessage(), "Height must be positive.");
 	}
 
 	@Test
-	public void checkHeightWithZero() throws OWSException {
-		thrown.expect(OWSException.class);
-		thrown.expectMessage("Height must be positive.");
-		checker.checkHeight(0, null);
+	public void checkHeightWithZero() {
+		OWSException owsException = assertThrows(OWSException.class, () -> {
+			checker.checkHeight(0, null);
+		});
+		assertEquals(owsException.getMessage(), "Height must be positive.");
 	}
 
 	@Test
-	public void checkHeightTooLarge() throws OWSException {
-		thrown.expect(OWSException.class);
-		thrown.expectMessage("Height out of range. Maximum height: 1024");
-		checker.checkHeight(1025, 1024);
+	public void checkHeightTooLarge() {
+		OWSException owsException = assertThrows(OWSException.class, () -> {
+			checker.checkHeight(1025, 1024);
+		});
+		assertEquals(owsException.getMessage(), "Height out of range. Maximum height: 1024");
 	}
 
 	@Test
@@ -120,10 +124,12 @@ public class GetMapLimitCheckerTest {
 	}
 
 	@Test
-	public void checkLayerCountTooLarge() throws OWSException {
-		thrown.expect(OWSException.class);
-		thrown.expectMessage("Too many layers requested. Maximum number of layers: 10");
-		checker.checkLayerCount(100, 10);
+	public void checkLayerCountTooLarge() {
+		OWSException owsException = assertThrows(OWSException.class, () -> {
+			checker.checkLayerCount(100, 10);
+		});
+		assertEquals(owsException.getMessage(), "Too many layers requested. Maximum number of layers: 10");
+
 	}
 
 	@Test

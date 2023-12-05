@@ -39,36 +39,35 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.tile;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import java.util.Collections;
-import java.util.Iterator;
-
-import junit.framework.TestCase;
-
 import org.deegree.cs.coordinatesystems.ICRS;
 import org.deegree.cs.exceptions.UnknownCRSException;
 import org.deegree.cs.persistence.CRSManager;
 import org.deegree.geometry.Envelope;
 import org.deegree.geometry.GeometryFactory;
 import org.deegree.geometry.metadata.SpatialMetadata;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.Collections;
+import java.util.Iterator;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * <code>TileMatrixSetTest</code>
  *
  * @author <a href="mailto:schmitz@occamlabs.de">Andreas Schmitz</a>
  */
-public class TileMatrixSetTest extends TestCase {
+public class TileMatrixSetTest {
 
 	private TileDataSet tms;
 
 	private Envelope env;
 
-	@Override
-	@Before
+	@BeforeEach
 	public void setUp() {
 		GeometryFactory fac = new GeometryFactory();
 		ICRS crs;

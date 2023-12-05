@@ -34,28 +34,26 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.metadata.iso.persistence.parsing;
 
-import java.util.List;
-
-import javax.xml.stream.FactoryConfigurationError;
-
 import org.deegree.commons.config.ResourceInitException;
 import org.deegree.commons.xml.CommonNamespaces;
 import org.deegree.commons.xml.NamespaceBindings;
 import org.deegree.geometry.Envelope;
 import org.deegree.metadata.MetadataRecord;
 import org.deegree.metadata.iso.persistence.AbstractISOTest;
-import org.deegree.metadata.iso.persistence.ISOMetadataStore;
-import org.deegree.metadata.iso.persistence.ISOMetadataStoreProvider;
 import org.deegree.metadata.iso.persistence.TstConstants;
 import org.deegree.metadata.iso.persistence.TstUtils;
 import org.deegree.metadata.persistence.MetadataInspectorException;
 import org.deegree.metadata.persistence.MetadataQuery;
 import org.deegree.protocol.csw.MetadataStoreException;
-import org.junit.Assert;
-import org.junit.Assume;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.xml.stream.FactoryConfigurationError;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * TODO add class documentation here
@@ -74,7 +72,7 @@ public class ParseISOTest extends AbstractISOTest {
 		LOG.info("START Test: test various elements for one metadataRecord ");
 
 		initStore(TstConstants.configURL);
-		Assume.assumeNotNull(store);
+		assumeTrue(store != null);
 
 		List<String> ids = TstUtils.insertMetadata(store, TstConstants.tst_10);
 		if (ids != null) {
@@ -133,17 +131,16 @@ public class ParseISOTest extends AbstractISOTest {
 				LOG.debug("boundingBox: " + s_b.toString());
 			}
 
-			Assert.assertEquals("identifier: ", "d0e5c36eec7f473b91b8b249da87d522", s_ident.toString());
-			Assert.assertEquals("title: ", "SPOT 5 RAW 2007-01-23T10:25:14", s_title.toString());
-			Assert.assertEquals("type: ", "dataset", type.toString());
-			Assert.assertEquals("subjects: ", "SPOT 5 PATH 50 ROW 242 Orthoimagery imageryBaseMapsEarthCover ",
-					s_sub.toString());
-			Assert.assertEquals("formats: ", "RAW ECW ", s_form.toString());
-			Assert.assertEquals("abstract: ", "Raw (source) image from CwRS campaigns.", s_ab.toString());
-			Assert.assertEquals("rights: ", "otherRestrictions license ", s_ri.toString());
-			Assert.assertEquals("source: ", "Raw (Source) image as delivered by image provider.", source.toString());
-			Assert.assertEquals("bbox: ", "9.342556163 52.6984540464 10.4685111912 53.3646726483 epsg:4326",
-					s_b.toString());
+			assertEquals("d0e5c36eec7f473b91b8b249da87d522", s_ident.toString(), "identifier: ");
+			assertEquals("SPOT 5 RAW 2007-01-23T10:25:14", s_title.toString(), "title: ");
+			assertEquals("dataset", type.toString(), "type: ");
+			assertEquals("SPOT 5 PATH 50 ROW 242 Orthoimagery imageryBaseMapsEarthCover ", s_sub.toString(),
+					"subjects: ");
+			assertEquals("RAW ECW ", s_form.toString(), "formats: ");
+			assertEquals("Raw (source) image from CwRS campaigns.", s_ab.toString(), "abstract: ");
+			assertEquals("otherRestrictions license ", s_ri.toString(), "rights: ");
+			assertEquals("Raw (Source) image as delivered by image provider.", source.toString(), "source: ");
+			assertEquals("9.342556163 52.6984540464 10.4685111912 53.3646726483 epsg:4326", s_b.toString(), "bbox: ");
 		}
 		else {
 			throw new MetadataStoreException("something went wrong in creation of the metadataRecord");

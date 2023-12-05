@@ -40,19 +40,17 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.featureinfo.templating;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Map;
-
-import junit.framework.Assert;
-
 import org.antlr.runtime.ANTLRInputStream;
 import org.antlr.runtime.CharStream;
 import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
 import org.deegree.featureinfo.templating.lang.Definition;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * TODO add class documentation here
@@ -65,48 +63,48 @@ public class Templating2ParserTest {
 	public void testMapDefinition() throws IOException, RecognitionException {
 		Templating2Parser parser = getParser("map.gfi");
 		Map<String, Definition> defs = parser.definitions();
-		Assert.assertEquals(2, defs.size());
-		Assert.assertEquals(0, parser.getNumberOfSyntaxErrors());
+		assertEquals(2, defs.size());
+		assertEquals(0, parser.getNumberOfSyntaxErrors());
 	}
 
 	@Test
 	public void testMapDefinitionUmlauts() throws IOException, RecognitionException {
 		Templating2Parser parser = getParser("mapumlauts.gfi");
 		Map<String, Definition> defs = parser.definitions();
-		Assert.assertEquals(2, defs.size());
-		Assert.assertEquals(0, parser.getNumberOfSyntaxErrors());
+		assertEquals(2, defs.size());
+		assertEquals(0, parser.getNumberOfSyntaxErrors());
 	}
 
 	@Test
 	public void testError() throws IOException, RecognitionException {
 		Templating2Parser parser = getParser("error.gfi");
 		Map<String, Definition> defs = parser.definitions();
-		Assert.assertEquals(1, defs.size());
-		Assert.assertEquals(1, parser.getNumberOfSyntaxErrors());
+		assertEquals(1, defs.size());
+		assertEquals(1, parser.getNumberOfSyntaxErrors());
 	}
 
 	@Test
 	public void testUtah1() throws IOException, RecognitionException {
 		Templating2Parser parser = getParser("utahdemo.gfi");
 		Map<String, Definition> defs = parser.definitions();
-		Assert.assertEquals(3, defs.size());
-		Assert.assertEquals(0, parser.getNumberOfSyntaxErrors());
+		assertEquals(3, defs.size());
+		assertEquals(0, parser.getNumberOfSyntaxErrors());
 	}
 
 	@Test
 	public void testUtah2() throws IOException, RecognitionException {
 		Templating2Parser parser = getParser("utahdemo2.gfi");
 		Map<String, Definition> defs = parser.definitions();
-		Assert.assertEquals(6, defs.size());
-		Assert.assertEquals(0, parser.getNumberOfSyntaxErrors());
+		assertEquals(6, defs.size());
+		assertEquals(0, parser.getNumberOfSyntaxErrors());
 	}
 
 	@Test
 	public void testStandardTemplate() throws IOException, RecognitionException {
 		Templating2Parser parser = getParser("../html.gfi");
 		Map<String, Definition> defs = parser.definitions();
-		Assert.assertEquals(4, defs.size());
-		Assert.assertEquals(0, parser.getNumberOfSyntaxErrors());
+		assertEquals(4, defs.size());
+		assertEquals(0, parser.getNumberOfSyntaxErrors());
 	}
 
 	private static Templating2Parser getParser(String name) throws IOException {

@@ -34,19 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.filter.xml;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.List;
-import java.util.Set;
-
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
-import junit.framework.TestCase;
-
 import org.deegree.commons.tom.primitive.PrimitiveValue;
 import org.deegree.filter.Expression;
 import org.deegree.filter.Filter;
@@ -74,8 +61,21 @@ import org.deegree.geometry.primitive.LinearRing;
 import org.deegree.geometry.primitive.Point;
 import org.deegree.geometry.primitive.Polygon;
 import org.deegree.workspace.standard.DefaultWorkspace;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.List;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * The <code></code> class TODO add class documentation here.
@@ -83,10 +83,9 @@ import org.junit.Test;
  * @author <a href="mailto:ionita@lat-lon.de">Andrei Ionita</a>
  *
  */
-public class Filter100XMLDecoderTest extends TestCase {
+public class Filter100XMLDecoderTest {
 
-	@Override
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		new DefaultWorkspace(new File("nix")).initAll();
 	}

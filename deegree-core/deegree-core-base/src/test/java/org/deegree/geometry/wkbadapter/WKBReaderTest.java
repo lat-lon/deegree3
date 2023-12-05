@@ -34,7 +34,7 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.geometry.wkbadapter;
 
-import static junit.framework.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -52,7 +52,7 @@ import org.deegree.geometry.primitive.Polygon;
 import org.deegree.gml.GMLOutputFactory;
 import org.deegree.gml.GMLStreamWriter;
 import org.deegree.gml.GMLVersion;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * TODO add class documentation here

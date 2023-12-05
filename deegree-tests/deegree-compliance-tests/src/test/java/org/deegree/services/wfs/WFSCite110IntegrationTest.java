@@ -34,47 +34,28 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.services.wfs;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.StringReader;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import org.deegree.services.AbstractCiteIntegrationTest;
-import org.deegree.services.CiteWrapper;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
 
 /**
  * Wraps the execution of the CITE WFS 1.1.0 TestSuite as a JUnit-test.
  *
  * @author <a href="mailto:schneider@lat-lon.de">Markus Schneider</a>
  */
-@RunWith(Parameterized.class)
 public class WFSCite110IntegrationTest extends AbstractCiteIntegrationTest {
 
-	private static String CITE_SCRIPT_PROP = "cite.script";
-
-	private String testLabel = "WFS110";
-
-	@Parameters
-	public static Collection getResultSnippets() throws Exception {
+	private Stream<Arguments> getResultSnippets() throws Exception {
 		return getResultSnippets("/citewfs110/src/main.xml", "capabilities-url",
 				"wfs110?request=GetCapabilities&service=WFS");
 	}
 
-	public WFSCite110IntegrationTest(String testLabel, String resultSnippet) {
-		this.testLabel = testLabel;
-		this.resultSnippet = resultSnippet;
-	}
-
-	@Test
-	public void singleTest() {
+	@ParameterizedTest
+	@MethodSource("getResultSnippets")
+	public void singleTest(String testLabel, String resultSnippet) {
 		if (resultSnippet.contains("Failed")) {
 			throw new RuntimeException("Test '" + testLabel + "' failed.");
 		}

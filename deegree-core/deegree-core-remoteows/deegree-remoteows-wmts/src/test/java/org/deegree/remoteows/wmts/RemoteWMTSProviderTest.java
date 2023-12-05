@@ -34,20 +34,21 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.remoteows.wmts;
 
-import static org.junit.Assert.assertNotNull;
+import org.deegree.remoteows.RemoteOWSProvider;
+import org.deegree.workspace.ResourceInitException;
+import org.deegree.workspace.WorkspaceUtils;
+import org.deegree.workspace.standard.DefaultWorkspace;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-import org.deegree.remoteows.RemoteOWSProvider;
-import org.deegree.workspace.ResourceInitException;
-import org.deegree.workspace.WorkspaceUtils;
-import org.deegree.workspace.standard.DefaultWorkspace;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests for {@link RemoteWMTSProvider}.
@@ -58,7 +59,7 @@ public class RemoteWMTSProviderTest {
 
 	private DefaultWorkspace workspace;
 
-	@Before
+	@BeforeEach
 	public void setup() throws IOException {
 		File f = File.createTempFile("workspace", "test");
 		f.delete();
@@ -66,7 +67,7 @@ public class RemoteWMTSProviderTest {
 		workspace.initAll();
 	}
 
-	@After
+	@AfterEach
 	public void destroy() {
 		workspace.destroy();
 	}
@@ -80,11 +81,13 @@ public class RemoteWMTSProviderTest {
 		assertNotNull(wmts);
 	}
 
-	@Test(expected = ResourceInitException.class)
-	public void testCreateFromInvalidConfig() throws ResourceInitException, IOException, URISyntaxException {
+	@Test
+	public void testCreateFromInvalidConfig() throws ResourceInitException, URISyntaxException {
 		URL configUrl = RemoteWMTSProviderTest.class.getResource("example.invalid");
 		File file = new File(configUrl.toURI());
-		WorkspaceUtils.activateFromFile(workspace, RemoteOWSProvider.class, "example", file);
+		assertThrows(Exception.class, () -> {
+			WorkspaceUtils.activateFromFile(workspace, RemoteOWSProvider.class, "example", file);
+		});
 	}
 
 }

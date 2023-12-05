@@ -34,37 +34,28 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.services.wms;
 
-import java.util.Collection;
-
 import org.deegree.services.AbstractCiteIntegrationTest;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
 
 /**
  * Wraps the execution of the new CITE WMS 1.3.0 TestSuite as a JUnit-test.
  *
  * @author <a href="mailto:schneider@lat-lon.de">Markus Schneider</a>
  */
-@RunWith(Parameterized.class)
 public class WMSCite130NewIntegrationTest extends AbstractCiteIntegrationTest {
 
-	private String testLabel = "WMS130New";
-
-	@Parameters
-	public static Collection getResultSnippets() throws Exception {
+	private Stream<Arguments> getResultSnippets() throws Exception {
 		return getResultSnippets("/citewms130-new/ctl/", "capabilities-url",
 				"wms?request=GetCapabilities&service=WMS&version=1.3.0");
 	}
 
-	public WMSCite130NewIntegrationTest(String testLabel, String resultSnippet) {
-		this.testLabel = testLabel;
-		this.resultSnippet = resultSnippet;
-	}
-
-	@Test
-	public void singleTest() {
+	@ParameterizedTest
+	@MethodSource("getResultSnippets")
+	public void singleTest(String testLabel, String resultSnippet) {
 		if (resultSnippet.contains("Failed")) {
 			throw new RuntimeException("Test '" + testLabel + "' failed.");
 		}

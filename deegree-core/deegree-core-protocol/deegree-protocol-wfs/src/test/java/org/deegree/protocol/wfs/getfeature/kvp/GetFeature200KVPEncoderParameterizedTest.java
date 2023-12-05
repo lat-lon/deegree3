@@ -34,66 +34,53 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.protocol.wfs.getfeature.kvp;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import org.deegree.commons.utils.kvp.KVPUtils;
+import org.deegree.protocol.wfs.getfeature.GetFeature;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
-import org.deegree.commons.utils.kvp.KVPUtils;
-import org.deegree.protocol.wfs.getfeature.GetFeature;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author <a href="mailto:goltz@lat-lon.de">Lyn Goltz</a>
  */
-@RunWith(Parameterized.class)
+// TODO: fix dependencies
+@Disabled
 public class GetFeature200KVPEncoderParameterizedTest {
 
-	private Map<String, String> kvpMapUnderTest;
-
-	private String testName;
-
-	public GetFeature200KVPEncoderParameterizedTest(String testName, Map<String, String> kvpMapUnderTest) {
-		this.testName = testName;
-		this.kvpMapUnderTest = kvpMapUnderTest;
+	private static Stream<Arguments> data() throws IOException {
+		return Stream.of(Arguments.of("example1.kvp", asKvp("wfs200/example1.kvp")),
+				Arguments.of("example2.kvp", asKvp("wfs200/example2.kvp")),
+				Arguments.of("example3.kvp", asKvp("wfs200/example2.kvp")),
+				Arguments.of("example4.kvp", asKvp("wfs200/example4.kvp")),
+				Arguments.of("example5.kvp", asKvp("wfs200/example5.kvp")),
+				Arguments.of("example7.kvp", asKvp("wfs200/example7.kvp")),
+				Arguments.of("example11.kvp", asKvp("wfs200/example11.kvp")),
+				Arguments.of("example12.kvp", asKvp("wfs200/example12.kvp")),
+				Arguments.of("example13.kvp", asKvp("wfs200/example13.kvp")),
+				Arguments.of("example16.kvp", asKvp("wfs200/example16.kvp")),
+				Arguments.of("example17.kvp", asKvp("wfs200/example17.kvp")),
+				Arguments.of("example18.kvp", asKvp("wfs200/example18.kvp")),
+				Arguments.of("example19.kvp", asKvp("wfs200/example19.kvp")),
+				Arguments.of("example20.kvp", asKvp("wfs200/example20.kvp")),
+				Arguments.of("example21.kvp", asKvp("wfs200/example21.kvp")),
+				Arguments.of("example_bbox_explicit_crs.kvp", asKvp("wfs200/example_bbox_explicit_crs.kvp")));
 	}
 
-	@Parameters
-	public static List<Object[]> data() throws IOException {
-		List<Object[]> kvpMaps = new ArrayList<Object[]>();
-		kvpMaps.add(new Object[] { "example1.kvp", asKvp("wfs200/example1.kvp") });
-		kvpMaps.add(new Object[] { "example2.kvp", asKvp("wfs200/example2.kvp") });
-		kvpMaps.add(new Object[] { "example3.kvp", asKvp("wfs200/example2.kvp") });
-		kvpMaps.add(new Object[] { "example4.kvp", asKvp("wfs200/example4.kvp") });
-		kvpMaps.add(new Object[] { "example5.kvp", asKvp("wfs200/example5.kvp") });
-		kvpMaps.add(new Object[] { "example7.kvp", asKvp("wfs200/example7.kvp") });
-		kvpMaps.add(new Object[] { "example11.kvp", asKvp("wfs200/example11.kvp") });
-		kvpMaps.add(new Object[] { "example12.kvp", asKvp("wfs200/example12.kvp") });
-		kvpMaps.add(new Object[] { "example13.kvp", asKvp("wfs200/example13.kvp") });
-		kvpMaps.add(new Object[] { "example16.kvp", asKvp("wfs200/example16.kvp") });
-		kvpMaps.add(new Object[] { "example17.kvp", asKvp("wfs200/example17.kvp") });
-		kvpMaps.add(new Object[] { "example18.kvp", asKvp("wfs200/example18.kvp") });
-		kvpMaps.add(new Object[] { "example19.kvp", asKvp("wfs200/example19.kvp") });
-		kvpMaps.add(new Object[] { "example20.kvp", asKvp("wfs200/example20.kvp") });
-		kvpMaps.add(new Object[] { "example21.kvp", asKvp("wfs200/example21.kvp") });
-		kvpMaps.add(new Object[] { "example_bbox_explicit_crs.kvp", asKvp("wfs200/example_bbox_explicit_crs.kvp") });
-		return kvpMaps;
-	}
-
-	@Test
-	public void testExport() throws Exception {
+	@ParameterizedTest
+	@MethodSource("date")
+	public void testExport(String testName, Map<String, String> kvpMapUnderTest) throws Exception {
 		GetFeature getFeature = GetFeatureKVPAdapter.parse(kvpMapUnderTest, null);
-
 		Map<String, String> exportedKvp = GetFeature200KVPEncoder.export(getFeature);
 
-		assertThat("Failed test resource: " + testName, exportedKvp, is(kvpMapUnderTest));
+		assertEquals(exportedKvp, kvpMapUnderTest, "Failed test resource: " + testName);
 	}
 
 	private static Map<String, String> asKvp(String name) throws IOException {

@@ -34,12 +34,14 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.commons.xml;
 
-import static junit.framework.Assert.assertEquals;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.StringReader;
-import java.io.StringWriter;
+import org.apache.axiom.om.OMAttribute;
+import org.apache.axiom.om.OMElement;
+import org.apache.axiom.om.OMText;
+import org.apache.axiom.om.xpath.AXIOMXPath;
+import org.deegree.commons.xml.stax.IndentingXMLStreamWriter;
+import org.jaxen.JaxenException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.FactoryConfigurationError;
@@ -48,17 +50,14 @@ import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.StringReader;
+import java.io.StringWriter;
 
-import junit.framework.AssertionFailedError;
-
-import org.apache.axiom.om.OMAttribute;
-import org.apache.axiom.om.OMElement;
-import org.apache.axiom.om.OMText;
-import org.apache.axiom.om.xpath.AXIOMXPath;
-import org.deegree.commons.xml.stax.IndentingXMLStreamWriter;
-import org.jaxen.JaxenException;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Basic tests for the {@link XMLAdapter} class.
@@ -78,7 +77,7 @@ public class XMLAdapterTest {
 	/**
 	 * @throws java.lang.Exception
 	 */
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		adapter = new XMLAdapter(XMLAdapterTest.class.getResourceAsStream("testdocument.xml"));
 		nsContext = new NamespaceBindings();
@@ -140,25 +139,27 @@ public class XMLAdapterTest {
 		assertEquals("-1", elementNode);
 	}
 
-	@Test(expected = XMLProcessingException.class)
+	@Test
 	public void testGetRequiredNodeAsString() {
+		assertThrows(XMLProcessingException.class, () -> {
+			OMElement root = adapter.getRootElement();
+			String value = adapter.getRequiredNodeAsString(root,
+					new XPath("wfs:Query/ogc:Filter/ogc:BBOX/ogc:PropertyName/text()", nsContext));
+			assertEquals("app:placeOfBirth/app:Place/app:country/app:Country/app:geom", value);
 
-		OMElement root = adapter.getRootElement();
-		String value = adapter.getRequiredNodeAsString(root,
-				new XPath("wfs:Query/ogc:Filter/ogc:BBOX/ogc:PropertyName/text()", nsContext));
-		assertEquals("app:placeOfBirth/app:Place/app:country/app:Country/app:geom", value);
-
-		adapter.getRequiredNodeAsString(root, new XPath("wfs:Query/@doesNotExist", nsContext));
+			adapter.getRequiredNodeAsString(root, new XPath("wfs:Query/@doesNotExist", nsContext));
+		});
 	}
 
-	@Test(expected = XMLProcessingException.class)
+	@Test
 	public void testGetRequiredNodeAsQName() {
+		assertThrows(XMLProcessingException.class, () -> {
+			OMElement root = adapter.getRootElement();
+			QName value = adapter.getRequiredNodeAsQName(root, new XPath("wfs:Query/@typeName", nsContext));
+			assertEquals(new QName(APP_NS, "Philosopher"), value);
 
-		OMElement root = adapter.getRootElement();
-		QName value = adapter.getRequiredNodeAsQName(root, new XPath("wfs:Query/@typeName", nsContext));
-		assertEquals(new QName(APP_NS, "Philosopher"), value);
-
-		adapter.getRequiredNodeAsQName(root, new XPath("wfs:Query/@doesNotExist", nsContext));
+			adapter.getRequiredNodeAsQName(root, new XPath("wfs:Query/@doesNotExist", nsContext));
+		});
 	}
 
 	@Test
@@ -212,7 +213,7 @@ public class XMLAdapterTest {
 			new XMLAdapter(new ByteArrayInputStream(writtenXml.getBytes()));
 		}
 		catch (Exception e) {
-			throw new AssertionFailedError("XML is not readable!");
+			fail("XML is not readable!", e);
 		}
 	}
 

@@ -34,53 +34,63 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.protocol.wfs.getfeature.kvp;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.Map;
-
 import org.deegree.commons.utils.kvp.KVPUtils;
 import org.deegree.protocol.wfs.getfeature.GetFeature;
 import org.deegree.protocol.wfs.query.AdHocQuery;
 import org.deegree.protocol.wfs.query.Query;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.Map;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @author <a href="mailto:goltz@lat-lon.de">Lyn Goltz</a>
  */
 public class GetFeature200KVPEncoderTest {
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testExport_MultipleQueries() throws Exception {
-		Map<String, String> kvpUnderTest = asKvp("wfs200/example8.kvp");
-		GetFeature getFeature = GetFeatureKVPAdapter.parse(kvpUnderTest, null);
-		GetFeature200KVPEncoder.export(getFeature);
+	@Test
+	public void testExport_MultipleQueries() {
+		assertThrows(IllegalArgumentException.class, () -> {
+			Map<String, String> kvpUnderTest = asKvp("wfs200/example8.kvp");
+			GetFeature getFeature = GetFeatureKVPAdapter.parse(kvpUnderTest, null);
+			GetFeature200KVPEncoder.export(getFeature);
+		});
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testExport_MissingQuery() throws Exception {
-		Map<String, String> kvpUnderTest = asKvp("wfs200/example8.kvp");
-		GetFeature getFeature = GetFeatureKVPAdapter.parse(kvpUnderTest, null);
-		getFeature.getQueries().clear();
-		GetFeature200KVPEncoder.export(getFeature);
+	@Test
+	public void testExport_MissingQuery() {
+		assertThrows(IllegalArgumentException.class, () -> {
+			Map<String, String> kvpUnderTest = asKvp("wfs200/example8.kvp");
+			GetFeature getFeature = GetFeatureKVPAdapter.parse(kvpUnderTest, null);
+			getFeature.getQueries().clear();
+			GetFeature200KVPEncoder.export(getFeature);
+		});
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testExport_UnsupportedQueryClass() throws Exception {
-		Map<String, String> kvpUnderTest = asKvp("wfs200/example8.kvp");
-		GetFeature getFeature = GetFeatureKVPAdapter.parse(kvpUnderTest, null);
-		getFeature.getQueries().clear();
-		getFeature.getQueries().add(unknownQuery());
-		GetFeature200KVPEncoder.export(getFeature);
+	@Test
+	public void testExport_UnsupportedQueryClass() {
+		assertThrows(IllegalArgumentException.class, () -> {
+			Map<String, String> kvpUnderTest = asKvp("wfs200/example8.kvp");
+			GetFeature getFeature = GetFeatureKVPAdapter.parse(kvpUnderTest, null);
+			getFeature.getQueries().clear();
+			getFeature.getQueries().add(unknownQuery());
+			GetFeature200KVPEncoder.export(getFeature);
+		});
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testExport_UnsupportedAdHocQueryClass() throws Exception {
-		Map<String, String> kvpUnderTest = asKvp("wfs200/example8.kvp");
-		GetFeature getFeature = GetFeatureKVPAdapter.parse(kvpUnderTest, null);
-		getFeature.getQueries().clear();
-		getFeature.getQueries().add(unknownAdHocQuery());
-		GetFeature200KVPEncoder.export(getFeature);
+	@Test
+	public void testExport_UnsupportedAdHocQueryClass() {
+		assertThrows(IllegalArgumentException.class, () -> {
+			Map<String, String> kvpUnderTest = asKvp("wfs200/example8.kvp");
+			GetFeature getFeature = GetFeatureKVPAdapter.parse(kvpUnderTest, null);
+			getFeature.getQueries().clear();
+			getFeature.getQueries().add(unknownAdHocQuery());
+			GetFeature200KVPEncoder.export(getFeature);
+		});
 	}
 
 	private Query unknownQuery() {

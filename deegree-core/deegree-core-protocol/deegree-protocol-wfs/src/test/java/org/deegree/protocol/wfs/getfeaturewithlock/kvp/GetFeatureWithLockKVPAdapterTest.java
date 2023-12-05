@@ -34,15 +34,17 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.protocol.wfs.getfeaturewithlock.kvp;
 
+import org.deegree.commons.utils.kvp.KVPUtils;
+import org.deegree.protocol.wfs.getfeaturewithlock.GetFeatureWithLock;
+import org.junit.jupiter.api.Test;
+
 import java.math.BigInteger;
 import java.net.URL;
 import java.util.Map;
 
-import junit.framework.TestCase;
-
-import org.deegree.commons.utils.kvp.KVPUtils;
-import org.deegree.protocol.wfs.getfeaturewithlock.GetFeatureWithLock;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * The <code>GetFeatureWithLockKVPAdapterTest</code> class tests the GetFeatureWithLock
@@ -50,7 +52,7 @@ import org.junit.Test;
  *
  * @author <a href="mailto:ionita@lat-lon.de">Andrei Ionita</a>
  */
-public class GetFeatureWithLockKVPAdapterTest extends TestCase {
+public class GetFeatureWithLockKVPAdapterTest {
 
 	private final String EXAMPLE1WFS110 = "wfs110/example1.kvp";
 

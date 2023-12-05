@@ -1,17 +1,16 @@
 package org.deegree.commons.xml;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import org.junit.jupiter.api.Test;
 
+import javax.xml.transform.TransformerFactory;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.URL;
 
-import javax.xml.transform.TransformerFactory;
-
-import org.junit.Test;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author <a href="mailto:goltz@lat-lon.de">Lyn Goltz </a>

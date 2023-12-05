@@ -34,23 +34,23 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.metadata.iso.persistence.sql;
 
-import java.net.URL;
-import java.util.TimeZone;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-
 import org.deegree.commons.xml.XMLAdapter;
 import org.deegree.metadata.MetadataRecordFactory;
 import org.deegree.metadata.iso.ISORecord;
 import org.deegree.metadata.iso.persistence.AbstractISOTest;
 import org.deegree.metadata.iso.persistence.TstConstants;
 import org.deegree.metadata.persistence.iso19115.jaxb.ISOMetadataStoreConfig;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import java.net.URL;
+import java.util.TimeZone;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests the AnyTextElement
@@ -68,7 +68,7 @@ public class AnyTextHelperTest extends AbstractISOTest {
 			.create((new XMLAdapter(TstConstants.tst_10)).getRootElement());
 		String anyText = AnyTextHelper.getAnyText(rec, getConfig(TstConstants.configURL_ANYTEXT_ALL).getAnyText());
 		String expected = "d0e5c36eec7f473b91b8b249da87d522 eng UTF 8 dataset European Commission, Joint Research Centre cid-contact@jrc.ec.europa.eu pointOfContact 2007-01-23 ISO 19115:2003/19139 1.0 2 6000 6000 true false 10.2295939511158 52.6984540463519 10.4685111911662 53.2174450795883 9.34255616300099 52.8445914851784 9.57111840348035 53.3646726482873 center 4326 EPSG SPOT 5 RAW 2007-01-23T10:25:14 2007-01-23T10:25:14 d0e5c36eec7f473b91b8b249da87d522 Raw (source) image from CwRS campaigns. European Commission, Joint Research Centre, IPSC, MARS Unit cid-contact@jrc.ec.europa.eu pointOfContact SPOT 5 PATH 50 ROW 242 Orthoimagery GEMET - INSPIRE themes, version 1.0 2008-06-01 publication http://cidportal.jrc.ec.europa.eu/home/idp/info/license/ec-jrc-fc251603/ otherRestrictions (e) intellectual property rights; license unclassified 10.0 eng imageryBaseMapsEarthCover 9.342556163 10.4685111912 52.6984540464 53.3646726483 9.57111840348035 53.3646726482873 9.34255616300099 52.8445914851784 10.2295939511158 52.6984540463519 10.4685111911662 53.2174450795883 9.57111840348035 53.3646726482873 2007-01-23T10:25:14 2007-01-23T10:25:14 Detailed image characteristics XS1 8 XS2 8 XS3 8 SWIR 8 16.129405 163.631838 0.0 RAW RAW N/A ECW N/A http://cidportal.jrc.ec.europa.eu/imagearchive/ Raw (Source) image as delivered by image provider. ";
-		Assert.assertEquals("anyText ALL: ", expected, anyText);
+		assertEquals("anyText ALL: ", expected, anyText);
 	}
 
 	@Test
@@ -80,7 +80,7 @@ public class AnyTextHelperTest extends AbstractISOTest {
 			.create((new XMLAdapter(TstConstants.tst_10)).getRootElement());
 		String anyText = AnyTextHelper.getAnyText(rec, getConfig(TstConstants.configURL_ANYTEXT_CORE).getAnyText());
 		String expected = "Raw (source) image from CwRS campaigns. RAW ECW d0e5c36eec7f473b91b8b249da87d522 eng 2007-01-23 SPOT 5 RAW 2007-01-23T10:25:14 dataset SPOT 5 PATH 50 ROW 242 Orthoimagery imageryBaseMapsEarthCover true otherRestrictions license Raw (Source) image as delivered by image provider. ";
-		Assert.assertEquals("anyText CORE: ", expected, anyText);
+		assertEquals("anyText CORE: ", expected, anyText);
 	}
 
 	@Test
@@ -90,7 +90,7 @@ public class AnyTextHelperTest extends AbstractISOTest {
 			.create((new XMLAdapter(TstConstants.tst_10)).getRootElement());
 		String anyText = AnyTextHelper.getAnyText(rec, getConfig(TstConstants.configURL_ANYTEXT_CUSTOM).getAnyText());
 		String expected = "d0e5c36eec7f473b91b8b249da87d522 SPOT 5 PATH 50 ROW 242 Orthoimagery ";
-		Assert.assertEquals("anyText CUSTOM: ", expected, anyText);
+		assertEquals("anyText CUSTOM: ", expected, anyText);
 	}
 
 	private ISOMetadataStoreConfig getConfig(URL url) throws JAXBException {

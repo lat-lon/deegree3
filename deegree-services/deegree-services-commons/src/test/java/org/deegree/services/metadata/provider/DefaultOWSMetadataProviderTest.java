@@ -34,16 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.services.metadata.provider;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
-import static org.junit.Assert.assertThat;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.namespace.QName;
-
-import org.apache.axiom.om.OMElement;
 import org.deegree.commons.ows.metadata.DatasetMetadata;
 import org.deegree.commons.ows.metadata.ExtendedDescription;
 import org.deegree.commons.ows.metadata.MetadataUrl;
@@ -53,7 +43,15 @@ import org.deegree.commons.ows.metadata.layer.UrlWithFormat;
 import org.deegree.commons.tom.ows.CodeType;
 import org.deegree.commons.tom.ows.LanguageString;
 import org.deegree.commons.utils.Pair;
-import org.junit.Test;
+import org.hamcrest.MatcherAssert;
+import org.junit.jupiter.api.Test;
+
+import javax.xml.namespace.QName;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 
 /**
  * Unit tests for {@link DefaultOWSMetadataProvider}.
@@ -68,7 +66,7 @@ public class DefaultOWSMetadataProviderTest {
 
 		List<DatasetMetadata> datasetMetadata = metadataProvider.getDatasetMetadata();
 
-		assertThat(datasetMetadata.size(), is(3));
+		MatcherAssert.assertThat(datasetMetadata.size(), is(3));
 	}
 
 	@Test
@@ -77,7 +75,7 @@ public class DefaultOWSMetadataProviderTest {
 
 		DatasetMetadata datasetMetadata = metadataProvider.getDatasetMetadata(new QName("name1"));
 
-		assertThat(datasetMetadata, is(notNullValue()));
+		MatcherAssert.assertThat(datasetMetadata, is(notNullValue()));
 	}
 
 	@Test
@@ -86,7 +84,7 @@ public class DefaultOWSMetadataProviderTest {
 
 		List<DatasetMetadata> datasetMetadata = metadataProvider.getAllDatasetMetadata(new QName("name1"));
 
-		assertThat(datasetMetadata.size(), is(2));
+		MatcherAssert.assertThat(datasetMetadata.size(), is(2));
 	}
 
 	private DefaultOWSMetadataProvider createProvider() {

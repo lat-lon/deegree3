@@ -34,14 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.services.wfs.format.csv;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.net.URL;
-import java.util.List;
-
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -52,7 +44,14 @@ import org.deegree.feature.types.FeatureType;
 import org.deegree.gml.GMLInputFactory;
 import org.deegree.gml.GMLStreamReader;
 import org.deegree.gml.GMLVersion;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.net.URL;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author <a href="mailto:goltz@lat-lon.de">Lyn Goltz </a>
@@ -74,24 +73,24 @@ public class CsvFeatureWriterTest {
 		CSVParser parser = new CSVParser(new StringReader(featureAsCsv.toString()),
 				CSVFormat.DEFAULT.withHeader(HEADEERS));
 		List<CSVRecord> records = parser.getRecords();
-		assertThat(records.size(), is(2));
+		assertEquals(records.size(), 2);
 
 		CSVRecord header = records.get(0);
-		assertThat(header.size(), is(11));
+		assertEquals(header.size(), 11);
 		CSVRecord record = records.get(1);
-		assertThat(record.size(), is(11));
+		assertEquals(record.size(), 11);
 
-		assertThat(record.get("{http://www.deegree.org/app}id"), is("1"));
-		assertThat(record.get("{http://www.deegree.org/app}name"), is("Karl Marx"));
-		assertThat(record.get("{http://www.deegree.org/app}sex"), is("m"));
-		assertThat(record.get("{http://www.deegree.org/app}subject"), is("capital | economy | labour"));
-		assertThat(record.get("{http://www.deegree.org/app}dateOfBirth"), is("1818-05-05"));
-		assertThat(record.get("{http://www.deegree.org/app}placeOfBirth"), is(
-				"POLYGON ((8.678595 47.693344,8.673953 47.702854,8.705485 47.711037,8.710255 47.696808,8.678595 47.693344))"));
-		assertThat(record.get("{http://www.deegree.org/app}dateOfDeath"), is("1883-03-14"));
-		assertThat(record.get("{http://www.deegree.org/app}placeOfDeath"), is(
-				"POLYGON ((-0.835000 60.673332,-0.935556 60.674438,-0.962083 60.685272,-0.959722 60.711388,-0.938889 60.794441,-0.880695 60.843330,-0.806111 60.840553,-0.770278 60.829998,-0.757639 60.815830,-0.763611 60.793327,-0.819722 60.688889,-0.835000 60.673332))"));
-		assertThat(record.get("CRS"), is(""));
+		assertEquals(record.get("{http://www.deegree.org/app}id"), "1");
+		assertEquals(record.get("{http://www.deegree.org/app}name"), "Karl Marx");
+		assertEquals(record.get("{http://www.deegree.org/app}sex"), "m");
+		assertEquals(record.get("{http://www.deegree.org/app}subject"), "capital | economy | labour");
+		assertEquals(record.get("{http://www.deegree.org/app}dateOfBirth"), "1818-05-05");
+		assertEquals(record.get("{http://www.deegree.org/app}placeOfBirth"),
+				"POLYGON ((8.678595 47.693344,8.673953 47.702854,8.705485 47.711037,8.710255 47.696808,8.678595 47.693344))");
+		assertEquals(record.get("{http://www.deegree.org/app}dateOfDeath"), "1883-03-14");
+		assertEquals(record.get("{http://www.deegree.org/app}placeOfDeath"),
+				"POLYGON ((-0.835000 60.673332,-0.935556 60.674438,-0.962083 60.685272,-0.959722 60.711388,-0.938889 60.794441,-0.880695 60.843330,-0.806111 60.840553,-0.770278 60.829998,-0.757639 60.815830,-0.763611 60.793327,-0.819722 60.688889,-0.835000 60.673332))");
+		assertEquals(record.get("CRS"), "");
 	}
 
 	@Test
@@ -107,24 +106,24 @@ public class CsvFeatureWriterTest {
 		CSVParser parser = new CSVParser(new StringReader(featureAsCsv.toString()),
 				CSVFormat.DEFAULT.withHeader(HEADEERS));
 		List<CSVRecord> records = parser.getRecords();
-		assertThat(records.size(), is(2));
+		assertEquals(records.size(), 2);
 
 		CSVRecord header = records.get(0);
-		assertThat(header.size(), is(11));
+		assertEquals(header.size(), 11);
 		CSVRecord record = records.get(1);
-		assertThat(record.size(), is(11));
+		assertEquals(record.size(), 11);
 
-		assertThat(record.get("{http://www.deegree.org/app}id"), is("1"));
-		assertThat(record.get("{http://www.deegree.org/app}name"), is("Karl Marx"));
-		assertThat(record.get("{http://www.deegree.org/app}sex"), is("m"));
-		assertThat(record.get("{http://www.deegree.org/app}subject"), is("capital | economy | labour"));
-		assertThat(record.get("{http://www.deegree.org/app}dateOfBirth"), is("1818-05-05"));
-		assertThat(record.get("{http://www.deegree.org/app}placeOfBirth"), is(
-				"POLYGON ((8.678595 47.693344,8.673953 47.702854,8.705485 47.711037,8.710255 47.696808,8.678595 47.693344))"));
-		assertThat(record.get("{http://www.deegree.org/app}dateOfDeath"), is("1883-03-14"));
-		assertThat(record.get("{http://www.deegree.org/app}placeOfDeath"), is(
-				"POLYGON ((-0.835000 60.673332,-0.935556 60.674438,-0.962083 60.685272,-0.959722 60.711388,-0.938889 60.794441,-0.880695 60.843330,-0.806111 60.840553,-0.770278 60.829998,-0.757639 60.815830,-0.763611 60.793327,-0.819722 60.688889,-0.835000 60.673332))"));
-		assertThat(record.get("CRS"), is("epsg:4326"));
+		assertEquals(record.get("{http://www.deegree.org/app}id"), "1");
+		assertEquals(record.get("{http://www.deegree.org/app}name"), "Karl Marx");
+		assertEquals(record.get("{http://www.deegree.org/app}sex"), "m");
+		assertEquals(record.get("{http://www.deegree.org/app}subject"), "capital | economy | labour");
+		assertEquals(record.get("{http://www.deegree.org/app}dateOfBirth"), "1818-05-05");
+		assertEquals(record.get("{http://www.deegree.org/app}placeOfBirth"),
+				"POLYGON ((8.678595 47.693344,8.673953 47.702854,8.705485 47.711037,8.710255 47.696808,8.678595 47.693344))");
+		assertEquals(record.get("{http://www.deegree.org/app}dateOfDeath"), "1883-03-14");
+		assertEquals(record.get("{http://www.deegree.org/app}placeOfDeath"),
+				"POLYGON ((-0.835000 60.673332,-0.935556 60.674438,-0.962083 60.685272,-0.959722 60.711388,-0.938889 60.794441,-0.880695 60.843330,-0.806111 60.840553,-0.770278 60.829998,-0.757639 60.815830,-0.763611 60.793327,-0.819722 60.688889,-0.835000 60.673332))");
+		assertEquals(record.get("CRS"), "epsg:4326");
 	}
 
 	private Feature parseFeature(String resourceName) throws Exception {

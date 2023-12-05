@@ -46,7 +46,7 @@ import org.deegree.cs.coordinatesystems.GeographicCRS;
 import org.deegree.cs.exceptions.ProjectionException;
 import org.deegree.cs.projections.ProjectionBase;
 import org.deegree.cs.transformations.helmert.Helmert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * <code>StereographicAlternativeTest</code> test the accuracy of the stereographic

@@ -1,6 +1,6 @@
 package org.deegree.feature.persistence.sql.mapper;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import javax.xml.namespace.QName;
 import java.net.URL;

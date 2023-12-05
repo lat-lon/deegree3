@@ -44,7 +44,7 @@ import javax.xml.stream.XMLStreamException;
 import org.deegree.commons.xml.XMLAdapter;
 import org.deegree.commons.xml.XMLProcessingException;
 import org.deegree.protocol.ows.exception.OWSExceptionReport;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author <a href="mailto:goltz@lat-lon.de">Lyn Goltz</a>

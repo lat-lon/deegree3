@@ -35,21 +35,19 @@
 
 package org.deegree.protocol.wfs.describefeaturetype.kvp;
 
+import org.deegree.protocol.wfs.WFSConstants;
+import org.deegree.protocol.wfs.describefeaturetype.DescribeFeatureType;
+import org.junit.jupiter.api.Test;
+
+import javax.xml.namespace.QName;
+import java.io.IOException;
+import java.util.Map;
+
 import static javax.xml.namespace.QName.valueOf;
 import static org.deegree.commons.utils.kvp.KVPUtils.readFileIntoMap;
 import static org.deegree.protocol.wfs.WFSConstants.VERSION_200;
 import static org.deegree.protocol.wfs.describefeaturetype.kvp.DescribeFeatureTypeKVPAdapter.parse;
-
-import java.io.IOException;
-import java.util.Map;
-
-import javax.xml.namespace.QName;
-
-import junit.framework.TestCase;
-
-import org.deegree.protocol.wfs.WFSConstants;
-import org.deegree.protocol.wfs.describefeaturetype.DescribeFeatureType;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests for {@link DescribeFeatureTypeKVPAdapter}.
@@ -57,7 +55,7 @@ import org.junit.Test;
  * @author <a href="mailto:schneider@lat-lon.de">Markus Schneider</a>
  * @author <a href="mailto:ionita@lat-lon.de">Andrei Ionita</a>
  */
-public class DescribeFeatureTypeKVPAdapterTest extends TestCase {
+public class DescribeFeatureTypeKVPAdapterTest {
 
 	@Test
 	public void test110Example1() throws IOException {

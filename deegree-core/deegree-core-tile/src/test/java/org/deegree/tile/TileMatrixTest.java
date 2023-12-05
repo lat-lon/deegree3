@@ -39,21 +39,20 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.tile;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.Collections;
-
-import junit.framework.TestCase;
-
 import org.deegree.cs.coordinatesystems.ICRS;
 import org.deegree.cs.exceptions.UnknownCRSException;
 import org.deegree.cs.persistence.CRSManager;
 import org.deegree.geometry.Envelope;
 import org.deegree.geometry.GeometryFactory;
 import org.deegree.geometry.metadata.SpatialMetadata;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import java.util.Collections;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * <code>TileMatrixTest</code>
@@ -61,7 +60,7 @@ import org.junit.Test;
  * @author <a href="mailto:schmitz@occamlabs.de">Andreas Schmitz</a>
  */
 
-public class TileMatrixTest extends TestCase {
+public class TileMatrixTest {
 
 	@Test
 	public void testGetMetadata() {

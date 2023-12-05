@@ -34,19 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.cs.configuration.wkt;
 
-import static org.deegree.cs.projections.SupportedProjectionParameters.FALSE_EASTING;
-import static org.deegree.cs.projections.SupportedProjectionParameters.FALSE_NORTHING;
-import static org.deegree.cs.projections.SupportedProjectionParameters.FIRST_PARALLEL_LATITUDE;
-import static org.deegree.cs.projections.SupportedProjectionParameters.LATITUDE_OF_NATURAL_ORIGIN;
-import static org.deegree.cs.projections.SupportedProjectionParameters.LONGITUDE_OF_NATURAL_ORIGIN;
-import static org.deegree.cs.projections.SupportedProjectionParameters.SCALE_AT_NATURAL_ORIGIN;
-import static org.deegree.cs.projections.SupportedProjectionParameters.SECOND_PARALLEL_LATITUDE;
-import static org.deegree.cs.utilities.ProjectionUtils.DTR;
-
-import java.io.IOException;
-
-import junit.framework.Assert;
-
 import org.deegree.cs.components.GeodeticDatum;
 import org.deegree.cs.components.IDatum;
 import org.deegree.cs.components.IEllipsoid;
@@ -58,7 +45,20 @@ import org.deegree.cs.coordinatesystems.ProjectedCRS;
 import org.deegree.cs.projections.IProjection;
 import org.deegree.cs.projections.conic.LambertConformalConic;
 import org.deegree.cs.utilities.ProjectionUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+
+import static org.deegree.cs.projections.SupportedProjectionParameters.FALSE_EASTING;
+import static org.deegree.cs.projections.SupportedProjectionParameters.FALSE_NORTHING;
+import static org.deegree.cs.projections.SupportedProjectionParameters.FIRST_PARALLEL_LATITUDE;
+import static org.deegree.cs.projections.SupportedProjectionParameters.LATITUDE_OF_NATURAL_ORIGIN;
+import static org.deegree.cs.projections.SupportedProjectionParameters.LONGITUDE_OF_NATURAL_ORIGIN;
+import static org.deegree.cs.projections.SupportedProjectionParameters.SCALE_AT_NATURAL_ORIGIN;
+import static org.deegree.cs.projections.SupportedProjectionParameters.SECOND_PARALLEL_LATITUDE;
+import static org.deegree.cs.utilities.ProjectionUtils.DTR;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * The <code>WKTParserTest</code> class provides a detailed check for the
@@ -113,47 +113,47 @@ public class WKTParserTest {
 		String s = buildPROJCS(projCRSName, projCRSCode, "Meter", 1.0);
 
 		CRS cs = WKTParser.parse(s);
-		Assert.assertTrue(cs instanceof ProjectedCRS);
+		assertTrue(cs instanceof ProjectedCRS);
 		ProjectedCRS projCRS = (ProjectedCRS) cs;
-		Assert.assertEquals(projCRSName, projCRS.getName());
-		Assert.assertEquals(projCRSName + ":" + projCRSCode, projCRS.getCode().getOriginal());
-		Assert.assertEquals("x", projCRS.getAxis()[0].getName());
-		Assert.assertEquals("east", projCRS.getAxis()[0].getOrientationAsString());
-		Assert.assertEquals("y", projCRS.getAxis()[1].getName());
-		Assert.assertEquals("north", projCRS.getAxis()[1].getOrientationAsString());
+		assertEquals(projCRSName, projCRS.getName());
+		assertEquals(projCRSName + ":" + projCRSCode, projCRS.getCode().getOriginal());
+		assertEquals("x", projCRS.getAxis()[0].getName());
+		assertEquals("east", projCRS.getAxis()[0].getOrientationAsString());
+		assertEquals("y", projCRS.getAxis()[1].getName());
+		assertEquals("north", projCRS.getAxis()[1].getOrientationAsString());
 
 		IGeographicCRS geographicCRS = projCRS.getGeographicCRS();
-		Assert.assertEquals(geogCRSName, geographicCRS.getName());
-		Assert.assertEquals(geogCRSName + ":" + geogCRSCode, geographicCRS.getCode().getOriginal());
-		Assert.assertEquals("Longitude", geographicCRS.getAxis()[0].getName());
-		Assert.assertEquals("east", geographicCRS.getAxis()[0].getOrientationAsString());
-		Assert.assertEquals("Latitude", geographicCRS.getAxis()[1].getName());
-		Assert.assertEquals("north", geographicCRS.getAxis()[1].getOrientationAsString());
+		assertEquals(geogCRSName, geographicCRS.getName());
+		assertEquals(geogCRSName + ":" + geogCRSCode, geographicCRS.getCode().getOriginal());
+		assertEquals("Longitude", geographicCRS.getAxis()[0].getName());
+		assertEquals("east", geographicCRS.getAxis()[0].getOrientationAsString());
+		assertEquals("Latitude", geographicCRS.getAxis()[1].getName());
+		assertEquals("north", geographicCRS.getAxis()[1].getOrientationAsString());
 
 		IDatum datum = geographicCRS.getDatum();
-		Assert.assertEquals(datumName, datum.getName());
+		assertEquals(datumName, datum.getName());
 		IEllipsoid ellipsoid = ((GeodeticDatum) datum).getEllipsoid();
-		Assert.assertEquals(ellipsoidName, ellipsoid.getName());
-		Assert.assertEquals(ellipsoidName + ":" + ellipsoidCode, ellipsoid.getCode().getOriginal());
-		Assert.assertEquals(semiMajorAxis, ellipsoid.getSemiMajorAxis());
-		Assert.assertEquals(inverseFlattening, ellipsoid.getInverseFlattening());
+		assertEquals(ellipsoidName, ellipsoid.getName());
+		assertEquals(ellipsoidName + ":" + ellipsoidCode, ellipsoid.getCode().getOriginal());
+		assertEquals(semiMajorAxis, ellipsoid.getSemiMajorAxis());
+		assertEquals(inverseFlattening, ellipsoid.getInverseFlattening());
 
 		IPrimeMeridian pm = ((GeodeticDatum) datum).getPrimeMeridian();
-		Assert.assertEquals(pmName, pm.getName());
-		Assert.assertEquals(pmName + ":" + pmCode, pm.getCode().getOriginal());
-		Assert.assertEquals(Unit.DEGREE, pm.getAngularUnit());
-		Assert.assertEquals(pmLongitude, pm.getLongitude());
+		assertEquals(pmName, pm.getName());
+		assertEquals(pmName + ":" + pmCode, pm.getCode().getOriginal());
+		assertEquals(Unit.DEGREE, pm.getAngularUnit());
+		assertEquals(pmLongitude, pm.getLongitude());
 		IProjection proj = projCRS.getProjection();
-		Assert.assertTrue(proj instanceof LambertConformalConic);
+		assertTrue(proj instanceof LambertConformalConic);
 
 		LambertConformalConic lcc = (LambertConformalConic) proj;
-		Assert.assertEquals(falseEasting, lcc.getFalseEasting());
-		Assert.assertEquals(falseNorthing, lcc.getFalseNorthing());
-		Assert.assertEquals(DTR * stdParallel1, lcc.getFirstParallelLatitude(), 1e-12);
-		Assert.assertEquals(DTR * stdParallel2, lcc.getSecondParallelLatitude(), 1e-12);
-		Assert.assertEquals(DTR * lonNatOrigin, lcc.getNaturalOrigin().x);
-		Assert.assertEquals(DTR * latNatOrigin, lcc.getNaturalOrigin().y);
-		Assert.assertEquals(scaleFactor, lcc.getScale());
+		assertEquals(falseEasting, lcc.getFalseEasting());
+		assertEquals(falseNorthing, lcc.getFalseNorthing());
+		assertEquals(DTR * stdParallel1, lcc.getFirstParallelLatitude(), 1e-12);
+		assertEquals(DTR * stdParallel2, lcc.getSecondParallelLatitude(), 1e-12);
+		assertEquals(DTR * lonNatOrigin, lcc.getNaturalOrigin().x);
+		assertEquals(DTR * latNatOrigin, lcc.getNaturalOrigin().y);
+		assertEquals(scaleFactor, lcc.getScale());
 	}
 
 	private String buildPROJCS(String name, String code, String unitName, double unitConversion) {

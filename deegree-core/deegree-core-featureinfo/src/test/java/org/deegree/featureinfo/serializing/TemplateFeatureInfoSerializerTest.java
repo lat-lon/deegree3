@@ -6,7 +6,7 @@ import org.deegree.featureinfo.FeatureInfoParams;
 import org.deegree.gml.GMLInputFactory;
 import org.deegree.gml.GMLStreamReader;
 import org.deegree.gml.GMLVersion;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -15,9 +15,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.hamcrest.CoreMatchers.endsWith;
-import static org.hamcrest.CoreMatchers.startsWith;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -35,8 +33,8 @@ public class TemplateFeatureInfoSerializerTest {
 		serializer.serialize(params, context);
 
 		String html = bos.toString().trim();
-		assertThat(html, startsWith("<html>"));
-		assertThat(html, endsWith("</html>"));
+		assertTrue(html.startsWith("<html>"));
+		assertTrue(html.endsWith("</html>"));
 	}
 
 	private FeatureInfoParams createParams() throws Exception {

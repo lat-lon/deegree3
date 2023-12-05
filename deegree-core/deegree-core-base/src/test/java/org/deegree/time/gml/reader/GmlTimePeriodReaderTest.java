@@ -38,9 +38,9 @@ import static javax.xml.stream.XMLStreamConstants.END_ELEMENT;
 import static org.deegree.commons.xml.stax.XMLStreamUtils.require;
 import static org.deegree.commons.xml.stax.XMLStreamUtils.skipStartDocument;
 import static org.deegree.gml.GMLVersion.GML_32;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.net.URL;
 
@@ -52,7 +52,7 @@ import org.deegree.time.position.TimePosition;
 import org.deegree.time.primitive.TimeInstant;
 import org.deegree.time.primitive.TimePeriod;
 import org.deegree.time.primitive.reference.TimeInstantReference;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class GmlTimePeriodReaderTest {
 

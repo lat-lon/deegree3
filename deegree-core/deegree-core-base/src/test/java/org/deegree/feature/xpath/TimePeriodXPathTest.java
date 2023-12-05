@@ -3,7 +3,7 @@ package org.deegree.feature.xpath;
 import static org.deegree.commons.xml.CommonNamespaces.GML3_2_NS;
 import static org.deegree.commons.xml.stax.XMLStreamUtils.skipStartDocument;
 import static org.deegree.gml.GMLVersion.GML_32;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.net.URL;
 
@@ -21,7 +21,7 @@ import org.deegree.time.TimeObject;
 import org.deegree.time.gml.reader.GmlTimePeriodReader;
 import org.deegree.time.gml.reader.GmlTimePositionTypeReader;
 import org.jaxen.SimpleNamespaceContext;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class TimePeriodXPathTest {
 

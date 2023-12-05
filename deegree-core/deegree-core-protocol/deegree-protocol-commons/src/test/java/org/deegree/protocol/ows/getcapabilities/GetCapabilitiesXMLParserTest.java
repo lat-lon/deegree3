@@ -34,20 +34,17 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.protocol.ows.getcapabilities;
 
-import static org.hamcrest.CoreMatchers.hasItems;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import org.deegree.commons.tom.ows.Version;
+import org.junit.jupiter.api.Test;
 
 import java.net.URL;
 import java.util.List;
 import java.util.Set;
 
-import org.deegree.commons.tom.ows.Version;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test cases for {@link GetCapabilitiesXMLParser}.
@@ -132,25 +129,30 @@ public class GetCapabilitiesXMLParserTest {
 
 		// check accept versions
 		List<String> acceptVersions = request.getAcceptVersions();
-		assertThat(acceptVersions.size(), is(3));
-		assertThat(acceptVersions, hasItems("1.0.0", "2.0.0", "1.1.0"));
+		assertEquals(acceptVersions.size(), 3);
+		assertTrue(acceptVersions.contains("1.0.0"));
+		assertTrue(acceptVersions.contains("1.1.0"));
+		assertTrue(acceptVersions.contains("2.0.0"));
 
 		// check sections
 		Set<String> sections = request.getSections();
-		assertThat(sections.size(), is(3));
-		assertThat(sections, hasItems("ServiceIdentification", "ServiceProvider", "OperationsMetadata"));
+		assertEquals(sections.size(), 3);
+		assertTrue(sections.contains("ServiceIdentification"));
+		assertTrue(sections.contains("ServiceProvider"));
+		assertTrue(sections.contains("OperationsMetadata"));
 
 		// check accept formats
 		Set<String> acceptFormats = request.getAcceptFormats();
-		assertThat(acceptFormats.size(), is(1));
-		assertThat(acceptFormats, hasItems("text/xml"));
+		assertEquals(acceptFormats.size(), 1);
+		assertTrue(acceptFormats.contains("text/xml"));
 
 		// check accept formats
 		List<String> acceptLanguages = request.getAcceptLanguages();
-		assertThat(acceptLanguages.size(), is(2));
-		assertThat(acceptLanguages, hasItems("en", "de"));
+		assertEquals(acceptLanguages.size(), 2);
+		assertTrue(acceptLanguages.contains("en"));
+		assertTrue(acceptLanguages.contains("de"));
 
-		assertThat(request.getUpdateSequence(), is("2"));
+		assertEquals(request.getUpdateSequence(), "2");
 	}
 
 }

@@ -38,7 +38,7 @@ import org.deegree.commons.xml.CommonNamespaces;
 import org.deegree.commons.xml.NamespaceBindings;
 import org.deegree.filter.FilterEvaluationException;
 import org.deegree.sqldialect.filter.UnmappableException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * TODO add class documentation here

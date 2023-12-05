@@ -34,20 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.feature.xpath;
 
-import static java.lang.Boolean.TRUE;
-import static org.deegree.commons.tom.primitive.BaseType.BOOLEAN;
-import static org.deegree.commons.tom.primitive.BaseType.DOUBLE;
-import static org.deegree.commons.tom.primitive.BaseType.STRING;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.deegree.commons.tom.TypedObjectNode;
 import org.deegree.commons.tom.gml.property.Property;
 import org.deegree.commons.tom.primitive.PrimitiveValue;
@@ -65,11 +51,23 @@ import org.deegree.gml.feature.GMLFeatureReaderTest;
 import org.deegree.gml.schema.GMLAppSchemaReader;
 import org.deegree.workspace.standard.DefaultWorkspace;
 import org.jaxen.SimpleNamespaceContext;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import javax.xml.stream.XMLStreamException;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.HashSet;
+import java.util.Set;
+
+import static java.lang.Boolean.TRUE;
+import static org.deegree.commons.tom.primitive.BaseType.BOOLEAN;
+import static org.deegree.commons.tom.primitive.BaseType.DOUBLE;
+import static org.deegree.commons.tom.primitive.BaseType.STRING;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests the correct evaluation of {@link GMLObjectXPath} expressions.
@@ -87,7 +85,7 @@ public class GMLObjectXPathTest {
 	/**
 	 * @throws java.lang.Exception
 	 */
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		String schemaURL = this.getClass().getResource("../../gml/misc/schema/Philosopher.xsd").toString();
 		URL docURL = GMLFeatureReaderTest.class.getResource(BASE_DIR + "Philosopher_FeatureCollection.xml");
@@ -198,9 +196,9 @@ public class GMLObjectXPathTest {
 		for (TypedObjectNode node : result) {
 			names.add(((SimpleProperty) node).getValue().toString());
 		}
-		Assert.assertEquals(2, names.size());
-		Assert.assertTrue(names.contains("Friedrich Engels"));
-		Assert.assertTrue(names.contains("Karl Marx"));
+		assertEquals(2, names.size());
+		assertTrue(names.contains("Friedrich Engels"));
+		assertTrue(names.contains("Karl Marx"));
 	}
 
 	// @Test

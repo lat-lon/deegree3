@@ -39,24 +39,21 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.tile.persistence.remotewmts;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-
-import org.deegree.commons.config.ResourceInitException;
-import org.deegree.cs.exceptions.UnknownCRSException;
 import org.deegree.tile.TileDataSet;
 import org.deegree.tile.persistence.TileStore;
 import org.deegree.tile.persistence.TileStoreProvider;
 import org.deegree.workspace.Workspace;
 import org.deegree.workspace.standard.DefaultWorkspace;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.io.File;
+import java.net.URISyntaxException;
+import java.net.URL;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * Basic test cases for the {@link RemoteWMSTileStore}.
@@ -72,14 +69,14 @@ public class RemoteWMTSTileStoreTest {
 
 	private Workspace ws;
 
-	@Before
-	public void setup() throws UnknownCRSException, IOException, URISyntaxException, ResourceInitException {
+	@BeforeEach
+	public void setup() throws URISyntaxException {
 		URL wsUrl = RemoteWMTSTileStoreTest.class.getResource("workspace");
 		ws = new DefaultWorkspace(new File(wsUrl.toURI()));
 		ws.initAll();
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		ws.destroy();
 	}

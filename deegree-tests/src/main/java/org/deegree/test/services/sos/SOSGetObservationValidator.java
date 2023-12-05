@@ -37,7 +37,7 @@ package org.deegree.test.services.sos;
 import java.io.File;
 
 import org.deegree.test.services.util.XPathAsserter;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * This class contains integration tests for SOS OGC GetObservation requests.

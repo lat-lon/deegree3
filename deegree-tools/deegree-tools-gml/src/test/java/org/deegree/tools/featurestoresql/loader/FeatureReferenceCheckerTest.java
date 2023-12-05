@@ -1,14 +1,14 @@
 package org.deegree.tools.featurestoresql.loader;
 
-import static java.util.Arrays.asList;
-import static org.hamcrest.CoreMatchers.hasItem;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Test;
+import static java.util.Arrays.asList;
+import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * @author <a href="mailto:goltz@lat-lon.de">Lyn Goltz </a>
@@ -20,7 +20,6 @@ public class FeatureReferenceCheckerTest {
 	@Test
 	public void testCheckReferences() {
 		List<String> featureIds = asList("123", "456", "789");
-		;
 		List<String> references = asList("123");
 		FeatureReferenceCheckResult result = featureReferenceChecker.checkReferences(featureIds, references);
 

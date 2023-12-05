@@ -34,7 +34,7 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.protocol.wms.client;
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -55,7 +55,7 @@ import org.deegree.geometry.standard.DefaultEnvelope;
 import org.deegree.geometry.standard.primitive.DefaultPoint;
 import org.deegree.protocol.ows.exception.OWSExceptionReport;
 import org.deegree.protocol.wms.ops.GetMap;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class WMSClientIT {
 

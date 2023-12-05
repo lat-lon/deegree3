@@ -34,20 +34,15 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.metadata.iso.persistence;
 
-import static org.slf4j.LoggerFactory.getLogger;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.Reader;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.net.URL;
-import java.util.List;
+import org.deegree.commons.config.ResourceInitException;
+import org.deegree.metadata.iso.ISORecord;
+import org.deegree.metadata.persistence.MetadataInspectorException;
+import org.deegree.metadata.persistence.MetadataResultSet;
+import org.deegree.protocol.csw.CSWConstants.ReturnableElement;
+import org.deegree.protocol.csw.MetadataStoreException;
+import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.xml.sax.SAXException;
 
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLInputFactory;
@@ -61,18 +56,23 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.net.URL;
+import java.util.List;
 
-import org.deegree.commons.config.ResourceInitException;
-import org.deegree.metadata.iso.ISORecord;
-import org.deegree.metadata.persistence.MetadataInspectorException;
-import org.deegree.metadata.persistence.MetadataResultSet;
-import org.deegree.protocol.csw.CSWConstants.ReturnableElement;
-import org.deegree.protocol.csw.MetadataStoreException;
-import org.junit.Assert;
-import org.junit.Assume;
-import org.junit.Test;
-import org.slf4j.Logger;
-import org.xml.sax.SAXException;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * TODO add class documentation here
@@ -89,7 +89,7 @@ public class ISORecordSerializeTest extends AbstractISOTest {
 		LOG.info("START Test: testNamespaces");
 
 		initStore(TstConstants.configURL);
-		Assume.assumeNotNull(store);
+		assumeTrue(store != null);
 
 		List<String> ids = TstUtils.insertMetadata(store, TstConstants.tst_12);
 		resultSet = store.getRecordById(ids, null);
@@ -114,7 +114,7 @@ public class ISORecordSerializeTest extends AbstractISOTest {
 		LOG.info("streamThis: " + streamExpected.toString());
 		LOG.info("streamThat: " + streamActual.toString());
 		System.out.println(streamActual);
-		Assert.assertEquals(streamExpected.toString(), streamActual.toString());
+		assertEquals(streamExpected.toString(), streamActual.toString());
 
 	}
 
@@ -136,7 +136,7 @@ public class ISORecordSerializeTest extends AbstractISOTest {
 
 		StringReader input = new StringReader(sw.toString());
 		sw.close();
-		Assert.assertTrue(validate(input));
+		assertTrue(validate(input));
 	}
 
 	// @Test
@@ -157,7 +157,7 @@ public class ISORecordSerializeTest extends AbstractISOTest {
 
 		StringReader input = new StringReader(sw.toString());
 		sw.close();
-		Assert.assertTrue(validate(input));
+		assertTrue(validate(input));
 	}
 
 	private boolean validate(Reader toValidate) {

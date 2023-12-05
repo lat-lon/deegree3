@@ -22,12 +22,8 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.geometry.io;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import org.deegree.geometry.standard.AbstractDefaultGeometry;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineString;
@@ -35,6 +31,10 @@ import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.ParseException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class EWKTReaderWKTtoJTSGeometryTests {
 
@@ -88,13 +88,13 @@ public class EWKTReaderWKTtoJTSGeometryTests {
 	public void circularString() throws Exception {
 		String WKT = "CIRCULARSTRING(143.62025166838282 -30.037497356076827, 142.92857147299705 -32.75101196874403, 145.96132309891922 -34.985671061528784, 149.57565307617188 -33.41153335571289, 149.41972407584802 -29.824672680573517, 146.1209416055467 -30.19711586270431, 143.62025166838282 -30.037497356076827)";
 		Geometry geometry = readAsJTS(WKT);
-		assertNotNull("parsed circularstring ring", geometry);
+		assertNotNull(geometry, "parsed circularstring ring");
 		Coordinate[] array = geometry.getCoordinates();
-		assertEquals("forms a ring", array[0], array[array.length - 1]);
+		assertEquals(array[0], array[array.length - 1], "forms a ring");
 
 		WKT = "CIRCULARSTRING(143.62025166838282 -30.037497356076827, 142.92857147299705 -32.75101196874403, 143.62025166838282 -30.037497356076827)";
 		geometry = readAsJTS(WKT);
-		assertNotNull("parsed perfect circle", geometry);
+		assertNotNull(geometry, "parsed perfect circle");
 		assertEquals(100, geometry.getNumPoints());
 
 		// this wont work, as CIRCULARSTRING EMPTY is read as null
@@ -137,18 +137,18 @@ public class EWKTReaderWKTtoJTSGeometryTests {
 
 		WKT = "CURVEPOLYGON(CIRCULARSTRING(143.62025166838282 -30.037497356076827, 142.92857147299705 -32.75101196874403, 143.62025166838282 -30.037497356076827))";
 		geometry = readAsJTS(WKT);
-		assertNotNull("read curvepolygon", geometry);
+		assertNotNull(geometry, "read curvepolygon");
 		assertTrue(geometry instanceof Polygon);
 		polygon = (Polygon) geometry;
 		// TODO//assertTrue(polygon.getExteriorRing() instanceof CircularRing);
-		assertTrue("ring", polygon.getExteriorRing().isClosed());
-		assertEquals("segmented ring", 100, polygon.getExteriorRing().getNumPoints());
-		assertEquals("no holes", 0, polygon.getNumInteriorRing());
+		assertTrue(polygon.getExteriorRing().isClosed(), "ring");
+		assertEquals(100, polygon.getExteriorRing().getNumPoints(), "segmented ring");
+		assertEquals(0, polygon.getNumInteriorRing(), "no holes");
 
 		WKT = "CURVEPOLYGON((144.84399355252685 -31.26123924022086, 144.20551952601693 -32.27215644886158, 145.55230712890625 -33.49203872680664, 147.97080993652344 -32.03618621826172, 146.38697244992585 -31.47406391572417, 144.84399355252685 -31.26123924022086))";
 		polygon = (Polygon) readAsJTS(WKT);
-		assertTrue("ring", polygon.getExteriorRing().isClosed());
-		assertEquals("no holes", 0, polygon.getNumInteriorRing());
+		assertTrue(polygon.getExteriorRing().isClosed(), "ring");
+		assertEquals(0, polygon.getNumInteriorRing(), "no holes");
 
 	}
 

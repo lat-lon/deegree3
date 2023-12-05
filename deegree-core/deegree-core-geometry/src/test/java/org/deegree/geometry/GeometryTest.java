@@ -34,15 +34,15 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.geometry;
 
-import static org.junit.Assert.assertTrue;
-
 import org.deegree.cs.coordinatesystems.ICRS;
 import org.deegree.cs.persistence.CRSManager;
 import org.deegree.geometry.primitive.LineString;
 import org.deegree.geometry.primitive.Point;
 import org.deegree.geometry.standard.points.PackedPoints;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Some very basic tests. Just to make sure we can create a GeometryFactory and do some
@@ -64,7 +64,7 @@ public class GeometryTest {
 	/**
 	 * common envelopes as test geometry
 	 */
-	@Before
+	@BeforeEach
 	public void setUp() {
 
 		ICRS crs = CRSManager.getCRSRef("EPSG:4326");

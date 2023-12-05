@@ -40,16 +40,18 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.workspace.standard;
 
-import java.io.File;
-import java.util.List;
-
 import org.deegree.workspace.ResourceBuilder;
 import org.deegree.workspace.ResourceIdentifier;
 import org.deegree.workspace.ResourceProvider;
 import org.deegree.workspace.graph.ResourceGraph;
 import org.deegree.workspace.graph.ResourceNode;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import java.io.File;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests for resource metadata.
@@ -117,20 +119,20 @@ public class AbstractResourceMetadataTest {
 		ResourceNode node3 = graph.getNode(md3.getIdentifier());
 
 		List deps = node1.getDependencies();
-		Assert.assertEquals(2, deps.size());
-		Assert.assertTrue(deps.contains(node2));
-		Assert.assertTrue(deps.contains(node3));
+		assertEquals(2, deps.size());
+		assertTrue(deps.contains(node2));
+		assertTrue(deps.contains(node3));
 
 		deps = node2.getDependencies();
-		Assert.assertEquals(1, deps.size());
-		Assert.assertTrue(deps.contains(node4));
+		assertEquals(1, deps.size());
+		assertTrue(deps.contains(node4));
 
 		deps = node3.getDependencies();
-		Assert.assertEquals(1, deps.size());
-		Assert.assertTrue(deps.contains(node4));
+		assertEquals(1, deps.size());
+		assertTrue(deps.contains(node4));
 
 		deps = node4.getDependencies();
-		Assert.assertTrue(deps.isEmpty());
+		assertTrue(deps.isEmpty());
 	}
 
 }

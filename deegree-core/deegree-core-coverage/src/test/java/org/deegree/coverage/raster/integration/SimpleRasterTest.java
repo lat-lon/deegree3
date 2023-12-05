@@ -37,21 +37,20 @@
 
 package org.deegree.coverage.raster.integration;
 
-import static org.deegree.coverage.raster.io.WorldFileAccess.readWorldFile;
-import static org.deegree.coverage.raster.utils.RasterFactory.loadRasterFromStream;
-
-import java.io.IOException;
-import java.io.InputStream;
-
-import junit.framework.Assert;
-
 import org.deegree.coverage.raster.AbstractRaster;
 import org.deegree.coverage.raster.SimpleRaster;
 import org.deegree.coverage.raster.geom.RasterGeoReference;
 import org.deegree.coverage.raster.geom.RasterGeoReference.OriginLocation;
 import org.deegree.coverage.raster.io.RasterIOOptions;
 import org.deegree.geometry.Envelope;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+import static org.deegree.coverage.raster.io.WorldFileAccess.readWorldFile;
+import static org.deegree.coverage.raster.utils.RasterFactory.loadRasterFromStream;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * The <code>SimpleRasterTest</code> class TODO add class documentation here.
@@ -97,16 +96,16 @@ public class SimpleRasterTest extends CenterOuterTest {
 		// center, rb: visually verified 28.10.2009
 		String name = "soleInside_center_";
 		SimpleRaster simpleRaster = soleRasterCenter.getSubRaster(request);
-		Assert.assertEquals(3, simpleRaster.getColumns());
-		Assert.assertEquals(3, simpleRaster.getRows());
+		assertEquals(3, simpleRaster.getColumns());
+		assertEquals(3, simpleRaster.getRows());
 		writeDebugFile(name, simpleRaster);
 		testValues(UL0_CENTER_RESULT, simpleRaster);
 
 		// outer, rb: visually verified 28.10.2009
 		name = "soleInside_outer_";
 		simpleRaster = soleRasterOuter.getSubRaster(request);
-		Assert.assertEquals(2, simpleRaster.getColumns());
-		Assert.assertEquals(2, simpleRaster.getRows());
+		assertEquals(2, simpleRaster.getColumns());
+		assertEquals(2, simpleRaster.getRows());
 		writeDebugFile(name, simpleRaster);
 		testValues(UL0_OUTER_RESULT, simpleRaster);
 	}
@@ -120,16 +119,16 @@ public class SimpleRasterTest extends CenterOuterTest {
 		// center, rb: visually verified 28.10.2009
 		String name = "soleUL0Overlap_center_";
 		SimpleRaster simpleRaster = soleRasterCenter.getSubRaster(request);
-		Assert.assertEquals(5, simpleRaster.getColumns());
-		Assert.assertEquals(5, simpleRaster.getRows());
+		assertEquals(5, simpleRaster.getColumns());
+		assertEquals(5, simpleRaster.getRows());
 		writeDebugFile(name, simpleRaster);
 		testValues(UL0OVERLAP_CENTER_RESULT, simpleRaster);
 
 		// outer, rb: visually verified 28.10.2009
 		name = "soleUL0Overlap_outer_";
 		simpleRaster = soleRasterOuter.getSubRaster(request);
-		Assert.assertEquals(4, simpleRaster.getColumns());
-		Assert.assertEquals(4, simpleRaster.getRows());
+		assertEquals(4, simpleRaster.getColumns());
+		assertEquals(4, simpleRaster.getRows());
 		writeDebugFile(name, simpleRaster);
 		testValues(UL0OVERLAP_OUTER_RESULT, simpleRaster);
 	}
@@ -143,16 +142,16 @@ public class SimpleRasterTest extends CenterOuterTest {
 		// center, rb: visually verified 28.10.2009
 		String name = "soleLROverlap_center_";
 		SimpleRaster simpleRaster = soleRasterCenter.getSubRaster(request);
-		Assert.assertEquals(3, simpleRaster.getColumns());
-		Assert.assertEquals(5, simpleRaster.getRows());
+		assertEquals(3, simpleRaster.getColumns());
+		assertEquals(5, simpleRaster.getRows());
 		writeDebugFile(name, simpleRaster);
 		testValues(SOLELROVERLAP_CENTER_RESULT, simpleRaster);
 
 		// outer, rb: visually verified 28.10.2009
 		name = "soleLROverlap_outer_";
 		simpleRaster = soleRasterOuter.getSubRaster(request);
-		Assert.assertEquals(4, simpleRaster.getColumns());
-		Assert.assertEquals(4, simpleRaster.getRows());
+		assertEquals(4, simpleRaster.getColumns());
+		assertEquals(4, simpleRaster.getRows());
 		writeDebugFile(name, simpleRaster);
 		testValues(SOLELROVERLAP_OUTER_RESULT, simpleRaster);
 	}
@@ -166,16 +165,16 @@ public class SimpleRasterTest extends CenterOuterTest {
 		// center, rb: visually verified 28.10.2009
 		String name = "sole0Outside_center_";
 		SimpleRaster simpleRaster = soleRasterCenter.getSubRaster(request);
-		Assert.assertEquals(3, simpleRaster.getColumns());
-		Assert.assertEquals(7, simpleRaster.getRows());
+		assertEquals(3, simpleRaster.getColumns());
+		assertEquals(7, simpleRaster.getRows());
 		writeDebugFile(name, simpleRaster);
 		testValues(UL0OUTSIDE_CENTER_RESULT, simpleRaster);
 
 		// outer, rb: visually verified 28.10.2009
 		name = "sole0Outside_outer_";
 		simpleRaster = soleRasterOuter.getSubRaster(request);
-		Assert.assertEquals(2, simpleRaster.getColumns());
-		Assert.assertEquals(6, simpleRaster.getRows());
+		assertEquals(2, simpleRaster.getColumns());
+		assertEquals(6, simpleRaster.getRows());
 		writeDebugFile(name, simpleRaster);
 		testValues(UL0OUTSIDE_OUTER_RESULT, simpleRaster);
 	}
@@ -189,16 +188,16 @@ public class SimpleRasterTest extends CenterOuterTest {
 		// center, rb: visually verified 28.10.2009
 		String name = "soleTotalOverlap_center_";
 		SimpleRaster simpleRaster = soleRasterCenter.getSubRaster(request);
-		Assert.assertEquals(14, simpleRaster.getColumns());
-		Assert.assertEquals(14, simpleRaster.getRows());
+		assertEquals(14, simpleRaster.getColumns());
+		assertEquals(14, simpleRaster.getRows());
 		writeDebugFile(name, simpleRaster);
 		testValues(SOLETOTALOVERLAP_CENTER_RESULT, simpleRaster);
 
 		// outer, rb: visually verified 28.10.2009
 		name = "soleTotalOverlap_outer_";
 		simpleRaster = soleRasterOuter.getSubRaster(request);
-		Assert.assertEquals(14, simpleRaster.getColumns());
-		Assert.assertEquals(14, simpleRaster.getRows());
+		assertEquals(14, simpleRaster.getColumns());
+		assertEquals(14, simpleRaster.getRows());
 		writeDebugFile(name, simpleRaster);
 		testValues(SOLETOTALOVERLAP_OUTER_RESULT, simpleRaster);
 	}

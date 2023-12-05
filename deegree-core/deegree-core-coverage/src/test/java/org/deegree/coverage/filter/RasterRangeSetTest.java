@@ -37,18 +37,6 @@
 
 package org.deegree.coverage.filter;
 
-import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
-import java.awt.image.DataBuffer;
-import java.awt.image.Raster;
-import java.awt.image.WritableRaster;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import junit.framework.Assert;
-
 import org.deegree.coverage.filter.raster.RasterFilter;
 import org.deegree.coverage.rangeset.AxisSubset;
 import org.deegree.coverage.rangeset.Interval;
@@ -64,7 +52,21 @@ import org.deegree.coverage.raster.geom.RasterGeoReference.OriginLocation;
 import org.deegree.coverage.raster.utils.RasterFactory;
 import org.deegree.geometry.Envelope;
 import org.deegree.geometry.GeometryFactory;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.DataBuffer;
+import java.awt.image.Raster;
+import java.awt.image.WritableRaster;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests filtering on rasters.
@@ -148,7 +150,7 @@ public class RasterRangeSetTest {
 
 		AbstractRaster subset = filter.apply(bandRaster, rs);
 		byte[] nullPixel = subset.getAsSimpleRaster().getRasterData().getNullPixel(null);
-		Assert.assertEquals(3, nullPixel.length);
+		assertEquals(3, nullPixel.length);
 		int[] nullValues = new int[3];
 		nullValues[0] = nullPixel[0] & 0xFF;
 		nullValues[1] = nullPixel[1] & 0xFF;// green should be 0.
@@ -182,7 +184,7 @@ public class RasterRangeSetTest {
 
 		AbstractRaster subset = filter.apply(bandRaster, rs);
 		byte[] nullPixel = subset.getAsSimpleRaster().getRasterData().getNullPixel(null);
-		Assert.assertEquals(2, nullPixel.length);
+		assertEquals(2, nullPixel.length);
 		int[] nullValues = new int[3];
 		nullValues[0] = nullPixel[0] & 0xFF;
 		nullValues[1] = 0;// green should be 0.
@@ -214,7 +216,7 @@ public class RasterRangeSetTest {
 
 		AbstractRaster subset = filter.apply(bandRaster, rs);
 		byte[] nullPixel = subset.getAsSimpleRaster().getRasterData().getNullPixel(null);
-		Assert.assertEquals(1, nullPixel.length);
+		assertEquals(1, nullPixel.length);
 		int nullValue = nullPixel[0] & 0xFF;
 		if (LOG.isDebugEnabled()) {
 			RasterFactory.saveRasterToFile(subset, File.createTempFile("green_", ".png"));
@@ -248,7 +250,7 @@ public class RasterRangeSetTest {
 
 		AbstractRaster subset = filter.apply(bandRaster, rs);
 		byte[] nullPixel = subset.getAsSimpleRaster().getRasterData().getNullPixel(null);
-		Assert.assertEquals(1, nullPixel.length);
+		assertEquals(1, nullPixel.length);
 		int nullValue = nullPixel[0] & 0xFF;
 
 		if (LOG.isDebugEnabled()) {
@@ -290,7 +292,7 @@ public class RasterRangeSetTest {
 
 		AbstractRaster subset = filter.apply(bandRaster, rs);
 		byte[] nullPixel = subset.getAsSimpleRaster().getRasterData().getNullPixel(null);
-		Assert.assertEquals(1, nullPixel.length);
+		assertEquals(1, nullPixel.length);
 		int nullValue = nullPixel[0] & 0xFF;
 		if (LOG.isDebugEnabled()) {
 			RasterFactory.saveRasterToFile(subset, File.createTempFile("red_interval_", ".png"));
@@ -337,7 +339,7 @@ public class RasterRangeSetTest {
 
 		AbstractRaster subset = filter.apply(bandRaster, rs);
 		byte[] nullPixel = subset.getAsSimpleRaster().getRasterData().getNullPixel(null);
-		Assert.assertEquals(1, nullPixel.length);
+		assertEquals(1, nullPixel.length);
 		int nullValue = nullPixel[0] & 0xFF;
 		if (LOG.isDebugEnabled()) {
 			RasterFactory.saveRasterToFile(subset, File.createTempFile("blue_interval_single", ".png"));
@@ -388,7 +390,7 @@ public class RasterRangeSetTest {
 
 		AbstractRaster subset = filter.apply(bandRaster, rs);
 		byte[] nullPixel = subset.getAsSimpleRaster().getRasterData().getNullPixel(null);
-		Assert.assertEquals(2, nullPixel.length);
+		assertEquals(2, nullPixel.length);
 		int[] nullValues = new int[3];
 		nullValues[0] = 0; // red should be 0.
 		nullValues[1] = nullPixel[0] & 0xFF;
@@ -403,16 +405,16 @@ public class RasterRangeSetTest {
 	}
 
 	private void testImage(BufferedImage newImage) {
-		Assert.assertNotNull(newImage);
-		Assert.assertEquals(width, newImage.getWidth());
-		Assert.assertEquals(height, newImage.getHeight());
+		assertNotNull(newImage);
+		assertEquals(width, newImage.getWidth());
+		assertEquals(height, newImage.getHeight());
 	}
 
 	@SuppressWarnings("null")
 	private void testOneBandValues(BufferedImage newImage, int x, int y, int[] values, int nullValue) {
 		testImage(newImage);
-		Assert.assertTrue("Datatype of one band should be byte",
-				newImage.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE);
+		assertTrue(newImage.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE,
+				"Datatype of one band should be byte");
 		boolean[] matchedValues = new boolean[values == null ? 0 : values.length];
 		byte[] color = new byte[1];
 		Raster r = newImage.getRaster();
@@ -447,9 +449,9 @@ public class RasterRangeSetTest {
 				testValue("one_band", color[0] & 0xFF, values, nullValue, matchedValues);
 			}
 		}
-		Assert.assertNotNull(values);
+		assertNotNull(values);
 		for (int i = 0; i < matchedValues.length; ++i) {
-			Assert.assertTrue("Expected value: " + i + "(" + values[i] + ") was missing.", matchedValues[i]);
+			assertTrue(matchedValues[i], "Expected value: " + i + "(" + values[i] + ") was missing.");
 		}
 	}
 
@@ -457,8 +459,8 @@ public class RasterRangeSetTest {
 	private void testBandValues(BufferedImage newImage, int x, int y, int[] redValues, int[] greenValues,
 			int[] blueValues, int[] nullValues) {
 		testImage(newImage);
-		Assert.assertTrue("Datatype of one band should be int",
-				newImage.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_INT);
+		assertTrue(newImage.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_INT,
+				"Datatype of one band should be int");
 		boolean[] matchedRedValues = new boolean[redValues == null ? 0 : redValues.length];
 		boolean[] matchedGreenValues = new boolean[greenValues == null ? 0 : greenValues.length];
 		boolean[] matchedBlueValues = new boolean[blueValues == null ? 0 : blueValues.length];
@@ -507,15 +509,13 @@ public class RasterRangeSetTest {
 		}
 
 		for (int i = 0; i < matchedRedValues.length; ++i) {
-			Assert.assertTrue("Expected red value: " + i + "(" + redValues[i] + ") was missing.", matchedRedValues[i]);
+			assertTrue(matchedRedValues[i], "Expected red value: " + i + "(" + redValues[i] + ") was missing.");
 		}
 		for (int i = 0; i < matchedGreenValues.length; ++i) {
-			Assert.assertTrue("Expected green value: " + i + "(" + greenValues[i] + ") was missing.",
-					matchedGreenValues[i]);
+			assertTrue(matchedGreenValues[i], "Expected green value: " + i + "(" + greenValues[i] + ") was missing.");
 		}
 		for (int i = 0; i < matchedBlueValues.length; ++i) {
-			Assert.assertTrue("Expected blue value: " + i + "(" + blueValues[i] + ") was missing.",
-					matchedBlueValues[i]);
+			assertTrue(matchedBlueValues[i], "Expected blue value: " + i + "(" + blueValues[i] + ") was missing.");
 		}
 	}
 
@@ -541,23 +541,23 @@ public class RasterRangeSetTest {
 				}
 				else {
 					match = value > 0;
-					Assert.assertTrue(colorString + " value must be larger than 0 (supplied), was: " + value, match);
+					assertTrue(match, colorString + " value must be larger than 0 (supplied), was: " + value);
 				}
 			}
 		}
 		else {
-			Assert.assertTrue(colorString + " value must not be supplied (" + nullValue + "), was:" + value, match);
+			assertTrue(match, colorString + " value must not be supplied (" + nullValue + "), was:" + value);
 			// testing for null value was successful.
 		}
 	}
 
 	private void testDefaults(AbstractRaster raster) {
-		Assert.assertNotNull(raster);
-		Assert.assertEquals(width, raster.getColumns());
-		Assert.assertEquals(height, raster.getRows());
-		Assert.assertEquals(env, raster.getEnvelope());
+		assertNotNull(raster);
+		assertEquals(width, raster.getColumns());
+		assertEquals(height, raster.getRows());
+		assertEquals(env, raster.getEnvelope());
 		RasterGeoReference rasterReference = raster.getRasterReference();
-		Assert.assertEquals(rasterReference, raster.getRasterReference());
+		assertEquals(rasterReference, raster.getRasterReference());
 	}
 
 }

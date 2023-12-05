@@ -35,10 +35,6 @@
 
 package org.deegree.cs.coordinatesystems;
 
-import javax.vecmath.Point2d;
-
-import junit.framework.TestCase;
-
 import org.deegree.cs.CRSCodeType;
 import org.deegree.cs.CRSIdentifiable;
 import org.deegree.cs.components.Axis;
@@ -49,7 +45,11 @@ import org.deegree.cs.projections.Projection;
 import org.deegree.cs.projections.azimuthal.StereographicAlternative;
 import org.deegree.cs.projections.cylindric.TransverseMercator;
 import org.deegree.cs.transformations.helmert.Helmert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import javax.vecmath.Point2d;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * <code>CompoundCRSTest</code> test the instantiation of two compound crs's.
@@ -57,7 +57,7 @@ import org.junit.Test;
  * @author <a href="mailto:bezema@lat-lon.de">Rutger Bezema</a>
  *
  */
-public class CompoundCRSTest extends TestCase {
+public class CompoundCRSTest {
 
 	/**
 	 * Test the construction of two compound crs's

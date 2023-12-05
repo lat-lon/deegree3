@@ -5,10 +5,7 @@ import org.deegree.cs.exceptions.UnknownCRSException;
 import org.deegree.cs.persistence.CRSManager;
 import org.deegree.geometry.Envelope;
 import org.deegree.geometry.SimpleGeometryFactory;
-import org.deegree.geometry.standard.DefaultEnvelope;
-import org.hamcrest.CoreMatchers;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,10 +13,9 @@ import java.util.Map;
 
 import static org.deegree.layer.LayerQuery.FILTERPROPERTY;
 import static org.deegree.layer.LayerQuery.FILTERVALUE;
-import static org.hamcrest.CoreMatchers.hasItem;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author <a href="mailto:goltz@lat-lon.de">Lyn Goltz </a>
@@ -33,9 +29,9 @@ public class LayerQueryTest {
 		LayerQuery layerQuery = createLayerQuery(filterProperty, filterValue);
 
 		Pair<String, List<String>> requestFilter = layerQuery.requestFilter();
-		assertThat(requestFilter.getFirst(), is(filterProperty));
-		assertThat(requestFilter.getSecond().size(), is(1));
-		assertThat(requestFilter.getSecond(), hasItem(filterValue));
+		assertEquals(requestFilter.getFirst(), filterProperty);
+		assertEquals(requestFilter.getSecond().size(), 1);
+		assertTrue(requestFilter.getSecond().contains(filterValue));
 	}
 
 	@Test
@@ -45,10 +41,10 @@ public class LayerQueryTest {
 		LayerQuery layerQuery = createLayerQuery(filterProperty, filterValue);
 
 		Pair<String, List<String>> requestFilter = layerQuery.requestFilter();
-		assertThat(requestFilter.getFirst(), is(filterProperty));
-		assertThat(requestFilter.getSecond().size(), is(2));
-		assertThat(requestFilter.getSecond(), hasItem("one"));
-		assertThat(requestFilter.getSecond(), hasItem("two"));
+		assertEquals(requestFilter.getFirst(), filterProperty);
+		assertEquals(requestFilter.getSecond().size(), 2);
+		assertTrue(requestFilter.getSecond().contains("one"));
+		assertTrue(requestFilter.getSecond().contains("two"));
 	}
 
 	@Test
@@ -58,10 +54,10 @@ public class LayerQueryTest {
 		LayerQuery layerQuery = createLayerQuery(filterProperty, filterValue);
 
 		Pair<String, List<String>> requestFilter = layerQuery.requestFilter();
-		assertThat(requestFilter.getFirst(), is(filterProperty));
-		assertThat(requestFilter.getSecond().size(), is(2));
-		assertThat(requestFilter.getSecond(), hasItem("one"));
-		assertThat(requestFilter.getSecond(), hasItem("two"));
+		assertEquals(requestFilter.getFirst(), filterProperty);
+		assertEquals(requestFilter.getSecond().size(), 2);
+		assertTrue(requestFilter.getSecond().contains("one"));
+		assertTrue(requestFilter.getSecond().contains("two"));
 	}
 
 	@Test
@@ -71,7 +67,7 @@ public class LayerQueryTest {
 		LayerQuery layerQuery = createLayerQuery(filterProperty, filterValue);
 
 		Pair<String, List<String>> requestFilter = layerQuery.requestFilter();
-		assertThat(requestFilter, is(nullValue()));
+		assertNull(requestFilter);
 	}
 
 	@Test
@@ -81,7 +77,7 @@ public class LayerQueryTest {
 		LayerQuery layerQuery = createLayerQuery(filterProperty, filterValue);
 
 		Pair<String, List<String>> requestFilter = layerQuery.requestFilter();
-		assertThat(requestFilter, is(nullValue()));
+		assertNull(requestFilter);
 	}
 
 	@Test
@@ -91,7 +87,7 @@ public class LayerQueryTest {
 		LayerQuery layerQuery = createLayerQuery(filterProperty, filterValue);
 
 		Pair<String, List<String>> requestFilter = layerQuery.requestFilter();
-		assertThat(requestFilter, is(nullValue()));
+		assertNull(requestFilter);
 	}
 
 	@Test
@@ -101,7 +97,7 @@ public class LayerQueryTest {
 		LayerQuery layerQuery = createLayerQuery(filterProperty, filterValue);
 
 		Pair<String, List<String>> requestFilter = layerQuery.requestFilter();
-		assertThat(requestFilter, is(nullValue()));
+		assertNull(requestFilter);
 	}
 
 	private LayerQuery createLayerQuery(String filterProperty, String filterValue) throws UnknownCRSException {

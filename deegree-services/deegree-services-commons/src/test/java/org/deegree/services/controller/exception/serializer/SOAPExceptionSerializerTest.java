@@ -46,7 +46,7 @@ import org.deegree.commons.tom.ows.Version;
 import org.deegree.commons.utils.kvp.InvalidParameterValueException;
 import org.deegree.services.controller.exception.SOAPException;
 import org.deegree.services.ows.OWS110ExceptionReportSerializer;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * currently it is only tested that no exception occurs

@@ -34,11 +34,11 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.commons.utils;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author <a href="mailto:tonnhofer@lat-lon.de">Oliver Tonnhofer</a>

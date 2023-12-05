@@ -39,7 +39,7 @@ import java.io.File;
 import org.deegree.test.services.util.HTTPResponseValidator;
 import org.deegree.test.services.util.XPathAsserter;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * This class contains various integration tests for the SOS OGC services.

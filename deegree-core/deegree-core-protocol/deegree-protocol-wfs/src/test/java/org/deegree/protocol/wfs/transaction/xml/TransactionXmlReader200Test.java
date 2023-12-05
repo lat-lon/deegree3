@@ -36,21 +36,6 @@
  ---------------------------------------------------------------------------*/
 package org.deegree.protocol.wfs.transaction.xml;
 
-import static org.deegree.commons.xml.stax.XMLStreamUtils.nextElement;
-import static org.deegree.commons.xml.stax.XMLStreamUtils.skipElement;
-import static org.deegree.protocol.wfs.WFSConstants.WFS_200_NS;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.Iterator;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
-import junit.framework.TestCase;
-
 import org.deegree.commons.xml.stax.XMLStreamUtils;
 import org.deegree.filter.Filter;
 import org.deegree.protocol.wfs.transaction.Transaction;
@@ -62,14 +47,31 @@ import org.deegree.protocol.wfs.transaction.action.PropertyReplacement;
 import org.deegree.protocol.wfs.transaction.action.Replace;
 import org.deegree.protocol.wfs.transaction.action.Update;
 import org.deegree.protocol.wfs.transaction.action.UpdateAction;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Iterator;
+
+import static org.deegree.commons.xml.stax.XMLStreamUtils.nextElement;
+import static org.deegree.commons.xml.stax.XMLStreamUtils.skipElement;
+import static org.deegree.protocol.wfs.WFSConstants.WFS_200_NS;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Test cases for {@link TransactionXmlReader200}.
  *
  * @author <a href="mailto:schneider@lat-lon.de">Markus Schneider</a>
  */
-public class TransactionXmlReader200Test extends TestCase {
+public class TransactionXmlReader200Test {
 
 	private final String DELETE_ACTION1 = "wfs200/delete1.xml";
 

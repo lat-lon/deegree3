@@ -36,9 +36,8 @@ package org.deegree.services.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
-import junit.framework.Assert;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 /**
@@ -53,7 +52,7 @@ public class RequestContextTest {
 		HttpServletRequest request = mockHttpRequest("http://localhost:8080/deegree-webservices/services", "/services",
 				null);
 		RequestContext requestContext = new RequestContext(request, null, null, null);
-		Assert.assertEquals("http://localhost:8080/deegree-webservices/services", requestContext.getServiceUrl());
+		Assertions.assertEquals("http://localhost:8080/deegree-webservices/services", requestContext.getServiceUrl());
 	}
 
 	@Test
@@ -61,7 +60,7 @@ public class RequestContextTest {
 		HttpServletRequest request = mockHttpRequest(
 				"http://localhost:8080/deegree-webservices/services/inspire/ad/wfs", "/services", "/inspire/ad/wfs");
 		RequestContext requestContext = new RequestContext(request, null, null, null);
-		Assert.assertEquals("http://localhost:8080/deegree-webservices/services/inspire/ad/wfs",
+		Assertions.assertEquals("http://localhost:8080/deegree-webservices/services/inspire/ad/wfs",
 				requestContext.getServiceUrl());
 	}
 
@@ -70,7 +69,7 @@ public class RequestContextTest {
 		HttpServletRequest request = mockHttpRequest("http://localhost:8080/deegree-webservices/services", "/services",
 				null);
 		RequestContext requestContext = new RequestContext(request, null, "http://mygeoportal.com/ows", null);
-		Assert.assertEquals("http://mygeoportal.com/ows", requestContext.getServiceUrl());
+		Assertions.assertEquals("http://mygeoportal.com/ows", requestContext.getServiceUrl());
 	}
 
 	@Test
@@ -78,7 +77,7 @@ public class RequestContextTest {
 		HttpServletRequest request = mockHttpRequest(
 				"http://localhost:8080/deegree-webservices/services/inspire/ad/wfs", "/services", "/inspire/ad/wfs");
 		RequestContext requestContext = new RequestContext(request, null, "http://mygeoportal.com/ows", null);
-		Assert.assertEquals("http://mygeoportal.com/ows/inspire/ad/wfs", requestContext.getServiceUrl());
+		Assertions.assertEquals("http://mygeoportal.com/ows/inspire/ad/wfs", requestContext.getServiceUrl());
 	}
 
 	@Test
@@ -86,7 +85,8 @@ public class RequestContextTest {
 		HttpServletRequest request = mockHttpRequest("http://localhost:8080/deegree-webservices/services", "/services",
 				null);
 		RequestContext requestContext = new RequestContext(request, null, null, null);
-		Assert.assertEquals("http://localhost:8080/deegree-webservices/resources", requestContext.getResourcesUrl());
+		Assertions.assertEquals("http://localhost:8080/deegree-webservices/resources",
+				requestContext.getResourcesUrl());
 	}
 
 	@Test
@@ -94,7 +94,7 @@ public class RequestContextTest {
 		HttpServletRequest request = mockHttpRequest("http://localhost:8080/deegree-webservices/services", "/services",
 				null);
 		RequestContext requestContext = new RequestContext(request, null, null, "http://mygeoportal.com/rest");
-		Assert.assertEquals("http://mygeoportal.com/rest", requestContext.getResourcesUrl());
+		Assertions.assertEquals("http://mygeoportal.com/rest", requestContext.getResourcesUrl());
 	}
 
 	private HttpServletRequest mockHttpRequest(String requestUrl, String servletPath, String pathInfo) {

@@ -1,16 +1,5 @@
 package org.deegree.protocol.csw.client;
 
-import static org.deegree.commons.xml.CommonNamespaces.APISO;
-import static org.deegree.commons.xml.CommonNamespaces.APISO_PREFIX;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.Iterator;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
-
 import org.deegree.commons.ows.metadata.OperationsMetadata;
 import org.deegree.commons.ows.metadata.ServiceIdentification;
 import org.deegree.commons.ows.metadata.ServiceProvider;
@@ -31,9 +20,21 @@ import org.deegree.filter.logical.Or;
 import org.deegree.metadata.MetadataRecord;
 import org.deegree.protocol.csw.client.getrecords.GetRecordsResponse;
 import org.deegree.protocol.ows.exception.OWSExceptionReport;
-import org.junit.Assert;
-import org.junit.Assume;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.Iterator;
+
+import static org.deegree.commons.xml.CommonNamespaces.APISO;
+import static org.deegree.commons.xml.CommonNamespaces.APISO_PREFIX;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * JUnit class tests the functionality of the CSW client. You need to set demo_csw_url in
@@ -47,66 +48,66 @@ public class CSWClientTest {
 	public void testMetadata() throws OWSExceptionReport, XMLStreamException, IOException {
 
 		String demoCSWURL = TestProperties.getProperty("demo_csw_url");
-		Assume.assumeNotNull(demoCSWURL);
+		assumeTrue(demoCSWURL != null);
 
 		URL serviceUrl = new URL(demoCSWURL);
 
 		CSWClient client = new CSWClient(serviceUrl);
-		Assert.assertNotNull(client);
+		assertNotNull(client);
 
 		ServiceIdentification serviceId = client.getIdentification();
-		Assert.assertNotNull(serviceId);
-		Assert.assertEquals(1, serviceId.getTitles().size());
-		Assert.assertNotNull(serviceId.getTitles().get(0).getString());
-		Assert.assertEquals(1, serviceId.getAbstracts().size());
-		Assert.assertNotNull(serviceId.getAbstracts().get(0).getString());
+		assertNotNull(serviceId);
+		assertEquals(1, serviceId.getTitles().size());
+		assertNotNull(serviceId.getTitles().get(0).getString());
+		assertEquals(1, serviceId.getAbstracts().size());
+		assertNotNull(serviceId.getAbstracts().get(0).getString());
 
-		Assert.assertEquals("CSW", serviceId.getServiceType().getCode());
-		Assert.assertEquals("2.0.2", serviceId.getServiceTypeVersion().get(0).toString());
+		assertEquals("CSW", serviceId.getServiceType().getCode());
+		assertEquals("2.0.2", serviceId.getServiceTypeVersion().get(0).toString());
 
 		ServiceProvider serviceProvider = client.getProvider();
-		Assert.assertNotNull(serviceProvider.getProviderName());
-		Assert.assertNotNull(serviceProvider.getProviderSite());
+		assertNotNull(serviceProvider.getProviderName());
+		assertNotNull(serviceProvider.getProviderSite());
 
 		ResponsibleParty serviceContact = serviceProvider.getServiceContact();
-		Assert.assertNotNull(serviceContact.getIndividualName());
-		Assert.assertNotNull(serviceContact.getPositionName());
+		assertNotNull(serviceContact.getIndividualName());
+		assertNotNull(serviceContact.getPositionName());
 
 		ContactInfo contactInfo = serviceContact.getContactInfo();
-		Assert.assertNotNull(contactInfo.getPhone().getVoice().get(0));
-		Assert.assertNotNull(contactInfo.getPhone().getFacsimile().get(0));
-		Assert.assertNotNull(contactInfo.getAddress().getDeliveryPoint().get(0));
-		Assert.assertNotNull(contactInfo.getAddress().getCity());
-		Assert.assertNotNull(contactInfo.getAddress().getAdministrativeArea());
-		Assert.assertNotNull(contactInfo.getAddress().getPostalCode());
-		Assert.assertNotNull(contactInfo.getAddress().getCountry());
-		Assert.assertNotNull(contactInfo.getAddress().getElectronicMailAddress().get(0));
-		Assert.assertNotNull(contactInfo.getHoursOfService());
-		Assert.assertNotNull(contactInfo.getContactInstruction());
+		assertNotNull(contactInfo.getPhone().getVoice().get(0));
+		assertNotNull(contactInfo.getPhone().getFacsimile().get(0));
+		assertNotNull(contactInfo.getAddress().getDeliveryPoint().get(0));
+		assertNotNull(contactInfo.getAddress().getCity());
+		assertNotNull(contactInfo.getAddress().getAdministrativeArea());
+		assertNotNull(contactInfo.getAddress().getPostalCode());
+		assertNotNull(contactInfo.getAddress().getCountry());
+		assertNotNull(contactInfo.getAddress().getElectronicMailAddress().get(0));
+		assertNotNull(contactInfo.getHoursOfService());
+		assertNotNull(contactInfo.getContactInstruction());
 
-		Assert.assertNotNull(serviceContact.getRole().getCode());
+		assertNotNull(serviceContact.getRole().getCode());
 
 		OperationsMetadata opMetadata = client.getOperations();
 		Operation op;
 
 		op = opMetadata.getOperation("GetCapabilities");
-		Assert.assertNotNull(op.getGetUrls().get(0).toExternalForm());
-		Assert.assertNotNull(op.getPostUrls().get(0).toExternalForm());
+		assertNotNull(op.getGetUrls().get(0).toExternalForm());
+		assertNotNull(op.getPostUrls().get(0).toExternalForm());
 
 		op = opMetadata.getOperation("DescribeRecord");
-		Assert.assertNotNull(op.getGetUrls().get(0).toExternalForm());
-		Assert.assertNotNull(op.getPostUrls().get(0).toExternalForm());
+		assertNotNull(op.getGetUrls().get(0).toExternalForm());
+		assertNotNull(op.getPostUrls().get(0).toExternalForm());
 
 		op = opMetadata.getOperation("GetRecords");
-		Assert.assertNotNull(op.getGetUrls().get(0).toExternalForm());
-		Assert.assertNotNull(op.getPostUrls().get(0).toExternalForm());
+		assertNotNull(op.getGetUrls().get(0).toExternalForm());
+		assertNotNull(op.getPostUrls().get(0).toExternalForm());
 
 		op = opMetadata.getOperation("GetRecordById");
-		Assert.assertNotNull(op.getGetUrls().get(0).toExternalForm());
-		Assert.assertNotNull(op.getPostUrls().get(0).toExternalForm());
+		assertNotNull(op.getGetUrls().get(0).toExternalForm());
+		assertNotNull(op.getPostUrls().get(0).toExternalForm());
 
 		op = opMetadata.getOperation("Transaction");
-		Assert.assertNotNull(op);
+		assertNotNull(op);
 	}
 
 	private Operator createPropertyLikeFilter(String propertyPrefix, String propertyName, String namespaceURI,
@@ -122,12 +123,12 @@ public class CSWClientTest {
 	public void testGetIsoRecords() throws OWSExceptionReport, XMLStreamException, IOException {
 
 		String demoCSWURL = TestProperties.getProperty("demo_csw_url");
-		Assume.assumeNotNull(demoCSWURL);
+		assumeTrue(demoCSWURL != null);
 
 		URL serviceUrl = new URL(demoCSWURL);
 
 		CSWClient client = new CSWClient(serviceUrl);
-		Assert.assertNotNull(client);
+		assertNotNull(client);
 
 		Operator titleFilter1 = createPropertyLikeFilter(APISO_PREFIX, "Title", APISO, "%e%");
 		Operator titleFilter2 = createPropertyLikeFilter(APISO_PREFIX, "Title", APISO, "%a%");
@@ -138,32 +139,32 @@ public class CSWClientTest {
 		Filter constraint = new OperatorFilter(titleFilter);
 
 		GetRecordsResponse recordsResponse = client.getIsoRecords(startPosition, maxRecords, constraint);
-		Assert.assertNotNull(recordsResponse);
-		Assert.assertTrue(maxRecords >= recordsResponse.getNumberOfRecordsReturned());
-		Assert.assertTrue(recordsResponse.getNumberOfRecordsReturned() >= 1);
-		Assert.assertTrue(recordsResponse.getNumberOfRecordsMatched() >= 1);
+		assertNotNull(recordsResponse);
+		assertTrue(maxRecords >= recordsResponse.getNumberOfRecordsReturned());
+		assertTrue(recordsResponse.getNumberOfRecordsReturned() >= 1);
+		assertTrue(recordsResponse.getNumberOfRecordsMatched() >= 1);
 
 		int recordsCounter = 0;
 
 		Iterator<MetadataRecord> iter = recordsResponse.getRecords();
 		while (iter.hasNext()) {
 			MetadataRecord record = iter.next();
-			Assert.assertNotNull(record);
+			assertNotNull(record);
 
 			System.out.println(String.format("%s * %s * %s * %s * %s", Arrays.toString(record.getTitle()),
 					record.getIdentifier(), record.getLanguage(), record.getModified(), record.getType()));
 
-			Assert.assertNotNull(record.getTitle()[0]);
-			Assert.assertNotNull(record.getAbstract()[0]);
-			Assert.assertNotNull(record.getIdentifier());
-			Assert.assertNotNull(record.getLanguage());
-			Assert.assertNotNull(record.getModified());
-			Assert.assertNotNull(record.getType());
+			assertNotNull(record.getTitle()[0]);
+			assertNotNull(record.getAbstract()[0]);
+			assertNotNull(record.getIdentifier());
+			assertNotNull(record.getLanguage());
+			assertNotNull(record.getModified());
+			assertNotNull(record.getType());
 
 			recordsCounter++;
 		}
 
-		Assert.assertTrue(recordsCounter > 0);
+		assertTrue(recordsCounter > 0);
 	}
 
 }

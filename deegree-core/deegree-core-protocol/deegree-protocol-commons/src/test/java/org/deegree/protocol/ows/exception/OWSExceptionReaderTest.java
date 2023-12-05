@@ -34,18 +34,21 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.protocol.ows.exception;
 
-import java.io.InputStream;
+import org.deegree.commons.ows.exception.OWSException;
+import org.deegree.commons.xml.stax.XMLStreamUtils;
+import org.junit.jupiter.api.Test;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import java.io.InputStream;
 
-import org.deegree.commons.ows.exception.OWSException;
-import org.deegree.commons.xml.stax.XMLStreamUtils;
-import org.junit.Assert;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests for {@link OWSExceptionReader}.
@@ -57,97 +60,97 @@ public class OWSExceptionReaderTest {
 	@Test
 	public void testOWS100() throws XMLStreamException, FactoryConfigurationError {
 		XMLStreamReader xmlReader = getReader("ows100.xml");
-		Assert.assertTrue(OWSExceptionReader.isExceptionReport(xmlReader.getName()));
+		assertTrue(OWSExceptionReader.isExceptionReport(xmlReader.getName()));
 		OWSExceptionReport report = OWSExceptionReader.parseExceptionReport(xmlReader);
-		Assert.assertTrue(xmlReader.isEndElement());
-		Assert.assertEquals(QName.valueOf("{http://www.opengis.net/ows}ExceptionReport"), xmlReader.getName());
-		Assert.assertNotNull(report);
-		Assert.assertEquals(1, report.getExceptions().size());
+		assertTrue(xmlReader.isEndElement());
+		assertEquals(QName.valueOf("{http://www.opengis.net/ows}ExceptionReport"), xmlReader.getName());
+		assertNotNull(report);
+		assertEquals(1, report.getExceptions().size());
 		OWSException e = report.getExceptions().get(0);
-		Assert.assertEquals("InvalidRequest", e.getExceptionCode());
-		Assert.assertEquals("BLABLA", e.getMessage());
-		Assert.assertEquals(1, e.getMessages().size());
-		Assert.assertEquals("BLABLA", e.getMessages().get(0));
+		assertEquals("InvalidRequest", e.getExceptionCode());
+		assertEquals("BLABLA", e.getMessage());
+		assertEquals(1, e.getMessages().size());
+		assertEquals("BLABLA", e.getMessages().get(0));
 	}
 
 	@Test
 	public void testOWS110() throws XMLStreamException, FactoryConfigurationError {
 		XMLStreamReader xmlReader = getReader("ows110.xml");
-		Assert.assertTrue(OWSExceptionReader.isExceptionReport(xmlReader.getName()));
+		assertTrue(OWSExceptionReader.isExceptionReport(xmlReader.getName()));
 		OWSExceptionReport report = OWSExceptionReader.parseExceptionReport(xmlReader);
-		Assert.assertTrue(xmlReader.isEndElement());
-		Assert.assertEquals(QName.valueOf("{http://www.opengis.net/ows/1.1}ExceptionReport"), xmlReader.getName());
-		Assert.assertNotNull(report);
-		Assert.assertEquals(1, report.getExceptions().size());
+		assertTrue(xmlReader.isEndElement());
+		assertEquals(QName.valueOf("{http://www.opengis.net/ows/1.1}ExceptionReport"), xmlReader.getName());
+		assertNotNull(report);
+		assertEquals(1, report.getExceptions().size());
 		OWSException e = report.getExceptions().get(0);
-		Assert.assertEquals("InvalidRequest", e.getExceptionCode());
-		Assert.assertEquals("BLABLA", e.getMessage());
-		Assert.assertEquals(1, e.getMessages().size());
-		Assert.assertEquals("BLABLA", e.getMessages().get(0));
+		assertEquals("InvalidRequest", e.getExceptionCode());
+		assertEquals("BLABLA", e.getMessage());
+		assertEquals(1, e.getMessages().size());
+		assertEquals("BLABLA", e.getMessages().get(0));
 	}
 
 	@Test
 	public void testOWS200() throws XMLStreamException, FactoryConfigurationError {
 		XMLStreamReader xmlReader = getReader("ows200.xml");
-		Assert.assertTrue(OWSExceptionReader.isExceptionReport(xmlReader.getName()));
+		assertTrue(OWSExceptionReader.isExceptionReport(xmlReader.getName()));
 		OWSExceptionReport report = OWSExceptionReader.parseExceptionReport(xmlReader);
-		Assert.assertTrue(xmlReader.isEndElement());
-		Assert.assertEquals(QName.valueOf("{http://www.opengis.net/ows/2.0}ExceptionReport"), xmlReader.getName());
-		Assert.assertNotNull(report);
-		Assert.assertEquals("5.6.2", report.getVersion());
-		Assert.assertEquals(1, report.getExceptions().size());
+		assertTrue(xmlReader.isEndElement());
+		assertEquals(QName.valueOf("{http://www.opengis.net/ows/2.0}ExceptionReport"), xmlReader.getName());
+		assertNotNull(report);
+		assertEquals("5.6.2", report.getVersion());
+		assertEquals(1, report.getExceptions().size());
 		OWSException e = report.getExceptions().get(0);
-		Assert.assertEquals("InvalidRequest", e.getExceptionCode());
-		Assert.assertEquals("BLABLA", e.getMessage());
-		Assert.assertEquals(1, e.getMessages().size());
-		Assert.assertEquals("BLABLA", e.getMessages().get(0));
+		assertEquals("InvalidRequest", e.getExceptionCode());
+		assertEquals("BLABLA", e.getMessage());
+		assertEquals(1, e.getMessages().size());
+		assertEquals("BLABLA", e.getMessages().get(0));
 	}
 
 	@Test
 	public void testOWS100MultiMessages() throws XMLStreamException, FactoryConfigurationError {
 		XMLStreamReader xmlReader = getReader("ows100_multi.xml");
-		Assert.assertTrue(OWSExceptionReader.isExceptionReport(xmlReader.getName()));
+		assertTrue(OWSExceptionReader.isExceptionReport(xmlReader.getName()));
 		OWSExceptionReport report = OWSExceptionReader.parseExceptionReport(xmlReader);
-		Assert.assertTrue(xmlReader.isEndElement());
-		Assert.assertEquals(QName.valueOf("{http://www.opengis.net/ows}ExceptionReport"), xmlReader.getName());
-		Assert.assertNotNull(report);
-		Assert.assertEquals(2, report.getExceptions().size());
+		assertTrue(xmlReader.isEndElement());
+		assertEquals(QName.valueOf("{http://www.opengis.net/ows}ExceptionReport"), xmlReader.getName());
+		assertNotNull(report);
+		assertEquals(2, report.getExceptions().size());
 		OWSException e = report.getExceptions().get(0);
-		Assert.assertEquals("InvalidRequest", e.getExceptionCode());
-		Assert.assertEquals("BLABLA;ARGL", e.getMessage());
-		Assert.assertEquals(2, e.getMessages().size());
-		Assert.assertEquals("BLABLA", e.getMessages().get(0));
-		Assert.assertEquals("ARGL", e.getMessages().get(1));
+		assertEquals("InvalidRequest", e.getExceptionCode());
+		assertEquals("BLABLA;ARGL", e.getMessage());
+		assertEquals(2, e.getMessages().size());
+		assertEquals("BLABLA", e.getMessages().get(0));
+		assertEquals("ARGL", e.getMessages().get(1));
 	}
 
 	@Test
 	public void testWFS100() throws XMLStreamException, FactoryConfigurationError {
 		XMLStreamReader xmlReader = getReader("wfs100.xml");
-		Assert.assertTrue(OWSExceptionReader.isExceptionReport(xmlReader.getName()));
+		assertTrue(OWSExceptionReader.isExceptionReport(xmlReader.getName()));
 		OWSExceptionReport report = OWSExceptionReader.parseExceptionReport(xmlReader);
-		Assert.assertTrue(xmlReader.isEndElement());
-		Assert.assertEquals(QName.valueOf("{http://www.opengis.net/ogc}ServiceExceptionReport"), xmlReader.getName());
-		Assert.assertNotNull(report);
+		assertTrue(xmlReader.isEndElement());
+		assertEquals(QName.valueOf("{http://www.opengis.net/ogc}ServiceExceptionReport"), xmlReader.getName());
+		assertNotNull(report);
 	}
 
 	@Test
 	public void testWMS100() throws XMLStreamException, FactoryConfigurationError {
 		XMLStreamReader xmlReader = getReader("wms111.xml");
-		Assert.assertTrue(OWSExceptionReader.isExceptionReport(xmlReader.getName()));
+		assertTrue(OWSExceptionReader.isExceptionReport(xmlReader.getName()));
 		OWSExceptionReport report = OWSExceptionReader.parseExceptionReport(xmlReader);
-		Assert.assertTrue(xmlReader.isEndElement());
-		Assert.assertEquals(QName.valueOf("ServiceExceptionReport"), xmlReader.getName());
-		Assert.assertNotNull(report);
+		assertTrue(xmlReader.isEndElement());
+		assertEquals(QName.valueOf("ServiceExceptionReport"), xmlReader.getName());
+		assertNotNull(report);
 	}
 
 	@Test
 	public void testWFSCapabilities100() throws XMLStreamException, FactoryConfigurationError {
 		XMLStreamReader xmlReader = getReader("wfs_capabilities100.xml");
-		Assert.assertFalse(OWSExceptionReader.isExceptionReport(xmlReader.getName()));
+		assertFalse(OWSExceptionReader.isExceptionReport(xmlReader.getName()));
 		OWSExceptionReport report = OWSExceptionReader.parseExceptionReport(xmlReader);
-		Assert.assertTrue(xmlReader.isEndElement());
-		Assert.assertEquals(QName.valueOf("{http://www.opengis.net/wfs}WFS_Capabilities"), xmlReader.getName());
-		Assert.assertNotNull(report);
+		assertTrue(xmlReader.isEndElement());
+		assertEquals(QName.valueOf("{http://www.opengis.net/wfs}WFS_Capabilities"), xmlReader.getName());
+		assertNotNull(report);
 	}
 
 	private XMLStreamReader getReader(String name) throws XMLStreamException, FactoryConfigurationError {

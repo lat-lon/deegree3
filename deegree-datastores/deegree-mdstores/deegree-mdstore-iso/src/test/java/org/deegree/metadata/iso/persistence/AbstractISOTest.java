@@ -34,20 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.metadata.iso.persistence;
 
-import static org.deegree.commons.xml.CommonNamespaces.OWS_NS;
-import static org.deegree.db.ConnectionProviderUtils.getSyntheticProvider;
-import static org.deegree.workspace.WorkspaceUtils.activateFromUrl;
-import static org.junit.Assume.assumeNotNull;
-import static org.slf4j.LoggerFactory.getLogger;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URL;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
-
 import org.deegree.commons.utils.test.TestProperties;
 import org.deegree.commons.xml.CommonNamespaces;
 import org.deegree.commons.xml.NamespaceBindings;
@@ -58,9 +44,23 @@ import org.deegree.metadata.persistence.MetadataStoreProvider;
 import org.deegree.protocol.csw.MetadataStoreException;
 import org.deegree.workspace.Workspace;
 import org.deegree.workspace.standard.DefaultWorkspace;
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.slf4j.Logger;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URL;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import static org.deegree.commons.xml.CommonNamespaces.OWS_NS;
+import static org.deegree.db.ConnectionProviderUtils.getSyntheticProvider;
+import static org.deegree.workspace.WorkspaceUtils.activateFromUrl;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * TODO add class documentation here
@@ -92,7 +92,7 @@ public abstract class AbstractISOTest {
 	/**
 	 * @throws java.lang.Exception
 	 */
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		jdbcURL = TestProperties.getProperty("iso_store_url");
 		jdbcUser = TestProperties.getProperty("iso_store_user");
@@ -105,7 +105,7 @@ public abstract class AbstractISOTest {
 		workspace.initAll();
 		ConnectionProvider prov = workspace.getResource(ConnectionProviderProvider.class, "iso_pg_set_up_tables");
 
-		assumeNotNull(prov);
+		assumeTrue(prov != null);
 
 		Connection conn = prov.getConnection();
 		try {
@@ -155,7 +155,7 @@ public abstract class AbstractISOTest {
 		}
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws SQLException, UnsupportedEncodingException, IOException, MetadataStoreException {
 		if (resultSet != null) {
 			LOG.info("------------------");

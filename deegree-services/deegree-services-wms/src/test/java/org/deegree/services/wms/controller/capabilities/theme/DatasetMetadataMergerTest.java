@@ -34,16 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.services.wms.controller.capabilities.theme;
 
-import static java.util.Arrays.asList;
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.namespace.QName;
-
-import org.apache.axiom.om.OMElement;
 import org.deegree.commons.ows.metadata.DatasetMetadata;
 import org.deegree.commons.ows.metadata.ExtendedDescription;
 import org.deegree.commons.ows.metadata.MetadataUrl;
@@ -53,7 +43,14 @@ import org.deegree.commons.ows.metadata.layer.UrlWithFormat;
 import org.deegree.commons.tom.ows.CodeType;
 import org.deegree.commons.tom.ows.LanguageString;
 import org.deegree.commons.utils.Pair;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import javax.xml.namespace.QName;
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.util.Arrays.asList;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Unit tests for {@link DatasetMetadataMerger}.
@@ -79,7 +76,7 @@ public class DatasetMetadataMergerTest {
 		DatasetMetadata mergedMetadata = datasetMetadataMerger.merge(providerMetadata, layerMetadata);
 
 		List<MetadataUrl> metadataUrls = mergedMetadata.getMetadataUrls();
-		assertThat(metadataUrls.size(), is(3));
+		assertEquals(metadataUrls.size(), 3);
 	}
 
 	@Test
@@ -92,7 +89,7 @@ public class DatasetMetadataMergerTest {
 		DatasetMetadata mergedMetadata = datasetMetadataMerger.merge(asList(metadata1, metadata2, metadata3));
 
 		List<MetadataUrl> metadataUrls = mergedMetadata.getMetadataUrls();
-		assertThat(metadataUrls.size(), is(4));
+		assertEquals(metadataUrls.size(), 4);
 	}
 
 	private DatasetMetadata createDatasetMetadata(String... urls) {

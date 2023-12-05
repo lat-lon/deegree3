@@ -34,13 +34,13 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.metadata.iso.persistence.memory;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
-import static org.deegree.metadata.iso.persistence.memory.GetTestRecordsUtils.getAllRecords;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import static org.deegree.metadata.iso.persistence.memory.GetTestRecordsUtils.getAllRecords;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author <a href="mailto:goltz@lat-lon.de">Lyn Goltz</a>

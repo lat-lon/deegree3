@@ -34,16 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.coverage.raster;
 
-import static junit.framework.Assert.assertNotNull;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-
-import junit.framework.Assert;
-
 import org.deegree.coverage.raster.geom.RasterGeoReference;
 import org.deegree.coverage.raster.geom.RasterGeoReference.OriginLocation;
 import org.deegree.coverage.raster.io.RasterIOOptions;
@@ -52,8 +42,16 @@ import org.deegree.cs.CRSCodeType;
 import org.deegree.cs.coordinatesystems.ICRS;
 import org.deegree.cs.exceptions.UnknownCRSException;
 import org.deegree.geometry.Envelope;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * This class tests the loading of GeoTIFF files. It doesn't test the various TIFF
@@ -71,7 +69,7 @@ public class GeoTIFFTest {
 	 * load the GeoTIFF file to test
 	 * @throws IOException
 	 */
-	@BeforeClass
+	@BeforeAll
 	public static void init() throws Exception {
 		URL inputURL = GeoTIFFTest.class.getResource("epsg4326.tiff");
 		File input = new File(inputURL.toURI());
@@ -87,9 +85,9 @@ public class GeoTIFFTest {
 	@Test
 	public void geoTIFFCRS() throws UnknownCRSException {
 		Envelope env = raster.getEnvelope();
-		Assert.assertNotNull(env);
+		assertNotNull(env);
 		ICRS crs = env.getCoordinateSystem();
-		Assert.assertNotNull(crs);
+		assertNotNull(crs);
 		ICRS coordSys = crs;
 		assertNotNull(coordSys);
 		CRSCodeType[] codes = coordSys.getCodes();
@@ -119,11 +117,11 @@ public class GeoTIFFTest {
 		double[] renvMin = raster.getEnvelope().getMin().getAsArray();
 		double[] renvMax = raster.getEnvelope().getMax().getAsArray();
 		double delta = 1E-6;
-		Assert.assertEquals(-113.69474315, renvMin[0], delta);
-		Assert.assertEquals(39.10223806, renvMin[1], delta);
-		Assert.assertEquals(-110.35882409, renvMax[0], delta);
-		Assert.assertEquals(41.54129761, renvMax[1], delta);
-		Assert.assertTrue(raster.getEnvelope().getCoordinateSystem().hasId("epsg:4326", true, true));
+		assertEquals(-113.69474315, renvMin[0], delta);
+		assertEquals(39.10223806, renvMin[1], delta);
+		assertEquals(-110.35882409, renvMax[0], delta);
+		assertEquals(41.54129761, renvMax[1], delta);
+		assertTrue(raster.getEnvelope().getCoordinateSystem().hasId("epsg:4326", true, true));
 	}
 
 	/**

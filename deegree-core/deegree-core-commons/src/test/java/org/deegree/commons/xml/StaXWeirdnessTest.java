@@ -34,19 +34,17 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.commons.xml;
 
-import static javax.xml.stream.XMLOutputFactory.IS_REPAIRING_NAMESPACES;
-import static org.junit.Assert.assertTrue;
-
-import java.io.ByteArrayOutputStream;
-import java.io.UnsupportedEncodingException;
+import org.junit.jupiter.api.Test;
 
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
+import java.io.ByteArrayOutputStream;
+import java.io.UnsupportedEncodingException;
 
-import org.junit.Assert;
-import org.junit.Test;
+import static javax.xml.stream.XMLOutputFactory.IS_REPAIRING_NAMESPACES;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests/documentation of weird behavior in the StaX implementation.
@@ -84,7 +82,7 @@ public class StaXWeirdnessTest {
 			n++;
 			pos++;
 		}
-		Assert.assertTrue(n <= 1);
+		assertTrue(n <= 1);
 	}
 
 	/**

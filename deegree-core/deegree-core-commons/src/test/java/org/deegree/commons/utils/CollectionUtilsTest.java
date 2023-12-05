@@ -35,22 +35,21 @@
 
 package org.deegree.commons.utils;
 
-import static org.deegree.commons.utils.CollectionUtils.removeDuplicates;
+import org.junit.jupiter.api.Test;
 
 import java.util.LinkedList;
 
-import junit.framework.TestCase;
+import static org.deegree.commons.utils.CollectionUtils.removeDuplicates;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * <code>CollectionUtilsTest</code>
  *
  * @author <a href="mailto:schmitz@lat-lon.de">Andreas Schmitz</a>
  */
-public class CollectionUtilsTest extends TestCase {
+public class CollectionUtilsTest {
 
-	/**
-	 *
-	 */
+	@Test
 	public void testRemoveDuplicates() {
 		LinkedList<String> list = new LinkedList<String>();
 		list.add("test");

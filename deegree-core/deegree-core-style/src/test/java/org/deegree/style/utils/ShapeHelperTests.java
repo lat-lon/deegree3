@@ -1,20 +1,21 @@
 package org.deegree.style.utils;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.closeTo;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.postgresql.util.ReaderInputStream;
 
-import java.awt.Shape;
+import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.io.StringReader;
-import org.junit.Before;
-import org.junit.Test;
-import org.postgresql.util.ReaderInputStream;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.closeTo;
 
 public class ShapeHelperTests {
 
 	private final String TUNABLE_OLD_SCALE = "deegree.rendering.svg-to-shape.previous";
 
-	@Before
+	@BeforeEach
 	public void resetTunable() {
 		ShapeHelper.SVG_TO_SHAPE_FALLBACK = false;
 	}

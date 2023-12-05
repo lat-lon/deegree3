@@ -1,5 +1,6 @@
 package org.deegree.services;
 
+import org.junit.jupiter.params.provider.Arguments;
 import org.slf4j.Logger;
 
 import java.io.BufferedReader;
@@ -9,8 +10,8 @@ import java.io.StringReader;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -26,7 +27,7 @@ public abstract class AbstractCiteIntegrationTest {
 
 	protected static final Logger LOG = getLogger(AbstractCiteIntegrationTest.class);
 
-	protected static Collection getResultSnippets(String testResources, String paramName, String getCapsPath)
+	protected Stream<Arguments> getResultSnippets(String testResources, String paramName, String getCapsPath)
 			throws IOException, URISyntaxException {
 
 		URL url = AbstractCiteIntegrationTest.class.getResource(testResources);
@@ -51,9 +52,9 @@ public abstract class AbstractCiteIntegrationTest {
 		return parseResultSnippets(out);
 	}
 
-	private static Collection parseResultSnippets(String out) throws IOException {
+	private static Stream<Arguments> parseResultSnippets(String out) throws IOException {
 
-		List resultSnippets = new ArrayList();
+		List<Object[]> resultSnippets = new ArrayList();
 
 		BufferedReader reader = new BufferedReader(new StringReader(out));
 		List<String> lines = new ArrayList<String>();
@@ -72,7 +73,7 @@ public abstract class AbstractCiteIntegrationTest {
 				resultSnippets.add(new Object[] { caseId, result });
 			}
 		}
-		return resultSnippets;
+		return resultSnippets.stream().map(obj -> Arguments.of(obj[0], obj[1]));
 	}
 
 	private static String findCorrespondingResult(List<String> lines, int currentLine, String caseId) {

@@ -34,17 +34,16 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.metadata.ebrim;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.InputStream;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
+import java.io.InputStream;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Checks the parsing of the association object
@@ -55,7 +54,7 @@ public class AssociationTest {
 
 	private static Association association;
 
-	@BeforeClass
+	@BeforeAll
 	public static void initAssociation() throws XMLStreamException, FactoryConfigurationError {
 		XMLStreamReader associationAsXml = readAssociationFromXml();
 		association = new Association(associationAsXml);

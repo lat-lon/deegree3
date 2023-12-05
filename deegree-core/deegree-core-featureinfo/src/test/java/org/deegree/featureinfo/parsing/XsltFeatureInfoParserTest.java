@@ -34,16 +34,16 @@
 ----------------------------------------------------------------------------*/
 package org.deegree.featureinfo.parsing;
 
+import org.deegree.feature.FeatureCollection;
+import org.deegree.gml.GMLVersion;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+import javax.xml.stream.XMLStreamException;
 import java.io.InputStream;
 import java.net.URL;
 
-import javax.xml.stream.XMLStreamException;
-
-import org.deegree.feature.FeatureCollection;
-import org.deegree.gml.GMLVersion;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author <a href="mailto:goltz@lat-lon.de">Lyn Goltz</a>
@@ -52,7 +52,7 @@ public class XsltFeatureInfoParserTest {
 
 	private static XsltFeatureInfoParser featureInfoParser;
 
-	@BeforeClass
+	@BeforeAll
 	public static void initParser() {
 		URL xsltFile = XsltFeatureInfoParserTest.class.getResource("esriwithnamespaceTo2gml2.xsl");
 		featureInfoParser = new XsltFeatureInfoParser(xsltFile, GMLVersion.GML_2);
@@ -62,7 +62,7 @@ public class XsltFeatureInfoParserTest {
 	public void testEsriCollection() throws XMLStreamException {
 		InputStream in = XsltFeatureInfoParser.class.getResourceAsStream("esriwithnamespace.xml");
 		FeatureCollection fc = featureInfoParser.parseAsFeatureCollection(in, "test");
-		Assert.assertEquals(8, fc.size());
+		assertEquals(8, fc.size());
 	}
 
 }

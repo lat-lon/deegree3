@@ -35,14 +35,6 @@
 
 package org.deegree.cs.transformations;
 
-import static java.lang.Double.NaN;
-
-import java.util.Collections;
-
-import javax.vecmath.Point3d;
-
-import junit.framework.Assert;
-
 import org.deegree.cs.CRSCodeType;
 import org.deegree.cs.CRSIdentifiable;
 import org.deegree.cs.CoordinateTransformer;
@@ -53,7 +45,13 @@ import org.deegree.cs.coordinatesystems.ICRS;
 import org.deegree.cs.coordinatesystems.ProjectedCRS;
 import org.deegree.cs.exceptions.TransformationException;
 import org.deegree.cs.persistence.CRSManager;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import javax.vecmath.Point3d;
+import java.util.Collections;
+
+import static java.lang.Double.NaN;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * A JUnit test class for testing the accuracy of various transformations, thus testing
@@ -494,9 +492,9 @@ public class TransformationAccuracyTest extends TransformationAccuracy implement
 		Point3d sourcePoint = new Point3d(9.822340, 52.404600, 50.00);
 		CoordinateTransformer transformer = new CoordinateTransformer(targetCRS);
 		Point3d targetPoint = transformer.transform(sourceCRS, Collections.singletonList(sourcePoint)).get(0);
-		Assert.assertEquals(sourcePoint.y, targetPoint.x, 0);
-		Assert.assertEquals(sourcePoint.x, targetPoint.y, 0);
-		Assert.assertEquals(sourcePoint.z, targetPoint.z, 0);
+		assertEquals(sourcePoint.y, targetPoint.x, 0);
+		assertEquals(sourcePoint.x, targetPoint.y, 0);
+		assertEquals(sourcePoint.z, targetPoint.z, 0);
 	}
 
 	@Test

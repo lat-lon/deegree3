@@ -39,24 +39,11 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.tile.persistence.geotiff;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assume.assumeTrue;
-
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.Iterator;
-
 import org.deegree.commons.config.ResourceInitException;
-import org.deegree.commons.utils.Pair;
-import org.deegree.geometry.Envelope;
-import org.deegree.tile.Tile;
 import org.deegree.tile.TileIOException;
-import org.deegree.tile.TileDataLevel;
-import org.deegree.tile.TileDataSet;
-import org.deegree.tile.persistence.TileStore;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import java.io.IOException;
 
 /**
  * <code>GeoTIFFTileStoreTest</code>

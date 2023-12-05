@@ -9,7 +9,7 @@ import org.deegree.feature.persistence.sql.config.SQLFeatureStoreConfigWriter;
 import org.deegree.feature.persistence.sql.mapper.AppSchemaMapper;
 import org.deegree.feature.types.AppSchema;
 import org.deegree.gml.schema.GMLAppSchemaReader;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.xmlunit.builder.Input;
 
 import javax.xml.stream.FactoryConfigurationError;
@@ -26,7 +26,6 @@ import java.util.Map;
 import static org.deegree.feature.types.property.GeometryPropertyType.CoordinateDimension.DIM_2;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.xmlunit.matchers.EvaluateXPathMatcher.hasXPath;
 import static org.xmlunit.matchers.ValidationMatcher.valid;
 
 /**

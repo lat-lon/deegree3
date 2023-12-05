@@ -37,18 +37,17 @@
 
 package org.deegree.protocol.wfs.getpropertyvalue.xml;
 
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertNull;
-import static org.deegree.protocol.wfs.WFSConstants.VERSION_200;
-import junit.framework.Assert;
-
 import org.deegree.commons.tom.ResolveMode;
 import org.deegree.filter.OperatorFilter;
 import org.deegree.filter.logical.And;
 import org.deegree.protocol.wfs.getpropertyvalue.GetPropertyValue;
-import org.deegree.protocol.wfs.getpropertyvalue.xml.GetPropertyValueXMLAdapter;
 import org.deegree.protocol.wfs.query.FilterQuery;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.deegree.protocol.wfs.WFSConstants.VERSION_200;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests for {@link GetPropertyValueXMLAdapter}.
@@ -72,7 +71,7 @@ public class GetPropertyValueXMLAdapterTest {
 		assertEquals(null, request.getResolveParams().getTimeout());
 		FilterQuery query = (FilterQuery) request.getQuery();
 		OperatorFilter filter = (OperatorFilter) query.getFilter();
-		Assert.assertTrue(filter.getOperator() instanceof And);
+		assertTrue(filter.getOperator() instanceof And);
 	}
 
 	@Test
@@ -91,7 +90,7 @@ public class GetPropertyValueXMLAdapterTest {
 		assertNull(request.getResolveParams().getTimeout());
 		FilterQuery query = (FilterQuery) request.getQuery();
 		OperatorFilter filter = (OperatorFilter) query.getFilter();
-		Assert.assertTrue(filter.getOperator() instanceof And);
+		assertTrue(filter.getOperator() instanceof And);
 	}
 
 	@Test
@@ -110,7 +109,7 @@ public class GetPropertyValueXMLAdapterTest {
 		assertNull(request.getResolveParams().getTimeout());
 		FilterQuery query = (FilterQuery) request.getQuery();
 		OperatorFilter filter = (OperatorFilter) query.getFilter();
-		Assert.assertTrue(filter.getOperator() instanceof And);
+		assertTrue(filter.getOperator() instanceof And);
 	}
 
 	@Test
@@ -128,7 +127,7 @@ public class GetPropertyValueXMLAdapterTest {
 		assertNull(request.getResolveParams().getTimeout());
 		FilterQuery query = (FilterQuery) request.getQuery();
 		OperatorFilter filter = (OperatorFilter) query.getFilter();
-		Assert.assertTrue(filter.getOperator() instanceof And);
+		assertTrue(filter.getOperator() instanceof And);
 	}
 
 	@Test
@@ -146,7 +145,7 @@ public class GetPropertyValueXMLAdapterTest {
 		assertNull(request.getResolveParams().getTimeout());
 		FilterQuery query = (FilterQuery) request.getQuery();
 		OperatorFilter filter = (OperatorFilter) query.getFilter();
-		Assert.assertTrue(filter.getOperator() instanceof And);
+		assertTrue(filter.getOperator() instanceof And);
 	}
 
 	@Test
@@ -164,7 +163,7 @@ public class GetPropertyValueXMLAdapterTest {
 		assertNull(request.getResolveParams().getTimeout());
 		FilterQuery query = (FilterQuery) request.getQuery();
 		OperatorFilter filter = (OperatorFilter) query.getFilter();
-		Assert.assertTrue(filter.getOperator() instanceof And);
+		assertTrue(filter.getOperator() instanceof And);
 	}
 
 }

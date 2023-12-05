@@ -34,7 +34,7 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.junit;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.InputStream;
 import java.io.Reader;

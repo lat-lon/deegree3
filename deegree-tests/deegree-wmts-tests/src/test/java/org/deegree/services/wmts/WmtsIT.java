@@ -34,23 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.services.wmts;
 
-import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
-import static org.deegree.commons.xml.CommonNamespaces.OWS_11_NS;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.List;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
 import org.deegree.commons.ows.metadata.operation.Operation;
 import org.deegree.commons.utils.net.DURL;
 import org.deegree.commons.xml.CommonNamespaces;
@@ -60,8 +43,24 @@ import org.deegree.commons.xml.stax.XMLStreamUtils;
 import org.deegree.protocol.wfs.WFSConstants;
 import org.deegree.protocol.wmts.client.Layer;
 import org.deegree.protocol.wmts.client.WMTSClient;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.List;
+
+import static javax.xml.stream.XMLStreamConstants.START_ELEMENT;
+import static org.deegree.commons.xml.CommonNamespaces.OWS_11_NS;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 
 /**
  * Various integration tests for the WMTS.
@@ -95,7 +94,7 @@ public class WmtsIT {
 		WMTSClient client = initClient();
 		Layer pyramidLayer = client.getLayer("remotewms");
 		assertNotNull(pyramidLayer);
-		Assert.assertNotSame(0, pyramidLayer.getInfoFormats().size());
+		assertNotSame(0, pyramidLayer.getInfoFormats().size());
 	}
 
 	@Test
@@ -103,7 +102,7 @@ public class WmtsIT {
 		InputStream response = doGetFeatureInfo("pyramid", "utah", "57142.857142857145", "text/html");
 		XMLStreamReader xmlStream = XMLInputFactory.newInstance().createXMLStreamReader(response);
 		XMLStreamUtils.skipStartDocument(xmlStream);
-		Assert.assertEquals(new QName(CommonNamespaces.OWS_11_NS, "ExceptionReport"), xmlStream.getName());
+		assertEquals(new QName(CommonNamespaces.OWS_11_NS, "ExceptionReport"), xmlStream.getName());
 	}
 
 	@Test
@@ -114,7 +113,7 @@ public class WmtsIT {
 		schemaUrls[0] = WFSConstants.WFS_110_SCHEMA_URL;
 		schemaUrls[1] = WmtsIT.class.getResource("dominant_vegetation.xsd").toExternalForm();
 		List<SchemaValidationEvent> errors = SchemaValidator.validate(response, schemaUrls);
-		Assert.assertEquals(0, errors.size());
+		assertEquals(0, errors.size());
 	}
 
 	@Test
@@ -125,7 +124,7 @@ public class WmtsIT {
 		schemaUrls[0] = WFSConstants.WFS_110_SCHEMA_URL;
 		schemaUrls[1] = WmtsIT.class.getResource("dominant_vegetation.xsd").toExternalForm();
 		List<SchemaValidationEvent> errors = SchemaValidator.validate(response, schemaUrls);
-		Assert.assertEquals(0, errors.size());
+		assertEquals(0, errors.size());
 	}
 
 	@Test

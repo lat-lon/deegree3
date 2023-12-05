@@ -40,10 +40,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.workspace;
 
-import java.io.File;
-import java.net.URISyntaxException;
-import java.util.Set;
-
 import org.deegree.db.ConnectionProvider;
 import org.deegree.db.ConnectionProviderProvider;
 import org.deegree.feature.persistence.FeatureStore;
@@ -52,11 +48,20 @@ import org.deegree.workspace.graph.ResourceGraph;
 import org.deegree.workspace.graph.ResourceNode;
 import org.deegree.workspace.standard.DefaultResourceIdentifier;
 import org.deegree.workspace.standard.DefaultWorkspace;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
+import java.io.File;
+import java.net.URISyntaxException;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Tests for simplesql feature store dependency management.
@@ -67,53 +72,53 @@ public class SimpleSqlFeatureStoreTest {
 
 	private DefaultWorkspace workspace;
 
-	@Before
+	@BeforeEach
 	public void setup() throws URISyntaxException {
 		File dir = new File(SimpleSqlFeatureStoreTest.class.getResource("/workspace/").toURI());
 		this.workspace = new DefaultWorkspace(dir);
 		workspace.initAll();
 	}
 
-	@After
+	@AfterEach
 	public void shutdown() {
 		workspace.destroy();
 	}
 
 	@Test
 	public void testWorkspaceInitialized() {
-		Assert.assertNotNull("The feature store is expected to have a location.", workspace.getLocation());
+		assertNotNull(workspace.getLocation(), "The feature store is expected to have a location.");
 	}
 
 	@Test
 	public void testMissingDependency() {
 		FeatureStore fs = workspace.getResource(FeatureStoreProvider.class, "simplesql-fail-missing-dep");
-		Assert.assertNull("Feature store is expected not to be created.", fs);
+		assertNull(fs, "Feature store is expected not to be created.");
 		ResourceMetadata<FeatureStore> md = workspace.getResourceMetadata(FeatureStoreProvider.class,
 				"simplesql-fail-missing-dep");
-		Assert.assertNotNull("Resource metadata object is expected to be available.", md);
+		assertNotNull(md, "Resource metadata object is expected to be available.");
 	}
 
 	@Test
 	public void testInvalidConfiguration() {
 		FeatureStore fs = workspace.getResource(FeatureStoreProvider.class, "simplesql-fail-invalid-config");
-		Assert.assertNull("Feature store is expected not to be created.", fs);
+		assertNull(fs, "Feature store is expected not to be created.");
 		ResourceMetadata<FeatureStore> md = workspace.getResourceMetadata(FeatureStoreProvider.class,
 				"simplesql-fail-invalid-config");
-		Assert.assertNotNull("Resource metadata object is expected to be available.", md);
+		assertNotNull(md, "Resource metadata object is expected to be available.");
 	}
 
 	@Test
 	public void testValidConfiguration() {
 		FeatureStore fs = workspace.getResource(FeatureStoreProvider.class, "simplesql-ok");
-		Assert.assertNotNull("Feature store is expected to be created.", fs);
+		assertNotNull(fs, "Feature store is expected to be created.");
 		ResourceMetadata<FeatureStore> md = workspace.getResourceMetadata(FeatureStoreProvider.class, "simplesql-ok");
-		Assert.assertNotNull("Resource metadata object is expected to be available.", md);
+		assertNotNull(md, "Resource metadata object is expected to be available.");
 		Set<ResourceIdentifier<? extends Resource>> deps = md.getDependencies();
-		Assert.assertEquals("Expected one dependency.", 1, deps.size());
+		assertEquals(1, deps.size(), "Expected one dependency.");
 		ResourceIdentifier<? extends Resource> id = deps.iterator().next();
 		Resource r = workspace.getResource(id.getProvider(), id.getId());
-		Assert.assertNotNull("Expected dependency to be available.", r);
-		Assert.assertTrue("Expected dependency to be of type ConnectionProvider.", r instanceof ConnectionProvider);
+		assertNotNull(r, "Expected dependency to be available.");
+		assertInstanceOf(ConnectionProvider.class, r, "Expected dependency to be of type ConnectionProvider.");
 	}
 
 	@Test
@@ -121,53 +126,53 @@ public class SimpleSqlFeatureStoreTest {
 		ResourceGraph graph = workspace.getDependencyGraph();
 		ResourceNode<FeatureStore> node = graph
 			.getNode(new DefaultResourceIdentifier<FeatureStore>(FeatureStoreProvider.class, "simplesql-ok"));
-		Assert.assertEquals("Expected one dependency.", 1, node.getDependencies().size());
+		assertEquals(1, node.getDependencies().size(), "Expected one dependency.");
 		ResourceNode<ConnectionProvider> node2 = graph.getNode(
 				new DefaultResourceIdentifier<ConnectionProvider>(ConnectionProviderProvider.class, "simplesqlh2"));
-		Assert.assertEquals("Expected one dependent.", 1, node2.getDependents().size());
+		assertEquals(1, node2.getDependents().size(), "Expected one dependent.");
 		node = graph.getNode(
 				new DefaultResourceIdentifier<FeatureStore>(FeatureStoreProvider.class, "simplesql-fail-missing-dep"));
-		Assert.assertFalse("Expected broken dependencies.", node.areDependenciesAvailable());
+		assertFalse(node.areDependenciesAvailable(), "Expected broken dependencies.");
 	}
 
 	@Test
-	@Ignore
+	@Disabled
 	public void testDestroySingle() {
 		FeatureStore fs = workspace.getResource(FeatureStoreProvider.class, "simplesql-ok");
-		Assert.assertNotNull("Feature store is expected to be created.", fs);
+		assertNotNull(fs, "Feature store is expected to be created.");
 		workspace.destroy(
 				new DefaultResourceIdentifier<ConnectionProvider>(ConnectionProviderProvider.class, "simplesqlh2"));
 		fs = workspace.getResource(FeatureStoreProvider.class, "simplesql-ok");
-		Assert.assertNull("Feature store is expected to be destroyed.", fs);
+		assertNull(fs, "Feature store is expected to be destroyed.");
 		ConnectionProvider prov = workspace.getResource(ConnectionProviderProvider.class, "simplesqlh2");
-		Assert.assertNull("Connection provider is expected to be destroyed.", prov);
+		assertNull(prov, "Connection provider is expected to be destroyed.");
 	}
 
 	@Test
-	@Ignore
+	@Disabled
 	public void testDestroyInitializeSingle() {
 		FeatureStore fs = workspace.getResource(FeatureStoreProvider.class, "simplesql-ok");
-		Assert.assertNotNull("Feature store is expected to be created.", fs);
+		assertNotNull(fs, "Feature store is expected to be created.");
 		workspace.destroy(
 				new DefaultResourceIdentifier<ConnectionProvider>(ConnectionProviderProvider.class, "simplesqlh2"));
 		workspace.init(new DefaultResourceIdentifier<FeatureStore>(FeatureStoreProvider.class, "simplesql-ok"), null);
 		fs = workspace.getResource(FeatureStoreProvider.class, "simplesql-ok");
-		Assert.assertNotNull("Feature store is expected to be re-initialized.", fs);
+		assertNotNull(fs, "Feature store is expected to be re-initialized.");
 		ConnectionProvider prov = workspace.getResource(ConnectionProviderProvider.class, "simplesqlh2");
-		Assert.assertNotNull("Connection provider is expected to be re-initialized.", prov);
+		assertNotNull(prov, "Connection provider is expected to be re-initialized.");
 	}
 
 	@Test
-	@Ignore
+	@Disabled
 	public void testReinitializeChain() {
 		FeatureStore fs = workspace.getResource(FeatureStoreProvider.class, "simplesql-ok");
-		Assert.assertNotNull("Feature store is expected to be created.", fs);
+		assertNotNull(fs, "Feature store is expected to be created.");
 		WorkspaceUtils.reinitializeChain(workspace,
 				new DefaultResourceIdentifier<ConnectionProvider>(ConnectionProviderProvider.class, "simplesqlh2"));
 		fs = workspace.getResource(FeatureStoreProvider.class, "simplesql-ok");
-		Assert.assertNotNull("Feature store is expected to be re-initialized.", fs);
+		assertNotNull(fs, "Feature store is expected to be re-initialized.");
 		ConnectionProvider prov = workspace.getResource(ConnectionProviderProvider.class, "simplesqlh2");
-		Assert.assertNotNull("Connection provider is expected to be re-initialized.", prov);
+		assertNotNull(prov, "Connection provider is expected to be re-initialized.");
 	}
 
 }

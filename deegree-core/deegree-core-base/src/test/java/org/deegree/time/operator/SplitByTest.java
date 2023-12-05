@@ -1,11 +1,5 @@
 package org.deegree.time.operator;
 
-import static java.util.Collections.emptyList;
-import static org.deegree.time.position.IndeterminateValue.UNKNOWN;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-
 import org.deegree.commons.tom.gml.property.Property;
 import org.deegree.time.position.TimePosition;
 import org.deegree.time.primitive.GenericTimeInstant;
@@ -14,16 +8,19 @@ import org.deegree.time.primitive.RelatedTime;
 import org.deegree.time.primitive.TimeGeometricPrimitive;
 import org.deegree.time.primitive.TimeInstant;
 import org.deegree.time.primitive.TimePeriod;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
+import static java.util.Collections.emptyList;
+import static org.deegree.time.position.IndeterminateValue.UNKNOWN;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SplitByTest {
 
 	private final SplitBy splitBy = new SplitBy();
-
-	@Rule
-	public ExpectedException expectedException = ExpectedException.none();
 
 	@Test
 	public void evaluateBegins() {
@@ -45,16 +42,18 @@ public class SplitByTest {
 
 	@Test
 	public void evaluateBegunByInstant1() {
-		expectedException.expect(IllegalArgumentException.class);
-		expectedException.expectMessage("Invalid arguments for SplitBy");
-		splitBy.evaluate(period("00:00:02", "00:00:05"), instant("00:00:02"));
+		IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> {
+			splitBy.evaluate(period("00:00:02", "00:00:05"), instant("00:00:02"));
+		});
+		assertEquals("Invalid arguments for SplitBy", thrown.getMessage());
 	}
 
 	@Test
 	public void evaluateBegunByInstant2() {
-		expectedException.expect(IllegalArgumentException.class);
-		expectedException.expectMessage("Invalid arguments for SplitBy");
-		splitBy.evaluate(period("00:00:02", null), instant("00:00:02"));
+		IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> {
+			splitBy.evaluate(period("00:00:02", null), instant("00:00:02"));
+		});
+		assertEquals("Invalid arguments for SplitBy", thrown.getMessage());
 	}
 
 	@Test
@@ -87,30 +86,37 @@ public class SplitByTest {
 
 	@Test
 	public void evaluateTContainsInstant1() {
-		expectedException.expect(IllegalArgumentException.class);
-		expectedException.expectMessage("Invalid arguments for SplitBy");
-		splitBy.evaluate(period("00:00:02", "00:00:05"), instant("00:00:03"));
+		IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> {
+			splitBy.evaluate(period("00:00:02", "00:00:05"), instant("00:00:03"));
+		});
+		assertEquals("Invalid arguments for SplitBy", thrown.getMessage());
+
 	}
 
 	@Test
 	public void evaluateTContainsInstant2() {
-		expectedException.expect(IllegalArgumentException.class);
-		expectedException.expectMessage("Invalid arguments for SplitBy");
-		splitBy.evaluate(period("00:00:02", null), instant("00:00:03"));
+		IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> {
+			splitBy.evaluate(period("00:00:02", null), instant("00:00:03"));
+		});
+		assertEquals("Invalid arguments for SplitBy", thrown.getMessage());
+
 	}
 
 	@Test
 	public void evaluateTContainsInstant3() {
-		expectedException.expect(IllegalArgumentException.class);
-		expectedException.expectMessage("Invalid arguments for SplitBy");
-		splitBy.evaluate(period(null, "00:00:05"), instant("00:00:03"));
+		IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> {
+			splitBy.evaluate(period(null, "00:00:05"), instant("00:00:03"));
+		});
+		assertEquals("Invalid arguments for SplitBy", thrown.getMessage());
+
 	}
 
 	@Test
 	public void evaluateTContainsInstant4() {
-		expectedException.expect(IllegalArgumentException.class);
-		expectedException.expectMessage("Invalid arguments for SplitBy");
-		splitBy.evaluate(period(null, null), instant("00:00:03"));
+		IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> {
+			splitBy.evaluate(period(null, null), instant("00:00:03"));
+		});
+		assertEquals("Invalid arguments for SplitBy", thrown.getMessage());
 	}
 
 	@Test

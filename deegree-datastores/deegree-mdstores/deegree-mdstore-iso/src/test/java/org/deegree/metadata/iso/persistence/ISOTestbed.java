@@ -34,22 +34,15 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.metadata.iso.persistence;
 
-import org.deegree.metadata.iso.persistence.inspectors.InspectorCouplingTest;
-import org.deegree.metadata.iso.persistence.inspectors.InspectorIdentifierTest;
-import org.deegree.metadata.iso.persistence.parsing.ParseISOTest;
-import org.deegree.metadata.iso.persistence.sql.AnyTextHelperTest;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
-
 /**
  * Testsuite for all the ISO testCases.
  *
  * @author <a href="mailto:thomas@lat-lon.de">Steffen Thomas</a>
  */
-@RunWith(Suite.class)
-@SuiteClasses({ InspectorIdentifierTest.class, ParseISOTest.class, InspectorCouplingTest.class, AnyTextHelperTest.class,
-		ISORecordSerializeTest.class, ISOMetadatStoreTransactionTest.class })
+// @RunWith(Suite.class)
+// @SuiteClasses({ InspectorIdentifierTest.class, ParseISOTest.class,
+// InspectorCouplingTest.class, AnyTextHelperTest.class,
+// ISORecordSerializeTest.class, ISOMetadatStoreTransactionTest.class })
 public class ISOTestbed {
 
 }

@@ -1,11 +1,5 @@
 package org.deegree.time.operator;
 
-import static java.util.Collections.emptyList;
-import static org.deegree.time.position.IndeterminateValue.UNKNOWN;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-
 import org.deegree.commons.tom.gml.property.Property;
 import org.deegree.time.position.TimePosition;
 import org.deegree.time.primitive.GenericTimeInstant;
@@ -14,16 +8,19 @@ import org.deegree.time.primitive.RelatedTime;
 import org.deegree.time.primitive.TimeGeometricPrimitive;
 import org.deegree.time.primitive.TimeInstant;
 import org.deegree.time.primitive.TimePeriod;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
+import static java.util.Collections.emptyList;
+import static org.deegree.time.position.IndeterminateValue.UNKNOWN;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ExpandEndIndeterminateTest {
 
 	private final ExpandEndIndeterminate ad = new ExpandEndIndeterminate();
-
-	@Rule
-	public ExpectedException expectedException = ExpectedException.none();
 
 	@Test
 	public void expandEndIndeterminateInstant() {
@@ -32,18 +29,20 @@ public class ExpandEndIndeterminateTest {
 
 	@Test
 	public void expandEndIndeterminatePeriodNormal() {
-		expectedException.expect(IllegalArgumentException.class);
-		expectedException
-			.expectMessage("ExpandEndIndeterminate requires a time instant or a time period with indeterminate end");
-		ad.evaluate(period("00:00:02", "00:00:03"));
+		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+			ad.evaluate(period("00:00:02", "00:00:03"));
+		});
+		assertEquals(exception.getMessage(),
+				"ExpandEndIndeterminate requires a time instant or a time period with indeterminate end");
 	}
 
 	@Test
 	public void expandEndIndeterminatePeriodIndeterminateBegin() {
-		expectedException.expect(IllegalArgumentException.class);
-		expectedException
-			.expectMessage("ExpandEndIndeterminate requires a time instant or a time period with indeterminate end");
-		ad.evaluate(period(null, "00:00:03"));
+		IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+			ad.evaluate(period(null, "00:00:03"));
+		});
+		assertEquals(exception.getMessage(),
+				"ExpandEndIndeterminate requires a time instant or a time period with indeterminate end");
 	}
 
 	@Test

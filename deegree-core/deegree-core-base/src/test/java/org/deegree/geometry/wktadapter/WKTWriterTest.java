@@ -34,19 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.geometry.wktadapter;
 
-import java.io.IOException;
-import java.io.StringWriter;
-import java.io.Writer;
-import java.net.URL;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLStreamException;
-
-import junit.framework.TestCase;
-
 import org.deegree.commons.xml.XMLParsingException;
 import org.deegree.cs.exceptions.UnknownCRSException;
 import org.deegree.geometry.Geometry;
@@ -67,8 +54,20 @@ import org.deegree.gml.GMLInputFactory;
 import org.deegree.gml.GMLStreamReader;
 import org.deegree.gml.GMLVersion;
 import org.deegree.gml.geometry.GML3GeometryReaderTest;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLStreamException;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.net.URL;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests the correct syntax of the sql statement that should be dispatched against the
@@ -76,14 +75,13 @@ import org.junit.Test;
  *
  * @author <a href="mailto:thomas@lat-lon.de">Steffen Thomas</a>
  */
-public class WKTWriterTest extends TestCase {
+public class WKTWriterTest {
 
 	private final String BASE_DIR = "../../gml/misc/geometry/";
 
 	private DecimalCoordinateFormatter decimalFormatter;
 
-	@Override
-	@Before
+	@BeforeEach
 	public void setUp() {
 		decimalFormatter = new DecimalCoordinateFormatter(1);
 	}

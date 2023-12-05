@@ -34,7 +34,7 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.commons.xml.stax;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -47,7 +47,7 @@ import javax.xml.stream.XMLStreamWriter;
 
 import org.deegree.commons.xml.NamespaceBindings;
 import org.deegree.commons.xml.XMLAdapter;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * Tests for the {@link NamespaceNormalizingXMLStreamWriter}.

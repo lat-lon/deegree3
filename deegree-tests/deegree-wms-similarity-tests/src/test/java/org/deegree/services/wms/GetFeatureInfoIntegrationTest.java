@@ -1,8 +1,7 @@
 package org.deegree.services.wms;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.not;
-import static org.junit.Assert.assertThat;
+import org.deegree.commons.utils.net.HttpUtils;
+import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,8 +11,8 @@ import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.Collectors;
 
-import org.deegree.commons.utils.net.HttpUtils;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GetFeatureInfoIntegrationTest {
 
@@ -22,51 +21,51 @@ public class GetFeatureInfoIntegrationTest {
 	@Test
 	public void test96dpiNoResult() throws IOException {
 		// layer has scale 1:6900 - 1:7100
-		assertThat("1:6895 < min scale", get(GFI_BASE
-				+ "&X=250&Y=250&WIDTH=500&HEIGHT=500&BBOX=445088.216145833,4448605.21614583,445735.783854167,4449252.78385417&DPI=96"),
-				not(containsString("data:")));
+		assertFalse(get(GFI_BASE
+				+ "&X=250&Y=250&WIDTH=500&HEIGHT=500&BBOX=445088.216145833,4448605.21614583,445735.783854167,4449252.78385417&DPI=96")
+			.contains("data:"), "1:6895 < min scale");
 
-		assertThat("1:7105 > max sacle", get(GFI_BASE
-				+ "&X=250&Y=250&WIDTH=500&HEIGHT=500&BBOX=444942.033854167,4448459.03385417,445881.966145833,4449398.96614583&DPI=96"),
-				not(containsString("data:")));
+		assertFalse(get(GFI_BASE
+				+ "&X=250&Y=250&WIDTH=500&HEIGHT=500&BBOX=444942.033854167,4448459.03385417,445881.966145833,4449398.96614583&DPI=96")
+			.contains("data:"), "1:7105 > max sacle");
 
 	}
 
 	@Test
 	public void test96dpiWithResult() throws IOException {
 		// layer has scale 1:6900 - 1:7100
-		assertThat("1:6905 > min scale", get(GFI_BASE
-				+ "&X=250&Y=250&WIDTH=500&HEIGHT=500&BBOX=444955.263020833,4448472.26302083,445868.736979167,4449385.73697917&DPI=96"),
-				containsString("data:"));
+		assertTrue(get(GFI_BASE
+				+ "&X=250&Y=250&WIDTH=500&HEIGHT=500&BBOX=444955.263020833,4448472.26302083,445868.736979167,4449385.73697917&DPI=96")
+			.contains("data:"), "1:6905 > min scale");
 
-		assertThat("1:7095 < max scale", get(GFI_BASE
-				+ "&X=250&Y=250&WIDTH=500&HEIGHT=500&BBOX=444942.6953125,4448459.6953125,445881.3046875,4449398.3046875&DPI=96"),
-				containsString("data:"));
+		assertTrue(get(GFI_BASE
+				+ "&X=250&Y=250&WIDTH=500&HEIGHT=500&BBOX=444942.6953125,4448459.6953125,445881.3046875,4449398.3046875&DPI=96")
+			.contains("data:"), "1:7095 < max scale");
 	}
 
 	@Test
 	public void test192dpiNoResult() throws IOException {
 		// layer has scale 1:6900 - 1:7100
-		assertThat("1:6895 < min scale", get(GFI_BASE
-				+ "&X=500&Y=500&WIDTH=1000&HEIGHT=1000&BBOX=445088.216145833,4448605.21614583,445735.783854167,4449252.78385417&DPI=192"),
-				not(containsString("data:")));
+		assertFalse(get(GFI_BASE
+				+ "&X=500&Y=500&WIDTH=1000&HEIGHT=1000&BBOX=445088.216145833,4448605.21614583,445735.783854167,4449252.78385417&DPI=192")
+			.contains("data:"), "1:6895 < min scale");
 
-		assertThat("1:7105 > max sacle", get(GFI_BASE
-				+ "&X=500&Y=500&WIDTH=1000&HEIGHT=1000&BBOX=444942.033854167,4448459.03385417,445881.966145833,4449398.96614583&DPI=192"),
-				not(containsString("data:")));
+		assertFalse(get(GFI_BASE
+				+ "&X=500&Y=500&WIDTH=1000&HEIGHT=1000&BBOX=444942.033854167,4448459.03385417,445881.966145833,4449398.96614583&DPI=192")
+			.contains("data:"), "1:7105 > max sacle");
 
 	}
 
 	@Test
 	public void test192dpiWithResult() throws IOException {
 		// layer has scale 1:6900 - 1:7100
-		assertThat("1:6905 > min scale", get(GFI_BASE
-				+ "&X=500&Y=500&WIDTH=1000&HEIGHT=1000&BBOX=444955.263020833,4448472.26302083,445868.736979167,4449385.73697917&DPI=192"),
-				containsString("data:"));
+		assertTrue(get(GFI_BASE
+				+ "&X=500&Y=500&WIDTH=1000&HEIGHT=1000&BBOX=444955.263020833,4448472.26302083,445868.736979167,4449385.73697917&DPI=192")
+			.contains("data:"), "1:6905 > min scale");
 
-		assertThat("1:7095 < max scale", get(GFI_BASE
-				+ "&X=500&Y=500&WIDTH=1000&HEIGHT=1000&BBOX=444942.6953125,4448459.6953125,445881.3046875,4449398.3046875&DPI=192"),
-				containsString("data:"));
+		assertTrue(get(GFI_BASE
+				+ "&X=500&Y=500&WIDTH=1000&HEIGHT=1000&BBOX=444942.6953125,4448459.6953125,445881.3046875,4449398.3046875&DPI=192")
+			.contains("data:"), "1:7095 < max scale");
 	}
 
 	private String get(String request) throws IOException {

@@ -34,27 +34,6 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.metadata.iso.persistence;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.slf4j.LoggerFactory.getLogger;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.xpath.AXIOMXPath;
 import org.deegree.commons.config.ResourceInitException;
@@ -81,10 +60,29 @@ import org.deegree.metadata.persistence.transaction.MetadataProperty;
 import org.deegree.metadata.persistence.transaction.UpdateOperation;
 import org.deegree.protocol.csw.MetadataStoreException;
 import org.jaxen.JaxenException;
-import org.junit.Assert;
-import org.junit.Assume;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
+
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * TODO add class documentation here
@@ -101,11 +99,11 @@ public class ISOMetadatStoreTransactionTest extends AbstractISOTest {
 		LOG.info("START Test: testInsert");
 
 		initStore(TstConstants.configURL);
-		Assume.assumeNotNull(store);
+		assumeTrue(store != null);
 
 		String test_folder = TestProperties.getProperty("test_folder");
 
-		Assume.assumeTrue(test_folder != null);
+		assumeTrue(test_folder != null);
 
 		File folder = new File(test_folder);
 		File[] fileArray = folder.listFiles();
@@ -147,7 +145,7 @@ public class ISOMetadatStoreTransactionTest extends AbstractISOTest {
 		LOG.info("START Test: testDelete");
 
 		initStore(TstConstants.configURL);
-		Assume.assumeNotNull(store);
+		assumeTrue(store != null);
 
 		List<String> ids = TstUtils.insertMetadata(store, TstConstants.tst_9, TstConstants.tst_10, TstConstants.tst_1);
 
@@ -175,7 +173,7 @@ public class ISOMetadatStoreTransactionTest extends AbstractISOTest {
 			size++;
 		}
 
-		Assert.assertEquals(1, size);
+		assertEquals(1, size);
 
 	}
 
@@ -219,7 +217,7 @@ public class ISOMetadatStoreTransactionTest extends AbstractISOTest {
 		// test if the updated was successfull
 		if (identifier.equals(idToUpdate)) {
 			String updatedString = ((ISORecord) m).getStringFromXPath(new XPath(xPath, nsContext));
-			Assert.assertEquals(value, updatedString);
+			assertEquals(value, updatedString);
 		}
 	}
 
@@ -264,7 +262,7 @@ public class ISOMetadatStoreTransactionTest extends AbstractISOTest {
 		if (identifier.equals(idToUpdate)) {
 			String updatedString = ((ISORecord) m)
 				.getStringFromXPath(new XPath("/gmd:MD_Metadata/gmd:dateStamp/gco:Date", nsContext));
-			Assert.assertEquals(value, updatedString);
+			assertEquals(value, updatedString);
 		}
 	}
 
@@ -315,7 +313,7 @@ public class ISOMetadatStoreTransactionTest extends AbstractISOTest {
 			AXIOMXPath p = new AXIOMXPath(testXpath);
 			p.setNamespaceContext(nsContext);
 			Object valueNode = p.selectSingleNode(value);
-			Assert.assertEquals(((OMElement) valueNode).getText(), updatedNode.getText());
+			assertEquals(((OMElement) valueNode).getText(), updatedNode.getText());
 		}
 
 	}
@@ -418,7 +416,7 @@ public class ISOMetadatStoreTransactionTest extends AbstractISOTest {
 			AXIOMXPath p = new AXIOMXPath(testXpath);
 			p.setNamespaceContext(nsContext);
 			Object valueNode = p.selectSingleNode(value.getAsOMElement());
-			Assert.assertEquals(((OMElement) valueNode).getText(), updatedNode.getText());
+			assertEquals(((OMElement) valueNode).getText(), updatedNode.getText());
 		}
 	}
 
@@ -466,7 +464,7 @@ public class ISOMetadatStoreTransactionTest extends AbstractISOTest {
 			AXIOMXPath p = new AXIOMXPath(testXpath);
 			p.setNamespaceContext(nsContext);
 			Object valueNode = p.selectSingleNode(value.getAsOMElement());
-			Assert.assertEquals(((OMElement) valueNode).getText(), ((OMElement) updatedNode).getText());
+			assertEquals(((OMElement) valueNode).getText(), ((OMElement) updatedNode).getText());
 		}
 	}
 
@@ -500,7 +498,7 @@ public class ISOMetadatStoreTransactionTest extends AbstractISOTest {
 		LOG.info("START Test: testUpdate");
 
 		initStore(TstConstants.configURL);
-		Assume.assumeNotNull(store);
+		assumeTrue(store != null);
 
 		List<String> ids = TstUtils.insertMetadata(store, TstConstants.tst_9);
 		LOG.info("Inserted records with ids: " + ids + ". Now: update " + ids);

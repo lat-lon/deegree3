@@ -34,19 +34,19 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.coverage.raster;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
-import java.io.File;
-import java.io.FileWriter;
-
 import org.deegree.coverage.raster.geom.RasterGeoReference;
 import org.deegree.coverage.raster.geom.RasterGeoReference.OriginLocation;
 import org.deegree.coverage.raster.io.RasterIOOptions;
 import org.deegree.coverage.raster.io.WorldFileAccess;
 import org.deegree.geometry.Envelope;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+import java.io.File;
+import java.io.FileWriter;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Reading of worldfiles.
@@ -62,7 +62,7 @@ public class WorldFileAccessTest {
 	/**
 	 * @throws java.lang.Exception
 	 */
-	@BeforeClass
+	@BeforeAll
 	public static void setUp() throws Exception {
 		wld = File.createTempFile("deegree3-junit-test", ".wld");
 		wld.deleteOnExit();

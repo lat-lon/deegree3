@@ -34,12 +34,12 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.commons.utils.io;
 
+import org.junit.jupiter.api.Test;
+
 import java.io.IOException;
 import java.io.InputStream;
 
-import junit.framework.Assert;
-
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests the {@link StreamBufferStore}.
@@ -60,7 +60,7 @@ public class StreamBufferStoreTest {
 		InputStream is = os.getInputStream();
 		for (int i = 0; i < 10000; i++) {
 			int b = is.read();
-			Assert.assertEquals(i % Byte.MAX_VALUE + 1, b);
+			assertEquals(i % Byte.MAX_VALUE + 1, b);
 		}
 		os.close();
 	}

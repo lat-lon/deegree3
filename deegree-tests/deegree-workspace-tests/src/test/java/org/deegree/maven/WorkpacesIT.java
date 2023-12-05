@@ -47,11 +47,8 @@ import org.apache.http.util.EntityUtils;
 import org.deegree.maven.ithelper.ServiceIntegrationTestHelper;
 import org.deegree.maven.ithelper.TestEnvironment;
 import org.deegree.maven.utils.HttpUtils;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 
 import java.io.IOException;
@@ -66,7 +63,6 @@ import static org.slf4j.LoggerFactory.getLogger;
 /**
  * @author <a href="mailto:schmitz@lat-lon.de">Andreas Schmitz</a>
  */
-@RunWith(Parameterized.class)
 public class WorkpacesIT {
 
 	private static final Logger LOG = getLogger(WorkpacesIT.class);
@@ -79,14 +75,13 @@ public class WorkpacesIT {
 		this.workspaceUnderTest = workspaceUnderTest;
 	}
 
-	@Parameters
-	public static List<Path> getParameters() throws IOException {
+	private List<Path> getParameters() throws IOException {
 		String workspaceDir = env.getWorkspaceDir();
 		Path workspaces = Paths.get(workspaceDir);
 		return Files.list(workspaces).filter(p -> Files.isDirectory(p) && Files.exists(p)).collect(Collectors.toList());
 	}
 
-	@Before
+	@BeforeEach
 	public void restartWorkspace() throws Exception {
 		ServiceIntegrationTestHelper helper = new ServiceIntegrationTestHelper(env);
 		String workspaceName = workspaceUnderTest.getFileName().toString();
