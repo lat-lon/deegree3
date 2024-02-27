@@ -1,7 +1,7 @@
 variables:
   MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN"
   MAVEN_CLI_OPTS: "-Popencode --batch-mode -DinstallAtEnd=true -DdeployAtEnd=true -s $CI_PROJECT_DIR/.opencode-settings.xml"
-
+  DEEGREE_VERSION: '3.5'
 
 update-repo-from-github-latlon-deegree3:
   stage: build
@@ -15,17 +15,17 @@ update-repo-from-github-latlon-deegree3:
   script:
     - echo "Fetching changes for github repo"
     - git branch -r
-    - git checkout xplanbox-deegree3.5
+    - git checkout xplanbox-deegree$DEEGREE_VERSION
     - git log
     - git remote add upstream https://github.com/lat-lon/deegree3.git
-    - git fetch upstream xplanbox-deegree3.5
-    - git reset --hard upstream/xplanbox-deegree3.5
+    - git fetch upstream xplanbox-deegree$DEEGREE_VERSION
+    - git reset --hard upstream/xplanbox-deegree$DEEGREE_VERSION
     - git log
     - echo "Pushing..."
     - git remote set-url origin git@gitlab.opencode.de:diplanung/diplancockpit/xplan-backend/xplan-deegree.git
-    - git push --force --set-upstream origin xplanbox-deegree3.5
+    - git push --force --set-upstream origin xplanbox-deegree$DEEGREE_VERSION
     - echo "Handling tags..."
-    - git fetch upstream tag xplanbox-deegree* --no-tags
+    - git fetch upstream tag xplanbox-deegree-$DEEGREE_VERSION* --no-tags
     - git push origin --tags
 
   rules:
