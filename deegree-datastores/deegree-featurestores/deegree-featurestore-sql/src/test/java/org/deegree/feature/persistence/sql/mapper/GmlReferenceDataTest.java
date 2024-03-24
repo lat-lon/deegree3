@@ -128,7 +128,7 @@ public class GmlReferenceDataTest {
 		assertThat(hasMaxOneA1, is(false));
 
 		boolean hasMaxOneA3 = gmlReferenceData.hasZeroOrOneProperty(FEATURETYPE_A_NAME, asPathStep(PROP_A3_NAME));
-		assertThat(hasMaxOneA3, is(false));
+		assertThat(hasMaxOneA3, is(true));
 	}
 
 	@Test
