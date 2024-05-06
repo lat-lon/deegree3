@@ -8,7 +8,7 @@
   <parent>
     <groupId>de.latlon</groupId>
     <artifactId>deegree-core</artifactId>
-    <version>3.5.8-SNAPSHOT</version>
+    <version>3.5.7.1</version>
   </parent>
 
   <build>
