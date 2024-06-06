@@ -58,6 +58,10 @@ import org.deegree.workspace.Workspace;
 
 public class MetadataStoreConfig extends Config {
 
+	public MetadataStoreConfig() {
+		this(null, null);
+	}
+
 	public MetadataStoreConfig(ResourceMetadata<?> state, ResourceManager<?> resourceManager) {
 		super(state, resourceManager, "/console/datastore/metadata/index", true);
 	}

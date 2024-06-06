@@ -51,8 +51,8 @@ import org.deegree.workspace.Workspace;
  *
  * @author <a href="mailto:schneider@lat-lon.de">Markus Schneider</a>
  */
-@Named
-@RequestScoped
+// @Named
+// @RequestScoped
 public class Connection implements Serializable {
 
 	private static final long serialVersionUID = 6495856816506360039L;

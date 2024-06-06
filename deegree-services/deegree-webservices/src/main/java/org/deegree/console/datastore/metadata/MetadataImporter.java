@@ -63,8 +63,8 @@ import org.slf4j.LoggerFactory;
  *
  * @author <a href="mailto:thomas@lat-lon.de">Steffen Thomas</a>
  */
-@Named
-@RequestScoped
+// @Named
+// @RequestScoped
 public class MetadataImporter implements Serializable {
 
 	private static Logger LOG = LoggerFactory.getLogger(MetadataImporter.class);

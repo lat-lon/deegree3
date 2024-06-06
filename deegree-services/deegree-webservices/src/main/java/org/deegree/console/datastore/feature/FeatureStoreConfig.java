@@ -66,6 +66,10 @@ import org.deegree.workspace.Workspace;
 
 public class FeatureStoreConfig extends Config {
 
+	public FeatureStoreConfig() {
+		this(null, null);
+	}
+
 	public FeatureStoreConfig(ResourceMetadata metadata, ResourceManager resourceManager) {
 		super(metadata, resourceManager, "/console/datastore/feature/index", true);
 	}

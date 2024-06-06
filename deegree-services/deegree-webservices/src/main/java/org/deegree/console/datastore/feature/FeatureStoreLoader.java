@@ -63,8 +63,8 @@ import org.deegree.protocol.wfs.transaction.action.IDGenMode;
  *
  * @author <a href="mailto:schneider@lat-lon.de">Markus Schneider</a>
  */
-@Named
-@RequestScoped
+// @Named
+// @RequestScoped
 public class FeatureStoreLoader implements Serializable {
 
 	private static final long serialVersionUID = 5091506903775758089L;

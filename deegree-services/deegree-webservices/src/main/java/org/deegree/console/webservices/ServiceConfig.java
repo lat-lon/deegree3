@@ -48,6 +48,10 @@ public class ServiceConfig extends Config {
 	private static final URL METADATA_EXAMPLE_URL = ServicesBean.class
 		.getResource("/META-INF/schemas/services/metadata/example.xml");
 
+	public ServiceConfig() {
+		this(null, null);
+	}
+
 	public ServiceConfig(ResourceMetadata<?> metadata, ResourceManager<?> resourceManager) {
 		super(metadata, resourceManager, "/console/webservices/index", true);
 	}
