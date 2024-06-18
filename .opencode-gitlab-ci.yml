@@ -5,7 +5,7 @@ variables:
 
 update-repo-from-github-latlon-deegree3:
   stage: build
-  image: maven:3.9.7-eclipse-temurin-17
+  image: alpine/git:latest
   before_script:
     - mkdir -p ~/.ssh/
     - cp $DEPLOY_PRIVATE_KEY ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
