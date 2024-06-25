@@ -145,7 +145,6 @@ import org.deegree.workspace.Resource;
 import org.deegree.workspace.ResourceInitException;
 import org.deegree.workspace.ResourceMetadata;
 import org.deegree.workspace.Workspace;
-import org.jaxen.expr.DefaultAbsoluteLocationPath;
 import org.jaxen.expr.DefaultNameStep;
 import org.jaxen.expr.Expr;
 import org.jaxen.expr.LocationPath;
@@ -1718,9 +1717,8 @@ public class SQLFeatureStore implements FeatureStore {
 				if (propName == null)
 					return false;
 				Expr xPath = propName.getAsXPath();
-				if (xPath instanceof DefaultAbsoluteLocationPath
-						&& !((DefaultAbsoluteLocationPath) xPath).getSteps().isEmpty()) {
-					List<?> steps = ((DefaultAbsoluteLocationPath) xPath).getSteps();
+				if (xPath instanceof LocationPath && !((LocationPath) xPath).getSteps().isEmpty()) {
+					List<?> steps = ((LocationPath) xPath).getSteps();
 					Object step = steps.get(steps.size() - 1);
 					if (step instanceof DefaultNameStep) {
 						String localPart = ((DefaultNameStep) step).getLocalName();
