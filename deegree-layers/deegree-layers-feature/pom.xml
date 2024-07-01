@@ -6,7 +6,7 @@
   <description>Layers implementation for layers created from feature stores</description>
 
   <parent>
-    <groupId>org.deegree</groupId>
+    <groupId>de.latlon</groupId>
     <artifactId>deegree-layers</artifactId>
     <version>3.6.0-SNAPSHOT</version>
   </parent>
@@ -18,7 +18,7 @@
         <artifactId>jaxb-maven-plugin</artifactId>
         <dependencies>
           <dependency>
-            <groupId>org.deegree</groupId>
+            <groupId>de.latlon</groupId>
             <artifactId>deegree-core-layer</artifactId>
             <version>${project.version}</version>
           </dependency>
@@ -29,17 +29,17 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.deegree</groupId>
+      <groupId>de.latlon</groupId>
       <artifactId>deegree-core-layer</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.deegree</groupId>
+      <groupId>de.latlon</groupId>
       <artifactId>deegree-featurestore-commons</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.deegree</groupId>
+      <groupId>de.latlon</groupId>
       <artifactId>deegree-core-test-logging</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
