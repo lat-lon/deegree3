@@ -1126,7 +1126,7 @@
       <dependency>
         <groupId>org.gdal</groupId>
         <artifactId>gdal</artifactId>
-        <version>3.6.0</version>
+        <version>3.0.0</version>
       </dependency>
       <!-- TODO not maintained anymore ! to be removed! -->
       <dependency>
