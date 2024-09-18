@@ -195,6 +195,7 @@ public class GMLFeatureReader extends AbstractGMLObjectReader {
 			throws XMLStreamException, XMLParsingException, UnknownCRSException {
 
 		String fid = parseFeatureId(xmlStream);
+		startParsing(fid);
 
 		if (LOG.isDebugEnabled()) {
 			LOG.debug("- parsing feature, gml:id={} (begin): {}", fid, xmlStream.getCurrentEventInfo());
@@ -338,6 +339,7 @@ public class GMLFeatureReader extends AbstractGMLObjectReader {
 	private Feature parseFeatureStatic(XMLStreamReaderWrapper xmlStream, ICRS crs)
 			throws XMLStreamException, XMLParsingException, UnknownCRSException {
 		String fid = parseFeatureId(xmlStream);
+		startParsing(fid);
 
 		QName featureName = xmlStream.getName();
 		FeatureType ft = lookupFeatureType(xmlStream, featureName, true);
@@ -584,6 +586,12 @@ public class GMLFeatureReader extends AbstractGMLObjectReader {
 			throw new IllegalArgumentException(msg);
 		}
 		return fid;
+	}
+
+	private void startParsing(String fid) {
+		for (FeatureInspector inspector : inspectors) {
+			inspector.startParsing(fid);
+		}
 	}
 
 	private Feature inspect(Feature feature) {
