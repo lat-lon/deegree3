@@ -13,6 +13,12 @@ import org.deegree.feature.Feature;
 public interface FeatureInspector {
 
 	/**
+	 * Invokes the start of the parsing of the {@link Feature} with the given id.
+	 * @param fid the gml id of the feature started to parsed
+	 */
+	void startParsing(String fid);
+
+	/**
 	 * Invokes the inspection of the given {@link Feature}.
 	 * @param feature feature to be inspected, never <code>null</code>
 	 * @return inspected feature, may be a different (repaired) instance, but must have
