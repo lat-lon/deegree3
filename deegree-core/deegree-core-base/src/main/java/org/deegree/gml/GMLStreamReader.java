@@ -328,21 +328,6 @@ public class GMLStreamReader {
 	 * @throws UnknownCRSException
 	 */
 	public Feature readFeature() throws XMLStreamException, XMLParsingException, UnknownCRSException {
-		return readFeature(false);
-	}
-
-	/**
-	 * Returns the deegree model representation for the GML feature element event that the
-	 * cursor of the underlying xml stream points to.
-	 * @param skipBrokenGeometries
-	 * @return deegree model representation for the current GML feature element, never
-	 * <code>null</code>
-	 * @throws XMLStreamException
-	 * @throws XMLParsingException
-	 * @throws UnknownCRSException
-	 */
-	public Feature readFeature(boolean skipBrokenGeometries)
-			throws XMLStreamException, XMLParsingException, UnknownCRSException {
 		return getFeatureReader(skipBrokenGeometries).parseFeature(xmlStream, defaultCRS);
 	}
 
@@ -362,7 +347,7 @@ public class GMLStreamReader {
 	 */
 	public FeatureCollection readFeatureCollection()
 			throws XMLStreamException, XMLParsingException, UnknownCRSException {
-		return (FeatureCollection) getFeatureReader().parseFeature(xmlStream, defaultCRS);
+		return (FeatureCollection) getFeatureReader(skipBrokenGeometries).parseFeature(xmlStream, defaultCRS);
 	}
 
 	/**
@@ -382,7 +367,7 @@ public class GMLStreamReader {
 	 */
 	public StreamFeatureCollection readFeatureCollectionStream()
 			throws XMLStreamException, XMLParsingException, UnknownCRSException {
-		return getFeatureReader().getFeatureStream(xmlStream, defaultCRS);
+		return getFeatureReader(skipBrokenGeometries).getFeatureStream(xmlStream, defaultCRS);
 	}
 
 	/**
