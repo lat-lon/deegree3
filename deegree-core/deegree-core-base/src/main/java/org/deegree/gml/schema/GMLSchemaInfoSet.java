@@ -52,8 +52,8 @@ import static org.deegree.commons.xml.CommonNamespaces.ISO_2005_GCO_NS;
 import static org.deegree.commons.xml.CommonNamespaces.ISO_2005_GSR_NS;
 import static org.deegree.commons.xml.CommonNamespaces.ISO_2005_GSS_NS;
 import static org.deegree.commons.xml.CommonNamespaces.ISO_2005_GTS_NS;
-import static org.deegree.commons.xml.CommonNamespaces.SMIL_20_NS;
 import static org.deegree.commons.xml.CommonNamespaces.SMIL_20_LANGUAGE_NS;
+import static org.deegree.commons.xml.CommonNamespaces.SMIL_20_NS;
 import static org.deegree.commons.xml.CommonNamespaces.XLNNS;
 import static org.deegree.commons.xml.CommonNamespaces.XMLNS;
 import static org.deegree.commons.xml.CommonNamespaces.XSNS;
@@ -63,6 +63,7 @@ import static org.deegree.feature.types.property.ValueRepresentation.REMOTE;
 import static org.deegree.gml.GMLVersion.GML_31;
 import static org.deegree.gml.GMLVersion.GML_32;
 
+import javax.xml.namespace.QName;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -73,8 +74,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
-
-import javax.xml.namespace.QName;
 
 import org.apache.xerces.impl.xs.XSComplexTypeDecl;
 import org.apache.xerces.xs.XSAnnotation;
@@ -567,7 +566,7 @@ public class GMLSchemaInfoSet extends XMLSchemaInfoSet {
 					boolean maxOccursUnbounded = particle.getMaxOccursUnbounded();
 					return maxOccurs > 1 || maxOccursUnbounded;
 				}
-				return true;
+				return featureDecl.getAnnotation() != null && featureDecl.getAnnotation().getAnnotationString().contains("deprecated");
 			}
 		}
 		return false;
