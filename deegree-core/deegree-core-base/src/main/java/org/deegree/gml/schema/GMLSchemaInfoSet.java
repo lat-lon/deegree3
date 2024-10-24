@@ -566,7 +566,8 @@ public class GMLSchemaInfoSet extends XMLSchemaInfoSet {
 					boolean maxOccursUnbounded = particle.getMaxOccursUnbounded();
 					return maxOccurs > 1 || maxOccursUnbounded;
 				}
-				return featureDecl.getAnnotation() != null && featureDecl.getAnnotation().getAnnotationString().contains("deprecated");
+				return featureDecl.getAnnotation() != null
+						&& featureDecl.getAnnotation().getAnnotationString().contains("deprecated");
 			}
 		}
 		return false;
