@@ -5,7 +5,7 @@
   <packaging>jar</packaging>
 
   <parent>
-    <groupId>org.deegree</groupId>
+    <groupId>de.latlon</groupId>
     <artifactId>deegree-tools</artifactId>
     <version>3.6.0-SNAPSHOT</version>
   </parent>
@@ -97,13 +97,13 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.deegree</groupId>
+      <groupId>de.latlon</groupId>
       <artifactId>deegree-core-base</artifactId>
       <version>${project.version}</version>
       <type>jar</type>
     </dependency>
     <dependency>
-      <groupId>org.deegree</groupId>
+      <groupId>de.latlon</groupId>
       <artifactId>deegree-connectionprovider-datasource</artifactId>
       <version>${project.version}</version>
       <exclusions>
@@ -114,12 +114,12 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>org.deegree</groupId>
+      <groupId>de.latlon</groupId>
       <artifactId>deegree-featurestore-sql</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.deegree</groupId>
+      <groupId>de.latlon</groupId>
       <artifactId>deegree-sqldialect-postgis</artifactId>
       <version>${project.version}</version>
       <exclusions>
@@ -130,13 +130,13 @@
       </exclusions>
     </dependency>
     <dependency>
-      <groupId>org.deegree</groupId>
+      <groupId>de.latlon</groupId>
       <artifactId>deegree-sqldialect-oracle</artifactId>
       <version>${project.version}</version>
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>org.deegree</groupId>
+      <groupId>de.latlon</groupId>
       <artifactId>deegree-core-test-logging</artifactId>
       <version>${project.version}</version>
       <scope>test</scope>
