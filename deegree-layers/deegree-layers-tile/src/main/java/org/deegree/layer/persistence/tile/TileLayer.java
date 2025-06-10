@@ -39,18 +39,7 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.layer.persistence.tile;
 
-import org.deegree.commons.ows.exception.OWSException;
-import org.deegree.cs.coordinatesystems.ICRS;
-import org.deegree.geometry.Envelope;
-import org.deegree.layer.AbstractLayer;
-import org.deegree.layer.LayerData;
-import org.deegree.layer.LayerQuery;
-import org.deegree.layer.NoDataLayerData;
-import org.deegree.layer.metadata.LayerMetadata;
-import org.deegree.style.StyleRef;
-import org.deegree.tile.Tile;
-import org.deegree.tile.TileDataSet;
-import org.slf4j.Logger;
+import static org.slf4j.LoggerFactory.getLogger;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -58,7 +47,17 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.slf4j.LoggerFactory.getLogger;
+import org.deegree.commons.ows.exception.OWSException;
+import org.deegree.cs.coordinatesystems.ICRS;
+import org.deegree.geometry.Envelope;
+import org.deegree.layer.AbstractLayer;
+import org.deegree.layer.LayerData;
+import org.deegree.layer.LayerQuery;
+import org.deegree.layer.metadata.LayerMetadata;
+import org.deegree.style.StyleRef;
+import org.deegree.tile.Tile;
+import org.deegree.tile.TileDataSet;
+import org.slf4j.Logger;
 
 /**
  * A layer implementation based on a list of tile data sets.
@@ -69,8 +68,6 @@ import static org.slf4j.LoggerFactory.getLogger;
 public class TileLayer extends AbstractLayer {
 
 	private static final Logger LOG = getLogger(TileLayer.class);
-
-	private static final String PARAM_NAME_MANAGERID = "PLANWERK_MANAGERID";
 
 	// maps tile matrix set ids to tile data sets
 	private final Map<String, TileDataSet> tileDataSets = new LinkedHashMap<String, TileDataSet>();
@@ -88,24 +85,21 @@ public class TileLayer extends AbstractLayer {
 	}
 
 	@Override
-	public LayerData mapQuery(LayerQuery query, List<String> headers) throws OWSException {
-		if (isLayerRequested(query)) {
-			Envelope env = query.getEnvelope();
-			ICRS crs = env.getCoordinateSystem();
+	public TileLayerData mapQuery(LayerQuery query, List<String> headers) throws OWSException {
+		Envelope env = query.getEnvelope();
+		ICRS crs = env.getCoordinateSystem();
 
-			String tds = coordinateSystems.get(crs);
-			if (tds == null) {
-				String msg = "Tile layer " + getMetadata().getName() + " does not offer the coordinate system "
-						+ crs.getAlias();
-				LOG.debug(msg);
-				throw new OWSException(msg, OWSException.INVALID_CRS);
-			}
-			TileDataSet data = tileDataSets.get(tds);
-
-			Iterator<Tile> tiles = data.getTiles(env, query.getResolution());
-			return new TileLayerData(tiles);
+		String tds = coordinateSystems.get(crs);
+		if (tds == null) {
+			String msg = "Tile layer " + getMetadata().getName() + " does not offer the coordinate system "
+					+ crs.getAlias();
+			LOG.debug(msg);
+			throw new OWSException(msg, OWSException.INVALID_CRS);
 		}
-		return new NoDataLayerData();
+		TileDataSet data = tileDataSets.get(tds);
+
+		Iterator<Tile> tiles = data.getTiles(env, query.getResolution());
+		return new TileLayerData(tiles);
 	}
 
 	@Override
@@ -130,18 +124,6 @@ public class TileLayer extends AbstractLayer {
 
 	@Override
 	public boolean isStyleApplicable(StyleRef style) {
-		return true;
-	}
-
-	private boolean isLayerRequested(LayerQuery query) {
-		Map<String, String> parameters = query.getParameters();
-		if (parameters.containsKey(PARAM_NAME_MANAGERID)) {
-			String requestedManagerIds = parameters.get(PARAM_NAME_MANAGERID);
-			for (String requestedManagerId : requestedManagerIds.split(",")) {
-				String layerName = getMetadata().getName();
-				return layerName.startsWith(requestedManagerId + "_");
-			}
-		}
 		return true;
 	}
 
