@@ -94,8 +94,6 @@ public class WmsCapabilities130ThemeWriter {
 
 	private final String mdUrlTemplate;
 
-	private final MetadataMerger metadataMerger;
-
 	private final DecimalFormat scaleFormat;
 
 	/**
@@ -105,15 +103,14 @@ public class WmsCapabilities130ThemeWriter {
 	 * @param styleWriter writer for WMS 1.3.0 Style elements, can be <code>null</code>
 	 * (styles will be skipped)
 	 * @param mdUrlTemplate URL template for requesting metadata records
-	 * (<code>${metadataSetId}</code> will be replaced with
-	 * @param metadataMerger
+	 * (<code>${metadataSetId}</code> will be replaced with metadata id), can be
+	 * <code>null</code>
 	 */
 	public WmsCapabilities130ThemeWriter(final OWSMetadataProvider metadataProvider,
-			final Capabilities130XMLAdapter styleWriter, final String mdUrlTemplate, MetadataMerger metadataMerger) {
+			final Capabilities130XMLAdapter styleWriter, final String mdUrlTemplate) {
 		this.metadataProvider = metadataProvider;
 		this.styleWriter = styleWriter;
 		this.mdUrlTemplate = mdUrlTemplate;
-		this.metadataMerger = metadataMerger;
 		final DecimalFormatSymbols symbols = new DecimalFormatSymbols();
 		symbols.setDecimalSeparator('.');
 		this.scaleFormat = new DecimalFormat("0.0#######", symbols);
@@ -126,7 +123,7 @@ public class WmsCapabilities130ThemeWriter {
 	 * @throws XMLStreamException
 	 */
 	public void writeTheme(final XMLStreamWriter writer, final Theme theme) throws XMLStreamException {
-		final LayerMetadata layerMetadata = metadataMerger.mergeLayerMetadata(theme);
+		final LayerMetadata layerMetadata = new LayerMetadataMerger().merge(theme);
 		final DatasetMetadataFactory factory = new DatasetMetadataFactory();
 		final List<DatasetMetadata> dsMd1 = getDatasetMetadataFromProvider(theme);
 		final DatasetMetadata dsMd2 = factory.buildDatasetMetadata(layerMetadata, theme, mdUrlTemplate);
