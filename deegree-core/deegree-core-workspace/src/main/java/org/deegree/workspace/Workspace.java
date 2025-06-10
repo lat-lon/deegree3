@@ -177,6 +177,8 @@ public interface Workspace {
 	 */
 	<T extends Initializable> T getInitializable(Class<T> className);
 
+	<T extends Initializable> T getInitializableAllowSubclass(Class<T> className);
+
 	/**
 	 * Returns a location handler that can be used to persist and query for resource
 	 * locations.
