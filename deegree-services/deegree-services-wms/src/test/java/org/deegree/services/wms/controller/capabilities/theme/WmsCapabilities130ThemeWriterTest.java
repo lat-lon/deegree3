@@ -100,8 +100,7 @@ public class WmsCapabilities130ThemeWriterTest {
 
 	private static final String SCHEMA_URL = "http://schemas.opengis.net/wms/1.3.0/capabilities_1_3_0.xsd";
 
-	private final WmsCapabilities130ThemeWriter themeWriter = new WmsCapabilities130ThemeWriter(null, null, null,
-			new DefaultMetadataMerger());
+	private final WmsCapabilities130ThemeWriter themeWriter = new WmsCapabilities130ThemeWriter(null, null, null);
 
 	@Test
 	public void writeThemeMinimal() throws Exception {
@@ -167,8 +166,7 @@ public class WmsCapabilities130ThemeWriterTest {
 		mds.add(createDatasetMetadata("http://url3"));
 		when(provider.getAllDatasetMetadata(Mockito.any(QName.class))).thenReturn(mds);
 
-		WmsCapabilities130ThemeWriter themeWriter = new WmsCapabilities130ThemeWriter(provider, null, mdurlTemplate,
-				new DefaultMetadataMerger());
+		WmsCapabilities130ThemeWriter themeWriter = new WmsCapabilities130ThemeWriter(provider, null, mdurlTemplate);
 
 		Theme theme = new StandardTheme(layerMetadata, Collections.<Theme>emptyList(), Collections.<Layer>emptyList(),
 				null);
