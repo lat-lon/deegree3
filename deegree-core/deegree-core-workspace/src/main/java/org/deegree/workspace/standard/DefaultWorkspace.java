@@ -60,6 +60,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ServiceLoader;
 import org.deegree.moduleinfo.ModuleInfo;
 import org.deegree.workspace.Destroyable;
@@ -616,6 +617,18 @@ public class DefaultWorkspace implements Workspace {
 	@Override
 	public <T extends Initializable> T getInitializable(Class<T> className) {
 		return (T) initializables.get(className);
+	}
+
+	@Override
+	public <T extends Initializable> T getInitializableAllowSubclass(Class<T> className) {
+		T t = (T) initializables.get(className);
+		if (t != null)
+			return t;
+		Optional<Initializable> candidate = initializables.values()
+			.stream()
+			.filter(i -> className.isAssignableFrom(i.getClass()))
+			.findFirst();
+		return (T) candidate.orElse(null);
 	}
 
 	@Override
