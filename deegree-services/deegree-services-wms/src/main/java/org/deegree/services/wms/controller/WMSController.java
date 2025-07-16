@@ -49,6 +49,11 @@ import static org.deegree.services.i18n.Messages.get;
 import static org.deegree.services.metadata.MetadataUtils.convertFromJAXB;
 import static org.slf4j.LoggerFactory.getLogger;
 
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
+import javax.xml.transform.dom.DOMSource;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -81,18 +86,13 @@ import jakarta.xml.soap.SOAPEnvelope;
 import jakarta.xml.soap.SOAPException;
 import jakarta.xml.soap.SOAPMessage;
 import jakarta.xml.soap.SOAPPart;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
-import javax.xml.transform.dom.DOMSource;
-
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.soap.SOAP11Version;
 import org.apache.axiom.soap.SOAPVersion;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.fileupload2.core.FileItem;
 import org.deegree.commons.ows.exception.OWSException;
+import org.deegree.commons.ows.metadata.CapabilitiesServiceIdentification;
 import org.deegree.commons.ows.metadata.ServiceIdentification;
 import org.deegree.commons.ows.metadata.ServiceProvider;
 import org.deegree.commons.tom.ReferenceResolvingException;
@@ -156,6 +156,7 @@ import org.deegree.services.jaxb.wms.GetMapFormatsType;
 import org.deegree.services.jaxb.wms.ServiceConfigurationType;
 import org.deegree.services.metadata.OWSMetadataProvider;
 import org.deegree.services.metadata.provider.OWSMetadataProviderProvider;
+import org.deegree.services.wms.CapabilitiesMapService;
 import org.deegree.services.wms.MapService;
 import org.deegree.services.wms.controller.capabilities.serialize.CapabilitiesManager;
 import org.deegree.services.wms.controller.exceptions.ExceptionsManager;
@@ -317,10 +318,11 @@ public class WMSController extends AbstractOWS {
 
 			for (Version v : offeredVersions) {
 				if (v.equals(VERSION_111)) {
-					controllers.put(VERSION_111, new WMSController111(exceptionsManager));
+					controllers.put(VERSION_111, new WMSController111(exceptionsManager, workspace));
 				}
 				if (v.equals(VERSION_130)) {
-					controllers.put(VERSION_130, new WMSController130(capabilitiesManager, exceptionsManager));
+					controllers.put(VERSION_130,
+							new WMSController130(capabilitiesManager, exceptionsManager, workspace));
 				}
 			}
 
@@ -1275,8 +1277,8 @@ public class WMSController extends AbstractOWS {
 		 * @throws OWSException
 		 * @throws IOException
 		 */
-		void getCapabilities(String getUrl, String postUrl, String updateSequence, MapService service,
-				HttpResponseBuffer response, ServiceIdentification identification, ServiceProvider provider,
+		void getCapabilities(String getUrl, String postUrl, String updateSequence, CapabilitiesMapService service,
+				HttpResponseBuffer response, CapabilitiesServiceIdentification identification, ServiceProvider provider,
 				Map<String, String> customParameters, WMSController controller, OWSMetadataProvider metadata)
 				throws OWSException, IOException;
 
