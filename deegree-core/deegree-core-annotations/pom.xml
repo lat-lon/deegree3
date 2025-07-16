@@ -6,7 +6,7 @@
   <description>Custom Java annotations</description>
 
   <parent>
-    <groupId>org.deegree</groupId>
+    <groupId>de.latlon</groupId>
     <artifactId>deegree-core</artifactId>
     <version>3.6.0-SNAPSHOT</version>
   </parent>
@@ -28,7 +28,7 @@
 
   <dependencies>
     <dependency>
-      <groupId>org.deegree</groupId>
+      <groupId>de.latlon</groupId>
       <artifactId>deegree-core-moduleinfo</artifactId>
       <version>${project.version}</version>
       <scope>provided</scope>
