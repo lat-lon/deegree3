@@ -7,7 +7,7 @@
   <parent>
     <groupId>de.latlon</groupId>
     <artifactId>deegree-tilestores</artifactId>
-    <version>3.6.2-SNAPSHOT</version>
+    <version>3.6.1.1</version>
   </parent>
 
   <build>
