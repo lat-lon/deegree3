@@ -60,7 +60,7 @@ import org.deegree.commons.utils.Pair;
  * @author <a href="mailto:schneider@lat-lon.de">Markus Schneider</a>
  * @author <a href="mailto:ionita@lat-lon.de">Andrei Ionita</a>
  */
-public class ServiceIdentification extends Description {
+public class ServiceIdentification extends Description implements CapabilitiesServiceIdentification {
 
 	private CodeType serviceType;
 

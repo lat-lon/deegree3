@@ -98,7 +98,7 @@ import org.slf4j.Logger;
  *
  * @author <a href="mailto:schmitz@lat-lon.de">Andreas Schmitz</a>
  */
-public class MapService {
+public class MapService implements CapabilitiesMapService {
 
 	private static final Logger LOG = getLogger(MapService.class);
 
