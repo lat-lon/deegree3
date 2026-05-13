@@ -53,6 +53,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -485,7 +486,7 @@ public class XMLSchemaInfoSet {
 		// e.printStackTrace();
 		// }
 
-		System.out.println("schemaUrls: " + schemaUrls);
+		System.out.println("schemaUrls: " + Arrays.toString(schemaUrls));
 		XSModel model = schemaLoader.loadURIList(new StringListImpl(schemaUrls, schemaUrls.length));
 		System.out.println(errorHandler.getErrors());
 		if (!errorHandler.getErrors().isEmpty()) {
