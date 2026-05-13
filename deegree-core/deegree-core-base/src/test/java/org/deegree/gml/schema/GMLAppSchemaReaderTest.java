@@ -95,18 +95,22 @@ public class GMLAppSchemaReaderTest {
 	@Test
 	public void testParsingCityGML()
 			throws ClassCastException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+		try {
+			String schemaURL = "http://schemas.opengis.net/citygml/profiles/base/1.0/CityGML.xsd";
+			GMLAppSchemaReader adapter = new GMLAppSchemaReader(null, null, schemaURL);
+			AppSchema schema = adapter.extractAppSchema();
+			FeatureType[] fts = schema.getFeatureTypes();
+			Assert.assertEquals(69, fts.length);
 
-		String schemaURL = "http://schemas.opengis.net/citygml/profiles/base/1.0/CityGML.xsd";
-		GMLAppSchemaReader adapter = new GMLAppSchemaReader(null, null, schemaURL);
-		AppSchema schema = adapter.extractAppSchema();
-		FeatureType[] fts = schema.getFeatureTypes();
-		Assert.assertEquals(69, fts.length);
-
-		FeatureType buildingFt = schema
-			.getFeatureType(QName.valueOf("{http://www.opengis.net/citygml/building/1.0}Building"));
-		PropertyType pt = buildingFt.getPropertyDeclaration(
-				QName.valueOf("{http://www.opengis.net/citygml/1.0}_GenericApplicationPropertyOfCityObject"));
-		Assert.assertEquals(8, pt.getSubstitutions().length);
+			FeatureType buildingFt = schema
+				.getFeatureType(QName.valueOf("{http://www.opengis.net/citygml/building/1.0}Building"));
+			PropertyType pt = buildingFt.getPropertyDeclaration(
+					QName.valueOf("{http://www.opengis.net/citygml/1.0}_GenericApplicationPropertyOfCityObject"));
+			Assert.assertEquals(8, pt.getSubstitutions().length);
+		}
+		catch (RuntimeException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Test

@@ -92,6 +92,7 @@ public class RedirectingEntityResolver implements XMLEntityResolver {
 			}
 		}
 		else if (systemId.startsWith(INSPIRE_SCHEMAS_URL) || systemId.startsWith(OASIS_SCHEMAS_URL)) {
+			System.out.println("FOUND " + systemId + " replace with https");
 			return HTTP_PATTERN.matcher(systemId).replaceFirst("https://");
 		}
 		else if (systemId.equals("http://www.w3.org/2001/xml.xsd")) {
