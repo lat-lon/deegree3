@@ -45,6 +45,10 @@ import static org.w3c.dom.DOMError.SEVERITY_ERROR;
 import static org.w3c.dom.DOMError.SEVERITY_FATAL_ERROR;
 import static org.w3c.dom.DOMError.SEVERITY_WARNING;
 
+import javax.xml.XMLConstants;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -57,11 +61,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-
-import javax.xml.XMLConstants;
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamReader;
 
 import org.apache.xerces.impl.xs.XMLSchemaLoader;
 import org.apache.xerces.impl.xs.util.StringListImpl;
@@ -486,7 +485,9 @@ public class XMLSchemaInfoSet {
 		// e.printStackTrace();
 		// }
 
+		System.out.println("schemaUrls: " + schemaUrls);
 		XSModel model = schemaLoader.loadURIList(new StringListImpl(schemaUrls, schemaUrls.length));
+		System.out.println(errorHandler.getErrors());
 		if (!errorHandler.getErrors().isEmpty()) {
 			throw new XMLProcessingException(errorHandler.getErrors().get(0));
 		}
