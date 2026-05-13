@@ -110,6 +110,7 @@ public class GMLAppSchemaReaderTest {
 		}
 		catch (RuntimeException e) {
 			e.printStackTrace();
+			throw e;
 		}
 	}
 
