@@ -6,7 +6,7 @@
   <description>Example configurations for deegree web services</description>
 
   <parent>
-    <groupId>org.deegree</groupId>
+    <groupId>de.latlon.deegree</groupId>
     <artifactId>deegree</artifactId>
     <version>3.6.9-SNAPSHOT</version>
   </parent>

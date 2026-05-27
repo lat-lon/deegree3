@@ -5,7 +5,7 @@
     <name>deegree-webservices-minimal</name>
     <description>Webapp that includes deegree WMS, WFS, CSW, WPS, common datastore modules</description>
     <parent>
-        <groupId>org.deegree</groupId>
+        <groupId>de.latlon.deegree</groupId>
         <artifactId>deegree-services</artifactId>
         <version>3.6.9-SNAPSHOT</version>
     </parent>
@@ -38,7 +38,7 @@
     </build>
     <dependencies>
         <dependency>
-            <groupId>org.deegree</groupId>
+            <groupId>de.latlon.deegree</groupId>
             <artifactId>deegree-webservices-commons</artifactId>
             <version>${project.version}</version>
             <type>pom</type>

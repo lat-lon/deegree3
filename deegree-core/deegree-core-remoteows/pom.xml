@@ -6,7 +6,7 @@
   <description>Remote OGC Web Services as deegree workspace resources</description>
 
   <parent>
-    <groupId>org.deegree</groupId>
+    <groupId>de.latlon.deegree</groupId>
     <artifactId>deegree-core</artifactId>
     <version>3.6.9-SNAPSHOT</version>
   </parent>

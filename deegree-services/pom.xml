@@ -7,7 +7,7 @@
   <description>OGC Web Service implementations</description>
 
   <parent>
-    <groupId>org.deegree</groupId>
+    <groupId>de.latlon.deegree</groupId>
     <artifactId>deegree</artifactId>
     <version>3.6.9-SNAPSHOT</version>
   </parent>
