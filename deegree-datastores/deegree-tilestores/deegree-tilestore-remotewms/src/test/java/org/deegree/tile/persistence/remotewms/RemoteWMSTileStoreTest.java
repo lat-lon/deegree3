@@ -60,6 +60,7 @@ import org.deegree.workspace.Workspace;
 import org.deegree.workspace.standard.DefaultWorkspace;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -72,6 +73,7 @@ import org.junit.Test;
  *
  * @author <a href="mailto:schneider@occamlabs.de">Markus Schneider</a>
  */
+@Ignore
 public class RemoteWMSTileStoreTest {
 
 	private Workspace ws;

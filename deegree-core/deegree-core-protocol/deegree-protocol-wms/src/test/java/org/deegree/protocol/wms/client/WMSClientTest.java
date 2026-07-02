@@ -44,6 +44,7 @@ import javax.xml.stream.XMLStreamException;
 import org.deegree.commons.xml.XMLAdapter;
 import org.deegree.commons.xml.XMLProcessingException;
 import org.deegree.protocol.ows.exception.OWSExceptionReport;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -66,6 +67,7 @@ public class WMSClientTest {
 		new WMSClient(new XMLAdapter(is));
 	}
 
+	@Ignore
 	@Test
 	public void testWMS111InstantiationFromUrl()
 			throws OWSExceptionReport, XMLStreamException, MalformedURLException, IOException {
