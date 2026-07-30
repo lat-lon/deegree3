@@ -206,6 +206,7 @@ public class InteractiveWPVS extends GLCanvas implements GLEventListener, KeyLis
 	 * DO NOT USE
 	 * @deprecated only use for registration purpose
 	 */
+	@Deprecated
 	public InteractiveWPVS() {
 		this.params = null;
 		this.lodAnalyzer = null;
