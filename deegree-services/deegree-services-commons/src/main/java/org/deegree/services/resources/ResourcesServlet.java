@@ -82,7 +82,7 @@ public class ResourcesServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		String resourcePath = request.getPathInfo();
-		if (!resourcePath.startsWith("/")) {
+		if (resourcePath == null || !resourcePath.startsWith("/")) {
 			throw new ServletException("Requested resource path does not start with '/'.");
 		}
 		// .wsdl/ALL is special handling for WSDL of WPS
