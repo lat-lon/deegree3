@@ -154,6 +154,7 @@ public class ShapeHelper {
 	 * @deprecated {@link #getShapeFromMark(Mark, double, double, boolean, double, double)}
 	 * or {@link #getShapeFromMarkForFill(Mark, double, double)}
 	 */
+	@Deprecated
 	public static Shape getShapeFromMark(Mark mark, double size, double rotation) {
 		return getShapeFromMark(mark, size, rotation, false, -1, -1);
 	}

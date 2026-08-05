@@ -45,7 +45,7 @@
           <programs>
             <program>
               <mainClass>org.deegree.commons.tools.ToolBox</mainClass>
-              <name>${toolboxname}</name>
+              <id>${toolboxname}</id>
             </program>
           </programs>
           <copyConfigurationDirectory>true</copyConfigurationDirectory>
