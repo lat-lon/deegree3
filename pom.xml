@@ -4,7 +4,7 @@
   <groupId>org.deegree</groupId>
   <artifactId>deegree</artifactId>
   <packaging>pom</packaging>
-  <version>3.6.10-SNAPSHOT</version>
+  <version>3.6.11-SNAPSHOT</version>
   <name>deegree</name>
   <description>Framework for OGC Web Service implementations and geospatial applications</description>
   <url>https://www.deegree.org</url>
@@ -803,7 +803,7 @@
       <dependency>
         <groupId>com.sun.xml.fastinfoset</groupId>
         <artifactId>FastInfoset</artifactId>
-        <version>1.2.18</version>
+        <version>2.1.1</version>
         <exclusions>
           <exclusion>
             <groupId>javax.xml.bind</groupId>
