@@ -688,7 +688,7 @@
       <dependency>
         <groupId>org.glassfish</groupId>
         <artifactId>jakarta.faces</artifactId>
-        <version>4.0.22</version>
+        <version>4.0.24</version>
       </dependency>
       <dependency>
         <groupId>jakarta.enterprise</groupId>
