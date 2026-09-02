@@ -45,6 +45,7 @@ import org.deegree.commons.xml.XMLAdapter;
 import org.deegree.commons.xml.XMLProcessingException;
 import org.deegree.protocol.ows.exception.OWSExceptionReport;
 import org.junit.Test;
+import org.junit.Ignore;
 
 /**
  * @author <a href="mailto:goltz@lat-lon.de">Lyn Goltz</a>
@@ -66,6 +67,7 @@ public class WMSClientTest {
 		new WMSClient(new XMLAdapter(is));
 	}
 
+	@Ignore // remote resource fetching is already tested elsewhere
 	@Test
 	public void testWMS111InstantiationFromUrl() throws OWSExceptionReport, XMLStreamException, IOException {
 		URL capaUrl = new URL(
