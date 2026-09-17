@@ -38,28 +38,31 @@ package org.deegree.services.wms.controller;
 import static org.deegree.commons.ows.exception.OWSException.INVALID_PARAMETER_VALUE;
 import static org.deegree.services.i18n.Messages.get;
 
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Map;
 
 import jakarta.servlet.ServletException;
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
-
 import org.deegree.commons.ows.exception.OWSException;
-import org.deegree.commons.ows.metadata.ServiceIdentification;
+import org.deegree.commons.ows.metadata.CapabilitiesServiceIdentification;
 import org.deegree.commons.ows.metadata.ServiceProvider;
 import org.deegree.commons.tom.ows.Version;
+import org.deegree.commons.utils.Pair;
 import org.deegree.protocol.wms.WMSConstants;
 import org.deegree.services.controller.utils.HttpResponseBuffer;
 import org.deegree.services.metadata.OWSMetadataProvider;
 import org.deegree.services.ows.PreOWSExceptionReportSerializer;
+import org.deegree.services.wms.CapabilitiesMapService;
 import org.deegree.services.wms.MapService;
 import org.deegree.services.wms.controller.capabilities.Capabilities130XMLAdapter;
+import org.deegree.services.wms.controller.capabilities.WmsCapabilitiesManipulator;
 import org.deegree.services.wms.controller.capabilities.serialize.CapabilitiesManager;
 import org.deegree.services.wms.controller.exceptions.ExceptionsManager;
+import org.deegree.workspace.Workspace;
 
 /**
  * <code>WMSController130</code>
@@ -75,9 +78,11 @@ public class WMSController130 extends WMSControllerBase {
 	/**
 	 * @param capabilitiesManager handling export of capabilities, never <code>null</code>
 	 * @param exceptionsManager used to serialize exceptions, never <code>null</code>
+	 * @param workspace
 	 */
-	public WMSController130(CapabilitiesManager capabilitiesManager, ExceptionsManager exceptionsManager) {
-		super(exceptionsManager);
+	public WMSController130(CapabilitiesManager capabilitiesManager, ExceptionsManager exceptionsManager,
+			Workspace workspace) {
+		super(exceptionsManager, workspace);
 		this.capabilitiesManager = capabilitiesManager;
 		EXCEPTION_DEFAULT = "XML";
 		EXCEPTION_BLANK = "BLANK";
@@ -97,9 +102,10 @@ public class WMSController130 extends WMSControllerBase {
 	}
 
 	@Override
-	protected void exportCapas(String getUrl, String postUrl, MapService service, HttpResponseBuffer response,
-			ServiceIdentification identification, ServiceProvider provider, Map<String, String> customParameters,
-			WMSController controller, OWSMetadataProvider metadata) throws IOException, OWSException {
+	protected void exportCapas(String getUrl, String postUrl, CapabilitiesMapService service,
+			HttpResponseBuffer response, CapabilitiesServiceIdentification identification, ServiceProvider provider,
+			Map<String, String> customParameters, WMSController controller, OWSMetadataProvider metadata)
+			throws IOException, OWSException {
 		String format = detectFormat(customParameters);
 		response.setContentType(format);
 

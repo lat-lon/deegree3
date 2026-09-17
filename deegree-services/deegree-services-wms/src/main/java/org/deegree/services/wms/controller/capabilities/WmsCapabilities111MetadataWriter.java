@@ -49,12 +49,11 @@ import static org.deegree.protocol.wms.WMSConstants.WMSRequestType.GetFeatureInf
 import static org.deegree.protocol.wms.WMSConstants.WMSRequestType.GetLegendGraphic;
 import static org.deegree.protocol.wms.WMSConstants.WMSRequestType.GetMap;
 
-import java.util.List;
-
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
+import java.util.List;
 
-import org.deegree.commons.ows.metadata.ServiceIdentification;
+import org.deegree.commons.ows.metadata.CapabilitiesServiceIdentification;
 import org.deegree.commons.ows.metadata.ServiceProvider;
 import org.deegree.commons.ows.metadata.party.Address;
 import org.deegree.commons.ows.metadata.party.ResponsibleParty;
@@ -71,7 +70,7 @@ import org.deegree.services.wms.controller.WMSController;
  */
 class WmsCapabilities111MetadataWriter {
 
-	private ServiceIdentification identification;
+	private CapabilitiesServiceIdentification identification;
 
 	private ServiceProvider provider;
 
@@ -81,8 +80,8 @@ class WmsCapabilities111MetadataWriter {
 
 	private WMSController controller;
 
-	WmsCapabilities111MetadataWriter(ServiceIdentification identification, ServiceProvider provider, String getUrl,
-			String postUrl, WMSController controller) {
+	WmsCapabilities111MetadataWriter(CapabilitiesServiceIdentification identification, ServiceProvider provider,
+			String getUrl, String postUrl, WMSController controller) {
 		this.identification = identification;
 		this.provider = provider;
 		this.getUrl = getUrl;
