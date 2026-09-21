@@ -44,16 +44,15 @@ import static org.deegree.layer.dims.Dimension.formatDimensionValueList;
 import static org.deegree.services.wms.controller.capabilities.WmsCapabilities130SpatialMetadataWriter.writeSrsAndEnvelope;
 import static org.slf4j.LoggerFactory.getLogger;
 
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.XMLStreamWriter;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamReader;
-import javax.xml.stream.XMLStreamWriter;
-
 import org.apache.axiom.om.OMElement;
-import org.deegree.commons.ows.metadata.ServiceIdentification;
+import org.deegree.commons.ows.metadata.CapabilitiesServiceIdentification;
 import org.deegree.commons.ows.metadata.ServiceProvider;
 import org.deegree.commons.utils.Pair;
 import org.deegree.commons.xml.stax.XMLStreamUtils;
@@ -61,7 +60,7 @@ import org.deegree.geometry.metadata.SpatialMetadata;
 import org.deegree.layer.dims.Dimension;
 import org.deegree.protocol.wms.WMSConstants;
 import org.deegree.services.metadata.OWSMetadataProvider;
-import org.deegree.services.wms.MapService;
+import org.deegree.services.wms.CapabilitiesMapService;
 import org.deegree.services.wms.controller.WMSController;
 import org.deegree.services.wms.controller.capabilities.theme.WmsCapabilities130ThemeWriter;
 import org.deegree.services.wms.controller.exceptions.ExceptionsManager;
@@ -85,7 +84,7 @@ public class Capabilities130XMLAdapter {
 
 	private final String postUrl;
 
-	private final MapService service;
+	private final CapabilitiesMapService service;
 
 	private final WMSController controller;
 
@@ -103,8 +102,9 @@ public class Capabilities130XMLAdapter {
 	 * @param service
 	 * @param controller
 	 */
-	public Capabilities130XMLAdapter(ServiceIdentification identification, ServiceProvider provider,
-			OWSMetadataProvider metadata, String getUrl, String postUrl, MapService service, WMSController controller) {
+	public Capabilities130XMLAdapter(CapabilitiesServiceIdentification identification, ServiceProvider provider,
+			OWSMetadataProvider metadata, String getUrl, String postUrl, CapabilitiesMapService service,
+			WMSController controller) {
 		this.getUrl = getUrl;
 		this.postUrl = postUrl;
 		this.service = service;
