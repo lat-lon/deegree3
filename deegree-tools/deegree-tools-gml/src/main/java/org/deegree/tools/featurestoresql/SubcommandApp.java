@@ -28,10 +28,10 @@ package org.deegree.tools.featurestoresql;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobParameter;
-import org.springframework.batch.core.JobParameters;
-import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.batch.core.job.Job;
+import org.springframework.batch.core.job.parameters.JobParameter;
+import org.springframework.batch.core.job.parameters.JobParameters;
+import org.springframework.batch.core.launch.JobOperator;
 import org.springframework.context.ApplicationContext;
 
 /**
@@ -40,7 +40,7 @@ import org.springframework.context.ApplicationContext;
 public abstract class SubcommandApp {
 
 	protected static void runJob(String[] args, ApplicationContext applicationContext) throws Exception {
-		JobLauncher jobLauncher = applicationContext.getBean(JobLauncher.class);
+		JobOperator jobLauncher = applicationContext.getBean(JobOperator.class);
 		Job job = applicationContext.getBean(Job.class);
 		Map<String, JobParameter<?>> jobParams = createJobParams(args);
 		jobLauncher.run(job, new JobParameters(jobParams));
