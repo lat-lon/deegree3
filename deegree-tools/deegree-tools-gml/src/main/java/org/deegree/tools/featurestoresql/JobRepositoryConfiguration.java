@@ -25,7 +25,6 @@
 ----------------------------------------------------------------------------*/
 package org.deegree.tools.featurestoresql;
 
-import org.springframework.boot.sql.init.dependency.DependsOnDatabaseInitialization;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
@@ -50,7 +49,6 @@ public class JobRepositoryConfiguration {
 	}
 
 	@Bean
-	@DependsOnDatabaseInitialization
 	public JdbcTransactionManager transactionManager(DataSource dataSource) {
 		return new JdbcTransactionManager(dataSource);
 	}

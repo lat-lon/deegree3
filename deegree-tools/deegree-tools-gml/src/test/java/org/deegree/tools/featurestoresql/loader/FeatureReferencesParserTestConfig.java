@@ -8,17 +8,14 @@ import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.job.parameters.RunIdIncrementer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.Step;
-import org.springframework.batch.core.step.builder.SimpleStepBuilder;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.infrastructure.item.Chunk;
 import org.springframework.batch.infrastructure.item.ItemWriter;
-import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.sql.init.dependency.DependsOnDatabaseInitialization;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.PathResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.jdbc.support.JdbcTransactionManager;
@@ -35,16 +32,11 @@ public class FeatureReferencesParserTestConfig {
 	@Autowired
 	private JobRepository jobRepository;
 
-	@Bean
-	public JobLauncherTestUtils jobLauncherTestUtils() {
-		return new JobLauncherTestUtils();
-	}
-
 	@StepScope
 	@Bean
 	public GmlReader gmlReader(@Value("#{jobParameters[pathToFile]}") String pathToFile) {
 		GmlReader gmlReader = new GmlReader(null);
-		gmlReader.setResource(new PathResource(pathToFile));
+		gmlReader.setResource(new FileSystemResource(pathToFile));
 		return gmlReader;
 	}
 
@@ -66,8 +58,7 @@ public class FeatureReferencesParserTestConfig {
 	@Bean
 	public Step step(GmlReader gmlReader, FeatureReferencesParser featureReferencesParser, ItemWriter itemWriter,
 			JdbcTransactionManager transactionManager) {
-		StepBuilder stepBuilder = new StepBuilder("FeatureReferencesParserTestStep", jobRepository);
-		return new SimpleStepBuilder<Feature, Feature>(stepBuilder).<Feature, Feature>chunk(10)
+		return new StepBuilder("FeatureReferencesParserTestStep", jobRepository).<Feature, Feature>chunk(10)
 			.transactionManager(transactionManager)
 			.reader(gmlReader)
 			.processor(featureReferencesParser)
@@ -91,7 +82,6 @@ public class FeatureReferencesParserTestConfig {
 	}
 
 	@Bean
-	@DependsOnDatabaseInitialization
 	public JdbcTransactionManager transactionManager(DataSource dataSource) {
 		return new JdbcTransactionManager(dataSource);
 	}

@@ -22,7 +22,6 @@
 package org.deegree.tools.featurestoresql;
 
 import org.springframework.batch.core.launch.JobOperator;
-import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.batch.autoconfigure.JobLauncherApplicationRunner;
 import org.springframework.context.annotation.Bean;
@@ -39,15 +38,9 @@ public class CommonConfiguration {
 	@Autowired
 	private JobOperator jobLauncher;
 
-	@Autowired
-	private JobRepository jobExplorer;
-
-	@Autowired
-	private JobRepository jobRepository;
-
 	@Bean
 	public JobLauncherApplicationRunner runner() {
-		return new JobLauncherApplicationRunner(jobLauncher, jobExplorer, jobRepository);
+		return new JobLauncherApplicationRunner(jobLauncher);
 	}
 
 }
