@@ -66,16 +66,17 @@ import java.util.List;
 import javax.xml.namespace.QName;
 import javax.xml.stream.FactoryConfigurationError;
 import javax.xml.stream.Location;
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
+import org.deegree.base.ExternalResourceChecker;
 import org.deegree.commons.tom.TypedObjectNode;
 import org.deegree.commons.utils.DoublePair;
 import org.deegree.commons.utils.Pair;
 import org.deegree.commons.utils.Triple;
+import org.deegree.commons.xml.stax.XMLInputFactoryUtils;
 import org.deegree.commons.xml.stax.XMLStreamUtils;
 import org.deegree.feature.Feature;
 import org.deegree.filter.Expression;
@@ -1266,7 +1267,11 @@ public class SymbologyParser {
 		if (in.getLocalName().equals("OnlineResource")) {
 			try {
 				URL url = parseOnlineResource(in);
-				XMLStreamReader newReader = XMLInputFactory.newInstance()
+				if (!ExternalResourceChecker.isAllowed(url)) {
+					LOG.warn("Access to the resource '{}' has been blocked by the current security configuration.");
+					return null;
+				}
+				XMLStreamReader newReader = XMLInputFactoryUtils.newSafeInstance()
 					.createXMLStreamReader(url.toString(), url.openStream());
 				while (!newReader.isStartElement())
 					newReader.next();
@@ -1380,7 +1385,11 @@ public class SymbologyParser {
 		if (in.getLocalName().equals("OnlineResource")) {
 			try {
 				URL url = parseOnlineResource(in);
-				localReader = XMLInputFactory.newInstance().createXMLStreamReader(url.toString(), url.openStream());
+				if (!ExternalResourceChecker.isAllowed(url)) {
+					LOG.warn("Access to the resource '{}' has been blocked by the current security configuration.");
+					return in;
+				}
+				localReader = XMLInputFactoryUtils.newSafeInstance().createXMLStreamReader(url.toString(), url.openStream());
 			}
 			catch (IOException e) {
 				LOG.warn("Error '{}' while resolving/accessing remote Rule document.", e.getLocalizedMessage());

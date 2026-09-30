@@ -32,6 +32,7 @@ import java.util.function.Function;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.deegree.base.ExternalResourceChecker;
 import org.deegree.style.styling.mark.BoundedShape;
 import org.deegree.style.styling.mark.WellKnownNameLoader;
 import org.slf4j.Logger;
@@ -114,7 +115,14 @@ public class TrueTypeFontLoader implements WellKnownNameLoader {
 				throw new IllegalArgumentException("Font \"" + fontFamilyName + "\" not found");
 			}
 
+			if (!ExternalResourceChecker.isAllowed(url)) {
+				LOG.warn("Access to the resource '{}' has been blocked by the current security configuration.");
+				throw new IllegalArgumentException("Font \"" + fontFamilyName + "\" could not be loaded");
+			}
 			f = EXTERNAL_FONT_CACHE.get(url);
+			if (f != null) {
+				return f;
+			}
 
 			try (InputStream is = url.openStream()) {
 				f = Font.createFont(Font.TRUETYPE_FONT, is);

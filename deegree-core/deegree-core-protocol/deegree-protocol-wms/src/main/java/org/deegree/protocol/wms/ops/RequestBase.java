@@ -52,9 +52,11 @@ import java.util.Map;
 
 import javax.xml.stream.XMLInputFactory;
 
+import org.deegree.base.ExternalResourceChecker;
 import org.deegree.commons.ows.exception.OWSException;
 import org.deegree.commons.utils.StringUtils;
 import org.deegree.commons.utils.Triple;
+import org.deegree.commons.xml.stax.XMLInputFactoryUtils;
 import org.deegree.filter.OperatorFilter;
 import org.deegree.layer.LayerRef;
 import org.deegree.style.StyleRef;
@@ -88,11 +90,19 @@ public abstract class RequestBase {
 
 	protected void handleSLD(String sld, String sldBody) throws OWSException {
 
-		XMLInputFactory xmlfac = XMLInputFactory.newInstance();
+		XMLInputFactory xmlfac = XMLInputFactoryUtils.newSafeInstance();
 		Triple<LinkedList<LayerRef>, LinkedList<StyleRef>, LinkedList<OperatorFilter>> triple = null;
 		if (sld != null) {
 			try {
-				triple = parse(xmlfac.createXMLStreamReader(sld, new URL(sld).openStream()), this);
+				URL sldUrl = new URL(sld);
+				if (!ExternalResourceChecker.isAllowed(sldUrl)) {
+					LOG.debug("Access to sld URL {} has been blocked in accordance with the active configuration",
+							sldUrl);
+					throw new OWSException(
+							"Access to the requested resource has been blocked in accordance with the active configuration.",
+							"InvalidDimensionValue", "sld");
+				}
+				triple = parse(xmlfac.createXMLStreamReader(sld, sldUrl.openStream()), this);
 			}
 			catch (ParseException e) {
 				LOG.trace("Stack trace:", e);

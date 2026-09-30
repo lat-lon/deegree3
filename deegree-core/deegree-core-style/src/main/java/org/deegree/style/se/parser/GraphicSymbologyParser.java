@@ -71,6 +71,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import org.apache.commons.codec.binary.Base64;
+import org.deegree.base.ExternalResourceChecker;
 import org.deegree.commons.utils.Pair;
 import org.deegree.commons.utils.Triple;
 import org.deegree.feature.Feature;
@@ -508,8 +509,13 @@ class GraphicSymbologyParser {
 				else {
 					url = resolve(str, in);
 				}
+				if (!ExternalResourceChecker.isAllowed(url)) {
+					LOG.warn("Access to the resource '{}' has been blocked by the current security configuration.");
+					return null;
+				}
 				strUrl = url.toExternalForm();
 				LOG.debug("Loading from URL '{}'", url);
+
 				in.nextTag();
 				return new Triple<InputStream, String, Continuation<StringBuffer>>(url.openStream(), strUrl, null);
 			}

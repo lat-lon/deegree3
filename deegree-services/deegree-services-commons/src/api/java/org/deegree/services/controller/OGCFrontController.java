@@ -34,49 +34,12 @@
  ----------------------------------------------------------------------------*/
 package org.deegree.services.controller;
 
-import static java.util.Collections.emptyList;
-import static org.deegree.commons.ows.exception.OWSException.NOT_FOUND;
-import static org.deegree.commons.ows.exception.OWSException.NO_APPLICABLE_CODE;
-import static org.deegree.commons.tom.ows.Version.parseVersion;
-import static org.slf4j.LoggerFactory.getLogger;
-
-import java.beans.Introspector;
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringReader;
-import java.lang.reflect.Field;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
-import javax.imageio.spi.IIORegistry;
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamReader;
 import org.apache.axiom.om.OMAbstractFactory;
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.OMXMLBuilderFactory;
@@ -107,6 +70,7 @@ import org.deegree.services.OWSProvider;
 import org.deegree.services.OwsManager;
 import org.deegree.services.authentication.SecurityException;
 import org.deegree.services.controller.exception.serializer.XMLExceptionSerializer;
+import org.deegree.services.controller.resourcecheck.OGCFrontControllerResourceChecks;
 import org.deegree.services.controller.security.SecurityConfiguration;
 import org.deegree.services.controller.utils.HttpResponseBuffer;
 import org.deegree.services.controller.utils.LoggingHttpRequestWrapper;
@@ -116,6 +80,40 @@ import org.deegree.services.jaxb.controller.DeegreeServiceControllerType.Request
 import org.deegree.services.ows.OWS110ExceptionReportSerializer;
 import org.deegree.services.resources.ResourcesServlet;
 import org.slf4j.Logger;
+
+import javax.imageio.spi.IIORegistry;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamReader;
+import java.beans.Introspector;
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.lang.reflect.Field;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.nio.charset.Charset;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+
+import static org.deegree.commons.ows.exception.OWSException.NOT_FOUND;
+import static org.deegree.commons.ows.exception.OWSException.NO_APPLICABLE_CODE;
+import static org.deegree.commons.tom.ows.Version.parseVersion;
+import static org.slf4j.LoggerFactory.getLogger;
 
 /**
  * Servlet that acts as OWS-HTTP communication end point and dispatcher to the {@link OWS} instances configured in the
@@ -188,6 +186,8 @@ public class OGCFrontController extends HttpServlet {
     private transient String version;
 
     private boolean addDeegreeVersionToHeader = false;
+
+    private OGCFrontControllerResourceChecks resourceChecks = new OGCFrontControllerResourceChecks();
 
     /**
      * Returns the only instance of this class.
@@ -323,7 +323,7 @@ public class OGCFrontController extends HttpServlet {
 
             String queryString = request.getQueryString();
             try {
-                LOG.debug( "doGet(), query string: '" + queryString + "'" );
+                LOG.debug("doGet(), query string: '{}'", queryString);
 
                 if ( queryString == null ) {
                     OWSException ex = new OWSException( "The request did not contain any parameters.",
@@ -364,7 +364,7 @@ public class OGCFrontController extends HttpServlet {
                     // for GET requests, there is no standard way for defining the used encoding
                     Map<String, String> normalizedKVPParams = KVPUtils.getNormalizedKVPMap( request.getQueryString(),
                                                                                             DEFAULT_ENCODING );
-                    LOG.debug( "parameter map: " + normalizedKVPParams );
+                    LOG.debug("parameter map: {}", normalizedKVPParams);
                     dispatchKVPRequest( normalizedKVPParams, request, responseBuffer, multiParts, entryTime );
                 }
             } catch ( XMLProcessingException e ) {
@@ -374,16 +374,13 @@ public class OGCFrontController extends HttpServlet {
                 sendException( null, ex, responseBuffer, null );
                 return;
             } catch ( Throwable e ) {
-                e.printStackTrace();
-                LOG.debug( "Handling HTTP-GET request took: " + ( System.currentTimeMillis() - entryTime )
-                           + " ms before sending exception." );
+                LOG.debug("Handling HTTP-GET request took: {} ms before sending exception.", System.currentTimeMillis() - entryTime);
                 LOG.debug( e.getMessage(), e );
                 OWSException ex = new OWSException( e.getLocalizedMessage(), e, "InvalidRequest" );
                 sendException( null, ex, responseBuffer, null );
                 return;
             }
-            LOG.debug( "Handling HTTP-GET request with status 'success' took: "
-                       + ( System.currentTimeMillis() - entryTime ) + " ms." );
+            LOG.debug("Handling HTTP-GET request with status 'success' took: {} ms.", System.currentTimeMillis() - entryTime);
         } finally {
             getInstance().CONTEXT.remove();
             responseBuffer.flushBuffer();
@@ -1101,6 +1098,7 @@ public class OGCFrontController extends HttpServlet {
         } else {
             LOG.info( "Not initializing request watchdog. No request time-outs configured." );
         }
+        this.resourceChecks.load(mainConfig.getExternalResourceCheck());
         LOG.info( "" );
     }
 
@@ -1610,4 +1608,8 @@ public class OGCFrontController extends HttpServlet {
 			return xForwardedHost.substring( 0, xForwardedHost.indexOf(":") );
 		return xForwardedHost;
 	}
+
+    public OGCFrontControllerResourceChecks getResourceChecks() {
+        return resourceChecks;
+    }
 }

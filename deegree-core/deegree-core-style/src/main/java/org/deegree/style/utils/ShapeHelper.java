@@ -66,6 +66,7 @@ import org.apache.batik.gvt.GVTTreeWalker;
 import org.apache.batik.gvt.GraphicsNode;
 import org.apache.batik.gvt.RootGraphicsNode;
 import org.apache.xerces.parsers.SAXParser;
+import org.deegree.base.ExternalResourceChecker;
 import org.deegree.style.styling.components.Mark;
 import org.deegree.style.styling.mark.BoundedShape;
 import org.slf4j.Logger;
@@ -300,7 +301,12 @@ public class ShapeHelper {
 	 */
 	public static Shape getShapeFromSvg(String url, double size, double rotation) {
 		try {
-			Shape shape = getShapeFromSvg(new URL(url).openStream(), url);
+			URL parsedUrl = new URL(url);
+			if (!ExternalResourceChecker.isAllowed(parsedUrl)) {
+				LOG.warn("Access to the resource '{}' has been blocked by the current security configuration.");
+				return null;
+			}
+			Shape shape = getShapeFromSvg(parsedUrl.openStream(), url);
 			if (shape != null) {
 				AffineTransform at = getScaleInstance(size, size);
 				at.rotate(toRadians(rotation));

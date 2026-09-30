@@ -10,6 +10,8 @@
     <HTTPGet>http://localhost:8080/deegree/services?</HTTPGet>
     <HTTPPost>http://localhost:8080/deegree/services</HTTPPost> <SOAP>http://localhost:8080/deegree/services</SOAP>
   -->
+
   <!--   </DCP>-->
+
 
 </deegreeServiceController>
