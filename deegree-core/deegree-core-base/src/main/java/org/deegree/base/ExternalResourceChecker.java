@@ -30,43 +30,61 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URL;
-import java.util.LinkedList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ServiceLoader;
+import java.util.stream.StreamSupport;
 
 public class ExternalResourceChecker {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ExternalResourceChecker.class);
 
-	private static boolean allowAny = TunableParameter.get("deegree.external-resouce-check.allow-any", false);
+	private static final boolean ALLOW_ANY = TunableParameter.get("deegree.external-resouce-check.allow-any", false);
 
-	private static boolean auditOnly = TunableParameter.get("deegree.external-resouce-check.audit-only", true);
+	private static final boolean AUDIT_ONLY = TunableParameter.get("deegree.external-resouce-check.audit-only", false);
 
-	private static final ServiceLoader<ExternalResourceValidator> validatorLoader;
+	private static final List<ExternalResourceValidator> validators;
 
 	static {
-		validatorLoader = ServiceLoader.load(ExternalResourceValidator.class);
-		for (ExternalResourceValidator validator : validatorLoader) {
-			LOG.debug("Loaded {}", validator.getClass().getName());
-			validator.init();
+		if (ALLOW_ANY) {
+			LOG.warn("External resource check disabled by configuration, no validation will be performed");
+			validators = Collections.emptyList();
+		}
+		else {
+			validators = StreamSupport.stream(ServiceLoader.load(ExternalResourceValidator.class).spliterator(), false)
+				.peek(validator -> {
+					LOG.debug("Loading external resource validator {} ({})", validator.getClass().getName(),
+							validator.getOrder());
+					validator.init();
+				})
+				.sorted(Comparator.comparingInt(ExternalResourceValidator::getOrder))
+				.toList();
+			if (validators.isEmpty()) {
+				LOG.info("No external resource validator found. Please check your configuration.");
+			}
+			if (AUDIT_ONLY) {
+				LOG.warn("External resource validation is set to audit only, validation issue will be logged.");
+			}
 		}
 	}
 
+	@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 	public static boolean isAllowed(URL url) {
-		if (allowAny) {
+		if (ALLOW_ANY) {
 			return true;
 		}
 
 		boolean result = false;
-		for (ExternalResourceValidator validator : validatorLoader) {
+		for (ExternalResourceValidator validator : validators) {
 			Boolean validatorResult = validator.isValid(url);
 			if (validatorResult != null) {
-				result = validatorResult.booleanValue();
+				result = validatorResult;
 				break;
 			}
 		}
 
-		if (!result && auditOnly) {
+		if (!result && AUDIT_ONLY) {
 			LOG.warn("[AUDIT] External resource '{}' should have been blocked.", url);
 			return true;
 		}

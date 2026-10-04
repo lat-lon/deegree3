@@ -42,13 +42,9 @@ public class OGCFrontControllerResourceValidator implements ExternalResourceVali
         if ("https".equalsIgnoreCase(url.getProtocol()) || "http".equalsIgnoreCase(url.getProtocol())) {
             return checks.isValidHost(url.getHost());
         }
-        if ("file".equalsIgnoreCase(url.getProtocol())) {
-            // no explicit checking here, so it is advised to run with limited file system permissions
-            return true;
-        }
 
-        // do not allow any other protocol
-        return false;
+        // Note: file:// is validated through org.deegree.base.ExternalResourceValidatorAnyFile
+        return null;
     }
 
 }

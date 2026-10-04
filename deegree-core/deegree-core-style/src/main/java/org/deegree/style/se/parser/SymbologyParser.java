@@ -1389,7 +1389,8 @@ public class SymbologyParser {
 					LOG.warn("Access to the resource '{}' has been blocked by the current security configuration.");
 					return in;
 				}
-				localReader = XMLInputFactoryUtils.newSafeInstance().createXMLStreamReader(url.toString(), url.openStream());
+				localReader = XMLInputFactoryUtils.newSafeInstance()
+					.createXMLStreamReader(url.toString(), url.openStream());
 			}
 			catch (IOException e) {
 				LOG.warn("Error '{}' while resolving/accessing remote Rule document.", e.getLocalizedMessage());

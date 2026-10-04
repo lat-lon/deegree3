@@ -83,7 +83,7 @@ public class OGCFrontControllerResourceChecks {
 		if (host == null || host.isBlank()) {
 			return false;
 		}
-		if (allowedLcHostNames.isEmpty() && allowedLcHostNames.isEmpty()) {
+		if (allowedLcHostNames.isEmpty() && allowedLcDomainNames.isEmpty()) {
 			return false;
 		}
 		String lcHost = host.trim().toLowerCase();
@@ -91,7 +91,7 @@ public class OGCFrontControllerResourceChecks {
 			return true;
 		}
 		// check if hostname ends with any of the allowed domains
-		return allowedLcDomainNames.stream().anyMatch(s -> lcHost.endsWith(s));
+		return allowedLcDomainNames.stream().anyMatch(lcHost::endsWith);
 	}
 
 }

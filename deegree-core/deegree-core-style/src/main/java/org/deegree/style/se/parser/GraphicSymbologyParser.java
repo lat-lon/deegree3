@@ -510,7 +510,8 @@ class GraphicSymbologyParser {
 					url = resolve(str, in);
 				}
 				if (!ExternalResourceChecker.isAllowed(url)) {
-					LOG.warn("Access to the resource '{}' has been blocked by the current security configuration.");
+					LOG.warn("Access to the resource '{}' has been blocked by the current security configuration.",
+							url);
 					return null;
 				}
 				strUrl = url.toExternalForm();
