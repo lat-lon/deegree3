@@ -39,24 +39,26 @@ import static javax.xml.stream.XMLOutputFactory.IS_REPAIRING_NAMESPACES;
 import static org.deegree.services.i18n.Messages.get;
 import static org.slf4j.LoggerFactory.getLogger;
 
+import javax.xml.stream.XMLOutputFactory;
 import java.io.IOException;
 import java.util.Map;
 
 import jakarta.servlet.ServletException;
-import javax.xml.stream.XMLOutputFactory;
-
 import org.deegree.commons.ows.exception.OWSException;
-import org.deegree.commons.ows.metadata.ServiceIdentification;
+import org.deegree.commons.ows.metadata.CapabilitiesServiceIdentification;
 import org.deegree.commons.ows.metadata.ServiceProvider;
 import org.deegree.commons.tom.ows.Version;
+import org.deegree.commons.utils.Pair;
 import org.deegree.protocol.wms.WMSConstants.WMSRequestType;
 import org.deegree.services.controller.exception.serializer.XMLExceptionSerializer;
 import org.deegree.services.controller.utils.HttpResponseBuffer;
 import org.deegree.services.metadata.OWSMetadataProvider;
-import org.deegree.services.wms.MapService;
+import org.deegree.services.wms.CapabilitiesMapService;
 import org.deegree.services.wms.controller.WMSController.Controller;
+import org.deegree.services.wms.controller.capabilities.WmsCapabilitiesManipulator;
 import org.deegree.services.wms.controller.exceptions.ExceptionsManager;
 import org.deegree.services.wms.controller.exceptions.SerializingException;
+import org.deegree.workspace.Workspace;
 import org.slf4j.Logger;
 
 /**
@@ -74,10 +76,13 @@ public abstract class WMSControllerBase implements Controller {
 
 	protected String EXCEPTION_MIME = "text/xml";
 
+	protected final Workspace workspace;
+
 	private final ExceptionsManager exceptionsManager;
 
-	public WMSControllerBase(ExceptionsManager exceptionsManager) {
+	public WMSControllerBase(ExceptionsManager exceptionsManager, Workspace workspace) {
 		this.exceptionsManager = exceptionsManager;
+		this.workspace = workspace;
 	}
 
 	@Override
@@ -89,8 +94,8 @@ public abstract class WMSControllerBase implements Controller {
 	}
 
 	@Override
-	public void getCapabilities(String getUrl, String postUrl, String updateSequence, MapService service,
-			HttpResponseBuffer response, ServiceIdentification identification, ServiceProvider provider,
+	public void getCapabilities(String getUrl, String postUrl, String updateSequence, CapabilitiesMapService service,
+			HttpResponseBuffer response, CapabilitiesServiceIdentification identification, ServiceProvider provider,
 			Map<String, String> customParameters, WMSController controller, OWSMetadataProvider metadata)
 			throws OWSException, IOException {
 		getUrl = getUrl.substring(0, getUrl.length() - 1);
@@ -111,15 +116,25 @@ public abstract class WMSControllerBase implements Controller {
 			}
 		}
 
+		WmsCapabilitiesManipulator capabilitiesManipulator = workspace
+			.getInitializableAllowSubclass(WmsCapabilitiesManipulator.class);
+		if (capabilitiesManipulator != null) {
+			Pair<CapabilitiesMapService, CapabilitiesServiceIdentification> mapServiceAndServiceIdentification = capabilitiesManipulator
+				.manipulateServiceIdentification(customParameters, getUrl, service, identification);
+			service = mapServiceAndServiceIdentification.first;
+			identification = mapServiceAndServiceIdentification.second;
+		}
+
 		XMLOutputFactory factory = XMLOutputFactory.newInstance();
 		factory.setProperty(IS_REPAIRING_NAMESPACES, true);
 		exportCapas(getUrl, postUrl, service, response, identification, provider, customParameters, controller,
 				metadata);
 	}
 
-	protected abstract void exportCapas(String getUrl, String postUrl, MapService service, HttpResponseBuffer response,
-			ServiceIdentification identification, ServiceProvider provider, Map<String, String> customParameters,
-			WMSController controller, OWSMetadataProvider metadata) throws IOException, OWSException;
+	protected abstract void exportCapas(String getUrl, String postUrl, CapabilitiesMapService service,
+			HttpResponseBuffer response, CapabilitiesServiceIdentification identification, ServiceProvider provider,
+			Map<String, String> customParameters, WMSController controller, OWSMetadataProvider metadata)
+			throws IOException, OWSException;
 
 	protected abstract Version getVersion();
 

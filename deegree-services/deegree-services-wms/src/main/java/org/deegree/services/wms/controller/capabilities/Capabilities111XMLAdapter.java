@@ -40,14 +40,13 @@ import static org.deegree.commons.xml.CommonNamespaces.XLNNS;
 import static org.deegree.layer.dims.Dimension.formatDimensionValueList;
 import static org.deegree.services.wms.controller.capabilities.WmsCapabilities111SpatialMetadataWriter.writeSrsAndEnvelope;
 
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
-
-import org.deegree.commons.ows.metadata.ServiceIdentification;
+import org.deegree.commons.ows.metadata.CapabilitiesServiceIdentification;
 import org.deegree.commons.ows.metadata.ServiceProvider;
 import org.deegree.commons.utils.Pair;
 import org.deegree.commons.xml.XMLAdapter;
@@ -56,7 +55,7 @@ import org.deegree.layer.dims.Dimension;
 import org.deegree.layer.metadata.LayerMetadata;
 import org.deegree.protocol.wms.WMSConstants;
 import org.deegree.services.metadata.OWSMetadataProvider;
-import org.deegree.services.wms.MapService;
+import org.deegree.services.wms.CapabilitiesMapService;
 import org.deegree.services.wms.controller.WMSController;
 import org.deegree.services.wms.controller.capabilities.theme.WmsCapabilities111ThemeWriter;
 import org.deegree.services.wms.controller.exceptions.ExceptionsManager;
@@ -77,7 +76,7 @@ public class Capabilities111XMLAdapter extends XMLAdapter {
 
 	private final String getUrl;
 
-	private MapService service;
+	private CapabilitiesMapService service;
 
 	private WmsCapabilities111MetadataWriter metadataWriter;
 
@@ -93,8 +92,9 @@ public class Capabilities111XMLAdapter extends XMLAdapter {
 	 * @param service
 	 * @param controller
 	 */
-	public Capabilities111XMLAdapter(ServiceIdentification identification, ServiceProvider provider,
-			OWSMetadataProvider metadata, String getUrl, String postUrl, MapService service, WMSController controller) {
+	public Capabilities111XMLAdapter(CapabilitiesServiceIdentification identification, ServiceProvider provider,
+			OWSMetadataProvider metadata, String getUrl, String postUrl, CapabilitiesMapService service,
+			WMSController controller) {
 		this.getUrl = getUrl;
 		this.service = service;
 		this.controller = controller;
