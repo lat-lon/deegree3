@@ -50,7 +50,9 @@ import java.awt.Stroke;
 import java.awt.geom.Area;
 import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.deegree.commons.utils.Pair;
 import org.deegree.style.styling.components.PerpendicularOffsetType;
@@ -124,7 +126,167 @@ public class OffsetStroke implements Stroke {
 		return new double[] { ox + lam * n2[1], oy - lam * n2[0] };
 	}
 
+	/** Maximum corner distance, measured in multiples of the offset magnitude. */
+	private static final double OFFSET_MITER_LIMIT = 10;
+
+	/**
+	 * Offset linear subpaths independently. Return null for curved paths so that their
+	 * existing handling is retained.
+	 */
+	private Shape createStandardLinearOffset(Shape original) {
+		PathIterator iterator = original.getPathIterator(null);
+		while (!iterator.isDone()) {
+			int segment = iterator.currentSegment(new double[6]);
+			if (segment == SEG_QUADTO || segment == SEG_CUBICTO) {
+				return null;
+			}
+			iterator.next();
+		}
+		Path2D.Double result = new Path2D.Double(original.getPathIterator(null).getWindingRule());
+		List<double[]> points = new ArrayList<double[]>();
+		iterator = original.getPathIterator(null);
+		while (!iterator.isDone()) {
+			double[] coordinates = new double[6];
+			switch (iterator.currentSegment(coordinates)) {
+				case SEG_MOVETO:
+					appendLinearOffset(result, points, false);
+					points.clear();
+					points.add(new double[] { coordinates[0], coordinates[1] });
+					break;
+				case SEG_LINETO:
+					double[] previous = points.get(points.size() - 1);
+					if (previous[0] != coordinates[0] || previous[1] != coordinates[1]) {
+						points.add(new double[] { coordinates[0], coordinates[1] });
+					}
+					break;
+				case SEG_CLOSE:
+					appendLinearOffset(result, points, true);
+					double[] start = points.isEmpty() ? null : points.get(0);
+					points.clear();
+					if (start != null) {
+						points.add(start);
+					}
+					break;
+			}
+			iterator.next();
+		}
+		appendLinearOffset(result, points, false);
+		return result;
+	}
+
+	private void appendLinearOffset(Path2D.Double result, List<double[]> points, boolean closed) {
+		points = removeRetracedSegments(points);
+		int count = points.size();
+		if (count < 2) {
+			return;
+		}
+		// Explicitly closed paths may also contain their first coordinate at the end.
+		if (closed && points.get(0)[0] == points.get(count - 1)[0] && points.get(0)[1] == points.get(count - 1)[1]) {
+			count--;
+		}
+		if (count < 2) {
+			return;
+		}
+		double[][] normals = new double[closed ? count : count - 1][2];
+		for (int i = 0; i < normals.length; i++) {
+			double[] a = points.get(i);
+			double[] b = points.get((i + 1) % count);
+			double dx = b[0] - a[0], dy = b[1] - a[1];
+			double length = Math.hypot(dx, dy);
+			normals[i][0] = -dy / length;
+			normals[i][1] = dx / length;
+		}
+		for (int i = 0; i < count; i++) {
+			double[] point = points.get(i);
+			// Keep the original start position along the first offset segment, including
+			// rings: graphic strokes and dash patterns measure their phase from here.
+			if (i == 0 || (!closed && i == count - 1)) {
+				double[] normal = normals[i == 0 ? 0 : i - 1];
+				appendOffsetPoint(result, point[0] + offset * normal[0], point[1] + offset * normal[1], i == 0);
+			}
+			else {
+				appendOffsetJoin(result, point, normals[(i + normals.length - 1) % normals.length], normals[i], i == 0);
+			}
+		}
+		if (closed) {
+			appendOffsetJoin(result, points.get(0), normals[normals.length - 1], normals[0], false);
+			result.closePath();
+		}
+	}
+
+	/**
+	 * Remove almost collinear out-and-back runs from the temporary offset input. Unlike
+	 * general simplification this requires two reversals, preserves both endpoints and
+	 * only removes vertices lying on the replacement segment within one thousandth of the
+	 * offset magnitude.
+	 */
+	private List<double[]> removeRetracedSegments(List<double[]> points) {
+		List<double[]> result = new ArrayList<double[]>();
+		double tolerance = Math.abs(offset) * 0.001;
+		for (double[] point : points) {
+			result.add(point);
+			while (result.size() >= 4) {
+				int start = result.size() - 4;
+				double[] a = result.get(start), b = result.get(start + 1);
+				double[] c = result.get(start + 2), d = result.get(start + 3);
+				double vx = c[0] - b[0], vy = c[1] - b[1];
+				if ((b[0] - a[0]) * vx + (b[1] - a[1]) * vy >= 0 || vx * (d[0] - c[0]) + vy * (d[1] - c[1]) >= 0
+						|| !isOnReplacementSegment(a, d, b, tolerance) || !isOnReplacementSegment(a, d, c, tolerance)) {
+					break;
+				}
+				result.remove(start + 2);
+				result.remove(start + 1);
+			}
+		}
+		return result;
+	}
+
+	private static boolean isOnReplacementSegment(double[] a, double[] d, double[] point, double tolerance) {
+		double dx = d[0] - a[0], dy = d[1] - a[1];
+		double length = Math.hypot(dx, dy);
+		if (length == 0) {
+			return false;
+		}
+		dx /= length;
+		dy /= length;
+		double px = point[0] - a[0], py = point[1] - a[1];
+		double along = px * dx + py * dy;
+		return along >= 0 && along <= length && Math.abs(px * dy - py * dx) <= tolerance;
+	}
+
+	private void appendOffsetJoin(Path2D.Double result, double[] point, double[] before, double[] after, boolean move) {
+		// Intersect equal-distance parallel lines in local coordinates, avoiding
+		// subtraction of large absolute coordinates and an almost-zero determinant.
+		double sx = before[0] + after[0], sy = before[1] + after[1];
+		double sumLength = Math.hypot(sx, sy);
+		if (sumLength >= 2 / OFFSET_MITER_LIMIT) {
+			double factor = 2 * offset / (sumLength * sumLength);
+			appendOffsetPoint(result, point[0] + factor * sx, point[1] + factor * sy, move);
+		}
+		else {
+			// A bevel keeps both offset segment ends local even at a U-turn.
+			appendOffsetPoint(result, point[0] + offset * before[0], point[1] + offset * before[1], move);
+			appendOffsetPoint(result, point[0] + offset * after[0], point[1] + offset * after[1], false);
+		}
+	}
+
+	private static void appendOffsetPoint(Path2D.Double result, double x, double y, boolean move) {
+		if (move) {
+			result.moveTo(x, y);
+		}
+		else {
+			result.lineTo(x, y);
+		}
+	}
+
 	public Shape createStrokedShape(final Shape p) {
+		if (type.type == PerpendicularOffsetType.Type.Standard) {
+			Shape linear = createStandardLinearOffset(p);
+			if (linear != null) {
+				return handleSubstraction(stroke == null ? linear : stroke.createStrokedShape(linear), p);
+			}
+		}
+
 		LinkedList<Pair<Integer, double[]>> list = new LinkedList<Pair<Integer, double[]>>();
 		LinkedList<double[]> normals = new LinkedList<double[]>();
 
