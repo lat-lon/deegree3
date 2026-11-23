@@ -321,8 +321,8 @@ public class OGCFrontController extends HttpServlet {
             addHeaders( responseBuffer );
             responseBuffer = handleCompression( responseBuffer );
 
-            String queryString = request.getQueryString();
             try {
+                String queryString = request.getQueryString();
                 LOG.debug( "doGet(), query string: '" + queryString + "'" );
 
                 if ( queryString == null ) {
