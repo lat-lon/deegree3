@@ -31,12 +31,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class ExternalResourceCheckerTest {
 
 	@Test
 	public void testDefaultsToInvalid() throws MalformedURLException {
-		assertFalse(ExternalResourceChecker.isAllowed(null));
+		assertTrue(ExternalResourceChecker.isAllowed(null));
 		// noinspection HttpUrlsUsage
 		assertFalse(ExternalResourceChecker.isAllowed(new URL("http://example.com/forbidden")));
 		assertFalse(ExternalResourceChecker.isAllowed(new URL("https://example.com/forbidden")));
@@ -44,14 +45,16 @@ public class ExternalResourceCheckerTest {
 	}
 
 	/**
-	 * Test for file:// allowed through configuration
+	 * Test for file:// allowed through configuration (for testing)
 	 * <p>
 	 * Note that {@link ExternalResourceValidatorAnyFile} was loaded in module
 	 * <code>deegree-core-test-logging</code>
 	 */
 	@Test
 	public void testAllowedFile() throws MalformedURLException {
-		assertFalse(ExternalResourceChecker.isAllowed(new URL("file://abc")));
+		// NOTE: explicitly enabled for integration tests in
+		// deegree-core-test-logging/src/main/resources/META-INF/services/org.deegree.base.ExternalResourceValidator
+		assertTrue(ExternalResourceChecker.isAllowed(new URL("file://abc")));
 	}
 
 }

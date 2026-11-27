@@ -49,15 +49,23 @@ public class WorkspaceRootListExternalResourceValidator implements ExternalResou
 
 	private static final Logger LOG = LoggerFactory.getLogger(WorkspaceRootListExternalResourceValidator.class);
 
+    private static final boolean ENABLED = TunableParameter
+            .get("deegree.external-resouce-check.workspace-list.enabled", true);
+
 	private static final String OVERRIDE_LOCATION = TunableParameter
-		.get("deegree.external-resouce-check.override-workspace-list-location", (String) null);
+		.get("deegree.external-resouce-check.workspace-list.override-location", (String) null);
 
 	private static final String LIST_NAME = "allowed-resource.list";
 
 	private List<Check> checks = Collections.emptyList();
 
 	public WorkspaceRootListExternalResourceValidator() {
-		String workspaceRoot = OVERRIDE_LOCATION;
+		if(!ENABLED) {
+            LOG.warn("Disabled by configuration.");
+            return;
+        }
+
+        String workspaceRoot = OVERRIDE_LOCATION;
 
 		if (workspaceRoot == null) {
 			workspaceRoot = getWorkspaceRoot();
@@ -115,7 +123,7 @@ public class WorkspaceRootListExternalResourceValidator implements ExternalResou
 
 	@Override
 	public Boolean isValid(URL url) {
-		if (url == null) {
+		if (url == null || !ENABLED) {
 			return null;
 		}
 		try {
