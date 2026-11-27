@@ -31,7 +31,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 public class ExternalResourceCheckerTest {
 
@@ -52,7 +51,7 @@ public class ExternalResourceCheckerTest {
 	 */
 	@Test
 	public void testAllowedFile() throws MalformedURLException {
-		assertTrue(ExternalResourceChecker.isAllowed(new URL("file://abc")));
+		assertFalse(ExternalResourceChecker.isAllowed(new URL("file://abc")));
 	}
 
 }

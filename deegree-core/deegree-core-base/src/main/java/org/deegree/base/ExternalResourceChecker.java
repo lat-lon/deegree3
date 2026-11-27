@@ -62,7 +62,7 @@ public class ExternalResourceChecker {
 		}
 		if (ALLOW_ANY) {
 			return true;
-        }
+		}
 		else if (ALLOW_HTTP
 				&& ("https".equalsIgnoreCase(url.getProtocol()) || "http".equalsIgnoreCase(url.getProtocol()))) {
 			return true;

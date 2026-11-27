@@ -1,2 +1,1 @@
-org.deegree.services.controller.resourcecheck.OGCFrontControllerResourceValidator
-org.deegree.base.ExternalResourceValidatorAnyFile
+org.deegree.services.commons.WorkspaceRootListExternalResourceValidator
