@@ -58,6 +58,7 @@ import java.util.ListIterator;
 
 import javax.imageio.ImageIO;
 
+import org.deegree.base.ExternalResourceChecker;
 import org.deegree.commons.ows.exception.OWSException;
 import org.deegree.commons.utils.Pair;
 import org.deegree.cs.coordinatesystems.ICRS;
@@ -482,6 +483,12 @@ public class MapService {
 			URL copyrightImageAsUrl = parseCopyrightImageAsUrl(metadata, image);
 			if (copyrightImageAsUrl != null) {
 				try {
+					if (!ExternalResourceChecker.isAllowed(copyrightImageAsUrl)) {
+						LOG.debug(
+								"Access to external copyright url {} has been blocked in accordance with the active configuration",
+								copyrightImageAsUrl);
+						return null;
+					}
 					return ImageIO.read(copyrightImageAsUrl);
 				}
 				catch (IOException e) {
