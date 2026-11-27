@@ -70,7 +70,6 @@ import org.deegree.services.OWSProvider;
 import org.deegree.services.OwsManager;
 import org.deegree.services.authentication.SecurityException;
 import org.deegree.services.controller.exception.serializer.XMLExceptionSerializer;
-import org.deegree.services.controller.resourcecheck.OGCFrontControllerResourceChecks;
 import org.deegree.services.controller.security.SecurityConfiguration;
 import org.deegree.services.controller.utils.HttpResponseBuffer;
 import org.deegree.services.controller.utils.LoggingHttpRequestWrapper;
@@ -186,8 +185,6 @@ public class OGCFrontController extends HttpServlet {
     private transient String version;
 
     private boolean addDeegreeVersionToHeader = false;
-
-    private OGCFrontControllerResourceChecks resourceChecks = new OGCFrontControllerResourceChecks();
 
     /**
      * Returns the only instance of this class.
@@ -1098,7 +1095,6 @@ public class OGCFrontController extends HttpServlet {
         } else {
             LOG.info( "Not initializing request watchdog. No request time-outs configured." );
         }
-        this.resourceChecks.load(mainConfig.getExternalResourceCheck());
         LOG.info( "" );
     }
 
@@ -1608,8 +1604,4 @@ public class OGCFrontController extends HttpServlet {
 			return xForwardedHost.substring( 0, xForwardedHost.indexOf(":") );
 		return xForwardedHost;
 	}
-
-    public OGCFrontControllerResourceChecks getResourceChecks() {
-        return resourceChecks;
-    }
 }
