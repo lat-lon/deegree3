@@ -39,7 +39,7 @@ public class ExternalResourceValidatorAnyFile implements ExternalResourceValidat
 
 	@Override
 	public int getOrder() {
-		return LOWEST_PRECEDENCE - 100;
+		return HIGHEST_PRECEDENCE;
 	}
 
 }

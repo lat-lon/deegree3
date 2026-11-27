@@ -27,20 +27,16 @@ package org.deegree.base;
 
 import java.net.URL;
 
-public class ExternalResourceValidatorAnyHttpsHttp implements ExternalResourceValidator {
+public class ExternalResourceValidatorAnything implements ExternalResourceValidator {
 
 	@Override
 	public Boolean isValid(URL url) {
-		if (url != null
-				&& ("https".equalsIgnoreCase(url.getProtocol()) || "http".equalsIgnoreCase(url.getProtocol()))) {
-			return true;
-		}
-		return null;
+		return true;
 	}
 
 	@Override
 	public int getOrder() {
-		return LOWEST_PRECEDENCE - 100;
+		return HIGHEST_PRECEDENCE;
 	}
 
 }

@@ -61,8 +61,4 @@ public interface ExternalResourceValidator {
 
 	Boolean isValid(URL url);
 
-	default void init() {
-
-	}
-
 }
