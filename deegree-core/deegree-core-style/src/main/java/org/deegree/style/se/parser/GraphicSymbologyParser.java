@@ -72,6 +72,7 @@ import javax.xml.stream.XMLStreamReader;
 
 import org.apache.commons.codec.binary.Base64;
 import org.deegree.base.ExternalResourceChecker;
+import org.deegree.commons.tom.ReferenceResolvingException;
 import org.deegree.commons.utils.Pair;
 import org.deegree.commons.utils.Triple;
 import org.deegree.feature.Feature;
@@ -435,6 +436,12 @@ class GraphicSymbologyParser {
 							}
 							try {
 								URL resolvedImageUrl = resolveImageUrl(file);
+								if (!ExternalResourceChecker.isAllowed(resolvedImageUrl)) {
+									LOG.debug(
+											"Access to external image url {} has been blocked in accordance with the active configuration",
+											resolvedImageUrl);
+									return;
+								}
 								BufferedImage image = null;
 								String imageUrl = null;
 								if (resolvedImageUrl != null) {
@@ -465,10 +472,6 @@ class GraphicSymbologyParser {
 							if (context.location != null)
 								return context.location.resolveToUrl(file);
 							return resolve(file, in);
-						}
-
-						private BufferedImage asImage(URL resolvedImageUrl) throws IOException {
-							return ImageIO.read(resolvedImageUrl);
 						}
 
 					};

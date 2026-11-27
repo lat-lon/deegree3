@@ -47,6 +47,7 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import org.deegree.base.ExternalResourceChecker;
 import org.deegree.commons.utils.Pair;
 import org.deegree.cs.persistence.CRSManager;
 import org.deegree.geometry.GeometryFactory;
@@ -125,6 +126,12 @@ public class Legends {
 			}
 		}
 		if (url != null) {
+			if (!ExternalResourceChecker.isAllowed(url)) {
+				LOG.debug(
+						"Access to external legend url {} has been blocked in accordance with the active configuration",
+						url);
+				return;
+			}
 			try {
 				BufferedImage legend = ImageIO.read(url);
 				g.drawImage(legend, 0, 0, width, height, null);
