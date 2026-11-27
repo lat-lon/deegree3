@@ -49,6 +49,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.deegree.base.ExternalResourceChecker;
 import org.deegree.commons.tom.ReferenceResolvingException;
 import org.deegree.commons.tom.gml.GMLObject;
 import org.deegree.commons.tom.gml.GMLReference;
@@ -205,6 +206,13 @@ public class GmlDocumentIdContext implements GMLReferenceResolver {
 			}
 			else {
 				resolvedURL = new URL(uri);
+			}
+			if (!ExternalResourceChecker.isAllowed(resolvedURL)) {
+				LOG.debug(
+						"Access to external GML object {} has been blocked in accordance with the active configuration",
+						resolvedURL);
+				throw new ReferenceResolvingException(
+						"Access to the requested resource has been blocked in accordance with the active configuration.");
 			}
 			GMLStreamReader gmlReader = createGMLStreamReader(version, resolvedURL);
 			gmlReader.setApplicationSchema(schema);
